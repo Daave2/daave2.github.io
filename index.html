@@ -319,7 +319,7 @@
         .brush-size input[type="range"] {
             cursor: pointer;
         }
-        /* Undo and Clear Button Styles */
+        /* Undo, Clear, and Export Email Button Styles */
         .undo-button, .clear-button, .export-email-button {
             background-color: var(--primary-green);
             color: #fff;
@@ -680,14 +680,14 @@
 
         // Export to Email Functionality
         exportEmailButton.addEventListener('click', () => {
-            // Convert canvas to data URL
-            const imageData = canvas.toDataURL('image/png');
-
             // Define your secret token (must match the one in Apps Script)
             const secretToken = 'team218'; // Replace with the same token used in Apps Script
 
+            // Convert canvas to data URL
+            const imageData = canvas.toDataURL('image/png');
+
             // Send the image data and token to Google Apps Script Web App
-            fetch('https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbyRJdOsJQWJngLF1z1DtePly44ZPuZ2VQzU9iFCEPBaCC5kistTl5m1s4O9nP9xGFI/exec', { // Replace YOUR_SCRIPT_ID with your actual script ID
+            fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', { // Replace YOUR_SCRIPT_ID with your actual script ID
                 method: 'POST',
                 mode: 'cors',
                 headers: {
