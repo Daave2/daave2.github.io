@@ -7,7 +7,7 @@
     <!-- Google Fonts for Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables for Consistent Color Scheme */
+        /* CSS Variables for Light and Dark Themes */
         :root {
             --primary-green: #006400; /* Dark Green */
             --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
@@ -22,6 +22,16 @@
             --card-shadow: rgba(0, 0, 0, 0.1);
             --footer-bg: var(--primary-green);
             --footer-text: var(--background-white);
+            /* Dark Mode Variables */
+            --dark-background: #121212;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-color: #e0e0e0;
+            --dark-nav-bg: #333333;
+            --dark-nav-text: #e0e0e0;
+            --dark-nav-hover-bg: #555555;
+            --dark-nav-hover-text: #ffffff;
+            --dark-footer-bg: #333333;
+            --dark-footer-text: #e0e0e0;
         }
 
         /* Reset and Base Styles */
@@ -35,6 +45,11 @@
             background-color: var(--background-faint-green);
             color: var(--text-color);
             line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: var(--dark-background);
+            color: var(--dark-text-color);
         }
         a {
             color: inherit;
@@ -48,6 +63,12 @@
             text-align: center;
             position: relative;
             box-shadow: 0 2px 4px var(--card-shadow);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode header {
+            background-color: var(--dark-card-bg);
+            color: var(--dark-text-color);
+            box-shadow: 0 2px 4px var(--dark-card-bg);
         }
         header img {
             position: absolute;
@@ -61,20 +82,48 @@
             margin: 0;
             padding-left: 80px; /* To prevent overlap with logo */
         }
+        /* Dark Mode Toggle Styles */
+        .dark-mode-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: var(--primary-green);
+            transition: color 0.3s;
+        }
+        body.dark-mode .dark-mode-toggle {
+            color: var(--dark-text-color);
+        }
         /* Navigation Bar */
         .nav {
             background-color: var(--nav-bg);
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
             padding: 8px 10px; /* Reduced padding for compactness */
             box-shadow: 0 2px 4px var(--card-shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: background-color 0.3s;
         }
-        .nav a {
+        body.dark-mode .nav {
+            background-color: var(--dark-nav-bg);
+        }
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+        .nav-links li {
             margin: 5px 10px; /* Reduced margin for compactness */
+        }
+        .nav-links a {
+            display: block;
             padding: 8px 15px; /* Reduced padding for compactness */
             background-color: var(--background-white);
             color: var(--primary-green);
@@ -83,9 +132,59 @@
             transition: background-color 0.3s, color 0.3s;
             font-size: 0.95em; /* Slightly smaller font size */
         }
-        .nav a:hover {
+        body.dark-mode .nav-links a {
+            background-color: var(--dark-nav-bg);
+            color: var(--dark-nav-text);
+        }
+        .nav-links a:hover {
+            background-color: var(--nav-hover-bg);
+            color: var(--nav-hover-text);
+        }
+        body.dark-mode .nav-links a:hover {
+            background-color: var(--dark-nav-hover-bg);
+            color: var(--dark-nav-hover-text);
+        }
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
             background-color: var(--primary-green);
-            color: var(--background-white);
+            margin: 4px 0;
+            transition: background-color 0.3s;
+        }
+        body.dark-mode .hamburger div {
+            background-color: var(--dark-text-color);
+        }
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--nav-bg);
+                position: absolute;
+                top: 60px; /* Adjust based on header height */
+                left: 0;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .nav-links a {
+                margin: 10px;
+                padding: 10px;
+                text-align: center;
+            }
+            body.dark-mode .nav-links {
+                background-color: var(--dark-nav-bg);
+            }
         }
         /* Container Styles */
         .container {
@@ -100,6 +199,11 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 12px var(--card-shadow);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        body.dark-mode section {
+            background-color: var(--dark-card-bg);
+            box-shadow: 0 4px 12px var(--dark-card-bg);
         }
         section h2 {
             color: var(--primary-green);
@@ -108,6 +212,11 @@
             border-bottom: 2px solid var(--secondary-yellow);
             display: inline-block;
             padding-bottom: 5px;
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        body.dark-mode section h2 {
+            color: var(--dark-text-color);
+            border-bottom-color: var(--secondary-yellow);
         }
         /* Iframe Container */
         .iframe-container {
@@ -125,12 +234,6 @@
             height: 100%;
             border: none;
         }
-        /* Notes Section Specific Styles */
-        section#notes p {
-            margin-bottom: 10px;
-            color: #555;
-            font-size: 0.95em;
-        }
         /* Footer Styles */
         footer {
             background-color: var(--footer-bg);
@@ -140,31 +243,15 @@
             position: relative;
             bottom: 0;
             width: 100%;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode footer {
+            background-color: var(--dark-footer-bg);
+            color: var(--dark-footer-text);
         }
         footer p {
             margin: 0;
             font-size: 0.8em; /* Smaller font size */
-        }
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header img {
-                position: static;
-                transform: none;
-                display: block;
-                margin: 0 auto 10px;
-            }
-            header h1 {
-                font-size: 1.5em;
-                padding-left: 0;
-            }
-            .nav a {
-                margin: 5px 5px; /* Further reduced margin on small screens */
-                padding: 8px 10px; /* Further reduced padding on small screens */
-                font-size: 0.85em; /* Further reduced font size on small screens */
-            }
-            section h2 {
-                font-size: 1.4em;
-            }
         }
         /* Smooth Scrolling */
         html {
@@ -177,15 +264,27 @@
         <!-- Morrisons Logo -->
         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
         <h1>Cleveleys Morrisons Management Dashboard</h1>
+        <!-- Dark Mode Toggle Button -->
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode">
+            &#9790;
+        </button>
     </header>
     <nav class="nav">
-        <a href="#tasks">Tasks</a>
-        <a href="#important-links">Important Links</a>
-        <a href="#who-is-in">Who Is In Today?</a>
-        <a href="#management-rota">Management Rota</a>
-        <a href="#add-reminder">Add New Reminder</a>
-        <a href="#calendar">Calendar</a>
-        <a href="#notes">Notes</a>
+        <ul class="nav-links">
+            <li><a href="#tasks">Tasks</a></li>
+            <li><a href="#important-links">Important Links</a></li>
+            <li><a href="#who-is-in">Who Is In Today?</a></li>
+            <li><a href="#management-rota">Management Rota</a></li>
+            <li><a href="#add-reminder">Add New Reminder</a></li>
+            <li><a href="#calendar">Calendar</a></li>
+            <li><a href="#notes">Notes</a></li>
+        </ul>
+        <!-- Hamburger Menu -->
+        <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </nav>
     <div class="container">
         <!-- Tasks Section -->
@@ -250,5 +349,46 @@
     <footer>
         <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
     </footer>
+
+    <!-- JavaScript for Dark Mode Toggle and Hamburger Menu -->
+    <script>
+        // Dark Mode Toggle
+        const toggleButton = document.querySelector('.dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            // Update ARIA attribute
+            const expanded = toggleButton.getAttribute('aria-expanded') === 'true' || false;
+            toggleButton.setAttribute('aria-expanded', !expanded);
+        });
+
+        // Hamburger Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Update ARIA attribute
+            const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+            hamburger.setAttribute('aria-expanded', !expanded);
+        });
+
+        // Close the menu when a link is clicked (optional)
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', false);
+                }
+            });
+        });
+
+        // Accessibility: Allow toggling hamburger with Enter key
+        hamburger.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                hamburger.click();
+            }
+        });
+    </script>
 </body>
 </html>
