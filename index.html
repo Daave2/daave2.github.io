@@ -7,6 +7,18 @@
     <!-- Google Fonts for Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS Variables for Consistent Color Scheme */
+        :root {
+            --primary-green: #006400; /* Dark Green */
+            --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
+            --background-color: #FFFFFF; /* White */
+            --text-color: #333333; /* Dark Gray */
+            --nav-bg: var(--secondary-yellow);
+            --nav-text: var(--primary-green);
+            --nav-hover-bg: var(--primary-green);
+            --nav-hover-text: var(--background-color);
+        }
+
         /* Reset and Base Styles */
         * {
             box-sizing: border-box;
@@ -15,8 +27,9 @@
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #FFFFFF;
-            color: #333;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
         a {
             color: inherit;
@@ -24,8 +37,8 @@
         }
         /* Header Styles */
         header {
-            background-color: #006400; /* Morrisons Dark Green */
-            color: #fff;
+            background-color: var(--primary-green);
+            color: var(--background-color);
             padding: 20px 10px;
             text-align: center;
             position: relative;
@@ -40,10 +53,11 @@
         header h1 {
             font-size: 2em;
             margin: 0;
+            padding-left: 80px; /* To prevent overlap with logo */
         }
         /* Navigation Bar */
         .nav {
-            background-color: #FFD700; /* Morrisons Yellow */
+            background-color: var(--nav-bg);
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
@@ -55,20 +69,20 @@
         }
         .nav a {
             margin: 5px 15px;
-            padding: 10px 15px;
+            padding: 10px 20px;
             background-color: #fff;
-            color: #006400;
-            border-radius: 5px;
+            color: var(--primary-green);
+            border-radius: 25px;
             font-weight: 700;
             transition: background-color 0.3s, color 0.3s;
         }
         .nav a:hover {
-            background-color: #006400;
-            color: #fff;
+            background-color: var(--primary-green);
+            color: var(--background-color);
         }
         /* Container Styles */
         .container {
-            padding: 20px;
+            padding: 30px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -76,15 +90,15 @@
         section {
             margin-bottom: 40px;
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         section h2 {
-            color: #006400;
+            color: var(--primary-green);
             margin-bottom: 20px;
             font-size: 1.8em;
-            border-bottom: 2px solid #FFD700;
+            border-bottom: 3px solid var(--secondary-yellow);
             display: inline-block;
             padding-bottom: 5px;
         }
@@ -94,7 +108,7 @@
             padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: 10px;
         }
         .iframe-container iframe {
             position: absolute;
@@ -104,9 +118,19 @@
             height: 100%;
             border: none;
         }
-        /* Button Styles for Smooth Scrolling (Optional) */
-        html {
-            scroll-behavior: smooth;
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary-green);
+            color: var(--background-color);
+            text-align: center;
+            padding: 15px 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
         }
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -118,10 +142,7 @@
             }
             header h1 {
                 font-size: 1.5em;
-            }
-            .nav {
-                flex-direction: column;
-                align-items: center;
+                padding-left: 0;
             }
             .nav a {
                 margin: 5px 0;
@@ -131,16 +152,6 @@
             section h2 {
                 font-size: 1.5em;
             }
-        }
-        /* Footer Styles */
-        footer {
-            background-color: #006400; /* Morrisons Dark Green */
-            color: #fff;
-            text-align: center;
-            padding: 15px 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
         }
     </style>
 </head>
@@ -154,6 +165,7 @@
         <a href="#tasks">Tasks</a>
         <a href="#important-links">Important Links</a>
         <a href="#who-is-in">Who Is In Today?</a>
+        <a href="#management-rota">Management Rota</a>
         <a href="#add-reminder">Add New Reminder</a>
     </nav>
     <div class="container">
@@ -178,6 +190,14 @@
             <h2>Who Is In Today?</h2>
             <div class="iframe-container">
                 <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today"></iframe>
+            </div>
+        </section>
+
+        <!-- Management Rota Section -->
+        <section id="management-rota">
+            <h2>Management Rota</h2>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml" title="Management Rota"></iframe>
             </div>
         </section>
 
