@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleveleys Morrisons Management Dashboard</title>
-    <!-- Load Google Charts Loader -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,25 +50,6 @@
             margin-bottom: 20px;
             font-size: 1.5em;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-            vertical-align: top;
-        }
-        th {
-            background-color: #3498db;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
         .iframe-container {
             position: relative;
             padding-bottom: 56.25%; /* 16:9 aspect ratio */
@@ -79,6 +58,7 @@
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-top: 20px;
+            background-color: #fff;
         }
         .iframe-container iframe {
             position: absolute;
@@ -88,17 +68,11 @@
             height: 100%;
             border: none;
         }
-        /* Loading Indicator Styles */
-        .loader {
-            text-align: center;
-            padding: 20px;
-            font-size: 1.2em;
-            color: #555;
-        }
         /* Responsive Design */
         @media (max-width: 768px) {
-            th, td {
-                padding: 8px;
+            .nav a {
+                padding: 10px 14px;
+                font-size: 0.9em;
             }
             header h1 {
                 font-size: 1.5em;
@@ -124,69 +98,27 @@
         <!-- Daily Tasks Section -->
         <section id="daily-tasks">
             <h2>Daily Tasks</h2>
-            <div id="daily-tasks-loader" class="loader">Loading Daily Tasks...</div>
-            <table id="daily-tasks-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Task Name</th>
-                        <th>Description</th>
-                        <th>Link</th>
-                        <th>Confirmation</th>
-                        <th>Category</th>
-                        <th>Frequency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dynamic Content -->
-                </tbody>
-            </table>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="Daily Tasks"></iframe>
+            </div>
         </section>
 
         <!-- Weekly Tasks Section -->
         <section id="weekly-tasks">
             <h2>Weekly Tasks</h2>
-            <div id="weekly-tasks-loader" class="loader">Loading Weekly Tasks...</div>
-            <table id="weekly-tasks-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Day</th>
-                        <th>Task Name</th>
-                        <th>Description</th>
-                        <th>Link</th>
-                        <th>Confirmation</th>
-                        <th>Category</th>
-                        <th>Frequency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dynamic Content -->
-                </tbody>
-            </table>
+            <div class="iframe-container">
+                <!-- Replace with the specific sheet or adjust the link as needed -->
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="Weekly Tasks"></iframe>
+            </div>
         </section>
 
         <!-- One-Time Tasks Section -->
         <section id="one-time-tasks">
             <h2>One-Time Tasks</h2>
-            <div id="one-time-tasks-loader" class="loader">Loading One-Time Tasks...</div>
-            <table id="one-time-tasks-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Date</th>
-                        <th>Task Name</th>
-                        <th>Description</th>
-                        <th>Link</th>
-                        <th>Confirmation</th>
-                        <th>Category</th>
-                        <th>Frequency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dynamic Content -->
-                </tbody>
-            </table>
+            <div class="iframe-container">
+                <!-- Replace with the specific sheet or adjust the link as needed -->
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="One-Time Tasks"></iframe>
+            </div>
         </section>
 
         <!-- Important Links Section -->
@@ -212,179 +144,5 @@
             </div>
         </section>
     </div>
-
-    <script type="text/javascript">
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', { 'packages': ['corechart'] });
-
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(fetchAndRenderTasks);
-
-        function fetchAndRenderTasks() {
-            // Replace the following Spreadsheet ID and Sheet Name with your own
-            const spreadsheetID = '2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ';
-            const sheetName = 'Sheet1'; // Change if your sheet has a different name
-
-            // Construct the query URL
-            const query = new google.visualization.Query(`https://docs.google.com/spreadsheets/d/${spreadsheetID}/gviz/tq?sheet=${sheetName}&headers=1`);
-
-            // Send the query with a callback function
-            query.send(handleQueryResponse);
-        }
-
-        function handleQueryResponse(response) {
-            if (response.isError()) {
-                console.error('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-                displayError();
-                return;
-            }
-
-            const data = response.getDataTable();
-            const dataArray = [];
-
-            // Convert DataTable to Array of Objects
-            for (let i = 0; i < data.getNumberOfRows(); i++) {
-                const row = {};
-                for (let j = 0; j < data.getNumberOfColumns(); j++) {
-                    const columnName = data.getColumnLabel(j);
-                    row[columnName] = data.getValue(i, j);
-                }
-                dataArray.push(row);
-            }
-
-            // Categorize and Render Tasks
-            categorizeAndRenderTasks(dataArray);
-        }
-
-        // Function to categorize tasks and render tables
-        function categorizeAndRenderTasks(data) {
-            const dailyTasks = [];
-            const weeklyTasks = [];
-            const oneTimeTasks = [];
-
-            data.forEach(row => {
-                const frequency = row['Frequency'] ? row['Frequency'].trim().toLowerCase() : '';
-                const isActive = row['Active'] ? row['Active'].trim().toLowerCase() === 'yes' : false;
-
-                if (!isActive) {
-                    // Skip inactive tasks
-                    return;
-                }
-
-                if (frequency === 'daily') {
-                    dailyTasks.push(row);
-                } else if (frequency === 'weekly') {
-                    weeklyTasks.push(row);
-                } else if (frequency === 'once') {
-                    oneTimeTasks.push(row);
-                }
-            });
-
-            // Render Daily Tasks
-            renderTable('daily-tasks-table', dailyTasks, 'daily-tasks-loader', 'daily');
-
-            // Render Weekly Tasks
-            renderTable('weekly-tasks-table', weeklyTasks, 'weekly-tasks-loader', 'weekly');
-
-            // Render One-Time Tasks
-            renderTable('one-time-tasks-table', oneTimeTasks, 'one-time-tasks-loader', 'once');
-        }
-
-        // Function to render a specific table
-        function renderTable(tableId, tasks, loaderId, frequencyType) {
-            const table = document.getElementById(tableId);
-            const loader = document.getElementById(loaderId);
-            const tbody = table.querySelector('tbody');
-            tbody.innerHTML = ''; // Clear existing content
-
-            if (tasks.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8">No tasks available.</td></tr>`;
-            } else {
-                tasks.forEach(task => {
-                    const tr = document.createElement('tr');
-
-                    // Extract necessary fields with proper fallback
-                    const time = task['Time'] ? task['Time'].trim() : 'N/A';
-                    const date = task['Date'] ? task['Date'].trim() : 'N/A';
-                    const dayOfWeek = task['Day of Week'] ? task['Day of Week'].trim() : 'N/A';
-                    const title = task['Title'] ? task['Title'].trim() : 'N/A';
-                    const description = task['Message'] ? task['Message'].trim().replace(/\n/g, '<br>') : 'N/A';
-                    const link = task['Attach/Link'] ? `<a href="${task['Attach/Link']}" target="_blank">View</a>` : 'N/A';
-                    const confirmStatus = formatConfirmation(task['Confirm Status']);
-                    const category = task['Chat Name'] ? task['Chat Name'].trim() : 'N/A';
-                    const frequency = task['Frequency'] ? task['Frequency'].trim() : 'N/A';
-
-                    if (frequencyType === 'weekly') {
-                        tr.innerHTML = `
-                            <td>${time}</td>
-                            <td>${dayOfWeek}</td>
-                            <td>${title}</td>
-                            <td>${description}</td>
-                            <td>${link}</td>
-                            <td>${confirmStatus}</td>
-                            <td>${category}</td>
-                            <td>${capitalizeFirstLetter(frequency)}</td>
-                        `;
-                    } else if (frequencyType === 'daily') {
-                        tr.innerHTML = `
-                            <td>${time}</td>
-                            <td>${title}</td>
-                            <td>${description}</td>
-                            <td>${link}</td>
-                            <td>${confirmStatus}</td>
-                            <td>${category}</td>
-                            <td>${capitalizeFirstLetter(frequency)}</td>
-                        `;
-                    } else if (frequencyType === 'once') {
-                        tr.innerHTML = `
-                            <td>${time}</td>
-                            <td>${date}</td>
-                            <td>${title}</td>
-                            <td>${description}</td>
-                            <td>${link}</td>
-                            <td>${confirmStatus}</td>
-                            <td>${category}</td>
-                            <td>${capitalizeFirstLetter(frequency)}</td>
-                        `;
-                    }
-
-                    tbody.appendChild(tr);
-                });
-            }
-
-            // Hide loader and show table
-            loader.style.display = 'none';
-            table.style.display = 'table';
-        }
-
-        // Function to format confirmation column
-        function formatConfirmation(confirmation) {
-            if (!confirmation || confirmation.toLowerCase() === 'no') {
-                return 'No';
-            }
-            // Attempt to extract email and timestamp
-            const emailMatch = confirmation.match(/Confirmed by (.+?) at/);
-            const timeMatch = confirmation.match(/at (.+)/);
-            const email = emailMatch ? `<a href="mailto:${emailMatch[1]}">${emailMatch[1]}</a>` : 'N/A';
-            const time = timeMatch ? timeMatch[1] : 'N/A';
-            return `Yes (Confirmed by ${email} at ${time})`;
-        }
-
-        // Function to capitalize first letter
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
-        // Function to display error messages
-        function displayError() {
-            const loaders = document.querySelectorAll('.loader');
-            loaders.forEach(loader => {
-                loader.textContent = 'Error loading tasks. Please try again later.';
-            });
-        }
-
-        // Refresh data every 5 minutes (300,000 milliseconds)
-        setInterval(fetchAndRenderTasks, 300000);
-    </script>
 </body>
 </html>
