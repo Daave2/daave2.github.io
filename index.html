@@ -221,7 +221,7 @@
         /* Iframe Container */
         .iframe-container {
             position: relative;
-            padding-bottom: 75%; /* Maintains 4:3 Aspect Ratio */
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
             border-radius: 10px;
@@ -293,9 +293,10 @@
             gap: 10px;
             z-index: 10;
         }
-        /* Save and Load Button Styles */
+        /* Save, Load, and Clear Button Styles */
         .save-button,
-        .load-button {
+        .load-button,
+        .clear-button {
             background-color: var(--primary-green);
             color: #fff;
             border: none;
@@ -306,16 +307,19 @@
             transition: background-color 0.3s;
         }
         .save-button:hover,
-        .load-button:hover {
+        .load-button:hover,
+        .clear-button:hover {
             background-color: #004d00; /* Darker green on hover */
         }
         body.dark-mode .save-button,
-        body.dark-mode .load-button {
+        body.dark-mode .load-button,
+        body.dark-mode .clear-button {
             background-color: var(--dark-nav-hover-bg);
             color: var(--dark-footer-text);
         }
         body.dark-mode .save-button:hover,
-        body.dark-mode .load-button:hover {
+        body.dark-mode .load-button:hover,
+        body.dark-mode .clear-button:hover {
             background-color: #222;
         }
         /* Responsive Whiteboard */
@@ -403,7 +407,7 @@
         <section id="calendar">
             <h2>Calendar</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Calendar"></iframe>
+                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FLondon&showPrint=0&showTz=0&showCalendars=0&hl=en_GB&src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F09300&color=%23616161" style="border-width:0" frameborder="0" scrolling="no" title="Calendar"></iframe>
             </div>
         </section>
 
@@ -588,6 +592,7 @@
         // Load whiteboard from Local Storage
         loadButton.addEventListener('click', () => {
             loadWhiteboard();
+            alert('Whiteboard loaded successfully!');
         });
 
         // Function to load whiteboard from Local Storage
@@ -596,9 +601,12 @@
             if (dataURL) {
                 const img = new Image();
                 img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear current canvas before loading
                     ctx.drawImage(img, 0, 0);
                 };
                 img.src = dataURL;
+            } else {
+                alert('No saved whiteboard data found.');
             }
         }
 
