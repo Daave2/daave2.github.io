@@ -3,62 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleveleys Morrisons Management Dashboard</title>
+    <title>Cleveleys Morrisons Dashboard</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
         }
-        header {
-            background-color: #2c3e50;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
         }
-        header h1 {
-            margin: 0;
-            font-size: 2em;
-        }
-        .nav {
-            background-color: #34495e;
-            overflow: hidden;
-        }
-        .nav a {
-            float: left;
-            display: block;
-            color: #ecf0f1;
-            text-align: center;
-            padding: 14px 20px;
+        a {
+            color: inherit;
             text-decoration: none;
         }
-        .nav a:hover {
-            background-color: #2c3e50;
+        /* Header Styles */
+        header {
+            background-color: #003399; /* Morrisons Blue */
+            color: #fff;
+            padding: 20px 10px;
+            text-align: center;
+            position: relative;
         }
+        header img {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 50px;
+        }
+        header h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+        /* Navigation Bar */
+        .nav {
+            background-color: #ffcd00; /* Morrisons Yellow */
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav a {
+            margin: 5px 15px;
+            padding: 10px 15px;
+            background-color: #fff;
+            color: #003399;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #003399;
+            color: #fff;
+        }
+        /* Container Styles */
         .container {
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+        /* Section Styles */
         section {
             margin-bottom: 40px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         section h2 {
-            background-color: #ecf0f1;
-            padding: 10px;
-            border-left: 5px solid #3498db;
+            color: #003399;
             margin-bottom: 20px;
-            font-size: 1.5em;
+            font-size: 1.8em;
+            border-bottom: 2px solid #ffcd00;
+            display: inline-block;
+            padding-bottom: 5px;
         }
+        /* Iframe Container */
         .iframe-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
             height: 0;
             overflow: hidden;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 20px;
-            background-color: #fff;
+            border-radius: 8px;
         }
         .iframe-container iframe {
             position: absolute;
@@ -70,54 +103,47 @@
         }
         /* Responsive Design */
         @media (max-width: 768px) {
-            .nav a {
-                padding: 10px 14px;
-                font-size: 0.9em;
+            header img {
+                position: static;
+                transform: none;
+                display: block;
+                margin: 0 auto 10px;
             }
             header h1 {
                 font-size: 1.5em;
             }
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav a {
+                margin: 5px 0;
+                width: 80%;
+                text-align: center;
+            }
             section h2 {
-                font-size: 1.2em;
+                font-size: 1.5em;
             }
         }
     </style>
 </head>
 <body>
     <header>
+        <!-- Replace the src attribute with the actual URL of the Morrisons logo -->
+        <img src="https://groceries.morrisons.com/webshop/static/images/logos/brandLogo2.svg" alt="Morrisons Logo">
         <h1>Cleveleys Morrisons Management Dashboard</h1>
     </header>
-    <div class="nav">
-        <a href="#daily-tasks">Daily Tasks</a>
-        <a href="#weekly-tasks">Weekly Tasks</a>
-        <a href="#one-time-tasks">One-Time Tasks</a>
+    <nav class="nav">
+        <a href="#tasks">Tasks</a>
         <a href="#important-links">Important Links</a>
         <a href="#who-is-in">Who Is In Today?</a>
-    </div>
+    </nav>
     <div class="container">
-        <!-- Daily Tasks Section -->
-        <section id="daily-tasks">
-            <h2>Daily Tasks</h2>
+        <!-- Tasks Section -->
+        <section id="tasks">
+            <h2>Tasks</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="Daily Tasks"></iframe>
-            </div>
-        </section>
-
-        <!-- Weekly Tasks Section -->
-        <section id="weekly-tasks">
-            <h2>Weekly Tasks</h2>
-            <div class="iframe-container">
-                <!-- Replace with the specific sheet or adjust the link as needed -->
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="Weekly Tasks"></iframe>
-            </div>
-        </section>
-
-        <!-- One-Time Tasks Section -->
-        <section id="one-time-tasks">
-            <h2>One-Time Tasks</h2>
-            <div class="iframe-container">
-                <!-- Replace with the specific sheet or adjust the link as needed -->
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="One-Time Tasks"></iframe>
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml" title="Tasks"></iframe>
             </div>
         </section>
 
@@ -125,15 +151,9 @@
         <section id="important-links">
             <h2>Important Links</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeh199Vpaq4u_Ouy0pJBZz5sY_y_1lN9t0kJZDO9zJiuA7SpA/viewform?embedded=true" title="Super Sunday Form"></iframe>
+                <!-- Replace with your Important Links Google Sheet published URL -->
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourImportantLinksSheetID/pubhtml?gid=0&single=true" title="Important Links"></iframe>
             </div>
-            <div class="iframe-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScwD-B79hghaF3XhZnGB12ThrGnXQUJ0kseCTVzV6oFMSUo5Q/viewform?embedded=true" title="Cage Count Form"></iframe>
-            </div>
-            <div class="iframe-container">
-                <iframe src="https://forms.gle/p8zWWWht2UYGQ3Dq8?embedded=true" title="Vocovo Covers Form"></iframe>
-            </div>
-            <!-- Add more embedded forms or links as needed -->
         </section>
 
         <!-- Who Is In Today Section -->
