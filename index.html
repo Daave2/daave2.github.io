@@ -262,6 +262,7 @@
             border-radius: 10px;
             background-color: #fff;
             overflow: hidden;
+            transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode .whiteboard-container {
             background-color: #2e2e2e;
@@ -273,11 +274,53 @@
             cursor: crosshair;
             background-color: transparent;
         }
-        /* Clear Button Styles */
-        .clear-button {
+        /* Control Panel Styles */
+        .control-panel {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        body.dark-mode .control-panel {
+            background-color: rgba(46, 46, 46, 0.8);
+        }
+        /* Color Picker Styles */
+        .color-picker button {
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, border 0.2s;
+        }
+        .color-picker button.selected {
+            transform: scale(1.2);
+            border: 2px solid #000;
+        }
+        body.dark-mode .color-picker button.selected {
+            border: 2px solid #fff;
+        }
+        /* Brush Size Styles */
+        .brush-size {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .brush-size label {
+            font-size: 0.9em;
+            color: inherit;
+        }
+        .brush-size input[type="range"] {
+            cursor: pointer;
+        }
+        /* Undo and Clear Button Styles */
+        .undo-button, .clear-button, .export-email-button {
             background-color: var(--primary-green);
             color: #fff;
             border: none;
@@ -287,20 +330,28 @@
             font-size: 0.9em;
             transition: background-color 0.3s;
         }
-        .clear-button:hover {
+        .undo-button:hover, .clear-button:hover, .export-email-button:hover {
             background-color: #004d00; /* Darker green on hover */
         }
-        body.dark-mode .clear-button {
+        body.dark-mode .undo-button, 
+        body.dark-mode .clear-button,
+        body.dark-mode .export-email-button {
             background-color: var(--dark-nav-hover-bg);
             color: var(--dark-footer-text);
         }
-        body.dark-mode .clear-button:hover {
+        body.dark-mode .undo-button:hover, 
+        body.dark-mode .clear-button:hover,
+        body.dark-mode .export-email-button:hover {
             background-color: #222;
         }
         /* Responsive Whiteboard */
         @media (max-width: 768px) {
             .whiteboard-container {
                 height: 300px;
+            }
+            .control-panel {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
         @media (max-width: 480px) {
@@ -387,12 +438,35 @@
             </div>
         </section>
 
-        <!-- Notes Section (Whiteboard) -->
+        <!-- Notes Section (Interactive Whiteboard) -->
         <section id="notes">
             <h2>Notes</h2>
+            <p>Use the whiteboard below to doodle or take immediate notes. Select a color, adjust brush size, draw, use Undo, Clear, or Export to Email as needed.</p>
             <div class="whiteboard-container">
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <!-- Color Picker -->
+                    <div class="color-picker">
+                        <button class="color-btn selected" data-color="#000000" style="background-color: #000000;"></button>
+                        <button class="color-btn" data-color="#FF0000" style="background-color: #FF0000;"></button>
+                        <button class="color-btn" data-color="#00FF00" style="background-color: #00FF00;"></button>
+                        <button class="color-btn" data-color="#0000FF" style="background-color: #0000FF;"></button>
+                        <button class="color-btn" data-color="#FFFF00" style="background-color: #FFFF00;"></button>
+                    </div>
+                    <!-- Brush Size -->
+                    <div class="brush-size">
+                        <label for="brush-size-slider">Brush Size:</label>
+                        <input type="range" id="brush-size-slider" min="1" max="10" value="2">
+                    </div>
+                    <!-- Undo Button -->
+                    <button class="undo-button" aria-label="Undo Last Action">Undo</button>
+                    <!-- Clear Button -->
+                    <button class="clear-button" aria-label="Clear Whiteboard">Clear</button>
+                    <!-- Export to Email Button -->
+                    <button class="export-email-button" aria-label="Export Whiteboard to Email">Export to Email</button>
+                </div>
+                <!-- Canvas Element -->
                 <canvas id="whiteboard"></canvas>
-                <button class="clear-button">Clear</button>
             </div>
         </section>
     </div>
@@ -443,16 +517,22 @@
         });
     </script>
 
-    <!-- JavaScript for Whiteboard Functionality -->
+    <!-- JavaScript for Enhanced Whiteboard Functionality with Export to Email -->
     <script>
         const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
         const clearButton = document.querySelector('.clear-button');
+        const undoButton = document.querySelector('.undo-button');
+        const exportEmailButton = document.querySelector('.export-email-button');
+        const colorButtons = document.querySelectorAll('.color-btn');
+        const brushSizeSlider = document.getElementById('brush-size-slider');
 
         // Set canvas size to fill its container
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
+            // Redraw history after resizing
+            redraw();
         }
 
         // Initialize canvas size
@@ -464,39 +544,42 @@
         let drawing = false;
         let lastX = 0;
         let lastY = 0;
+        let currentColor = '#000000';
+        let brushSize = 2;
+        let history = [];
+        let historyStep = -1;
 
-        // Set drawing parameters
-        ctx.strokeStyle = '#000000'; // Default black
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        ctx.lineWidth = 2;
+        // Update brush size
+        brushSizeSlider.addEventListener('input', (e) => {
+            brushSize = e.target.value;
+        });
 
-        // Update stroke color based on theme
-        function updateStrokeStyle() {
-            if (document.body.classList.contains('dark-mode')) {
-                ctx.strokeStyle = '#FFFFFF'; // White in dark mode
-            } else {
-                ctx.strokeStyle = '#000000'; // Black in light mode
-            }
-        }
-
-        // Initial stroke style
-        updateStrokeStyle();
-
-        // Listen for theme changes to update stroke color
-        const observer = new MutationObserver(updateStrokeStyle);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        // Update color
+        colorButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                colorButtons.forEach(button => button.classList.remove('selected'));
+                btn.classList.add('selected');
+                currentColor = btn.getAttribute('data-color');
+            });
+        });
 
         // Start drawing
         function startDrawing(e) {
             drawing = true;
             [lastX, lastY] = getXY(e);
+            // Save state for undo
+            saveState();
         }
 
         // Draw
         function draw(e) {
             if (!drawing) return;
             const [x, y] = getXY(e);
+            ctx.strokeStyle = currentColor;
+            ctx.lineWidth = brushSize;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
             ctx.lineTo(x, y);
@@ -524,6 +607,43 @@
             return [x, y];
         }
 
+        // Save canvas state for undo
+        function saveState() {
+            history = history.slice(0, historyStep + 1);
+            history.push(canvas.toDataURL());
+            historyStep++;
+            // Limit history to prevent memory issues
+            if (history.length > 20) {
+                history.shift();
+                historyStep--;
+            }
+        }
+
+        // Undo last action
+        undoButton.addEventListener('click', () => {
+            if (historyStep > 0) {
+                historyStep--;
+                const img = new Image();
+                img.src = history[historyStep];
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                }
+            }
+        });
+
+        // Redraw canvas from history
+        function redraw() {
+            if (historyStep >= 0) {
+                const img = new Image();
+                img.src = history[historyStep];
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                }
+            }
+        }
+
         // Event listeners for mouse
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
@@ -531,19 +651,66 @@
         canvas.addEventListener('mouseout', stopDrawing);
 
         // Event listeners for touch
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', draw);
-        canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener('touchcancel', stopDrawing);
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e);
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        });
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopDrawing();
+        });
+        canvas.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            stopDrawing();
+        });
 
         // Clear whiteboard
         clearButton.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            saveState();
         });
 
         // Prevent scrolling on touch devices when drawing
         canvas.addEventListener('touchstart', (e) => e.preventDefault());
         canvas.addEventListener('touchmove', (e) => e.preventDefault());
+
+        // Export to Email Functionality
+        exportEmailButton.addEventListener('click', () => {
+            // Convert canvas to data URL
+            const imageData = canvas.toDataURL('image/png');
+
+            // Define your secret token (must match the one in Apps Script)
+            const secretToken = 'team218'; // Replace with the same token used in Apps Script
+
+            // Send the image data and token to Google Apps Script Web App
+            fetch('https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbyRJdOsJQWJngLF1z1DtePly44ZPuZ2VQzU9iFCEPBaCC5kistTl5m1s4O9nP9xGFI/exec', { // Replace YOUR_SCRIPT_ID with your actual script ID
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    token: secretToken, 
+                    image: imageData 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Whiteboard exported to email successfully!');
+                } else {
+                    alert(`Failed to export whiteboard to email: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while exporting the whiteboard.');
+            });
+        });
     </script>
 </body>
 </html>
