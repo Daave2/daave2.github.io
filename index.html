@@ -263,6 +263,72 @@
         html {
             scroll-behavior: smooth;
         }
+        /* Whiteboard Styles */
+        .whiteboard-container {
+            position: relative;
+            width: 100%;
+            height: 700px; /* Increased height from 500px to 700px */
+            border: 2px solid var(--primary-green);
+            border-radius: 10px;
+            background-color: #fff;
+            overflow: hidden;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        body.dark-mode .whiteboard-container {
+            background-color: #2e2e2e;
+            border-color: var(--dark-text-color);
+        }
+        #whiteboard {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            background-color: transparent;
+        }
+        /* Button Group Styles */
+        .button-group {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        /* Save and Load Button Styles */
+        .save-button,
+        .load-button {
+            background-color: var(--primary-green);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        .save-button:hover,
+        .load-button:hover {
+            background-color: #004d00; /* Darker green on hover */
+        }
+        body.dark-mode .save-button,
+        body.dark-mode .load-button {
+            background-color: var(--dark-nav-hover-bg);
+            color: var(--dark-footer-text);
+        }
+        body.dark-mode .save-button:hover,
+        body.dark-mode .load-button:hover {
+            background-color: #222;
+        }
+        /* Responsive Whiteboard */
+        @media (max-width: 768px) {
+            .whiteboard-container {
+                height: 400px; /* Increased height from 300px to 400px */
+            }
+        }
+        @media (max-width: 480px) {
+            .whiteboard-container {
+                height: 250px; /* Increased height from 200px to 250px */
+            }
+        }
     </style>
 </head>
 <body>
@@ -313,7 +379,7 @@
         <section id="who-is-in">
             <h2>Who Is In Today?</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today"></iframe>
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today?"></iframe>
             </div>
         </section>
 
@@ -337,17 +403,21 @@
         <section id="calendar">
             <h2>Calendar</h2>
             <div class="iframe-container">
-                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FLondon&showPrint=0&showTitle=0&showTz=0&hl=en_GB&src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F09300&color=%23616161" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Calendar"></iframe>
             </div>
         </section>
 
-        <!-- Notes Section (Whiteboard) -->
+        <!-- Notes Section (Interactive Whiteboard) -->
         <section id="notes">
             <h2>Notes</h2>
-            <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Click "Clear" to erase.</p>
+            <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your notes and "Load" to retrieve them. Click "Clear" to erase the whiteboard.</p>
             <div class="whiteboard-container">
                 <canvas id="whiteboard"></canvas>
-                <button class="clear-button">Clear</button>
+                <div class="button-group">
+                    <button class="save-button">Save</button>
+                    <button class="load-button">Load</button>
+                    <button class="clear-button">Clear</button>
+                </div>
             </div>
         </section>
     </div>
@@ -403,11 +473,15 @@
         const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
         const clearButton = document.querySelector('.clear-button');
+        const saveButton = document.querySelector('.save-button');
+        const loadButton = document.querySelector('.load-button');
 
         // Set canvas size to fill its container
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
+            // After resizing, if there is a saved image, redraw it
+            loadWhiteboard();
         }
 
         // Initialize canvas size
@@ -494,7 +568,42 @@
         // Clear whiteboard
         clearButton.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Also remove the saved state from Local Storage
+            localStorage.removeItem('whiteboardImage');
+            alert('Whiteboard cleared and saved data removed.');
         });
+
+        // Save whiteboard to Local Storage
+        saveButton.addEventListener('click', () => {
+            const dataURL = canvas.toDataURL();
+            try {
+                localStorage.setItem('whiteboardImage', dataURL);
+                alert('Whiteboard saved successfully!');
+            } catch (e) {
+                console.error('Error saving whiteboard:', e);
+                alert('Failed to save whiteboard. Please try again.');
+            }
+        });
+
+        // Load whiteboard from Local Storage
+        loadButton.addEventListener('click', () => {
+            loadWhiteboard();
+        });
+
+        // Function to load whiteboard from Local Storage
+        function loadWhiteboard() {
+            const dataURL = localStorage.getItem('whiteboardImage');
+            if (dataURL) {
+                const img = new Image();
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = dataURL;
+            }
+        }
+
+        // Automatically load whiteboard when the page loads
+        window.addEventListener('load', loadWhiteboard);
 
         // Prevent scrolling on touch devices when drawing
         canvas.addEventListener('touchstart', (e) => e.preventDefault());
