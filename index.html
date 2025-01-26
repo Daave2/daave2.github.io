@@ -221,10 +221,16 @@
         /* Iframe Container */
         .iframe-container {
             position: relative;
-            padding-bottom: 75%; /* Adjusted Aspect Ratio for Sheets */
+            padding-bottom: 75%; /* Maintains 4:3 Aspect Ratio */
             height: 0;
             overflow: hidden;
             border-radius: 10px;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            transition: box-shadow 0.3s, background-color 0.3s;
+        }
+        body.dark-mode .iframe-container {
+            background-color: var(--dark-card-bg);
+            box-shadow: 0 4px 12px var(--dark-card-bg);
         }
         .iframe-container iframe {
             position: absolute;
@@ -253,60 +259,9 @@
             margin: 0;
             font-size: 0.8em; /* Smaller font size */
         }
-        /* Whiteboard Styles */
-        .whiteboard-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            border: 2px solid var(--primary-green);
-            border-radius: 10px;
-            background-color: #fff;
-            overflow: hidden;
-        }
-        body.dark-mode .whiteboard-container {
-            background-color: #2e2e2e;
-            border-color: var(--dark-text-color);
-        }
-        #whiteboard {
-            width: 100%;
-            height: 100%;
-            cursor: crosshair;
-            background-color: transparent;
-        }
-        /* Clear Button Styles */
-        .clear-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary-green);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s;
-        }
-        .clear-button:hover {
-            background-color: #004d00; /* Darker green on hover */
-        }
-        body.dark-mode .clear-button {
-            background-color: var(--dark-nav-hover-bg);
-            color: var(--dark-footer-text);
-        }
-        body.dark-mode .clear-button:hover {
-            background-color: #222;
-        }
-        /* Responsive Whiteboard */
-        @media (max-width: 768px) {
-            .whiteboard-container {
-                height: 300px;
-            }
-        }
-        @media (max-width: 480px) {
-            .whiteboard-container {
-                height: 200px;
-            }
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -382,14 +337,14 @@
         <section id="calendar">
             <h2>Calendar</h2>
             <div class="iframe-container">
-                <!-- Replace 'your_calendar_id' with your actual Google Calendar embed link -->
-                <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=Europe/London" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+                <iframe src="https://calendar.google.com/calendar/embed?src=c_9ff70836bc609c3231f2216be8492abdf310d23959236e52a37483bc7d8c8440%40group.calendar.google.com&ctz=Europe%2FLondon" style="border: 0" frameborder="0" scrolling="no" title="Calendar"></iframe>
             </div>
         </section>
 
         <!-- Notes Section (Whiteboard) -->
         <section id="notes">
             <h2>Notes</h2>
+            <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Click "Clear" to erase.</p>
             <div class="whiteboard-container">
                 <canvas id="whiteboard"></canvas>
                 <button class="clear-button">Clear</button>
