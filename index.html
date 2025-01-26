@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleveleys Morrisons Management Dashboard</title>
+    <!-- Papa Parse CDN for CSV Parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" integrity="sha512-9go+b1N3c2lYx3aMwPGMBQW9FQqfTtNoC6b3tGeFQXyIUGb6P2uW7P9zocpI8pZnkuCNVBdjxsp4vRCQhvmVAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,6 +56,7 @@
             width: 100%;
             border-collapse: collapse;
             background-color: #fff;
+            margin-bottom: 20px;
         }
         th, td {
             padding: 12px;
@@ -85,6 +88,13 @@
             height: 100%;
             border: none;
         }
+        /* Loading Indicator Styles */
+        .loader {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
         /* Responsive Design */
         @media (max-width: 768px) {
             th, td {
@@ -114,7 +124,8 @@
         <!-- Daily Tasks Section -->
         <section id="daily-tasks">
             <h2>Daily Tasks</h2>
-            <table>
+            <div id="daily-tasks-loader" class="loader">Loading Daily Tasks...</div>
+            <table id="daily-tasks-table" style="display: none;">
                 <thead>
                     <tr>
                         <th>Time</th>
@@ -127,55 +138,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>14:00</td>
-                        <td>Morning Briefing</td>
-                        <td>Good morning!</td>
-                        <td>N/A</td>
-                        <td>No</td>
-                        <td>Alert</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td>09:30</td>
-                        <td>Todays Training</td>
-                        <td>
-                            <strong>Daisy Cleary:</strong> 06:00, 11:30, Health & Safety for Team Leaders<br>
-                            <strong>Hassan Almaksos:</strong> 07:00, 12:00, Allergens & Food Labelling Awareness - Shop Floor, Card Payment Device Security Awareness Training for Colleagues, Challenge 25 - New Operator, Challenge 25 Refresher<br>
-                            <!-- Add other training details as needed -->
-                        </td>
-                        <td><a href="https://docs.google.com/spreadsheets/d/11fwx2SxpHu-CP5ZeqEGIREB7vn_nUge7l-Gd-Qqxko8/preview?gid=1881177460#gid=1881177460" target="_blank">View Training Schedule</a></td>
-                        <td>No</td>
-                        <td>Training</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td>10:30</td>
-                        <td>Daily Counts</td>
-                        <td>Please confirm counts are done and approvals reviewed before 11:30.</td>
-                        <td>N/A</td>
-                        <td>Yes (Confirmed by <a href="mailto:niki.cooke@morrisonsplc.co.uk">niki.cooke@morrisonsplc.co.uk</a> at 2025-01-25 10:37:17)</td>
-                        <td>Calendar</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td>23:00</td>
-                        <td>Night Alarm</td>
-                        <td>Please confirm perimeter alarm is set.</td>
-                        <td>N/A</td>
-                        <td>Yes</td>
-                        <td>Security</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td>10:45</td>
-                        <td>Cash Alarm</td>
-                        <td>Please confirm once cash office alarm is set.</td>
-                        <td>N/A</td>
-                        <td>Yes (Confirmed by <a href="mailto:beverley.lucas@morrisonsplc.co.uk">beverley.lucas@morrisonsplc.co.uk</a> at 2025-01-25 11:17:03)</td>
-                        <td>Security</td>
-                        <td>Daily</td>
-                    </tr>
+                    <!-- Dynamic Content -->
                 </tbody>
             </table>
         </section>
@@ -183,7 +146,8 @@
         <!-- Weekly Tasks Section -->
         <section id="weekly-tasks">
             <h2>Weekly Tasks</h2>
-            <table>
+            <div id="weekly-tasks-loader" class="loader">Loading Weekly Tasks...</div>
+            <table id="weekly-tasks-table" style="display: none;">
                 <thead>
                     <tr>
                         <th>Time</th>
@@ -197,26 +161,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>11:42</td>
-                        <td>Wednesday</td>
-                        <td>Weekly Wrap-Up</td>
-                        <td>Good evening!</td>
-                        <td><a href="https://example.com" target="_blank">View Details</a></td>
-                        <td>Yes (Confirmed by <a href="mailto:niki.cooke@morrisonsplc.co.uk">niki.cooke@morrisonsplc.co.uk</a> at 2025-01-22 11:50:20)</td>
-                        <td>Warning</td>
-                        <td>Weekly</td>
-                    </tr>
-                    <tr>
-                        <td>17:00</td>
-                        <td>Monday</td>
-                        <td>Coupon Bag</td>
-                        <td>Please ensure the coupon bag gets returned.</td>
-                        <td>N/A</td>
-                        <td>Yes</td>
-                        <td>Alert</td>
-                        <td>Weekly</td>
-                    </tr>
+                    <!-- Dynamic Content -->
                 </tbody>
             </table>
         </section>
@@ -224,7 +169,8 @@
         <!-- One-Time Tasks Section -->
         <section id="one-time-tasks">
             <h2>One-Time Tasks</h2>
-            <table>
+            <div id="one-time-tasks-loader" class="loader">Loading One-Time Tasks...</div>
+            <table id="one-time-tasks-table" style="display: none;">
                 <thead>
                     <tr>
                         <th>Time</th>
@@ -238,46 +184,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>11:30</td>
-                        <td>26/01/2025</td>
-                        <td>Super Sunday</td>
-                        <td>Upload pictures of backups on Google Form.</td>
-                        <td><a href="https://docs.google.com/forms/d/e/1FAIpQLSeh199Vpaq4u_Ouy0pJBZz5sY_y_1lN9t0kJZDO9zJiuA7SpA/viewform" target="_blank">Upload Backup Pictures</a></td>
-                        <td>Yes</td>
-                        <td>Form</td>
-                        <td>Once</td>
-                    </tr>
-                    <tr>
-                        <td>13:00</td>
-                        <td>30/01/2025</td>
-                        <td>Vocovo Covers</td>
-                        <td>This form is to confirm delivery of the Vocovo keypads for the front end.</td>
-                        <td><a href="https://forms.gle/p8zWWWht2UYGQ3Dq8" target="_blank">Confirm Delivery</a></td>
-                        <td>Yes</td>
-                        <td>Calendar</td>
-                        <td>Once</td>
-                    </tr>
-                    <tr>
-                        <td>12:00</td>
-                        <td>06/02/2025</td>
-                        <td>Cage Count</td>
-                        <td>Please ensure the cage count is completed by close of business.</td>
-                        <td><a href="https://docs.google.com/forms/d/e/1FAIpQLScwD-B79hghaF3XhZnGB12ThrGnXQUJ0kseCTVzV6oFMSUo5Q/viewform" target="_blank">Complete Cage Count</a></td>
-                        <td>Yes</td>
-                        <td>Calendar</td>
-                        <td>Once</td>
-                    </tr>
-                    <tr>
-                        <td>14:26</td>
-                        <td>22/01/2025</td>
-                        <td>Form Test</td>
-                        <td>Testing out the form to create reminders.</td>
-                        <td><a href="https://forms.gle/NojELZ1uh7GX3vTS7" target="_blank">Test Form</a></td>
-                        <td>Yes (Confirmed by <a href="mailto:tanveer.hussain@morrisonsplc.co.uk">tanveer.hussain@morrisonsplc.co.uk</a> at 2025-01-22 17:08:50)</td>
-                        <td>Information</td>
-                        <td>Once</td>
-                    </tr>
+                    <!-- Dynamic Content -->
                 </tbody>
             </table>
         </section>
@@ -305,5 +212,138 @@
             </div>
         </section>
     </div>
+
+    <script>
+        // URL of the published CSV
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pub?gid=0&single=true&output=csv';
+
+        // Function to fetch and parse CSV
+        function fetchAndParseCSV() {
+            fetch(csvUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    const parsedData = Papa.parse(csvText, {
+                        header: true,
+                        skipEmptyLines: true
+                    });
+                    categorizeAndRenderTasks(parsedData.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching or parsing CSV:', error);
+                    displayError();
+                });
+        }
+
+        // Function to categorize tasks and render tables
+        function categorizeAndRenderTasks(data) {
+            const dailyTasks = [];
+            const weeklyTasks = [];
+            const oneTimeTasks = [];
+
+            data.forEach(row => {
+                const type = row['Type'].trim().toLowerCase();
+                if (type === 'daily') {
+                    dailyTasks.push(row);
+                } else if (type === 'weekly') {
+                    weeklyTasks.push(row);
+                } else if (type === 'once') {
+                    oneTimeTasks.push(row);
+                }
+            });
+
+            // Render Daily Tasks
+            renderTable('daily-tasks-table', dailyTasks, 'daily-tasks-loader');
+
+            // Render Weekly Tasks
+            renderTable('weekly-tasks-table', weeklyTasks, 'weekly-tasks-loader');
+
+            // Render One-Time Tasks
+            renderTable('one-time-tasks-table', oneTimeTasks, 'one-time-tasks-loader');
+        }
+
+        // Function to render a specific table
+        function renderTable(tableId, tasks, loaderId) {
+            const table = document.getElementById(tableId);
+            const loader = document.getElementById(loaderId);
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = ''; // Clear existing content
+
+            if (tasks.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8">No tasks available.</td></tr>';
+            } else {
+                tasks.forEach(task => {
+                    const tr = document.createElement('tr');
+
+                    // Depending on the table, some columns might not be applicable
+                    if (tableId === 'weekly-tasks-table') {
+                        tr.innerHTML = `
+                            <td>${task['Time'] || 'N/A'}</td>
+                            <td>${task['Day'] || 'N/A'}</td>
+                            <td>${task['Task Name'] || 'N/A'}</td>
+                            <td>${task['Description'] || 'N/A'}</td>
+                            <td>${task['Link'] ? `<a href="${task['Link']}" target="_blank">View</a>` : 'N/A'}</td>
+                            <td>${formatConfirmation(task['Confirmation'], task)}</td>
+                            <td>${task['Category'] || 'N/A'}</td>
+                            <td>${capitalizeFirstLetter(task['Type']) || 'N/A'}</td>
+                        `;
+                    } else {
+                        tr.innerHTML = `
+                            <td>${task['Time'] || 'N/A'}</td>
+                            ${tableId === 'one-time-tasks-table' ? `<td>${task['Date'] || 'N/A'}</td>` : ''}
+                            <td>${task['Task Name'] || 'N/A'}</td>
+                            <td>${task['Description'] || 'N/A'}</td>
+                            <td>${task['Link'] ? `<a href="${task['Link']}" target="_blank">View</a>` : 'N/A'}</td>
+                            <td>${formatConfirmation(task['Confirmation'], task)}</td>
+                            <td>${task['Category'] || 'N/A'}</td>
+                            <td>${capitalizeFirstLetter(task['Type']) || 'N/A'}</td>
+                        `;
+                    }
+
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Hide loader and show table
+            loader.style.display = 'none';
+            table.style.display = 'table';
+        }
+
+        // Function to format confirmation column
+        function formatConfirmation(confirmation, task) {
+            if (!confirmation || confirmation.toLowerCase() === 'no') {
+                return 'No';
+            }
+            // Attempt to extract email and timestamp
+            const emailMatch = confirmation.match(/Confirmed by (.+?) at/);
+            const timeMatch = confirmation.match(/at (.+)/);
+            const email = emailMatch ? `<a href="mailto:${emailMatch[1]}">${emailMatch[1]}</a>` : 'N/A';
+            const time = timeMatch ? timeMatch[1] : 'N/A';
+            return `Yes (Confirmed by ${email} at ${time})`;
+        }
+
+        // Function to capitalize first letter
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        // Function to display error messages
+        function displayError() {
+            const loaders = document.querySelectorAll('.loader');
+            loaders.forEach(loader => {
+                loader.textContent = 'Error loading tasks. Please try again later.';
+            });
+        }
+
+        // Initial fetch
+        fetchAndParseCSV();
+
+        // Set interval to refresh data every 5 minutes (300,000 milliseconds)
+        setInterval(fetchAndParseCSV, 300000);
+    </script>
 </body>
 </html>
