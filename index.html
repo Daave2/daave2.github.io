@@ -322,6 +322,44 @@
         body.dark-mode .clear-button:hover {
             background-color: #222;
         }
+        /* Common Links Styles */
+        .common-links-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .link-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-green);
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            height: 100px; /* Fixed height for uniformity */
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .link-button:hover {
+            background-color: #004d00;
+        }
+        body.dark-mode .link-button {
+            background-color: var(--dark-nav-hover-bg);
+            color: var(--dark-footer-text);
+        }
+        body.dark-mode .link-button:hover {
+            background-color: #222;
+        }
         /* Responsive Whiteboard */
         @media (max-width: 768px) {
             .whiteboard-container {
@@ -331,6 +369,11 @@
         @media (max-width: 480px) {
             .whiteboard-container {
                 height: 250px; /* Increased height from 200px to 250px */
+            }
+            .link-button {
+                padding: 10px;
+                height: 80px;
+                font-size: 0.9em;
             }
         }
     </style>
@@ -349,6 +392,7 @@
         <ul class="nav-links">
             <li><a href="#tasks">Tasks</a></li>
             <li><a href="#important-links">Important Links</a></li>
+            <li><a href="#common-links">Common Links</a></li>
             <li><a href="#who-is-in">Who Is In Today?</a></li>
             <li><a href="#management-rota">Management Rota</a></li>
             <li><a href="#add-reminder">Add New Reminder</a></li>
@@ -376,6 +420,38 @@
             <h2>Important Links</h2>
             <div class="iframe-container">
                 <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml" title="Important Links"></iframe>
+            </div>
+        </section>
+
+        <!-- Common Links Section -->
+        <section id="common-links">
+            <h2>Common Links</h2>
+            <div class="common-links-container">
+                <div class="links-grid">
+                    <a href="https://sites.google.com/morrisonsplc.co.uk/218-useful-links/safe-and-legal" class="link-button" target="_blank" rel="noopener noreferrer">Safe And Legal</a>
+                    <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9" class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Feam.verisae.co.uk%2FDataNett%2Fmobile%2Fmobile_dashboards%2Fmobile_dashboard.html&sa=D&sntz=1&usg=AOvVaw2oYr7fRdkIIuE_GeyTXq0f" class="link-button" target="_blank" rel="noopener noreferrer">Verisae</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
+                    <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB" class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform" class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
+                    <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc" class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Ffoodtoorderapp.apps.mymorri.com%2Flogin&sa=D&sntz=1&usg=AOvVaw08gh1esmeqr6g5YuUugqkh" class="link-button" target="_blank" rel="noopener noreferrer">FTO</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw1zgD308hbP3ix1j8yrD1cO" class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
+                    <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD" class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
+                    <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd" class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE" class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
+                    <a href="https://datastudio.google.com/s/rvMwhmsDAEo" class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1" class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
+                    <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB" class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
+                    <a href="https://docs.google.com/spreadsheets/d/1Xi75EvmwA5-eIYFBZd2HGxDQw34hV-VJyAej493mlGs/edit#gid=814980797" class="link-button" target="_blank" rel="noopener noreferrer">Shrink Questions</a>
+                    <a href="https://lookerstudio.google.com/u/0/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD" class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
+                    <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs" class="link-button" target="_blank" rel="noopener noreferrer">Just Eat</a>
+                    <a href="https://docs.google.com/spreadsheets/d/14pYFTs7VfTRI-lSav7fuvrZ3UKo-sC-0DlvUZWVr7fw/edit?usp=sharing" class="link-button" target="_blank" rel="noopener noreferrer">Toolkit</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Missing Delivery</a>
+                </div>
             </div>
         </section>
 
