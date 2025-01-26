@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleveleys Morrisons Management Dashboard</title>
-    <!-- Papa Parse CDN for CSV Parsing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" integrity="sha512-9go+b1N3c2lYx3aMwPGMBQW9FQqfTtNoC6b3tGeFQXyIUGb6P2uW7P9zocpI8pZnkuCNVBdjxsp4vRCQhvmVAA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Load Google Charts Loader -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -213,30 +213,47 @@
         </section>
     </div>
 
-    <script>
-        // URL of the published CSV
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pub?gid=0&single=true&output=csv';
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
 
-        // Function to fetch and parse CSV
-        function fetchAndParseCSV() {
-            fetch(csvUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(csvText => {
-                    const parsedData = Papa.parse(csvText, {
-                        header: true,
-                        skipEmptyLines: true
-                    });
-                    categorizeAndRenderTasks(parsedData.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching or parsing CSV:', error);
-                    displayError();
-                });
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(fetchAndRenderTasks);
+
+        function fetchAndRenderTasks() {
+            // Replace the following Spreadsheet ID and Sheet Name with your own
+            const spreadsheetID = '2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ';
+            const sheetName = 'Sheet1'; // Change if your sheet has a different name
+
+            // Construct the query URL
+            const query = new google.visualization.Query(`https://docs.google.com/spreadsheets/d/${spreadsheetID}/gviz/tq?sheet=${sheetName}&headers=1`);
+
+            // Send the query with a callback function
+            query.send(handleQueryResponse);
+        }
+
+        function handleQueryResponse(response) {
+            if (response.isError()) {
+                console.error('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                displayError();
+                return;
+            }
+
+            const data = response.getDataTable();
+            const dataArray = [];
+
+            // Convert DataTable to Array of Objects
+            for (let i = 0; i < data.getNumberOfRows(); i++) {
+                const row = {};
+                for (let j = 0; j < data.getNumberOfColumns(); j++) {
+                    const columnName = data.getColumnLabel(j);
+                    row[columnName] = data.getValue(i, j);
+                }
+                dataArray.push(row);
+            }
+
+            // Categorize and Render Tasks
+            categorizeAndRenderTasks(dataArray);
         }
 
         // Function to categorize tasks and render tables
@@ -246,7 +263,6 @@
             const oneTimeTasks = [];
 
             data.forEach(row => {
-                // Ensure 'Frequency' field exists and is not empty
                 const frequency = row['Frequency'] ? row['Frequency'].trim().toLowerCase() : '';
                 const isActive = row['Active'] ? row['Active'].trim().toLowerCase() === 'yes' : false;
 
@@ -282,7 +298,7 @@
             tbody.innerHTML = ''; // Clear existing content
 
             if (tasks.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="' + (frequencyType === 'weekly' ? '8' : '8') + '">No tasks available.</td></tr>';
+                tbody.innerHTML = `<tr><td colspan="8">No tasks available.</td></tr>`;
             } else {
                 tasks.forEach(task => {
                     const tr = document.createElement('tr');
@@ -292,7 +308,7 @@
                     const date = task['Date'] ? task['Date'].trim() : 'N/A';
                     const dayOfWeek = task['Day of Week'] ? task['Day of Week'].trim() : 'N/A';
                     const title = task['Title'] ? task['Title'].trim() : 'N/A';
-                    const description = task['Message'] ? task['Message'].trim() : 'N/A';
+                    const description = task['Message'] ? task['Message'].trim().replace(/\n/g, '<br>') : 'N/A';
                     const link = task['Attach/Link'] ? `<a href="${task['Attach/Link']}" target="_blank">View</a>` : 'N/A';
                     const confirmStatus = formatConfirmation(task['Confirm Status']);
                     const category = task['Chat Name'] ? task['Chat Name'].trim() : 'N/A';
@@ -303,7 +319,7 @@
                             <td>${time}</td>
                             <td>${dayOfWeek}</td>
                             <td>${title}</td>
-                            <td>${description.replace(/\n/g, '<br>')}</td>
+                            <td>${description}</td>
                             <td>${link}</td>
                             <td>${confirmStatus}</td>
                             <td>${category}</td>
@@ -313,7 +329,7 @@
                         tr.innerHTML = `
                             <td>${time}</td>
                             <td>${title}</td>
-                            <td>${description.replace(/\n/g, '<br>')}</td>
+                            <td>${description}</td>
                             <td>${link}</td>
                             <td>${confirmStatus}</td>
                             <td>${category}</td>
@@ -324,7 +340,7 @@
                             <td>${time}</td>
                             <td>${date}</td>
                             <td>${title}</td>
-                            <td>${description.replace(/\n/g, '<br>')}</td>
+                            <td>${description}</td>
                             <td>${link}</td>
                             <td>${confirmStatus}</td>
                             <td>${category}</td>
@@ -367,11 +383,8 @@
             });
         }
 
-        // Initial fetch
-        fetchAndParseCSV();
-
-        // Set interval to refresh data every 5 minutes (300,000 milliseconds)
-        setInterval(fetchAndParseCSV, 300000);
+        // Refresh data every 5 minutes (300,000 milliseconds)
+        setInterval(fetchAndRenderTasks, 300000);
     </script>
 </body>
 </html>
