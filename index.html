@@ -15,7 +15,7 @@
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #FFFFFF;
             color: #333;
         }
         a {
@@ -49,6 +49,9 @@
             flex-wrap: wrap;
             padding: 10px 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .nav a {
             margin: 5px 15px;
@@ -56,7 +59,7 @@
             background-color: #fff;
             color: #006400;
             border-radius: 5px;
-            font-weight: 500;
+            font-weight: 700;
             transition: background-color 0.3s, color 0.3s;
         }
         .nav a:hover {
@@ -101,6 +104,10 @@
             height: 100%;
             border: none;
         }
+        /* Button Styles for Smooth Scrolling (Optional) */
+        html {
+            scroll-behavior: smooth;
+        }
         /* Responsive Design */
         @media (max-width: 768px) {
             header img {
@@ -125,6 +132,16 @@
                 font-size: 1.5em;
             }
         }
+        /* Footer Styles */
+        footer {
+            background-color: #006400; /* Morrisons Dark Green */
+            color: #fff;
+            text-align: center;
+            padding: 15px 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -137,6 +154,7 @@
         <a href="#tasks">Tasks</a>
         <a href="#important-links">Important Links</a>
         <a href="#who-is-in">Who Is In Today?</a>
+        <a href="#add-reminder">Add New Reminder</a>
     </nav>
     <div class="container">
         <!-- Tasks Section -->
@@ -162,6 +180,17 @@
                 <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today"></iframe>
             </div>
         </section>
+
+        <!-- Add New Reminder Section -->
+        <section id="add-reminder">
+            <h2>Add New Reminder</h2>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true" title="Add New Reminder"></iframe>
+            </div>
+        </section>
     </div>
+    <footer>
+        <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    </footer>
 </body>
 </html>
