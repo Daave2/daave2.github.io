@@ -484,8 +484,6 @@
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
-            // After resizing, if there is a saved image, redraw it
-            loadWhiteboard();
         }
 
         // Initialize canvas size
@@ -592,7 +590,6 @@
         // Load whiteboard from Local Storage
         loadButton.addEventListener('click', () => {
             loadWhiteboard();
-            alert('Whiteboard loaded successfully!');
         });
 
         // Function to load whiteboard from Local Storage
@@ -603,15 +600,13 @@
                 img.onload = function() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear current canvas before loading
                     ctx.drawImage(img, 0, 0);
+                    alert('Whiteboard loaded successfully!');
                 };
                 img.src = dataURL;
             } else {
-                alert('No saved whiteboard data found.');
+                alert('No saved whiteboards found.');
             }
         }
-
-        // Automatically load whiteboard when the page loads
-        window.addEventListener('load', loadWhiteboard);
 
         // Prevent scrolling on touch devices when drawing
         canvas.addEventListener('touchstart', (e) => e.preventDefault());
