@@ -91,7 +91,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.2em;
+            font-size: 1.5em;
             color: var(--primary-green);
             transition: color 0.3s;
         }
@@ -155,7 +155,7 @@
             height: 3px;
             background-color: var(--primary-green);
             margin: 4px 0;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
         body.dark-mode .hamburger div {
             background-color: var(--dark-text-color);
@@ -253,9 +253,60 @@
             margin: 0;
             font-size: 0.8em; /* Smaller font size */
         }
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
+        /* Whiteboard Styles */
+        .whiteboard-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border: 2px solid var(--primary-green);
+            border-radius: 10px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        body.dark-mode .whiteboard-container {
+            background-color: #2e2e2e;
+            border-color: var(--dark-text-color);
+        }
+        #whiteboard {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            background-color: transparent;
+        }
+        /* Clear Button Styles */
+        .clear-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-green);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        .clear-button:hover {
+            background-color: #004d00; /* Darker green on hover */
+        }
+        body.dark-mode .clear-button {
+            background-color: var(--dark-nav-hover-bg);
+            color: var(--dark-footer-text);
+        }
+        body.dark-mode .clear-button:hover {
+            background-color: #222;
+        }
+        /* Responsive Whiteboard */
+        @media (max-width: 768px) {
+            .whiteboard-container {
+                height: 300px;
+            }
+        }
+        @media (max-width: 480px) {
+            .whiteboard-container {
+                height: 200px;
+            }
         }
     </style>
 </head>
@@ -336,13 +387,12 @@
             </div>
         </section>
 
-        <!-- Notes Section -->
+        <!-- Notes Section (Whiteboard) -->
         <section id="notes">
             <h2>Notes</h2>
-            <p>Use the embedded Google Sheet below to add, edit, or view team notes. Click on a cell to start editing.</p>
-            <div class="iframe-container">
-                <!-- Replace 'your_published_sheet_url' with your actual published Google Sheet URL for Notes -->
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourPublishedSheetURL/pubhtml?gid=0&single=true" title="Notes"></iframe>
+            <div class="whiteboard-container">
+                <canvas id="whiteboard"></canvas>
+                <button class="clear-button">Clear</button>
             </div>
         </section>
     </div>
@@ -357,8 +407,8 @@
         toggleButton.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
             // Update ARIA attribute
-            const expanded = toggleButton.getAttribute('aria-expanded') === 'true' || false;
-            toggleButton.setAttribute('aria-expanded', !expanded);
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            toggleButton.setAttribute('aria-pressed', isDarkMode);
         });
 
         // Hamburger Menu Toggle
@@ -367,6 +417,7 @@
 
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
             // Update ARIA attribute
             const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
             hamburger.setAttribute('aria-expanded', !expanded);
@@ -378,6 +429,7 @@
             item.addEventListener('click', () => {
                 if (navLinks.classList.contains('active')) {
                     navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
                     hamburger.setAttribute('aria-expanded', false);
                 }
             });
@@ -389,6 +441,109 @@
                 hamburger.click();
             }
         });
+    </script>
+
+    <!-- JavaScript for Whiteboard Functionality -->
+    <script>
+        const canvas = document.getElementById('whiteboard');
+        const ctx = canvas.getContext('2d');
+        const clearButton = document.querySelector('.clear-button');
+
+        // Set canvas size to fill its container
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        // Initialize canvas size
+        resizeCanvas();
+
+        // Handle window resize
+        window.addEventListener('resize', resizeCanvas);
+
+        let drawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Set drawing parameters
+        ctx.strokeStyle = '#000000'; // Default black
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 2;
+
+        // Update stroke color based on theme
+        function updateStrokeStyle() {
+            if (document.body.classList.contains('dark-mode')) {
+                ctx.strokeStyle = '#FFFFFF'; // White in dark mode
+            } else {
+                ctx.strokeStyle = '#000000'; // Black in light mode
+            }
+        }
+
+        // Initial stroke style
+        updateStrokeStyle();
+
+        // Listen for theme changes to update stroke color
+        const observer = new MutationObserver(updateStrokeStyle);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+        // Start drawing
+        function startDrawing(e) {
+            drawing = true;
+            [lastX, lastY] = getXY(e);
+        }
+
+        // Draw
+        function draw(e) {
+            if (!drawing) return;
+            const [x, y] = getXY(e);
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            [lastX, lastY] = [x, y];
+        }
+
+        // Stop drawing
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        // Get X and Y coordinates from event
+        function getXY(e) {
+            let x, y;
+            if (e.touches && e.touches.length > 0) {
+                const rect = canvas.getBoundingClientRect();
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                const rect = canvas.getBoundingClientRect();
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+            return [x, y];
+        }
+
+        // Event listeners for mouse
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Event listeners for touch
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchcancel', stopDrawing);
+
+        // Clear whiteboard
+        clearButton.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // Prevent scrolling on touch devices when drawing
+        canvas.addEventListener('touchstart', (e) => e.preventDefault());
+        canvas.addEventListener('touchmove', (e) => e.preventDefault());
     </script>
 </body>
 </html>
