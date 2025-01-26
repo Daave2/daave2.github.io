@@ -134,7 +134,7 @@
                         <th>Link</th>
                         <th>Confirmation</th>
                         <th>Category</th>
-                        <th>Type</th>
+                        <th>Frequency</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,7 +157,7 @@
                         <th>Link</th>
                         <th>Confirmation</th>
                         <th>Category</th>
-                        <th>Type</th>
+                        <th>Frequency</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,7 +180,7 @@
                         <th>Link</th>
                         <th>Confirmation</th>
                         <th>Category</th>
-                        <th>Type</th>
+                        <th>Frequency</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -246,61 +246,89 @@
             const oneTimeTasks = [];
 
             data.forEach(row => {
-                const type = row['Type'].trim().toLowerCase();
-                if (type === 'daily') {
+                // Ensure 'Frequency' field exists and is not empty
+                const frequency = row['Frequency'] ? row['Frequency'].trim().toLowerCase() : '';
+                const isActive = row['Active'] ? row['Active'].trim().toLowerCase() === 'yes' : false;
+
+                if (!isActive) {
+                    // Skip inactive tasks
+                    return;
+                }
+
+                if (frequency === 'daily') {
                     dailyTasks.push(row);
-                } else if (type === 'weekly') {
+                } else if (frequency === 'weekly') {
                     weeklyTasks.push(row);
-                } else if (type === 'once') {
+                } else if (frequency === 'once') {
                     oneTimeTasks.push(row);
                 }
             });
 
             // Render Daily Tasks
-            renderTable('daily-tasks-table', dailyTasks, 'daily-tasks-loader');
+            renderTable('daily-tasks-table', dailyTasks, 'daily-tasks-loader', 'daily');
 
             // Render Weekly Tasks
-            renderTable('weekly-tasks-table', weeklyTasks, 'weekly-tasks-loader');
+            renderTable('weekly-tasks-table', weeklyTasks, 'weekly-tasks-loader', 'weekly');
 
             // Render One-Time Tasks
-            renderTable('one-time-tasks-table', oneTimeTasks, 'one-time-tasks-loader');
+            renderTable('one-time-tasks-table', oneTimeTasks, 'one-time-tasks-loader', 'once');
         }
 
         // Function to render a specific table
-        function renderTable(tableId, tasks, loaderId) {
+        function renderTable(tableId, tasks, loaderId, frequencyType) {
             const table = document.getElementById(tableId);
             const loader = document.getElementById(loaderId);
             const tbody = table.querySelector('tbody');
             tbody.innerHTML = ''; // Clear existing content
 
             if (tasks.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8">No tasks available.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="' + (frequencyType === 'weekly' ? '8' : '8') + '">No tasks available.</td></tr>';
             } else {
                 tasks.forEach(task => {
                     const tr = document.createElement('tr');
 
-                    // Depending on the table, some columns might not be applicable
-                    if (tableId === 'weekly-tasks-table') {
+                    // Extract necessary fields with proper fallback
+                    const time = task['Time'] ? task['Time'].trim() : 'N/A';
+                    const date = task['Date'] ? task['Date'].trim() : 'N/A';
+                    const dayOfWeek = task['Day of Week'] ? task['Day of Week'].trim() : 'N/A';
+                    const title = task['Title'] ? task['Title'].trim() : 'N/A';
+                    const description = task['Message'] ? task['Message'].trim() : 'N/A';
+                    const link = task['Attach/Link'] ? `<a href="${task['Attach/Link']}" target="_blank">View</a>` : 'N/A';
+                    const confirmStatus = formatConfirmation(task['Confirm Status']);
+                    const category = task['Chat Name'] ? task['Chat Name'].trim() : 'N/A';
+                    const frequency = task['Frequency'] ? task['Frequency'].trim() : 'N/A';
+
+                    if (frequencyType === 'weekly') {
                         tr.innerHTML = `
-                            <td>${task['Time'] || 'N/A'}</td>
-                            <td>${task['Day'] || 'N/A'}</td>
-                            <td>${task['Task Name'] || 'N/A'}</td>
-                            <td>${task['Description'] || 'N/A'}</td>
-                            <td>${task['Link'] ? `<a href="${task['Link']}" target="_blank">View</a>` : 'N/A'}</td>
-                            <td>${formatConfirmation(task['Confirmation'], task)}</td>
-                            <td>${task['Category'] || 'N/A'}</td>
-                            <td>${capitalizeFirstLetter(task['Type']) || 'N/A'}</td>
+                            <td>${time}</td>
+                            <td>${dayOfWeek}</td>
+                            <td>${title}</td>
+                            <td>${description.replace(/\n/g, '<br>')}</td>
+                            <td>${link}</td>
+                            <td>${confirmStatus}</td>
+                            <td>${category}</td>
+                            <td>${capitalizeFirstLetter(frequency)}</td>
                         `;
-                    } else {
+                    } else if (frequencyType === 'daily') {
                         tr.innerHTML = `
-                            <td>${task['Time'] || 'N/A'}</td>
-                            ${tableId === 'one-time-tasks-table' ? `<td>${task['Date'] || 'N/A'}</td>` : ''}
-                            <td>${task['Task Name'] || 'N/A'}</td>
-                            <td>${task['Description'] || 'N/A'}</td>
-                            <td>${task['Link'] ? `<a href="${task['Link']}" target="_blank">View</a>` : 'N/A'}</td>
-                            <td>${formatConfirmation(task['Confirmation'], task)}</td>
-                            <td>${task['Category'] || 'N/A'}</td>
-                            <td>${capitalizeFirstLetter(task['Type']) || 'N/A'}</td>
+                            <td>${time}</td>
+                            <td>${title}</td>
+                            <td>${description.replace(/\n/g, '<br>')}</td>
+                            <td>${link}</td>
+                            <td>${confirmStatus}</td>
+                            <td>${category}</td>
+                            <td>${capitalizeFirstLetter(frequency)}</td>
+                        `;
+                    } else if (frequencyType === 'once') {
+                        tr.innerHTML = `
+                            <td>${time}</td>
+                            <td>${date}</td>
+                            <td>${title}</td>
+                            <td>${description.replace(/\n/g, '<br>')}</td>
+                            <td>${link}</td>
+                            <td>${confirmStatus}</td>
+                            <td>${category}</td>
+                            <td>${capitalizeFirstLetter(frequency)}</td>
                         `;
                     }
 
@@ -314,7 +342,7 @@
         }
 
         // Function to format confirmation column
-        function formatConfirmation(confirmation, task) {
+        function formatConfirmation(confirmation) {
             if (!confirmation || confirmation.toLowerCase() === 'no') {
                 return 'No';
             }
