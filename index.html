@@ -290,14 +290,13 @@
         body.dark-mode .control-panel {
             background-color: rgba(46, 46, 46, 0.8);
         }
-        /* Color Picker Styles */
         .color-picker button {
             width: 24px;
             height: 24px;
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.2s, border 0.2s;
+            transition: transform 0.2s;
         }
         .color-picker button.selected {
             transform: scale(1.2);
@@ -306,21 +305,15 @@
         body.dark-mode .color-picker button.selected {
             border: 2px solid #fff;
         }
-        /* Brush Size Styles */
         .brush-size {
             display: flex;
             align-items: center;
             gap: 5px;
         }
-        .brush-size label {
-            font-size: 0.9em;
-            color: inherit;
-        }
         .brush-size input[type="range"] {
             cursor: pointer;
         }
-        /* Undo, Clear, and Export Email Button Styles */
-        .undo-button, .clear-button, .export-email-button {
+        .undo-button, .clear-button {
             background-color: var(--primary-green);
             color: #fff;
             border: none;
@@ -330,18 +323,14 @@
             font-size: 0.9em;
             transition: background-color 0.3s;
         }
-        .undo-button:hover, .clear-button:hover, .export-email-button:hover {
+        .undo-button:hover, .clear-button:hover {
             background-color: #004d00; /* Darker green on hover */
         }
-        body.dark-mode .undo-button, 
-        body.dark-mode .clear-button,
-        body.dark-mode .export-email-button {
+        body.dark-mode .undo-button, body.dark-mode .clear-button {
             background-color: var(--dark-nav-hover-bg);
             color: var(--dark-footer-text);
         }
-        body.dark-mode .undo-button:hover, 
-        body.dark-mode .clear-button:hover,
-        body.dark-mode .export-email-button:hover {
+        body.dark-mode .undo-button:hover, body.dark-mode .clear-button:hover {
             background-color: #222;
         }
         /* Responsive Whiteboard */
@@ -441,7 +430,7 @@
         <!-- Notes Section (Interactive Whiteboard) -->
         <section id="notes">
             <h2>Notes</h2>
-            <p>Use the whiteboard below to doodle or take immediate notes. Select a color, adjust brush size, draw, use Undo, Clear, or Export to Email as needed.</p>
+            <p>Use the whiteboard below to doodle or take immediate notes. Select a color, adjust brush size, draw, and use Undo as needed.</p>
             <div class="whiteboard-container">
                 <!-- Control Panel -->
                 <div class="control-panel">
@@ -462,8 +451,6 @@
                     <button class="undo-button" aria-label="Undo Last Action">Undo</button>
                     <!-- Clear Button -->
                     <button class="clear-button" aria-label="Clear Whiteboard">Clear</button>
-                    <!-- Export to Email Button -->
-                    <button class="export-email-button" aria-label="Export Whiteboard to Email">Export to Email</button>
                 </div>
                 <!-- Canvas Element -->
                 <canvas id="whiteboard"></canvas>
@@ -517,13 +504,12 @@
         });
     </script>
 
-    <!-- JavaScript for Enhanced Whiteboard Functionality with Export to Email -->
+    <!-- JavaScript for Enhanced Whiteboard Functionality -->
     <script>
         const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
         const clearButton = document.querySelector('.clear-button');
         const undoButton = document.querySelector('.undo-button');
-        const exportEmailButton = document.querySelector('.export-email-button');
         const colorButtons = document.querySelectorAll('.color-btn');
         const brushSizeSlider = document.getElementById('brush-size-slider');
 
@@ -677,40 +663,6 @@
         // Prevent scrolling on touch devices when drawing
         canvas.addEventListener('touchstart', (e) => e.preventDefault());
         canvas.addEventListener('touchmove', (e) => e.preventDefault());
-
-        // Export to Email Functionality
-        exportEmailButton.addEventListener('click', () => {
-            // Define your secret token (must match the one in Apps Script)
-            const secretToken = 'team218'; // Replace with the same token used in Apps Script
-
-            // Convert canvas to data URL
-            const imageData = canvas.toDataURL('image/png');
-
-            // Send the image data and token to Google Apps Script Web App
-            fetch('https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbyRJdOsJQWJngLF1z1DtePly44ZPuZ2VQzU9iFCEPBaCC5kistTl5m1s4O9nP9xGFI/exec', { // Replace YOUR_SCRIPT_ID with your actual script ID
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    token: secretToken, 
-                    image: imageData 
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Whiteboard exported to email successfully!');
-                } else {
-                    alert(`Failed to export whiteboard to email: ${data.message}`);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while exporting the whiteboard.');
-            });
-        });
     </script>
 </body>
 </html>
