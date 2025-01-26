@@ -11,12 +11,17 @@
         :root {
             --primary-green: #006400; /* Dark Green */
             --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
-            --background-color: #FFFFFF; /* White */
+            --background-faint-green: #e6ffe6; /* Faint Green */
+            --background-white: #FFFFFF; /* White */
             --text-color: #333333; /* Dark Gray */
             --nav-bg: var(--secondary-yellow);
             --nav-text: var(--primary-green);
             --nav-hover-bg: var(--primary-green);
-            --nav-hover-text: var(--background-color);
+            --nav-hover-text: var(--background-white);
+            --card-bg: var(--background-white);
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --footer-bg: var(--primary-green);
+            --footer-text: var(--background-white);
         }
 
         /* Reset and Base Styles */
@@ -27,7 +32,7 @@
         }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
+            background-color: var(--background-faint-green);
             color: var(--text-color);
             line-height: 1.6;
         }
@@ -37,11 +42,12 @@
         }
         /* Header Styles */
         header {
-            background-color: var(--primary-green);
-            color: var(--background-color);
+            background-color: var(--background-white);
+            color: var(--primary-green);
             padding: 20px 10px;
             text-align: center;
             position: relative;
+            box-shadow: 0 2px 4px var(--card-shadow);
         }
         header img {
             position: absolute;
@@ -62,7 +68,7 @@
             justify-content: center;
             flex-wrap: wrap;
             padding: 10px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px var(--card-shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -70,7 +76,7 @@
         .nav a {
             margin: 5px 15px;
             padding: 10px 20px;
-            background-color: #fff;
+            background-color: var(--background-white);
             color: var(--primary-green);
             border-radius: 25px;
             font-weight: 700;
@@ -78,7 +84,7 @@
         }
         .nav a:hover {
             background-color: var(--primary-green);
-            color: var(--background-color);
+            color: var(--background-white);
         }
         /* Container Styles */
         .container {
@@ -89,10 +95,10 @@
         /* Section Styles */
         section {
             margin-bottom: 40px;
-            background-color: #fff;
+            background-color: var(--card-bg);
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px var(--card-shadow);
         }
         section h2 {
             color: var(--primary-green);
@@ -120,8 +126,8 @@
         }
         /* Footer Styles */
         footer {
-            background-color: var(--primary-green);
-            color: var(--background-color);
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
             text-align: center;
             padding: 15px 10px;
             position: relative;
@@ -144,6 +150,10 @@
                 font-size: 1.5em;
                 padding-left: 0;
             }
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
             .nav a {
                 margin: 5px 0;
                 width: 80%;
@@ -152,6 +162,10 @@
             section h2 {
                 font-size: 1.5em;
             }
+        }
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -167,6 +181,10 @@
         <a href="#who-is-in">Who Is In Today?</a>
         <a href="#management-rota">Management Rota</a>
         <a href="#add-reminder">Add New Reminder</a>
+        <a href="#announcements">Announcements</a>
+        <a href="#calendar">Calendar</a>
+        <a href="#employee-directory">Employee Directory</a>
+        <a href="#performance-metrics">Performance Metrics</a>
     </nav>
     <div class="container">
         <!-- Tasks Section -->
@@ -208,9 +226,43 @@
                 <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true" title="Add New Reminder"></iframe>
             </div>
         </section>
+
+        <!-- Announcements Section -->
+        <section id="announcements">
+            <h2>Announcements</h2>
+            <div class="iframe-container">
+                <!-- Embed an Announcements Google Sheet or use a Google Docs Viewer if available -->
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourAnnouncementsSheetID/pubhtml?gid=0&single=true" title="Announcements"></iframe>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar">
+            <h2>Calendar</h2>
+            <div class="iframe-container">
+                <!-- Embed a Google Calendar or a Google Sheet formatted as a calendar -->
+                <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=Europe/London" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </section>
+
+        <!-- Employee Directory Section -->
+        <section id="employee-directory">
+            <h2>Employee Directory</h2>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourEmployeeDirectorySheetID/pubhtml?gid=0&single=true" title="Employee Directory"></iframe>
+            </div>
+        </section>
+
+        <!-- Performance Metrics Section -->
+        <section id="performance-metrics">
+            <h2>Performance Metrics</h2>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourPerformanceMetricsSheetID/pubhtml?gid=0&single=true" title="Performance Metrics"></iframe>
+            </div>
+        </section>
     </div>
     <footer>
-        <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+        <p>&copy; 2025 Niki Cooke. All rights reserved.</p>
     </footer>
 </body>
 </html>
