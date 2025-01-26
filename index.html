@@ -4,683 +4,463 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleveleys Morrisons Management Dashboard</title>
-    <!-- Google Fonts for Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables for Light and Dark Themes */
         :root {
-            --primary-green: #006400; /* Dark Green */
-            --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
-            --background-faint-green: #e6ffe6; /* Faint Green */
-            --background-white: #FFFFFF; /* White */
-            --text-color: #333333; /* Dark Gray */
-            --nav-bg: var(--secondary-yellow);
-            --nav-text: var(--primary-green);
-            --nav-hover-bg: var(--primary-green);
-            --nav-hover-text: var(--background-white);
-            --card-bg: var(--background-white);
-            --card-shadow: rgba(0, 0, 0, 0.1);
-            --footer-bg: var(--primary-green);
-            --footer-text: var(--background-white);
-            /* Dark Mode Variables */
-            --dark-background: #121212;
-            --dark-card-bg: #1e1e1e;
-            --dark-text-color: #e0e0e0;
-            --dark-nav-bg: #333333;
-            --dark-nav-text: #e0e0e0;
-            --dark-nav-hover-bg: #555555;
-            --dark-nav-hover-text: #ffffff;
-            --dark-footer-bg: #333333;
-            --dark-footer-text: #e0e0e0;
+            --primary-green: #006400;
+            --secondary-yellow: #FFD700;
+            --background-faint-green: #e6ffe6;
+            --background-white: #FFFFFF;
+            --text-color: #333;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --dark-bg: #1a1a1a;
+            --dark-text: #f0f0f0;
+            --dark-card: #2d2d2d;
         }
 
-        /* Reset and Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: var(--background-faint-green);
+            background: var(--background-faint-green);
             color: var(--text-color);
             line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
+            transition: var(--transition);
         }
+
         body.dark-mode {
-            background-color: var(--dark-background);
-            color: var(--dark-text-color);
+            background: var(--dark-bg);
+            color: var(--dark-text);
         }
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-        /* Header Styles */
+
         header {
-            background-color: var(--background-white);
-            color: var(--primary-green);
-            padding: 20px 10px;
-            text-align: center;
+            background: var(--background-white);
+            padding: 1rem;
+            box-shadow: var(--shadow);
             position: relative;
-            box-shadow: 0 2px 4px var(--card-shadow);
-            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        body.dark-mode header {
-            background-color: var(--dark-card-bg);
-            color: var(--dark-text-color);
-            box-shadow: 0 2px 4px var(--dark-card-bg);
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+            margin-right: auto;
         }
-        header img {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+
+        .logo {
             height: 50px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
-        header h1 {
-            font-size: 2em;
-            margin: 0;
-            padding-left: 80px; /* To prevent overlap with logo */
+
+        h1 {
+            font-size: 1.75rem;
+            color: var(--primary-green);
+            white-space: nowrap;
         }
-        /* Dark Mode Toggle Styles */
+
         .dark-mode-toggle {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.5em;
-            color: var(--primary-green);
-            transition: color 0.3s;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            position: absolute;
+            right: 1rem;
         }
-        body.dark-mode .dark-mode-toggle {
-            color: var(--dark-text-color);
-        }
-        /* Navigation Bar */
+
         .nav {
-            background-color: var(--nav-bg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 10px; /* Reduced padding for compactness */
-            box-shadow: 0 2px 4px var(--card-shadow);
+            background: var(--secondary-yellow);
+            padding: 0.5rem;
             position: sticky;
             top: 0;
             z-index: 1000;
-            transition: background-color 0.3s;
+            box-shadow: var(--shadow);
         }
-        body.dark-mode .nav {
-            background-color: var(--dark-nav-bg);
-        }
+
         .nav-links {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
             list-style: none;
         }
-        .nav-links li {
-            margin: 5px 10px; /* Reduced margin for compactness */
-        }
-        .nav-links a {
-            display: block;
-            padding: 8px 15px; /* Reduced padding for compactness */
-            background-color: var(--background-white);
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--background-white);
             color: var(--primary-green);
-            border-radius: 20px; /* Rounded for a sleek look */
-            font-weight: 700;
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 0.95em; /* Slightly smaller font size */
+            transition: var(--transition);
+            font-weight: 500;
         }
-        body.dark-mode .nav-links a {
-            background-color: var(--dark-nav-bg);
-            color: var(--dark-nav-text);
+
+        .nav-link:hover {
+            background: var(--primary-green);
+            color: white;
+            transform: translateY(-2px);
         }
-        .nav-links a:hover {
-            background-color: var(--nav-hover-bg);
-            color: var(--nav-hover-text);
-        }
-        body.dark-mode .nav-links a:hover {
-            background-color: var(--dark-nav-hover-bg);
-            color: var(--dark-nav-hover-text);
-        }
-        /* Hamburger Menu Styles */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-        .hamburger div {
-            width: 25px;
-            height: 3px;
-            background-color: var(--primary-green);
-            margin: 4px 0;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        body.dark-mode .hamburger div {
-            background-color: var(--dark-text-color);
-        }
-        /* Mobile Navigation */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: var(--nav-bg);
-                position: absolute;
-                top: 60px; /* Adjust based on header height */
-                left: 0;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .hamburger {
-                display: flex;
-            }
-            .nav-links a {
-                margin: 10px;
-                padding: 10px;
-                text-align: center;
-            }
-            body.dark-mode .nav-links {
-                background-color: var(--dark-nav-bg);
-            }
-        }
-        /* Container Styles */
+
         .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
-        /* Section Styles */
-        section {
-            margin-bottom: 30px; /* Reduced margin for compactness */
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px var(--card-shadow);
-            transition: background-color 0.3s, box-shadow 0.3s;
+
+        .card {
+            background: var(--background-white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
-        body.dark-mode section {
-            background-color: var(--dark-card-bg);
-            box-shadow: 0 4px 12px var(--dark-card-bg);
+
+        body.dark-mode .card {
+            background: var(--dark-card);
         }
-        section h2 {
+
+        .card h2 {
             color: var(--primary-green);
-            margin-bottom: 15px; /* Reduced margin for compactness */
-            font-size: 1.6em; /* Slightly smaller font size */
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--secondary-yellow);
-            display: inline-block;
-            padding-bottom: 5px;
-            transition: color 0.3s, border-bottom-color 0.3s;
         }
-        body.dark-mode section h2 {
-            color: var(--dark-text-color);
-            border-bottom-color: var(--secondary-yellow);
-        }
-        /* Iframe Container */
+
         .iframe-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
+            padding-bottom: 56.25%;
+            border-radius: 0.5rem;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px var(--card-shadow);
-            transition: box-shadow 0.3s, background-color 0.3s;
+            background: white;
         }
-        body.dark-mode .iframe-container {
-            background-color: var(--dark-card-bg);
-            box-shadow: 0 4px 12px var(--dark-card-bg);
-        }
+
         .iframe-container iframe {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            border: 0;
         }
-        /* Footer Styles */
-        footer {
-            background-color: var(--footer-bg);
-            color: var(--footer-text);
-            text-align: center;
-            padding: 10px 5px; /* Reduced padding for compactness */
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        body.dark-mode footer {
-            background-color: var(--dark-footer-bg);
-            color: var(--dark-footer-text);
-        }
-        footer p {
-            margin: 0;
-            font-size: 0.8em; /* Smaller font size */
-        }
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Whiteboard Styles */
+
         .whiteboard-container {
-            position: relative;
-            width: 100%;
-            height: 700px; /* Increased height from 500px to 700px */
+            height: 500px;
             border: 2px solid var(--primary-green);
-            border-radius: 10px;
-            background-color: #fff;
-            overflow: hidden;
-            transition: background-color 0.3s, border-color 0.3s;
+            border-radius: 1rem;
+            position: relative;
+            background: white;
         }
-        body.dark-mode .whiteboard-container {
-            background-color: #2e2e2e;
-            border-color: var(--dark-text-color);
-        }
+
         #whiteboard {
-            width: 100%;
-            height: 100%;
-            cursor: crosshair;
-            background-color: transparent;
+            touch-action: none;
         }
-        /* Button Group Styles */
-        .button-group {
+
+        .whiteboard-controls {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 1rem;
+            right: 1rem;
             display: flex;
-            gap: 10px;
-            z-index: 10;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow);
         }
-        /* Save, Load, and Clear Button Styles */
-        .save-button,
-        .load-button,
-        .clear-button {
-            background-color: var(--primary-green);
-            color: #fff;
+
+        .control-btn {
+            padding: 0.5rem 1rem;
             border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
+            border-radius: 0.5rem;
+            background: var(--primary-green);
+            color: white;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
-        .save-button:hover,
-        .load-button:hover,
-        .clear-button:hover {
-            background-color: #004d00; /* Darker green on hover */
+
+        .control-btn:hover {
+            background: #004d00;
+            transform: scale(1.05);
         }
-        body.dark-mode .save-button,
-        body.dark-mode .load-button,
-        body.dark-mode .clear-button {
-            background-color: var(--dark-nav-hover-bg);
-            color: var(--dark-footer-text);
-        }
-        body.dark-mode .save-button:hover,
-        body.dark-mode .load-button:hover,
-        body.dark-mode .clear-button:hover {
-            background-color: #222;
-        }
-        /* Common Links Styles */
-        .common-links-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+
         .links-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            width: 100%;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
         }
-        .link-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--primary-green);
-            color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.3s;
-            height: 100px; /* Fixed height for uniformity */
+
+        .link-card {
+            background: var(--primary-green);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
             text-align: center;
-            word-wrap: break-word;
+            transition: var(--transition);
+            min-height: 100px;
+            display: grid;
+            place-items: center;
         }
-        .link-button:hover {
-            background-color: #004d00;
+
+        .link-card:hover {
+            background: #004d00;
+            transform: translateY(-3px);
         }
-        body.dark-mode .link-button {
-            background-color: var(--dark-nav-hover-bg);
-            color: var(--dark-footer-text);
+
+        footer {
+            background: var(--primary-green);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
         }
-        body.dark-mode .link-button:hover {
-            background-color: #222;
-        }
-        /* Responsive Whiteboard */
+
         @media (max-width: 768px) {
-            .whiteboard-container {
-                height: 400px; /* Increased height from 300px to 400px */
+            .nav-links {
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                background: var(--background-white);
+                height: 100vh;
+                width: 250px;
+                padding: 2rem;
+                transition: var(--transition);
+                z-index: 1000;
             }
-        }
-        @media (max-width: 480px) {
-            .whiteboard-container {
-                height: 250px; /* Increased height from 200px to 250px */
+
+            .nav-links.active {
+                right: 0;
             }
-            .link-button {
-                padding: 10px;
-                height: 80px;
-                font-size: 0.9em;
+
+            .hamburger {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                cursor: pointer;
+                z-index: 1100;
+            }
+
+            .hamburger span {
+                width: 25px;
+                height: 3px;
+                background: var(--primary-green);
+                transition: var(--transition);
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <!-- Morrisons Logo -->
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
-        <h1>Cleveleys Morrisons Management Dashboard</h1>
-        <!-- Dark Mode Toggle Button -->
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode">
-            &#9790;
-        </button>
-    </header>
-    <nav class="nav">
-        <ul class="nav-links">
-            <li><a href="#tasks">Tasks</a></li>
-            <li><a href="#important-links">Important Links</a></li>
-            <li><a href="#common-links">Common Links</a></li>
-            <li><a href="#who-is-in">Who Is In Today?</a></li>
-            <li><a href="#management-rota">Management Rota</a></li>
-            <li><a href="#add-reminder">Add New Reminder</a></li>
-            <li><a href="#calendar">Calendar</a></li>
-            <li><a href="#notes">Notes</a></li>
-        </ul>
-        <!-- Hamburger Menu -->
-        <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class="header-content">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" 
+                 alt="Morrisons Logo" class="logo">
+            <h1>Cleveleys Morrisons Dashboard</h1>
         </div>
+        <button class="dark-mode-toggle" aria-label="Toggle dark mode">🌓</button>
+    </header>
+
+    <nav class="nav">
+        <button class="hamburger" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a class="nav-link" href="#tasks">Tasks</a></li>
+            <li><a class="nav-link" href="#links">Important Links</a></li>
+            <li><a class="nav-link" href="#rota">Management Rota</a></li>
+            <li><a class="nav-link" href="#calendar">Calendar</a></li>
+            <li><a class="nav-link" href="#notes">Notes</a></li>
+        </ul>
     </nav>
-    <div class="container">
-        <!-- Tasks Section -->
-        <section id="tasks">
+
+    <main class="container">
+        <!-- Sections with improved responsive grid -->
+        <section class="card" id="tasks">
             <h2>Tasks</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSaljCQUWWn1qu09FpHG6awwY93McN4h619l-lzPhH2fkz4dPrwz7i3AvrUL8wHxSwNyg2ucps8hAVJ/pubhtml?gid=0&single=true" title="Tasks"></iframe>
+                <iframe loading="lazy" src="https://docs.google.com/spreadsheets/d/e/your-sheet-id/pubhtml"></iframe>
             </div>
         </section>
 
-        <!-- Important Links Section -->
-        <section id="important-links">
-            <h2>Important Links</h2>
-            <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml" title="Important Links"></iframe>
+        <section class="card" id="links">
+            <h2>Essential Links</h2>
+            <div class="links-grid">
+                <a href="#" class="link-card" target="_blank">2024 Wheel</a>
+                <a href="#" class="link-card" target="_blank">Store Mobile</a>
+                <a href="#" class="link-card" target="_blank">Waste Collection</a>
+                <a href="#" class="link-card" target="_blank">Staff Checks</a>
+                <!-- Add more links -->
             </div>
         </section>
 
-        <!-- Common Links Section -->
-        <section id="common-links">
-            <h2>Common Links</h2>
-            <div class="common-links-container">
-                <div class="links-grid">
-                    <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9" class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
-                    <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB" class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform" class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
-                    <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc" class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw1zgD308hbP3ix1j8yrD1cO" class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
-                    <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD" class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
-                    <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd" class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE" class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1" class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
-                    <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB" class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
-                    <a href="https://lookerstudio.google.com/u/0/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD" class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
-                    <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs" class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Who Is In Today Section -->
-        <section id="who-is-in">
-            <h2>Who Is In Today?</h2>
-            <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today?"></iframe>
-            </div>
-        </section>
-
-        <!-- Management Rota Section -->
-        <section id="management-rota">
+        <section class="card" id="rota">
             <h2>Management Rota</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml" title="Management Rota"></iframe>
+                <iframe loading="lazy" src="https://docs.google.com/spreadsheets/d/e/your-rota-id/pubhtml"></iframe>
             </div>
         </section>
 
-        <!-- Add New Reminder Section -->
-        <section id="add-reminder">
-            <h2>Add New Reminder</h2>
-            <div class="iframe-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true" title="Add New Reminder"></iframe>
-            </div>
-        </section>
-
-        <!-- Calendar Section -->
-        <section id="calendar">
+        <section class="card" id="calendar">
             <h2>Calendar</h2>
             <div class="iframe-container">
-                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FLondon&showPrint=0&showTz=0&showCalendars=0&hl=en_GB&src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F09300&color=%23616161" style="border-width:0" frameborder="0" scrolling="no" title="Calendar"></iframe>
+                <iframe loading="lazy" src="https://calendar.google.com/calendar/embed?src=your-calendar-id"></iframe>
             </div>
         </section>
 
-        <!-- Notes Section (Interactive Whiteboard) -->
-        <section id="notes">
-            <h2>Notes</h2>
-            <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your notes and "Load" to retrieve them. Click "Clear" to erase the whiteboard.</p>
+        <section class="card" id="notes">
+            <h2>Interactive Whiteboard</h2>
             <div class="whiteboard-container">
                 <canvas id="whiteboard"></canvas>
-                <div class="button-group">
-                    <button class="save-button">Save</button>
-                    <button class="load-button">Load</button>
-                    <button class="clear-button">Clear</button>
+                <div class="whiteboard-controls">
+                    <input type="color" id="colorPicker" value="#000000">
+                    <input type="range" id="brushSize" min="1" max="50" value="5">
+                    <button class="control-btn" id="saveBtn">💾 Save</button>
+                    <button class="control-btn" id="clearBtn">❌ Clear</button>
                 </div>
             </div>
         </section>
-    </div>
+    </main>
+
     <footer>
-        <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+        <p>© 2025 Cleveleys Morrisons. Secure Management Portal v2.0</p>
     </footer>
 
-    <!-- JavaScript for Dark Mode Toggle and Hamburger Menu -->
     <script>
-        // Dark Mode Toggle
-        const toggleButton = document.querySelector('.dark-mode-toggle');
-        toggleButton.addEventListener('click', () => {
+        // Enhanced Dark Mode Toggle
+        const toggleDarkMode = () => {
             document.body.classList.toggle('dark-mode');
-            // Update ARIA attribute
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            toggleButton.setAttribute('aria-pressed', isDarkMode);
-        });
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            document.querySelector('.dark-mode-toggle').textContent = isDark ? '☀️' : '🌓';
+        };
 
-        // Hamburger Menu Toggle
+        // Initialize Dark Mode
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = '☀️';
+        }
+
+        document.querySelector('.dark-mode-toggle').addEventListener('click', toggleDarkMode);
+
+        // Mobile Navigation
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        const toggleMenu = () => {
             hamburger.classList.toggle('active');
-            // Update ARIA attribute
-            const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-            hamburger.setAttribute('aria-expanded', !expanded);
-        });
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        };
 
-        // Close the menu when a link is clicked (optional)
-        const navItems = document.querySelectorAll('.nav-links a');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    hamburger.classList.remove('active');
-                    hamburger.setAttribute('aria-expanded', false);
-                }
-            });
-        });
+        hamburger.addEventListener('click', toggleMenu);
 
-        // Accessibility: Allow toggling hamburger with Enter key
-        hamburger.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                hamburger.click();
+        // Close menu on click outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav') && navLinks.classList.contains('active')) {
+                toggleMenu();
             }
         });
-    </script>
 
-    <!-- JavaScript for Whiteboard Functionality -->
-    <script>
+        // Whiteboard Functionality
         const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
-        const clearButton = document.querySelector('.clear-button');
-        const saveButton = document.querySelector('.save-button');
-        const loadButton = document.querySelector('.load-button');
-
-        // Set canvas size to fill its container
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-
-        // Initialize canvas size
-        resizeCanvas();
-
-        // Handle window resize
-        window.addEventListener('resize', resizeCanvas);
-
-        let drawing = false;
+        let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
 
-        // Set drawing parameters
-        ctx.strokeStyle = '#000000'; // Default black
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        ctx.lineWidth = 2;
+        const resizeCanvas = () => {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-        // Update stroke color based on theme
-        function updateStrokeStyle() {
-            if (document.body.classList.contains('dark-mode')) {
-                ctx.strokeStyle = '#FFFFFF'; // White in dark mode
-            } else {
-                ctx.strokeStyle = '#000000'; // Black in light mode
-            }
-        }
+        const startDrawing = (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX || e.touches[0].pageX, e.offsetY || e.touches[0].pageY];
+        };
 
-        // Initial stroke style
-        updateStrokeStyle();
-
-        // Listen for theme changes to update stroke color
-        const observer = new MutationObserver(updateStrokeStyle);
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-
-        // Start drawing
-        function startDrawing(e) {
-            drawing = true;
-            [lastX, lastY] = getXY(e);
-        }
-
-        // Draw
-        function draw(e) {
-            if (!drawing) return;
-            const [x, y] = getXY(e);
+        const draw = (e) => {
+            if (!isDrawing) return;
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
-            ctx.lineTo(x, y);
+            ctx.lineTo(e.offsetX || e.touches[0].pageX, e.offsetY || e.touches[0].pageY);
+            ctx.strokeStyle = document.getElementById('colorPicker').value;
+            ctx.lineWidth = document.getElementById('brushSize').value;
+            ctx.lineCap = 'round';
             ctx.stroke();
-            [lastX, lastY] = [x, y];
-        }
+            [lastX, lastY] = [e.offsetX || e.touches[0].pageX, e.offsetY || e.touches[0].pageY];
+        };
 
-        // Stop drawing
-        function stopDrawing() {
-            drawing = false;
-        }
-
-        // Get X and Y coordinates from event
-        function getXY(e) {
-            let x, y;
-            if (e.touches && e.touches.length > 0) {
-                const rect = canvas.getBoundingClientRect();
-                x = e.touches[0].clientX - rect.left;
-                y = e.touches[0].clientY - rect.top;
-            } else {
-                const rect = canvas.getBoundingClientRect();
-                x = e.clientX - rect.left;
-                y = e.clientY - rect.top;
-            }
-            return [x, y];
-        }
-
-        // Event listeners for mouse
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-
-        // Event listeners for touch
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseout', () => isDrawing = false);
         canvas.addEventListener('touchstart', startDrawing);
         canvas.addEventListener('touchmove', draw);
-        canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener('touchcancel', stopDrawing);
+        canvas.addEventListener('touchend', () => isDrawing = false);
 
-        // Clear whiteboard
-        clearButton.addEventListener('click', () => {
+        // Whiteboard Controls
+        document.getElementById('clearBtn').addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Also remove the saved state from Local Storage
-            localStorage.removeItem('whiteboardImage');
-            alert('Whiteboard cleared and saved data removed.');
         });
 
-        // Save whiteboard to Local Storage
-        saveButton.addEventListener('click', () => {
+        document.getElementById('saveBtn').addEventListener('click', () => {
             const dataURL = canvas.toDataURL();
-            try {
-                localStorage.setItem('whiteboardImage', dataURL);
-                alert('Whiteboard saved successfully!');
-            } catch (e) {
-                console.error('Error saving whiteboard:', e);
-                alert('Failed to save whiteboard. Please try again.');
-            }
+            localStorage.setItem('whiteboard', dataURL);
+            alert('Whiteboard state saved!');
         });
 
-        // Load whiteboard from Local Storage
-        loadButton.addEventListener('click', () => {
-            loadWhiteboard();
-        });
-
-        // Function to load whiteboard from Local Storage
-        function loadWhiteboard() {
-            const dataURL = localStorage.getItem('whiteboardImage');
-            if (dataURL) {
+        // Load saved whiteboard
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('whiteboard');
+            if (saved) {
                 const img = new Image();
-                img.onload = function() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear current canvas before loading
-                    ctx.drawImage(img, 0, 0);
-                    alert('Whiteboard loaded successfully!');
-                };
-                img.src = dataURL;
-            } else {
-                alert('No saved whiteboards found.');
+                img.src = saved;
+                img.onload = () => ctx.drawImage(img, 0, 0);
             }
-        }
+        });
 
-        // Prevent scrolling on touch devices when drawing
-        canvas.addEventListener('touchstart', (e) => e.preventDefault());
-        canvas.addEventListener('touchmove', (e) => e.preventDefault());
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Performance Optimization
+        const debounce = (func, wait = 100) => {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        };
+
+        window.addEventListener('resize', debounce(resizeCanvas));
     </script>
 </body>
 </html>
