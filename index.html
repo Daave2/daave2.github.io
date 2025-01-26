@@ -3,56 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Important Links Dashboard</title>
+    <title>Cleveleys Morrisons Management Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
         }
         header {
-            background-color: #333;
+            background-color: #2c3e50;
             color: #fff;
-            padding: 10px 0;
+            padding: 20px 0;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .nav {
+            background-color: #34495e;
+            overflow: hidden;
+        }
+        .nav a {
+            float: left;
+            display: block;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .nav a:hover {
+            background-color: #2c3e50;
         }
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
             padding: 20px;
         }
+        section {
+            margin-bottom: 40px;
+        }
+        section h2 {
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
         .iframe-container {
-            flex: 1 1 300px;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
-        iframe {
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 400px;
+            height: 100%;
             border: none;
         }
-        h2 {
-            text-align: center;
-            font-size: 1.2em;
-            margin: 0;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-bottom: 1px solid #ccc;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            th, td {
+                padding: 8px;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+            section h2 {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Important Links Dashboard</h1>
+        <h1>Cleveleys Morrisons Management Dashboard</h1>
     </header>
+    <div class="nav">
+        <a href="#daily-tasks">Daily Tasks</a>
+        <a href="#weekly-tasks">Weekly Tasks</a>
+        <a href="#one-time-tasks">One-Time Tasks</a>
+        <a href="#important-links">Important Links</a>
+        <a href="#who-is-in">Who Is In Today?</a>
+    </div>
     <div class="container">
-        <div class="iframe-container">
-            <h2>Morrisons Cleveleys</h2>
-            <iframe src="https://my.morrisons.com/storefinder/218/thornton-cleveleys/"></iframe>
-        </div>
-        <!-- Add more iframe containers as needed -->
+        <!-- Daily Tasks Section -->
+        <section id="daily-tasks">
+            <h2>Daily Tasks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Link</th>
+                        <th>Confirmation</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>14:00</td>
+                        <td>Morning Briefing</td>
+                        <td>Good morning!</td>
+                        <td>N/A</td>
+                        <td>No</td>
+                        <td>Alert</td>
+                        <td>Daily</td>
+                    </tr>
+                    <tr>
+                        <td>09:30</td>
+                        <td>Todays Training</td>
+                        <td>
+                            <strong>Daisy Cleary:</strong> 06:00, 11:30, Health & Safety for Team Leaders<br>
+                            <strong>Hassan Almaksos:</strong> 07:00, 12:00, Allergens & Food Labelling Awareness - Shop Floor, Card Payment Device Security Awareness Training for Colleagues, Challenge 25 - New Operator, Challenge 25 Refresher<br>
+                            <!-- Add other training details as needed -->
+                        </td>
+                        <td><a href="https://docs.google.com/spreadsheets/d/11fwx2SxpHu-CP5ZeqEGIREB7vn_nUge7l-Gd-Qqxko8/preview?gid=1881177460#gid=1881177460" target="_blank">View Training Schedule</a></td>
+                        <td>No</td>
+                        <td>Training</td>
+                        <td>Daily</td>
+                    </tr>
+                    <tr>
+                        <td>10:30</td>
+                        <td>Daily Counts</td>
+                        <td>Please confirm counts are done and approvals reviewed before 11:30.</td>
+                        <td>N/A</td>
+                        <td>Yes (Confirmed by <a href="mailto:niki.cooke@morrisonsplc.co.uk">niki.cooke@morrisonsplc.co.uk</a> at 2025-01-25 10:37:17)</td>
+                        <td>Calendar</td>
+                        <td>Daily</td>
+                    </tr>
+                    <tr>
+                        <td>23:00</td>
+                        <td>Night Alarm</td>
+                        <td>Please confirm perimeter alarm is set.</td>
+                        <td>N/A</td>
+                        <td>Yes</td>
+                        <td>Security</td>
+                        <td>Daily</td>
+                    </tr>
+                    <tr>
+                        <td>10:45</td>
+                        <td>Cash Alarm</td>
+                        <td>Please confirm once cash office alarm is set.</td>
+                        <td>N/A</td>
+                        <td>Yes (Confirmed by <a href="mailto:beverley.lucas@morrisonsplc.co.uk">beverley.lucas@morrisonsplc.co.uk</a> at 2025-01-25 11:17:03)</td>
+                        <td>Security</td>
+                        <td>Daily</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Weekly Tasks Section -->
+        <section id="weekly-tasks">
+            <h2>Weekly Tasks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Day</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Link</th>
+                        <th>Confirmation</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>11:42</td>
+                        <td>Wednesday</td>
+                        <td>Weekly Wrap-Up</td>
+                        <td>Good evening!</td>
+                        <td><a href="https://example.com" target="_blank">View Details</a></td>
+                        <td>Yes (Confirmed by <a href="mailto:niki.cooke@morrisonsplc.co.uk">niki.cooke@morrisonsplc.co.uk</a> at 2025-01-22 11:50:20)</td>
+                        <td>Warning</td>
+                        <td>Weekly</td>
+                    </tr>
+                    <tr>
+                        <td>17:00</td>
+                        <td>Monday</td>
+                        <td>Coupon Bag</td>
+                        <td>Please ensure the coupon bag gets returned.</td>
+                        <td>N/A</td>
+                        <td>Yes</td>
+                        <td>Alert</td>
+                        <td>Weekly</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- One-Time Tasks Section -->
+        <section id="one-time-tasks">
+            <h2>One-Time Tasks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Date</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Link</th>
+                        <th>Confirmation</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>11:30</td>
+                        <td>26/01/2025</td>
+                        <td>Super Sunday</td>
+                        <td>Upload pictures of backups on Google Form.</td>
+                        <td><a href="https://docs.google.com/forms/d/e/1FAIpQLSeh199Vpaq4u_Ouy0pJBZz5sY_y_1lN9t0kJZDO9zJiuA7SpA/viewform" target="_blank">Upload Backup Pictures</a></td>
+                        <td>Yes</td>
+                        <td>Form</td>
+                        <td>Once</td>
+                    </tr>
+                    <tr>
+                        <td>13:00</td>
+                        <td>30/01/2025</td>
+                        <td>Vocovo Covers</td>
+                        <td>This form is to confirm delivery of the Vocovo keypads for the front end.</td>
+                        <td><a href="https://forms.gle/p8zWWWht2UYGQ3Dq8" target="_blank">Confirm Delivery</a></td>
+                        <td>Yes</td>
+                        <td>Calendar</td>
+                        <td>Once</td>
+                    </tr>
+                    <tr>
+                        <td>12:00</td>
+                        <td>06/02/2025</td>
+                        <td>Cage Count</td>
+                        <td>Please ensure the cage count is completed by close of business.</td>
+                        <td><a href="https://docs.google.com/forms/d/e/1FAIpQLScwD-B79hghaF3XhZnGB12ThrGnXQUJ0kseCTVzV6oFMSUo5Q/viewform" target="_blank">Complete Cage Count</a></td>
+                        <td>Yes</td>
+                        <td>Calendar</td>
+                        <td>Once</td>
+                    </tr>
+                    <tr>
+                        <td>14:26</td>
+                        <td>22/01/2025</td>
+                        <td>Form Test</td>
+                        <td>Testing out the form to create reminders.</td>
+                        <td><a href="https://forms.gle/NojELZ1uh7GX3vTS7" target="_blank">Test Form</a></td>
+                        <td>Yes (Confirmed by <a href="mailto:tanveer.hussain@morrisonsplc.co.uk">tanveer.hussain@morrisonsplc.co.uk</a> at 2025-01-22 17:08:50)</td>
+                        <td>Information</td>
+                        <td>Once</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Important Links Section -->
+        <section id="important-links">
+            <h2>Important Links</h2>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeh199Vpaq4u_Ouy0pJBZz5sY_y_1lN9t0kJZDO9zJiuA7SpA/viewform?embedded=true" title="Super Sunday Form"></iframe>
+            </div>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScwD-B79hghaF3XhZnGB12ThrGnXQUJ0kseCTVzV6oFMSUo5Q/viewform?embedded=true" title="Cage Count Form"></iframe>
+            </div>
+            <div class="iframe-container">
+                <iframe src="https://forms.gle/p8zWWWht2UYGQ3Dq8?embedded=true" title="Vocovo Covers Form"></iframe>
+            </div>
+            <!-- Add more embedded forms or links as needed -->
+        </section>
+
+        <!-- Who Is In Today Section -->
+        <section id="who-is-in">
+            <h2>Who Is In Today?</h2>
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today"></iframe>
+            </div>
+        </section>
     </div>
 </body>
 </html>
