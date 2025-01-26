@@ -67,20 +67,21 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            padding: 10px 0;
+            padding: 8px 10px; /* Reduced padding for compactness */
             box-shadow: 0 2px 4px var(--card-shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
         .nav a {
-            margin: 5px 15px;
-            padding: 10px 20px;
+            margin: 5px 10px; /* Reduced margin for compactness */
+            padding: 8px 15px; /* Reduced padding for compactness */
             background-color: var(--background-white);
             color: var(--primary-green);
-            border-radius: 25px;
+            border-radius: 20px; /* Rounded for a sleek look */
             font-weight: 700;
             transition: background-color 0.3s, color 0.3s;
+            font-size: 0.95em; /* Slightly smaller font size */
         }
         .nav a:hover {
             background-color: var(--primary-green);
@@ -88,30 +89,30 @@
         }
         /* Container Styles */
         .container {
-            padding: 30px 20px;
+            padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
         /* Section Styles */
         section {
-            margin-bottom: 40px;
+            margin-bottom: 30px; /* Reduced margin for compactness */
             background-color: var(--card-bg);
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 12px var(--card-shadow);
         }
         section h2 {
             color: var(--primary-green);
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 3px solid var(--secondary-yellow);
+            margin-bottom: 15px; /* Reduced margin for compactness */
+            font-size: 1.6em; /* Slightly smaller font size */
+            border-bottom: 2px solid var(--secondary-yellow);
             display: inline-block;
             padding-bottom: 5px;
         }
         /* Iframe Container */
         .iframe-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 75%; /* Adjusted Aspect Ratio for Sheets */
             height: 0;
             overflow: hidden;
             border-radius: 10px;
@@ -124,19 +125,25 @@
             height: 100%;
             border: none;
         }
+        /* Notes Section Specific Styles */
+        section#notes p {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 0.95em;
+        }
         /* Footer Styles */
         footer {
             background-color: var(--footer-bg);
             color: var(--footer-text);
             text-align: center;
-            padding: 15px 10px;
+            padding: 10px 5px; /* Reduced padding for compactness */
             position: relative;
             bottom: 0;
             width: 100%;
         }
         footer p {
             margin: 0;
-            font-size: 0.9em;
+            font-size: 0.8em; /* Smaller font size */
         }
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -150,17 +157,13 @@
                 font-size: 1.5em;
                 padding-left: 0;
             }
-            .nav {
-                flex-direction: column;
-                align-items: center;
-            }
             .nav a {
-                margin: 5px 0;
-                width: 80%;
-                text-align: center;
+                margin: 5px 5px; /* Further reduced margin on small screens */
+                padding: 8px 10px; /* Further reduced padding on small screens */
+                font-size: 0.85em; /* Further reduced font size on small screens */
             }
             section h2 {
-                font-size: 1.5em;
+                font-size: 1.4em;
             }
         }
         /* Smooth Scrolling */
@@ -181,10 +184,8 @@
         <a href="#who-is-in">Who Is In Today?</a>
         <a href="#management-rota">Management Rota</a>
         <a href="#add-reminder">Add New Reminder</a>
-        <a href="#announcements">Announcements</a>
         <a href="#calendar">Calendar</a>
-        <a href="#employee-directory">Employee Directory</a>
-        <a href="#performance-metrics">Performance Metrics</a>
+        <a href="#notes">Notes</a>
     </nav>
     <div class="container">
         <!-- Tasks Section -->
@@ -227,42 +228,27 @@
             </div>
         </section>
 
-        <!-- Announcements Section -->
-        <section id="announcements">
-            <h2>Announcements</h2>
-            <div class="iframe-container">
-                <!-- Embed an Announcements Google Sheet or use a Google Docs Viewer if available -->
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourAnnouncementsSheetID/pubhtml?gid=0&single=true" title="Announcements"></iframe>
-            </div>
-        </section>
-
         <!-- Calendar Section -->
         <section id="calendar">
             <h2>Calendar</h2>
             <div class="iframe-container">
-                <!-- Embed a Google Calendar or a Google Sheet formatted as a calendar -->
+                <!-- Replace 'your_calendar_id' with your actual Google Calendar embed link -->
                 <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=Europe/London" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
             </div>
         </section>
 
-        <!-- Employee Directory Section -->
-        <section id="employee-directory">
-            <h2>Employee Directory</h2>
+        <!-- Notes Section -->
+        <section id="notes">
+            <h2>Notes</h2>
+            <p>Use the embedded Google Sheet below to add, edit, or view team notes. Click on a cell to start editing.</p>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourEmployeeDirectorySheetID/pubhtml?gid=0&single=true" title="Employee Directory"></iframe>
-            </div>
-        </section>
-
-        <!-- Performance Metrics Section -->
-        <section id="performance-metrics">
-            <h2>Performance Metrics</h2>
-            <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourPerformanceMetricsSheetID/pubhtml?gid=0&single=true" title="Performance Metrics"></iframe>
+                <!-- Replace 'your_published_sheet_url' with your actual published Google Sheet URL for Notes -->
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vYourPublishedSheetURL/pubhtml?gid=0&single=true" title="Notes"></iframe>
             </div>
         </section>
     </div>
     <footer>
-        <p>&copy; 2025 Niki Cooke. All rights reserved.</p>
+        <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
     </footer>
 </body>
 </html>
