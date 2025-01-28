@@ -26,7 +26,7 @@
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
-      /* Dark Mode */
+      /* Dark Mode Variables */
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
       --dark-text-color: #e0e0e0;
@@ -34,6 +34,80 @@
       --dark-footer-text: #e0e0e0;
     }
 
+    /* Red Theme Variables */
+    .red-theme {
+      --primary-green: #8B0000; /* Dark Red */
+      --secondary-yellow: #FF6347; /* Tomato */
+      --background-faint-green: #ffe6e6; /* Faint Red */
+      --background-white: #FFFAFA; /* Snow */
+      --text-color: #4D0000; /* Darker Text for Red Theme */
+      --card-bg: var(--background-white);
+      --card-shadow: rgba(0, 0, 0, 0.2);
+      --footer-bg: var(--primary-green);
+      --footer-text: var(--background-white);
+
+      /* Dark Mode Overrides for Red Theme */
+      --dark-background: #1a0a0a;
+      --dark-card-bg: #2e0e0e;
+      --dark-text-color: #f0e0e0;
+      --dark-footer-bg: #4d0000;
+      --dark-footer-text: #f0e0e0;
+    }
+
+    /* Transition for Smooth Theme Change */
+    :root, .red-theme {
+      transition: all 2s ease;
+    }
+
+    /* Flashing Overlay Styles */
+    #flash-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      animation: flash 1s forwards;
+    }
+
+    @keyframes flash {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      20% { opacity: 0; }
+      30% { opacity: 1; }
+      40% { opacity: 0; }
+      50% { opacity: 1; }
+      60% { opacity: 0; }
+      70% { opacity: 1; }
+      80% { opacity: 0; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* Fade Out Animation */
+    #flash-overlay.fade-out {
+      animation: fadeOut 2s forwards 1s; /* Delay fadeOut to start after flash */
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    /* Optional: Hue Rotate for Enhanced Transition */
+    body.red-theme-transition {
+      animation: hueRotate 2s forwards;
+    }
+
+    @keyframes hueRotate {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(-120deg); } /* Adjust degrees as needed */
+    }
+
+    /* Existing CSS Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -370,6 +444,9 @@
   </style>
 </head>
 <body>
+  <!-- Flash Overlay -->
+  <div id="flash-overlay"></div>
+
   <header>
     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
          alt="Morrisons Logo">
@@ -638,6 +715,36 @@
         }
       });
     }
+
+    /* Loading Animation Script */
+    document.addEventListener('DOMContentLoaded', () => {
+      const flashOverlay = document.getElementById('flash-overlay');
+
+      const flashDuration = 1000; // 1 second
+      const totalDuration = 3000; // 3 seconds total for flash and fade
+
+      // Start the flash animation
+      flashOverlay.style.animation = 'flash 1s forwards';
+
+      // After flashDuration, start fading out the overlay
+      setTimeout(() => {
+        flashOverlay.classList.add('fade-out');
+      }, flashDuration);
+
+      // After totalDuration, add the red theme
+      setTimeout(() => {
+        // Optionally, add a transition class for additional effects
+        document.body.classList.add('red-theme-transition');
+
+        // Add the red theme class
+        document.body.classList.add('red-theme');
+
+        // Remove the overlay after transition
+        setTimeout(() => {
+          flashOverlay.style.display = 'none';
+        }, 2000); // Match this to your fadeOut animation duration
+      }, totalDuration);
+    });
   </script>
 </body>
 </html>
