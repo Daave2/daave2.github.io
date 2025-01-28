@@ -236,6 +236,7 @@
                 left: 0;
                 box-shadow: none;
                 background-color: var(--nav-bg);
+                display: none; /* Ensure it's hidden by default */
             }
             .dropdown .dropbtn::after {
                 content: ' \25B6'; /* Right arrow for collapsed state */
@@ -243,7 +244,11 @@
                 margin-left: 5px;
             }
             .dropdown.active .dropdown-content {
-                display: flex;
+                display: block; /* Change to block for mobile */
+            }
+            /* Ensure dropdown links align correctly */
+            .dropdown-content a {
+                padding: 10px 20px;
             }
         }
         /* Container Styles */
@@ -579,7 +584,8 @@
     </div>
     <footer>
         <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
-    <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai><script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+        <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai>
+        <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
     </footer>
 
     <!-- JavaScript for Dark Mode Toggle and Hamburger Menu -->
