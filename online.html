@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cleveleys Morrisons Management Dashboard - Online</title>
   <!-- Google Fonts & Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet"
@@ -168,55 +168,53 @@
       }
     }
 
-    .container { padding:20px; max-width:1200px; margin:0 auto; }
-    section {
-      margin-bottom:30px; background-color:var(--card-bg);
-      padding:20px; border-radius:10px;
-      box-shadow:0 4px 12px var(--card-shadow);
-      transition:background-color 0.3s, box-shadow 0.3s;
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
     }
-    body.dark-mode section {
-      background-color:var(--dark-card-bg);
-      box-shadow:0 4px 12px var(--dark-card-bg);
+    .dashboard-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
-    section h2 {
-      color:var(--primary-green);
-      margin-bottom:15px; font-size:1.6em;
-      border-bottom:2px solid var(--secondary-yellow);
-      display:inline-block; padding-bottom:5px;
-      transition: color 0.3s, border-bottom-color 0.3s;
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px var(--card-shadow);
     }
-    body.dark-mode section h2 {
-      color:var(--dark-text-color);
-      border-bottom-color: var(--secondary-yellow);
+    .dashboard-card h3 {
+      margin-bottom: 15px;
+      color: var(--primary-green);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.4em;
     }
-
-    /* New CSS for SVG Chart */
-    .chart-container {
+    .dashboard-card iframe {
       width: 100%;
-      overflow-x: auto;
-      margin-top: 20px;
+      height: 400px;
+      border: none;
+      border-radius: 5px;
     }
-    .chart-container svg {
-      max-width: 100%;
-      height: auto;
-      display: block;
+    .dashboard-card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--primary-green);
+      font-weight: 500;
+      transition: color 0.3s;
     }
-
-    footer {
-      background-color:var(--footer-bg);
-      color:var(--footer-text);
-      text-align:center; padding:10px 5px;
-      bottom:0; width:100%;
-      transition:background-color 0.3s, color 0.3s;
+    .dashboard-card a:hover {
+      color: var(--secondary-yellow);
     }
-    body.dark-mode footer {
-      background-color:var(--dark-footer-bg);
-      color:var(--dark-footer-text);
+    /* Responsive iframe height */
+    @media (max-width: 768px) {
+      .dashboard-card iframe {
+        height: 300px;
+      }
     }
-    footer p { margin:0; font-size:0.8em; }
-
-    /* Add or remove any additional styles from your main page as needed. */
   </style>
 </head>
 <body>
@@ -250,301 +248,47 @@
   </nav>
 
   <div class="container">
-    <section>
-      <h2>Online Page</h2>
-      <!-- SVG Chart Container -->
-      <div class="chart-container">
-        <!-- Embedded SVG Chart -->
-        <svg class="recharts-surface" width="1036" height="400" viewBox="0 0 1036 400" version="1.1" aria-labelledby="chartTitle chartDesc" role="img">
-          <title id="chartTitle">Outbound Graph Bar Chart</title>
-          <desc id="chartDesc">Bar chart showing outbound units over different time periods.</desc>
-          <defs>
-            <clipPath id="recharts15-clip">
-              <rect x="20" y="20" height="330" width="926"></rect>
-            </clipPath>
-          </defs>
-          <g class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis">
-            <line class="recharts-cartesian-axis-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="20" y1="350" x2="946" y2="350"></line>
-            <g class="recharts-cartesian-axis-ticks">
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="86.14285714285714" y1="356" x2="86.14285714285714" y2="350"></line>
-                <g>
-                  <text x="86.14285714285714" y="368" text-anchor="middle" fill="#5B5B5B">05:30-</text>
-                  <text x="86.14285714285714" y="382" text-anchor="middle" fill="#5B5B5B">07:30</text>
-                </g>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="218.42857142857142" y1="356" x2="218.42857142857142" y2="350"></line>
-                <g>
-                  <text x="218.42857142857142" y="368" text-anchor="middle" fill="#5B5B5B">06:00-</text>
-                  <text x="218.42857142857142" y="382" text-anchor="middle" fill="#5B5B5B">09:30</text>
-                </g>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="350.71428571428567" y1="356" x2="350.71428571428567" y2="350"></line>
-                <g>
-                  <text x="350.71428571428567" y="368" text-anchor="middle" fill="#5B5B5B">08:00-</text>
-                  <text x="350.71428571428567" y="382" text-anchor="middle" fill="#5B5B5B">11:30</text>
-                </g>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="483" y1="356" x2="483" y2="350"></line>
-                <g>
-                  <text x="483" y="368" text-anchor="middle" fill="#5B5B5B">10:00-</text>
-                  <text x="483" y="382" text-anchor="middle" fill="#5B5B5B">13:30</text>
-                </g>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="615.2857142857142" y1="356" x2="615.2857142857142" y2="350"></line>
-                <g>
-                  <text x="615.2857142857142" y="368" text-anchor="middle" fill="#5B5B5B">12:00-</text>
-                  <text x="615.2857142857142" y="382" text-anchor="middle" fill="#5B5B5B">15:30</text>
-                </g>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="747.5714285714284" y1="356" x2="747.5714285714284" y2="350"></line>
-                <g>
-                  <text x="747.5714285714284" y="368" text-anchor="middle" fill="#5B5B5B">14:00-</text>
-                  <text x="747.5714285714284" y="382" text-anchor="middle" fill="#5B5B5B">17:30</text>
-                  <text x="747.5714285714284" y="396" text-anchor="middle" fill="#5B5B5B">&lt;2hr</text>
-                </g>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" height="45" width="926" x="20" y="350" stroke="#666" fill="none" x1="879.8571428571428" y1="356" x2="879.8571428571428" y2="350"></line>
-                <g>
-                  <text x="879.8571428571428" y="368" text-anchor="middle" fill="#5B5B5B">16:00-</text>
-                  <text x="879.8571428571428" y="382" text-anchor="middle" fill="#5B5B5B">19:30</text>
-                </g>
-              </g>
-            </g>
-          </g>
-          <g class="recharts-layer recharts-cartesian-axis recharts-yAxis yAxis">
-            <line class="recharts-cartesian-axis-line" width="60" height="330" x="946" y="20" stroke="#666" fill="none" x1="946" y1="20" x2="946" y2="350"></line>
-            <g class="recharts-cartesian-axis-ticks">
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" width="60" height="330" x="946" y="20" stroke="#666" fill="none" x1="952" y1="350" x2="946" y2="350"></line>
-                <text width="60" height="330" x="954" y="350" stroke="none" fill="#666" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="start">
-                  <tspan x="954" dy="0.355em">0</tspan>
-                </text>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" width="60" height="330" x="946" y="20" stroke="#666" fill="none" x1="952" y1="267.5" x2="946" y2="267.5"></line>
-                <text width="60" height="330" x="954" y="267.5" stroke="none" fill="#666" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="start">
-                  <tspan x="954" dy="0.355em">150</tspan>
-                </text>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" width="60" height="330" x="946" y="20" stroke="#666" fill="none" x1="952" y1="185" x2="946" y2="185"></line>
-                <text width="60" height="330" x="954" y="185" stroke="none" fill="#666" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="start">
-                  <tspan x="954" dy="0.355em">300</tspan>
-                </text>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" width="60" height="330" x="946" y="20" stroke="#666" fill="none" x1="952" y1="102.5" x2="946" y2="102.5"></line>
-                <text width="60" height="330" x="954" y="102.5" stroke="none" fill="#666" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="start">
-                  <tspan x="954" dy="0.355em">450</tspan>
-                </text>
-              </g>
-              <g class="recharts-layer recharts-cartesian-axis-tick">
-                <line class="recharts-cartesian-axis-tick-line" width="60" height="330" x="946" y="20" stroke="#666" fill="none" x1="952" y1="20" x2="946" y2="20"></line>
-                <text width="60" height="330" x="954" y="20" stroke="none" fill="#666" class="recharts-text recharts-cartesian-axis-tick-value" text-anchor="start">
-                  <tspan x="954" dy="0.355em">600</tspan>
-                </text>
-              </g>
-            </g>
-            <text x="996" y="30" class="recharts-text recharts-label" text-anchor="end">
-              <tspan x="996" dy="0.71em">Units</tspan>
-            </text>
-          </g>
-          <g class="recharts-cartesian-grid">
-            <g class="recharts-cartesian-grid-vertical">
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="86.14285714285714" y1="20" x2="86.14285714285714" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="218.42857142857142" y1="20" x2="218.42857142857142" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="350.71428571428567" y1="20" x2="350.71428571428567" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="483" y1="20" x2="483" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="615.2857142857142" y1="20" x2="615.2857142857142" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="747.5714285714284" y1="20" x2="747.5714285714284" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="879.8571428571428" y1="20" x2="879.8571428571428" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="20" y1="20" x2="20" y2="350"></line>
-              <line stroke="#ccc" fill="none" x="20" y="20" width="926" height="330" x1="946" y1="20" x2="946" y2="350"></line>
-            </g>
-          </g>
-          <g class="recharts-layer recharts-bar outbound-graph-bar">
-            <g class="recharts-layer recharts-bar-rectangles">
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="33.22857142857143" y="235.04999999999998" width="105" height="114.95000000000002" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="165.5142857142857" y="166.84999999999997" width="105" height="183.15000000000003" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="297.79999999999995" y="221.3" width="105" height="128.7" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="430.08571428571423" y="101.94999999999999" width="105" height="248.05" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="562.3714285714285" y="319.75" width="105" height="30.25" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="694.6571428571427" y="350" width="105" height="0" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="826.9428571428571" y="350" width="105" height="0" stroke="#378093" fill="#378093" stroke-width="2"></rect>
-              </g>
-            </g>
-            <g class="recharts-layer recharts-label-list">
-              <g>
-                <text x="85.72857142857143" y="293.525" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">209</text>
-              </g>
-              <g>
-                <text x="218.0142857142857" y="259.42499999999995" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">333</text>
-              </g>
-              <g>
-                <text x="350.29999999999995" y="286.65" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">234</text>
-              </g>
-              <g>
-                <text x="482.58571428571423" y="226.975" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">451</text>
-              </g>
-              <g>
-                <text x="614.8714285714285" y="335.875" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">55</text>
-              </g>
-              <text x="747.1571428571427" y="350" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="879.4428571428571" y="350" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-            </g>
-          </g>
-          <g class="recharts-layer recharts-bar outbound-graph-bar">
-            <g class="recharts-layer recharts-bar-rectangles">
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="33.22857142857143" y="235.04999999999998" width="105" height="0" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="165.5142857142857" y="166.84999999999997" width="105" height="0" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="297.79999999999995" y="221.3" width="105" height="0" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="430.08571428571423" y="101.94999999999999" width="105" height="0" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="562.3714285714285" y="184.45" width="105" height="135.3" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="694.6571428571427" y="260.9" width="105" height="89.10000000000002" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="826.9428571428571" y="350" width="105" height="0" stroke="#378093" fill="#57B9C3" stroke-width="2"></rect>
-              </g>
-            </g>
-            <g class="recharts-layer recharts-label-list">
-              <text x="85.72857142857143" y="235.04999999999998" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="218.0142857142857" y="166.84999999999997" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="350.29999999999995" y="221.3" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="482.58571428571423" y="101.94999999999999" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <g>
-                <text x="614.8714285714285" y="253.1" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">246</text>
-              </g>
-              <g>
-                <text x="747.1571428571427" y="306.45" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">162</text>
-              </g>
-              <text x="879.4428571428571" y="350" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-            </g>
-          </g>
-          <g class="recharts-layer recharts-bar outbound-graph-bar">
-            <g class="recharts-layer recharts-bar-rectangles">
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="33.22857142857143" y="235.04999999999998" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="165.5142857142857" y="166.84999999999997" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="297.79999999999995" y="221.3" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="430.08571428571423" y="101.94999999999999" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="562.3714285714285" y="184.45" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="694.6571428571427" y="260.9" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="826.9428571428571" y="350" width="105" height="0" stroke="#378093" fill="#9DE0D9" stroke-width="2"></rect>
-              </g>
-            </g>
-            <g class="recharts-layer recharts-label-list">
-              <text x="85.72857142857143" y="235.04999999999998" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="218.0142857142857" y="166.84999999999997" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="350.29999999999995" y="221.3" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="482.58571428571423" y="101.94999999999999" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="614.8714285714285" y="184.45" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="747.1571428571427" y="260.9" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="879.4428571428571" y="350" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-            </g>
-          </g>
-          <g class="recharts-layer recharts-bar outbound-graph-bar">
-            <g class="recharts-layer recharts-bar-rectangles">
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="33.22857142857143" y="235.04999999999998" width="105" height="0" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="165.5142857142857" y="166.84999999999997" width="105" height="0" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="297.79999999999995" y="221.3" width="105" height="0" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="430.08571428571423" y="101.94999999999999" width="105" height="0" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="562.3714285714285" y="184.45" width="105" height="0" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="694.6571428571427" y="250.44999999999996" width="105" height="10.450000000000017" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-              <g class="recharts-layer recharts-bar-rectangle">
-                <rect x="826.9428571428571" y="271.90000000000003" width="105" height="78.09999999999997" stroke="#378093" fill="#FEF5D5" stroke-width="2"></rect>
-              </g>
-            </g>
-            <g class="recharts-layer recharts-label-list">
-              <text x="85.72857142857143" y="235.04999999999998" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="218.0142857142857" y="166.84999999999997" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="350.29999999999995" y="221.3" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="482.58571428571423" y="101.94999999999999" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="614.8714285714285" y="184.45" width="105" height="0" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <text x="747.1571428571427" y="255.67499999999995" width="105" height="10.450000000000017" class="recharts-text recharts-label" text-anchor="middle"></text>
-              <g>
-                <text x="879.4428571428571" y="311.95000000000005" fill="#378093" text-anchor="middle" dominant-baseline="middle">142</text>
-              </g>
-            </g>
-            <g class="recharts-layer recharts-label-list">
-              <g>
-                <text x="85.72857142857143" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">+4</text>
-              </g>
-              <g>
-                <text x="218.0142857142857" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">0</text>
-              </g>
-              <g>
-                <text x="350.29999999999995" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">0</text>
-              </g>
-              <g>
-                <text x="482.58571428571423" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">0</text>
-              </g>
-              <g>
-                <text x="614.8714285714285" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">0</text>
-              </g>
-              <g>
-                <text x="747.1571428571427" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">0</text>
-              </g>
-              <g>
-                <text x="879.4428571428571" y="10" fill="#718B49" font-weight="bold" text-anchor="middle" dominant-baseline="middle">0</text>
-              </g>
-            </g>
-          </g>
-        </svg>
+    <section class="dashboard">
+      <!-- Amazon Seller Dashboard -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-amazon"></i> Amazon Seller Dashboard</h3>
+        <p>Manage your Amazon sales, inventory, and orders directly from the dashboard.</p>
+        <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer">Access Amazon Seller Dashboard</a>
+      </div>
+
+      <!-- Deliveroo Hub -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-burger-soda"></i> Deliveroo Hub</h3>
+        <p>Manage your Deliveroo restaurant operations, orders, and menu.</p>
+        <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer">Access Deliveroo Hub</a>
+      </div>
+
+      <!-- Amazon Daily Update -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-chart-line"></i> Amazon Daily Update</h3>
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" target="_blank" rel="noopener noreferrer">View Full Sheet</a>
+      </div>
+
+      <!-- Online Toolkit -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-tools"></i> Online Toolkit</h3>
+        <p>Access essential tools and resources for managing online operations.</p>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home" target="_blank" rel="noopener noreferrer">Visit Online Toolkit</a>
+      </div>
+
+      <!-- Click & Collect (C&C) Guide -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-shopping-cart"></i> Click & Collect Guide</h3>
+        <p>Detailed guidelines and procedures for the Click & Collect service.</p>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer">View C&C Guide</a>
+      </div>
+
+      <!-- OSP (Online Store Platform) -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-laptop-code"></i> OSP Platform</h3>
+        <p>Manage your online store operations through the OSP.</p>
+        <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">Access OSP Platform</a>
       </div>
     </section>
   </div>
