@@ -59,7 +59,6 @@
       background-color: var(--dark-background);
       color: var(--dark-text-color);
     }
-
     a {
       color: inherit;
       text-decoration: none;
@@ -67,7 +66,7 @@
 
     /* Lock body scrolling when mobile nav is open */
     body.mobile-nav-open {
-      overflow: hidden; /* prevents scrolling the main page */
+      overflow: hidden; /* prevents scrolling the main page underneath the side nav */
     }
 
     /* Header Styles */
@@ -132,16 +131,16 @@
       background-color: var(--dark-nav-bg);
     }
 
+    /* Desktop nav-links (horizontal layout) */
     .nav-links {
-      /* By default (desktop), display horizontally */
       display: flex;
       flex-wrap: wrap;
       list-style: none;
-      position: relative; /* for dropdown in desktop */
+      position: relative;
     }
     .nav-links li {
       margin: 5px 10px;
-      position: relative; /* For dropdown positioning */
+      position: relative; /* for dropdown positioning (desktop) */
     }
     .nav-links a {
       display: block;
@@ -166,9 +165,9 @@
       color: var(--dark-nav-hover-text);
     }
 
-    /* Dropdown Styles - Desktop */
+    /* Desktop Dropdown: "More" on hover */
     .dropdown .dropbtn::after {
-      content: ' \25BC'; /* Down arrow */
+      content: ' \25BC'; /* Down arrow on desktop */
       font-size: 0.6em;
       margin-left: 5px;
     }
@@ -180,14 +179,13 @@
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       border-radius: 5px;
       z-index: 1;
-      top: 40px; /* Adjust based on nav height */
+      top: 40px; /* Adjust if needed for nav height */
       left: 0;
       flex-direction: column;
     }
     .dropdown-content a {
       color: var(--primary-green);
       padding: 12px 16px;
-      text-decoration: none;
       display: block;
       border-radius: 5px;
     }
@@ -205,8 +203,7 @@
       background-color: var(--dark-nav-hover-bg);
       color: var(--dark-nav-hover-text);
     }
-
-    /* Show Dropdown on Hover for Desktop */
+    /* Show desktop dropdown on hover */
     @media (min-width: 769px) {
       .dropdown:hover .dropdown-content {
         display: flex;
@@ -230,26 +227,25 @@
       background-color: var(--dark-text-color);
     }
 
-    /* Mobile Navigation Overhaul */
+    /* MOBILE NAV (max-width: 768px) */
     @media (max-width: 768px) {
-      /* Hide the desktop nav layout */
+      /* Hide horizontal desktop nav layout; turn into side drawer */
       .nav-links {
-        /* We'll turn this into a slide-in panel */
         position: fixed;
         top: 0;
         left: 0;
         width: 80%;
-        max-width: 300px; /* optional max width for the drawer */
-        height: 100vh;    /* fill the screen height */
+        max-width: 300px; 
+        height: 100vh;
         background-color: var(--nav-bg);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-        padding: 60px 20px 20px; /* top space for header area */
+        padding: 60px 20px 20px;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        overflow-y: auto; /* allow scrolling inside the nav */
+        overflow-y: auto; /* scroller within the side nav */
         z-index: 9999;
       }
       body.dark-mode .nav-links {
@@ -259,12 +255,12 @@
         transform: translateX(0);
       }
 
-      /* Show the hamburger */
+      /* Show the hamburger on mobile */
       .hamburger {
         display: flex;
       }
 
-      /* The main nav row can remain as is but won't show links horizontally anymore */
+      /* Mobile nav item styles */
       .nav-links li {
         margin: 0;
         width: 100%;
@@ -289,22 +285,24 @@
         color: var(--nav-hover-text);
       }
 
-      /* Mobile dropdown styling */
+      /* Mobile "More" styling: we show arrow to indicate sub-menu can expand */
       .dropdown .dropbtn::after {
         content: ' \25B6'; /* Right arrow for collapsed state */
         float: right;
         margin-left: 5px;
       }
+
+      /* Submenu is placed statically below "More" link */
       .dropdown-content {
         position: static;
         box-shadow: none;
-        background-color: transparent; 
+        background-color: transparent;
         display: none;
         width: 100%;
-        padding-left: 10px;
+        padding-left: 10px; 
       }
       .dropdown.active .dropdown-content {
-        display: block;
+        display: block; /* show sub-links when tapped on mobile */
       }
       .dropdown-content a {
         padding: 8px 20px;
@@ -377,7 +375,7 @@
     /* Responsive Iframe */
     @media (max-width: 768px) {
       .iframe-container {
-        padding-bottom: 75%; /* Adjust aspect ratio for smaller screens */
+        padding-bottom: 75%; /* Adjust for smaller screens */
       }
     }
 
@@ -735,7 +733,7 @@
       e.stopPropagation();
       navLinks.classList.toggle('active');
       hamburger.classList.toggle('active');
-      // Toggle body scroll
+      // Toggle body scroll lock
       document.body.classList.toggle('mobile-nav-open');
       // Update ARIA
       const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
@@ -759,11 +757,11 @@
       }
     });
 
-    // Close the nav when a non-dropdown link is clicked (optional)
+    // Close the nav when clicking a non-"More" link
     const navItems = document.querySelectorAll('.nav-links a');
     navItems.forEach(item => {
       item.addEventListener('click', () => {
-        // If user clicked the 'More' button itself, ignore
+        // If user clicked 'More' itself, ignore
         if (item.classList.contains('dropbtn')) return;
         if (navLinks.classList.contains('active')) {
           navLinks.classList.remove('active');
@@ -774,7 +772,7 @@
       });
     });
 
-    // Dropdown for Mobile
+    // Dropdown for Mobile: toggled by tapping "More"
     dropbtn.addEventListener('click', (e) => {
       if (window.innerWidth <= 768) {
         e.preventDefault();
