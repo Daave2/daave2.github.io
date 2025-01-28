@@ -6,6 +6,8 @@
     <title>Cleveleys Morrisons Management Dashboard</title>
     <!-- Google Fonts for Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (Optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* CSS Variables for Light and Dark Themes */
         :root {
@@ -121,6 +123,7 @@
         }
         .nav-links li {
             margin: 5px 10px; /* Reduced margin for compactness */
+            position: relative; /* For dropdown positioning */
         }
         .nav-links a {
             display: block;
@@ -143,6 +146,51 @@
         body.dark-mode .nav-links a:hover {
             background-color: var(--dark-nav-hover-bg);
             color: var(--dark-nav-hover-text);
+        }
+        /* Dropdown Styles */
+        .dropdown .dropbtn::after {
+            content: ' \25BC'; /* Down arrow */
+            font-size: 0.6em;
+            margin-left: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--background-white);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            z-index: 1;
+            top: 40px; /* Adjust based on nav height */
+            left: 0;
+            flex-direction: column;
+        }
+        .dropdown-content a {
+            color: var(--primary-green);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-radius: 5px;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--nav-hover-bg);
+            color: var(--nav-hover-text);
+        }
+        body.dark-mode .dropdown-content {
+            background-color: var(--dark-nav-bg);
+        }
+        body.dark-mode .dropdown-content a {
+            color: var(--dark-nav-text);
+        }
+        body.dark-mode .dropdown-content a:hover {
+            background-color: var(--dark-nav-hover-bg);
+            color: var(--dark-nav-hover-text);
+        }
+        /* Show Dropdown on Hover for Desktop */
+        @media (min-width: 769px) {
+            .dropdown:hover .dropdown-content {
+                display: flex;
+            }
         }
         /* Hamburger Menu Styles */
         .hamburger {
@@ -182,8 +230,20 @@
                 padding: 10px;
                 text-align: center;
             }
-            body.dark-mode .nav-links {
-                background-color: var(--dark-nav-bg);
+            .dropdown-content {
+                position: relative;
+                top: 0;
+                left: 0;
+                box-shadow: none;
+                background-color: var(--nav-bg);
+            }
+            .dropdown .dropbtn::after {
+                content: ' \25B6'; /* Right arrow for collapsed state */
+                float: right;
+                margin-left: 5px;
+            }
+            .dropdown.active .dropdown-content {
+                display: flex;
             }
         }
         /* Container Styles */
@@ -376,6 +436,11 @@
                 font-size: 0.9em;
             }
         }
+        /* Focus Styles for Accessibility */
+        a:focus, .dropbtn:focus {
+            outline: 2px solid var(--primary-green);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
@@ -384,7 +449,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
         <h1>Cleveleys Morrisons Management Dashboard</h1>
         <!-- Dark Mode Toggle Button -->
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode">
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
             &#9790;
         </button>
     </header>
@@ -398,6 +463,17 @@
             <li><a href="#add-reminder">Add New Reminder</a></li>
             <li><a href="#calendar">Calendar</a></li>
             <li><a href="#notes">Notes</a></li>
+            <!-- More Dropdown -->
+            <li class="dropdown">
+                <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">More</a>
+                <ul class="dropdown-content" aria-label="submenu">
+                    <li><a href="online.html">Online</a></li>
+                    <li><a href="street.html">Street</a></li>
+                    <li><a href="shrink.html">Shrink</a></li>
+                    <li><a href="safe-and-legal.html">Safe and Legal</a></li>
+                    <li><a href="contacts.html">Contacts</a></li>
+                </ul>
+            </li>
         </ul>
         <!-- Hamburger Menu -->
         <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
@@ -448,7 +524,7 @@
                     <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE" class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
                     <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1" class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
                     <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB" class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
-                    <a href="https://lookerstudio.google.com/u/0/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD" class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
+                    <a href="https://lookerstudio.google.com/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD" class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
                     <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs" class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
                 </div>
@@ -503,7 +579,7 @@
     </div>
     <footer>
         <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
-<elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai><script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+    <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai><script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
     </footer>
 
     <!-- JavaScript for Dark Mode Toggle and Hamburger Menu -->
@@ -545,6 +621,30 @@
         hamburger.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 hamburger.click();
+            }
+        });
+
+        // Dropdown Toggle for Mobile
+        const dropdown = document.querySelector('.dropdown');
+        const dropbtn = dropdown.querySelector('.dropbtn');
+
+        dropbtn.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) { // Only for mobile
+                e.preventDefault();
+                dropdown.classList.toggle('active');
+                // Update ARIA attribute
+                const expanded = dropbtn.getAttribute('aria-expanded') === 'true' || false;
+                dropbtn.setAttribute('aria-expanded', !expanded);
+            }
+        });
+
+        // Close the dropdown when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!dropdown.contains(event.target)) {
+                if (dropdown.classList.contains('active')) {
+                    dropdown.classList.remove('active');
+                    dropbtn.setAttribute('aria-expanded', false);
+                }
             }
         });
     </script>
