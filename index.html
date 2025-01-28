@@ -14,17 +14,15 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
   <style>
-    /* CSS Variables for Light and Dark Themes */
+    /* --------------------------------------------------
+       CSS Variables for Light and Dark Themes
+       -------------------------------------------------- */
     :root {
       --primary-green: #006400; /* Dark Green */
       --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
       --background-faint-green: #e6ffe6; /* Faint Green */
       --background-white: #FFFFFF; /* White */
       --text-color: #333333; /* Dark Gray */
-      --nav-bg: var(--secondary-yellow);
-      --nav-text: var(--primary-green);
-      --nav-hover-bg: var(--primary-green);
-      --nav-hover-text: var(--background-white);
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.1);
       --footer-bg: var(--primary-green);
@@ -34,15 +32,13 @@
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
       --dark-text-color: #e0e0e0;
-      --dark-nav-bg: #333333;
-      --dark-nav-text: #e0e0e0;
-      --dark-nav-hover-bg: #555555;
-      --dark-nav-hover-text: #ffffff;
       --dark-footer-bg: #333333;
       --dark-footer-text: #e0e0e0;
     }
 
-    /* Reset and Base Styles */
+    /* --------------------------------------------------
+       Reset and Base Styles
+       -------------------------------------------------- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -69,7 +65,9 @@
       overflow: hidden;
     }
 
-    /* Header Styles */
+    /* --------------------------------------------------
+       Header Styles
+       -------------------------------------------------- */
     header {
       background-color: var(--background-white);
       color: var(--primary-green);
@@ -94,15 +92,123 @@
     header h1 {
       font-size: 2em;
       margin: 0;
-      padding-left: 80px; /* To prevent overlap with logo (desktop) */
+      padding-left: 80px; /* Prevent overlap with logo (desktop) */
     }
 
-    /* Dark Mode Toggle Styles */
-    .dark-mode-toggle {
+    /* --------------------------------------------------
+       Navigation (Improved)
+       -------------------------------------------------- */
+    nav.nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--secondary-yellow);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+    body.dark-mode nav.nav {
+      background-color: #333;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 60px;
+    }
+
+    /* Navigation Links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
+      transition: transform 0.3s ease;
+    }
+    .nav-links li {
+      position: relative;
+    }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      color: var(--primary-green);
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    body.dark-mode .nav-links a {
+      color: var(--dark-text-color);
+    }
+    .nav-links a:hover {
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      transform: translateY(-2px);
+    }
+
+    /* Active link indicator (optional; can remove if not needed) */
+    .nav-links .active {
+      background-color: var(--primary-green);
+      color: var(--background-white);
+    }
+
+    /* Animated underline on hover */
+    .nav-links a::after {
+      content: '';
       position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-green);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links .active::after {
+      width: 100%;
+    }
+
+    /* Hamburger Menu Icon */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: var(--primary-green);
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+    body.dark-mode .hamburger span {
+      background: var(--dark-text-color);
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* Nav Actions (Dark Mode Toggle, etc.) */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .dark-mode-toggle {
       background: none;
       border: none;
       cursor: pointer;
@@ -114,153 +220,32 @@
       color: var(--dark-text-color);
     }
 
-    /* Navigation Bar - Desktop */
-    .nav {
-      background-color: var(--nav-bg);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 10px;
-      box-shadow: 0 2px 4px var(--card-shadow);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      transition: background-color 0.3s;
-    }
-    body.dark-mode .nav {
-      background-color: var(--dark-nav-bg);
-    }
-
-    /* Desktop nav-links (horizontal layout) */
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      list-style: none;
-      position: relative;
-    }
-    .nav-links li {
-      margin: 5px 10px;
-      position: relative; /* for dropdown positioning (desktop) */
-    }
-    .nav-links a {
-      display: block;
-      padding: 8px 15px;
-      background-color: var(--background-white);
-      color: var(--primary-green);
-      border-radius: 20px;
-      font-weight: 700;
-      transition: background-color 0.3s, color 0.3s;
-      font-size: 0.95em;
-    }
-    body.dark-mode .nav-links a {
-      background-color: var(--dark-nav-bg);
-      color: var(--dark-nav-text);
-    }
-    .nav-links a:hover {
-      background-color: var(--nav-hover-bg);
-      color: var(--nav-hover-text);
-    }
-    body.dark-mode .nav-links a:hover {
-      background-color: var(--dark-nav-hover-bg);
-      color: var(--dark-nav-hover-text);
-    }
-
-    /* Desktop Dropdown: "More" on hover */
-    .dropdown .dropbtn::after {
-      content: ' \25BC'; /* Down arrow on desktop */
-      font-size: 0.6em;
-      margin-left: 5px;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: var(--background-white);
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      border-radius: 5px;
-      z-index: 1;
-      top: 40px; /* Adjust if needed for nav height */
-      left: 0;
-      flex-direction: column;
-    }
-    .dropdown-content a {
-      color: var(--primary-green);
-      padding: 12px 16px;
-      display: block;
-      border-radius: 5px;
-    }
-    .dropdown-content a:hover {
-      background-color: var(--nav-hover-bg);
-      color: var(--nav-hover-text);
-    }
-    body.dark-mode .dropdown-content {
-      background-color: var(--dark-nav-bg);
-    }
-    body.dark-mode .dropdown-content a {
-      color: var(--dark-nav-text);
-    }
-    body.dark-mode .dropdown-content a:hover {
-      background-color: var(--dark-nav-hover-bg);
-      color: var(--dark-nav-hover-text);
-    }
-    /* Show desktop dropdown on hover */
-    @media (min-width: 769px) {
-      .dropdown:hover .dropdown-content {
+    /* ------------------------------------------
+       Mobile Navigation
+       ------------------------------------------ */
+    @media (max-width: 768px) {
+      .hamburger {
         display: flex;
       }
-    }
-
-    /* Hamburger Menu Icon (visible on mobile only) */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-    }
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: var(--primary-green);
-      margin: 4px 0;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-    body.dark-mode .hamburger div {
-      background-color: var(--dark-text-color);
-    }
-
-    /* MOBILE NAV (max-width: 768px) */
-    @media (max-width: 768px) {
-      /* Hide horizontal desktop nav layout; turn into side drawer */
       .nav-links {
         position: fixed;
-        top: 0;
+        top: 60px;
         left: 0;
-        width: 80%;
-        max-width: 300px;
-        height: 100vh;
-        background-color: var(--nav-bg);
-        display: flex;
+        right: 0;
+        bottom: 0;
+        background: var(--secondary-yellow);
         flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
-        padding: 60px 20px 20px;
+        padding: 1rem;
         transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease;
         overflow-y: auto;
-        z-index: 9999;
       }
       body.dark-mode .nav-links {
-        background-color: var(--dark-nav-bg);
+        background: #333;
       }
       .nav-links.active {
         transform: translateX(0);
       }
-
-      /* Show the hamburger on mobile */
-      .hamburger {
-        display: flex;
-      }
-
-      /* Mobile nav item styles */
       .nav-links li {
         margin: 0;
         width: 100%;
@@ -269,60 +254,30 @@
         margin: 10px 0;
         width: 100%;
         background-color: transparent;
-        border-radius: 0;
         color: var(--primary-green);
-        font-weight: 700;
+        border-radius: 4px;
         text-align: left;
         font-size: 1em;
         padding: 10px;
       }
       body.dark-mode .nav-links a {
-        background-color: transparent;
-        color: var(--dark-nav-text);
+        color: var(--dark-text-color);
       }
       .nav-links a:hover {
-        background-color: var(--nav-hover-bg);
-        color: var(--nav-hover-text);
-      }
-
-      /* Mobile "More" styling: arrow to indicate sub-menu can expand */
-      .dropdown .dropbtn::after {
-        content: ' \25B6'; /* Right arrow for collapsed state */
-        float: right;
-        margin-left: 5px;
-      }
-
-      /* Submenu is placed statically below "More" link */
-      .dropdown-content {
-        position: static;
-        box-shadow: none;
-        background-color: transparent;
-        display: none;
-        width: 100%;
-        padding-left: 10px;
-      }
-      .dropdown.active .dropdown-content {
-        display: block;
-      }
-      .dropdown-content a {
-        padding: 8px 20px;
-        background-color: transparent;
-        color: var(--primary-green);
-      }
-      .dropdown-content a:hover {
-        background-color: var(--nav-hover-bg);
-        color: var(--nav-hover-text);
+        background-color: var(--primary-green);
+        color: var(--background-white);
       }
     }
 
-    /* Container Styles */
+    /* --------------------------------------------------
+       Container and Sections
+       -------------------------------------------------- */
     .container {
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    /* Section Styles */
     section {
       margin-bottom: 30px;
       background-color: var(--card-bg);
@@ -349,7 +304,9 @@
       border-bottom-color: var(--secondary-yellow);
     }
 
-    /* Iframe Container */
+    /* --------------------------------------------------
+       Iframe Container
+       -------------------------------------------------- */
     .iframe-container {
       position: relative;
       padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
@@ -371,15 +328,15 @@
       height: 100%;
       border: none;
     }
-
-    /* Responsive Iframe */
     @media (max-width: 768px) {
       .iframe-container {
         padding-bottom: 75%; /* Adjust for smaller screens */
       }
     }
 
-    /* Footer Styles */
+    /* --------------------------------------------------
+       Footer
+       -------------------------------------------------- */
     footer {
       background-color: var(--footer-bg);
       color: var(--footer-text);
@@ -399,12 +356,9 @@
       font-size: 0.8em;
     }
 
-    /* Smooth Scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Whiteboard Styles */
+    /* --------------------------------------------------
+       Whiteboard
+       -------------------------------------------------- */
     .whiteboard-container {
       position: relative;
       width: 100%;
@@ -425,8 +379,6 @@
       cursor: crosshair;
       background-color: transparent;
     }
-
-    /* Button Group Styles */
     .button-group {
       position: absolute;
       top: 10px;
@@ -455,99 +407,13 @@
     body.dark-mode .save-button,
     body.dark-mode .load-button,
     body.dark-mode .clear-button {
-      background-color: var(--dark-nav-hover-bg);
+      background-color: #444;
       color: var(--dark-footer-text);
     }
     body.dark-mode .save-button:hover,
     body.dark-mode .load-button:hover,
     body.dark-mode .clear-button:hover {
       background-color: #222;
-    }
-
-    /* Common Links Styles */
-    .common-links-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      width: 100%;
-      margin-top: 20px;
-    }
-    .link-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--primary-green);
-      color: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s;
-      height: 100px;
-      text-align: center;
-      word-wrap: break-word;
-    }
-    .link-button:hover {
-      background-color: #004d00;
-    }
-    body.dark-mode .link-button {
-      background-color: var(--dark-nav-hover-bg);
-      color: var(--dark-footer-text);
-    }
-    body.dark-mode .link-button:hover {
-      background-color: #222;
-    }
-
-    /* Responsive Whiteboard */
-    @media (max-width: 768px) {
-      .whiteboard-container {
-        height: 400px;
-      }
-    }
-    @media (max-width: 480px) {
-      .whiteboard-container {
-        height: 250px;
-      }
-      .link-button {
-        padding: 10px;
-        height: 80px;
-        font-size: 0.9em;
-      }
-      .links-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Focus Styles for Accessibility */
-    a:focus, .dropbtn:focus {
-      outline: 2px solid var(--primary-green);
-      outline-offset: 2px;
-    }
-
-    /* ------------------------------------------
-       Additional Styles for Spinner, Whiteboard Tools, Notifications
-       ------------------------------------------- */
-    /* Improved Loading Spinner for Iframes */
-    .iframe-loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 40px;
-      height: 40px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--primary-green);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0%   { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     /* Whiteboard Toolbar */
@@ -588,7 +454,97 @@
       z-index: 10000;
     }
     body.dark-mode .notification {
-      background: var(--dark-nav-hover-bg);
+      background: #444;
+    }
+
+    /* --------------------------------------------------
+       Common Links Grid
+       -------------------------------------------------- */
+    .common-links-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .link-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primary-green);
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      height: 100px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+    .link-button:hover {
+      background-color: #004d00;
+    }
+    body.dark-mode .link-button {
+      background-color: #444;
+      color: var(--dark-footer-text);
+    }
+    body.dark-mode .link-button:hover {
+      background-color: #222;
+    }
+
+    /* Responsive Whiteboard and Links */
+    @media (max-width: 768px) {
+      .whiteboard-container {
+        height: 400px;
+      }
+    }
+    @media (max-width: 480px) {
+      .whiteboard-container {
+        height: 250px;
+      }
+      .link-button {
+        padding: 10px;
+        height: 80px;
+        font-size: 0.9em;
+      }
+      .links-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Focus Styles for Accessibility */
+    a:focus, .dropbtn:focus, .hamburger:focus, .dark-mode-toggle:focus, button:focus, select:focus, input:focus {
+      outline: 2px solid var(--primary-green);
+      outline-offset: 2px;
+    }
+
+    /* Enhanced Loading Spinner for Iframes */
+    .iframe-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -598,46 +554,38 @@
     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
          alt="Morrisons Logo">
     <h1>Cleveleys Morrisons Management Dashboard</h1>
-    <!-- Dark Mode Toggle Button -->
-    <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
-      &#9790;
-    </button>
   </header>
 
-  <nav class="nav">
-    <!-- Primary Nav Links -->
-    <ul class="nav-links">
-      <li><a href="#tasks">Wheel</a></li>
-      <li><a href="#important-links">Important Links</a></li>
-      <li><a href="#common-links">Common Links</a></li>
-      <li><a href="#who-is-in">Who Is In Today?</a></li>
-      <li><a href="#management-rota">Management Rota</a></li>
-      <li><a href="#add-reminder">Add New Reminder</a></li>
-      <li><a href="#calendar">Calendar</a></li>
-      <li><a href="#notes">Notes</a></li>
-      <!-- More Dropdown -->
-      <li class="dropdown">
-        <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">More</a>
-        <ul class="dropdown-content" aria-label="submenu">
-          <li><a href="online.html">Online</a></li>
-          <li><a href="street.html">Street</a></li>
-          <li><a href="shrink.html">Shrink</a></li>
-          <li><a href="safe-and-legal.html">Safe and Legal</a></li>
-          <li><a href="contacts.html">Contacts</a></li>
-        </ul>
-      </li>
-    </ul>
+  <!-- Simplified Navigation: Only .html pages -->
+  <nav class="nav" role="navigation" aria-label="Primary Navigation">
+    <div class="nav-container">
+      <!-- Left Side: Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="online.html"><i class="fas fa-globe"></i>Online</a></li>
+        <li><a href="street.html"><i class="fas fa-store"></i>Street</a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
+        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
+      </ul>
 
-    <!-- Hamburger Menu -->
-    <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
-      <div></div>
-      <div></div>
-      <div></div>
+      <!-- Right Side: Actions (Dark Mode Toggle, etc.) -->
+      <div class="nav-actions">
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
+          🌓
+        </button>
+      </div>
+
+      <!-- Hamburger Menu (Mobile) -->
+      <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </nav>
 
   <div class="container">
-    <!-- Tasks Section -->
+    <!-- Tasks Section (not linked in nav, but kept for reference) -->
     <section id="tasks">
       <h2>Wheel</h2>
       <div class="iframe-container">
@@ -683,7 +631,7 @@
              class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
           <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
              class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw1zgD308hbP3ix1j8yrD1cO"
+          <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
              class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
           <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD"
              class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
@@ -786,22 +734,37 @@
   <!-- Notification Element -->
   <div class="notification" id="notification"></div>
 
-  <!-- JavaScript for Dark Mode Toggle & Mobile Nav -->
+  <!-- JavaScript for Enhanced Navigation and Interactivity -->
   <script>
-    // Dark Mode Toggle
-    const toggleButton = document.querySelector('.dark-mode-toggle');
-    toggleButton.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      // Update ARIA attribute
-      const isDarkMode = document.body.classList.contains('dark-mode');
-      toggleButton.setAttribute('aria-pressed', isDarkMode);
+    /*******************************************************
+     * Dark Mode Toggle
+     *******************************************************/
+    const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
+    toggleButtons.forEach(toggleButton => {
+      toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        // Update ARIA attribute
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        toggleButton.setAttribute('aria-pressed', isDarkMode);
+        // Persist theme preference
+        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+      });
     });
 
-    // Hamburger + Mobile Nav
+    // Initialize theme based on saved preference
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        toggleButtons.forEach(toggleButton => toggleButton.setAttribute('aria-pressed', true));
+      }
+    });
+
+    /*******************************************************
+     * Mobile Menu Toggle
+     *******************************************************/
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
-    const dropbtn = document.querySelector('.dropdown .dropbtn');
-    const dropdown = document.querySelector('.dropdown');
 
     hamburger.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -816,7 +779,6 @@
 
     // Close nav if clicking outside
     window.addEventListener('click', (event) => {
-      // if the click is outside .nav or .hamburger
       if (!event.target.closest('.nav') && !event.target.closest('.hamburger')) {
         if (navLinks.classList.contains('active')) {
           navLinks.classList.remove('active');
@@ -824,19 +786,13 @@
           document.body.classList.remove('mobile-nav-open');
           hamburger.setAttribute('aria-expanded', false);
         }
-        if (dropdown.classList.contains('active')) {
-          dropdown.classList.remove('active');
-          dropbtn.setAttribute('aria-expanded', false);
-        }
       }
     });
 
-    // Close the nav when clicking a non-"More" link
+    // Close the nav when clicking a direct link in mobile
     const navItems = document.querySelectorAll('.nav-links a');
     navItems.forEach(item => {
       item.addEventListener('click', () => {
-        // If user clicked 'More' itself, ignore
-        if (item.classList.contains('dropbtn')) return;
         if (navLinks.classList.contains('active')) {
           navLinks.classList.remove('active');
           hamburger.classList.remove('active');
@@ -846,29 +802,30 @@
       });
     });
 
-    // Dropdown for Mobile: toggled by tapping "More"
-    dropbtn.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropdown.classList.toggle('active');
-        // Update ARIA
-        const expanded = dropbtn.getAttribute('aria-expanded') === 'true' || false;
-        dropbtn.setAttribute('aria-expanded', !expanded);
-      }
-    });
-
     // Accessibility: toggle hamburger with Enter key
     hamburger.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         hamburger.click();
       }
     });
-  </script>
 
-  <!-- JavaScript for Whiteboard and Additional Enhancements -->
-  <script>
-    // Notification System
+    /*******************************************************
+     * Smooth Scroll for (any remaining) Navigation Links
+       (Optional: won't apply if the nav has no # links)
+     *******************************************************/
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    /*******************************************************
+     * Notification System
+     *******************************************************/
     function showNotification(message, duration = 3000) {
       const notification = document.getElementById('notification');
       notification.textContent = message;
@@ -878,7 +835,9 @@
       }, duration);
     }
 
-    // Whiteboard Setup
+    /*******************************************************
+     * Whiteboard Setup
+     *******************************************************/
     const canvas = document.getElementById('whiteboard');
     const ctx = canvas.getContext('2d');
     const clearButton = document.querySelector('.clear-button');
@@ -890,6 +849,14 @@
     function resizeCanvas() {
       canvas.width = canvas.parentElement.clientWidth;
       canvas.height = canvas.parentElement.clientHeight;
+      const savedImage = localStorage.getItem('whiteboardImage');
+      if (savedImage) {
+        const img = new Image();
+        img.onload = function() {
+          ctx.drawImage(img, 0, 0);
+        };
+        img.src = savedImage;
+      }
     }
     // Initialize canvas size
     resizeCanvas();
@@ -906,23 +873,13 @@
     ctx.lineCap = 'round';
     ctx.lineWidth = 2;
 
-    // Update stroke color/width based on UI
+    // Update stroke color/width
     function updateDrawingSettings() {
       ctx.strokeStyle = colorPicker.value;
       ctx.lineWidth = brushSize.value;
     }
     colorPicker.addEventListener('input', updateDrawingSettings);
     brushSize.addEventListener('change', updateDrawingSettings);
-
-    // Also update stroke style if dark mode toggles
-    function updateStrokeStyleForTheme() {
-      // If you want the brush color to invert in dark mode, 
-      // comment out these next lines and rely on colorPicker alone.
-      // But if you'd like to forcibly turn white in dark mode, you can do that here.
-      // For now, we won't override the color chosen by colorPicker.
-    }
-    const observer = new MutationObserver(updateStrokeStyleForTheme);
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     // Start drawing
     function startDrawing(e) {
@@ -963,8 +920,7 @@
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       startDrawing(e);
-      // Disable scroll while touching the canvas
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // Disable scroll
     });
     canvas.addEventListener('touchmove', (e) => {
       e.preventDefault();
@@ -1013,7 +969,9 @@
       }
     });
 
-    // Lazy Load Iframes
+    /*******************************************************
+     * Lazy Load Iframes
+     *******************************************************/
     document.addEventListener('DOMContentLoaded', () => {
       const iframes = document.querySelectorAll('iframe');
       iframes.forEach(iframe => {
@@ -1027,11 +985,11 @@
           loader.remove();
         });
 
-        // Move existing src -> data-src for lazy load
+        // Move existing src -> data-src
         iframe.dataset.src = iframe.src;
         iframe.removeAttribute('src');
 
-        // Intersection Observer to load when visible
+        // Intersection Observer
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
