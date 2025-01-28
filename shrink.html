@@ -282,6 +282,11 @@
       transform: translateY(-2px);
     }
 
+    /* Full-Width Card Modifier */
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
     /* Accordion Styles */
     .accordion {
       background-color: var(--card-bg);
@@ -395,6 +400,7 @@
 
   <main class="container">
     <section class="dashboard">
+      <!-- Smaller Cards -->
       <!-- Shrink Dash Dashboard Card -->
       <div class="dashboard-card">
         <h3><i class="fas fa-chart-line"></i> Shrink Dash</h3>
@@ -413,16 +419,6 @@
         </a>
       </div>
 
-      <!-- Shrink Performance Dashboard Card -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-tachometer-alt"></i> Shrink Performance</h3>
-        <p>Monitor shrink performance metrics to identify trends and implement corrective actions.</p>
-        <iframe src="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" title="Shrink Performance Data" loading="lazy"></iframe>
-        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" target="_blank" rel="noopener noreferrer">
-          View Full Shrink Performance
-        </a>
-      </div>
-
       <!-- Stock Adjustments Dashboard Card -->
       <div class="dashboard-card">
         <h3><i class="fas fa-boxes-stacked"></i> Stock Adjustments</h3>
@@ -432,18 +428,9 @@
         </a>
       </div>
 
-      <!-- Protection Guide Dashboard Card -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-shield-alt"></i> Protection Guide</h3>
-        <p>Review the protection guide to understand product tagging and security measures.</p>
-        <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTJm_zWd0rq7VA-IUg6OSXs8FdQc4Lp3s3v6_1fntqG2SHpDK5zHyARwdZF_f1LjGZFRDZn39pLz5ax/embed?start=false&loop=true&delayms=10000" title="Protection Guide Presentation" loading="lazy"></iframe>
-        <a href="https://docs.google.com/presentation/d/e/2PACX-1vTJm_zWd0rq7VA-IUg6OSXs8FdQc4Lp3s3v6_1fntqG2SHpDK5zHyARwdZF_f1LjGZFRDZn39pLz5ax/embed?start=false&loop=true&delayms=10000" target="_blank" rel="noopener noreferrer">
-          View Full Protection Guide
-        </a>
-      </div>
-
+      <!-- Full-Width Cards -->
       <!-- Audit Guide Dashboard Card -->
-      <div class="dashboard-card">
+      <div class="dashboard-card full-width">
         <h3><i class="fas fa-file-alt"></i> Audit Guide</h3>
         <p>Understand the audit process and key focus areas for the upcoming Q2 Shrink and Cash Loss Audit.</p>
         <button class="accordion"><i class="fas fa-chevron-down"></i> View Audit Guide</button>
@@ -488,61 +475,66 @@
           </ul>
         </div>
       </div>
-    </section>
 
-    <!-- Additional Sections for Guidelines -->
-    <section>
-      <h2>Health & Beauty</h2>
-      <ul>
-        <li><strong>Baby:</strong> All stages of infant milk £10+ require a soft tag.</li>
-        <li><strong>Skincare:</strong> All facial and body skincare £10+ require a soft tag. Hair removal and women's razors £10+ require a pin tag (or soft tag if pin tag is not possible).</li>
-        <li><strong>Sun Care:</strong> Sun care products £10+ need a soft tag, except for 'Riemann' products, which require a safer case.</li>
-        <li><strong>Dental:</strong> Electric toothbrushes £0 - £30 require a pin tag. Electric toothbrushes £30+ require a spider wrap. All electric toothbrush heads/refills require a pin tag. Toothpaste & whitening £10+ requires a soft tag.</li>
-        <li><strong>Fragrances:</strong> Fragrances £10 and over require a safer case or spider tag.</li>
-        <li><strong>Pregnancy/Family Planning:</strong> All pregnancy test and ovulation kits £10+ need a soft tag (unless source tagged). Lubricants £10+ require a soft tag. Condoms require a soft tag (unless source tagged).</li>
-        <li><strong>Nicotine Replacements:</strong> All Nicorette Quickmist lines require a spider wrap (or pin tag if spider wrap is not possible). All other nicotine products need a soft tag.</li>
-        <li><strong>Nutrition and Vitamins:</strong> Sports nutrition £10+ and all vitamins £10+ need a soft tag.</li>
-        <li><strong>Medicinal (Slimming):</strong> Dietary aids £10+ require a soft tag. Four specific XLS lines are source-tagged, and all other XLS lines require a soft tag.</li>
-        <li><strong>Footcare:</strong> Footcare £10 and over requires a soft tag. All Scholl products £10+ need a pin tag (or soft tag if pin tag is not possible).</li>
-        <li><strong>Manuka Honey:</strong> Manuka honey £10+ requires a soft tag, except for source-tagged lines.</li>
-        <li><strong>Jointcare:</strong> Jointcare £10+ and all Voltarol products £10+ require a soft tag.</li>
-        <li><strong>Men’s Toiletries:</strong> Razor blades (all) need a safer case (or pin tag if a safer case is not possible). All razor handles require a pin tag. Beard trimmers need a spider wrap (or pin tag if spider wrap is not possible). Disposable razors £10+, men’s skincare £10+, and shave care (including gels and oils) £10+ require a soft tag.</li>
-      </ul>
+      <!-- Tagging Guide Full-Width Card -->
+      <div class="dashboard-card full-width">
+        <h3><i class="fas fa-tags"></i> Tagging Guide</h3>
+        <p>Review the tagging guidelines to ensure proper product protection and compliance across all departments.</p>
+        <button class="accordion"><i class="fas fa-chevron-down"></i> View Tagging Guide</button>
+        <div class="panel">
+          <h4>Health & Beauty</h4>
+          <ul>
+            <li><strong>Baby:</strong> All stages of infant milk £10+ require a soft tag.</li>
+            <li><strong>Skincare:</strong> All facial and body skincare £10+ require a soft tag. Hair removal and women's razors £10+ require a pin tag (or soft tag if pin tag is not possible).</li>
+            <li><strong>Sun Care:</strong> Sun care products £10+ need a soft tag, except for 'Riemann' products, which require a safer case.</li>
+            <li><strong>Dental:</strong> Electric toothbrushes £0 - £30 require a pin tag. Electric toothbrushes £30+ require a spider wrap. All electric toothbrush heads/refills require a pin tag. Toothpaste & whitening £10+ requires a soft tag.</li>
+            <li><strong>Fragrances:</strong> Fragrances £10 and over require a safer case or spider tag.</li>
+            <li><strong>Pregnancy/Family Planning:</strong> All pregnancy test and ovulation kits £10+ need a soft tag (unless source tagged). Lubricants £10+ require a soft tag. Condoms require a soft tag (unless source tagged).</li>
+            <li><strong>Nicotine Replacements:</strong> All Nicorette Quickmist lines require a spider wrap (or pin tag if spider wrap is not possible). All other nicotine products need a soft tag.</li>
+            <li><strong>Nutrition and Vitamins:</strong> Sports nutrition £10+ and all vitamins £10+ need a soft tag.</li>
+            <li><strong>Medicinal (Slimming):</strong> Dietary aids £10+ require a soft tag. Four specific XLS lines are source-tagged, and all other XLS lines require a soft tag.</li>
+            <li><strong>Footcare:</strong> Footcare £10 and over requires a soft tag. All Scholl products £10+ need a pin tag (or soft tag if pin tag is not possible).</li>
+            <li><strong>Manuka Honey:</strong> Manuka honey £10+ requires a soft tag, except for source-tagged lines.</li>
+            <li><strong>Jointcare:</strong> Jointcare £10+ and all Voltarol products £10+ require a soft tag.</li>
+            <li><strong>Men’s Toiletries:</strong> Razor blades (all) need a safer case (or pin tag if a safer case is not possible). All razor handles require a pin tag. Beard trimmers need a spider wrap (or pin tag if spider wrap is not possible). Disposable razors £10+, men’s skincare £10+, and shave care (including gels and oils) £10+ require a soft tag.</li>
+          </ul>
 
-      <h2>General Merchandise</h2>
-      <ul>
-        <li><strong>Clothing:</strong> All clothing (excluding Babywear, Footwear, Accessories, and Bags) £15+ needs a pin tag (or soft tag if pin tag is not possible). Selected stores may tag clothing at £10+.</li>
-        <li><strong>Paint & DIY:</strong> Folding and utility knives require a safer case (or pin tag if safer case is not possible).</li>
-        <li><strong>Batteries, Torches & Bulbs:</strong> All batteries £10+ and torches £10+ require a soft tag (unless source-tagged).</li>
-        <li><strong>JML Products:</strong> JML products £10 and over require a spider wrap. JML products £9.99 and under require a pin tag. Where a spider or pin tag won't fit, use a soft tag.</li>
-        <li><strong>Home Office:</strong> All ink cartridges require a pin tag. Sandisks (all) require a safer case.</li>
-        <li><strong>Small Electrical Appliances:</strong> All products £10+ that are not source-tagged require a spider wrap (or soft tag if spider wrap is not possible).</li>
-        <li><strong>WIGIGS:</strong> All lines over £10 require a soft tag. All lines over £30 require a spider tag.</li>
-      </ul>
+          <h4>General Merchandise</h4>
+          <ul>
+            <li><strong>Clothing:</strong> All clothing (excluding Babywear, Footwear, Accessories, and Bags) £15+ needs a pin tag (or soft tag if pin tag is not possible). Selected stores may tag clothing at £10+.</li>
+            <li><strong>Paint & DIY:</strong> Folding and utility knives require a safer case (or pin tag if safer case is not possible).</li>
+            <li><strong>Batteries, Torches & Bulbs:</strong> All batteries £10+ and torches £10+ require a soft tag (unless source-tagged).</li>
+            <li><strong>JML Products:</strong> JML products £10 and over require a spider wrap. JML products £9.99 and under require a pin tag. Where a spider or pin tag won't fit, use a soft tag.</li>
+            <li><strong>Home Office:</strong> All ink cartridges require a pin tag. Sandisks (all) require a safer case.</li>
+            <li><strong>Small Electrical Appliances:</strong> All products £10+ that are not source-tagged require a spider wrap (or soft tag if spider wrap is not possible).</li>
+            <li><strong>WIGIGS:</strong> All lines over £10 require a soft tag. All lines over £30 require a spider tag.</li>
+          </ul>
 
-      <h2>Beers, Wines, & Spirits</h2>
-      <ul>
-        <li><strong>Spirits:</strong> All spirits (including non-alcoholic) require Bottlelox/caps. Spirits presentation boxes require a UFO tag. Bottles that won't accommodate Bottlelox require a wide neck UFO/net. Chambord requires a soft tag.</li>
-        <li><strong>Champagne & Wine:</strong> All champagne requires a net (in applicable stores) or UFO tag (black). All wine £12+ requires a Bottlelox. Bottles that won't accommodate Bottlelox require a UFO/Wide Neck Bottle Tag/Net.</li>
-      </ul>
+          <h4>Beers, Wines, & Spirits</h4>
+          <ul>
+            <li><strong>Spirits:</strong> All spirits (including non-alcoholic) require Bottlelox/caps. Spirits presentation boxes require a UFO tag. Bottles that won't accommodate Bottlelox require a wide neck UFO/net. Chambord requires a soft tag.</li>
+            <li><strong>Champagne & Wine:</strong> All champagne requires a net (in applicable stores) or UFO tag (black). All wine £12+ requires a Bottlelox. Bottles that won't accommodate Bottlelox require a UFO/Wide Neck Bottle Tag/Net.</li>
+          </ul>
 
-      <h2>Other Departments</h2>
-      <ul>
-        <li><strong>Gift Sets:</strong> Where gift sets are not already source-tagged a soft tag should be applied to those £10 or over.</li>
-        <li><strong>Toys:</strong> Toys £10+ require a soft tag or source tag. Toys £30+ require a spider wrap (or soft tag if spider wrap is not possible). Individual LOL dolls need a soft tag, and entire merchandising units should be spider wrapped. All Barbie and Hot Wheels toys require a soft tag.</li>
-        <li><strong>Meat:</strong> Beef, lamb and pork joints and steaks £5 & over require a yellow soft tag (applied to the top left of the GLP label for in-store produced items only, pre-pack products are source tagged).</li>
-        <li><strong>Vape:</strong> Any vape products not source tagged require a soft tag.</li>
-        <li><strong>Flowers:</strong> Bouquets £15 & over require a soft tag.</li>
-      </ul>
+          <h4>Other Departments</h4>
+          <ul>
+            <li><strong>Gift Sets:</strong> Where gift sets are not already source-tagged a soft tag should be applied to those £10 or over.</li>
+            <li><strong>Toys:</strong> Toys £10+ require a soft tag or source tag. Toys £30+ require a spider wrap (or soft tag if spider wrap is not possible). Individual LOL dolls need a soft tag, and entire merchandising units should be spider wrapped. All Barbie and Hot Wheels toys require a soft tag.</li>
+            <li><strong>Meat:</strong> Beef, lamb and pork joints and steaks £5 & over require a yellow soft tag (applied to the top left of the GLP label for in-store produced items only, pre-pack products are source tagged).</li>
+            <li><strong>Vape:</strong> Any vape products not source tagged require a soft tag.</li>
+            <li><strong>Flowers:</strong> Bouquets £15 & over require a soft tag.</li>
+          </ul>
 
-      <h3>General Notes:</h3>
-      <ul>
-        <li><strong>Source Tagging:</strong> Products with a live security label do not need an additional soft tag, but may still require other forms of protection if specified.</li>
-        <li><strong>Restricted Fill:</strong> Restricted fill extenders should be used for spirits, champagne, smoking cessation, and skincare products.</li>
-        <li><strong>Capping Shelves:</strong> High value stock (lines that are product protected) should not be stored on capping shelves.</li>
-        <li><strong>Tag Recycling:</strong> There are recycling containers at the checkout, self-scan checkouts, and trolley stations for used product protection equipment.</li>
-        <li><strong>Red UFO tags:</strong> Red UFO tags need to be segregated at the checkout, placed in a cardboard-lined banana box, and stored at the checkers desk or back door.</li>
-      </ul>
+          <h4>General Notes:</h4>
+          <ul>
+            <li><strong>Source Tagging:</strong> Products with a live security label do not need an additional soft tag, but may still require other forms of protection if specified.</li>
+            <li><strong>Restricted Fill:</strong> Restricted fill extenders should be used for spirits, champagne, smoking cessation, and skincare products.</li>
+            <li><strong>Capping Shelves:</strong> High value stock (lines that are product protected) should not be stored on capping shelves.</li>
+            <li><strong>Tag Recycling:</strong> There are recycling containers at the checkout, self-scan checkouts, and trolley stations for used product protection equipment.</li>
+            <li><strong>Red UFO tags:</strong> Red UFO tags need to be segregated at the checkout, placed in a cardboard-lined banana box, and stored at the checkers desk or back door.</li>
+          </ul>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -550,7 +542,7 @@
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- Core JavaScript for Dark Mode & Mobile Nav -->
+  <!-- Core JavaScript for Dark Mode, Mobile Nav & Accordion -->
   <script>
     /* Dark mode toggle */
     const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
@@ -606,7 +598,7 @@
       if (e.key === 'Enter') hamburger.click();
     });
 
-    /* Accordion for Audit Guide */
+    /* Accordion for Audit Guide and Tagging Guide */
     const acc = document.getElementsByClassName("accordion");
     for (let i = 0; i < acc.length; i++) {
       acc[i].addEventListener("click", function() {
