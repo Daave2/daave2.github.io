@@ -231,7 +231,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
-      padding: 20px;
+      padding: 20px 0;
     }
     .dashboard-card {
       background-color: var(--card-bg);
@@ -261,7 +261,7 @@
     }
     .dashboard-card iframe {
       width: 100%;
-      height: 300px;
+      height: 400px;
       border: none;
       border-radius: 5px;
       margin-bottom: 15px;
@@ -280,6 +280,56 @@
       background-color: var(--secondary-yellow);
       color: var(--background-white);
       transform: translateY(-2px);
+    }
+
+    /* Accordion Styles */
+    .accordion {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      padding: 15px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.2em;
+      transition: background-color 0.3s;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      margin-bottom: 10px;
+    }
+    .accordion:hover,
+    .accordion.active {
+      background-color: var(--primary-green);
+      color: var(--background-white);
+    }
+    .accordion::after {
+      content: '\002B'; /* Plus sign */
+      font-size: 1.2em;
+      float: right;
+    }
+    .accordion.active::after {
+      content: '\2212'; /* Minus sign */
+    }
+    .panel {
+      padding: 0 15px;
+      background-color: var(--card-bg);
+      display: none;
+      overflow: hidden;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      margin-bottom: 20px;
+    }
+    body.dark-mode .panel {
+      background-color: var(--dark-card-bg);
+      color: var(--dark-text-color);
+    }
+    .panel p, .panel ul {
+      padding: 15px 0;
+      line-height: 1.6;
+    }
+    .panel ul {
+      list-style: disc inside;
     }
 
     /* Footer Styles */
@@ -304,49 +354,13 @@
     /* Media Queries for Responsive Iframe */
     @media (max-width: 768px) {
       .dashboard-card iframe {
-        height: 250px;
+        height: 300px;
       }
     }
     @media (max-width: 480px) {
       .dashboard-card iframe {
-        height: 200px;
+        height: 250px;
       }
-    }
-
-    /* Tagging Guide Specific Styles */
-    .tagging-guide-content {
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-    }
-    body.dark-mode .tagging-guide-content {
-      background-color: #2c2c2c;
-      border: 1px solid #555;
-      color: var(--dark-text-color);
-    }
-    .tagging-guide-content h4 {
-      margin-top: 15px;
-      margin-bottom: 10px;
-      color: var(--primary-green);
-    }
-    .tagging-guide-content ul {
-      list-style-type: disc;
-      margin-left: 20px;
-      margin-bottom: 10px;
-    }
-    .tagging-guide-content li {
-      margin-bottom: 5px;
-    }
-    .tagging-guide-content a {
-      color: var(--primary-green);
-      text-decoration: underline;
-    }
-    body.dark-mode .tagging-guide-content a {
-      color: var(--dark-text-color);
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -381,20 +395,47 @@
 
   <main class="container">
     <section class="dashboard">
-      <!-- Shrink Analysis Dashboard Card -->
+      <!-- Shrink Dash Dashboard Card -->
       <div class="dashboard-card">
-        <h3><i class="fas fa-chart-pie"></i> Shrink Analysis</h3>
-        <p>Monitor and analyze shrinkage across different departments to identify trends and areas for improvement.</p>
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=0&single=true&widget=true&headers=false" title="Shrink Analysis Data" loading="lazy"></iframe>
-        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=0&single=true&widget=true&headers=false" target="_blank" rel="noopener noreferrer">
-          View Full Shrink Analysis
+        <h3><i class="fas fa-chart-line"></i> Shrink Dash</h3>
+        <p>Access the Shrink dashboard to monitor and manage shrinkage across various departments.</p>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink" target="_blank" rel="noopener noreferrer">
+          Access Shrink Dash
+        </a>
+      </div>
+
+      <!-- Staff Checks Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-users-check"></i> Staff Checks</h3>
+        <p>Perform staff checks to ensure compliance and reduce shrinkage through effective loss prevention.</p>
+        <a href="https://www.dymension.co.uk/#/account/login" target="_blank" rel="noopener noreferrer">
+          Perform Staff Checks
+        </a>
+      </div>
+
+      <!-- Shrink Performance Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-tachometer-alt"></i> Shrink Performance</h3>
+        <p>Monitor shrink performance metrics to identify trends and implement corrective actions.</p>
+        <iframe src="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" title="Shrink Performance Data" loading="lazy"></iframe>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" target="_blank" rel="noopener noreferrer">
+          View Full Shrink Performance
+        </a>
+      </div>
+
+      <!-- Stock Adjustments Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-boxes-stacked"></i> Stock Adjustments</h3>
+        <p>Manage stock adjustments efficiently to maintain accurate inventory levels.</p>
+        <a href="https://drive.google.com/file/d/1lcxZhhyVqYF5L8M30DeFdy13lj21NrGN/view" target="_blank" rel="noopener noreferrer">
+          Access Stock Adjustments
         </a>
       </div>
 
       <!-- Protection Guide Dashboard Card -->
       <div class="dashboard-card">
         <h3><i class="fas fa-shield-alt"></i> Protection Guide</h3>
-        <p>Access the Protection Guide presentation to understand best practices for loss prevention.</p>
+        <p>Review the protection guide to understand product tagging and security measures.</p>
         <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTJm_zWd0rq7VA-IUg6OSXs8FdQc4Lp3s3v6_1fntqG2SHpDK5zHyARwdZF_f1LjGZFRDZn39pLz5ax/embed?start=false&loop=true&delayms=10000" title="Protection Guide Presentation" loading="lazy"></iframe>
         <a href="https://docs.google.com/presentation/d/e/2PACX-1vTJm_zWd0rq7VA-IUg6OSXs8FdQc4Lp3s3v6_1fntqG2SHpDK5zHyARwdZF_f1LjGZFRDZn39pLz5ax/embed?start=false&loop=true&delayms=10000" target="_blank" rel="noopener noreferrer">
           View Full Protection Guide
@@ -404,150 +445,104 @@
       <!-- Audit Guide Dashboard Card -->
       <div class="dashboard-card">
         <h3><i class="fas fa-file-alt"></i> Audit Guide</h3>
-        <p>Review the Audit Guide document for comprehensive insights into the Q2 Shrink and Cash Loss Audit.</p>
-        <a href="#audit-guide" class="scroll-link">Read Audit Guide</a>
-      </div>
-
-      <!-- Audit Guide Content -->
-      <div class="dashboard-card" id="audit-guide">
-        <h3><i class="fas fa-book"></i> Audit Guide</h3>
-        <p><strong>Briefing Document: Q2 Shrink and Cash Loss Audit – FY24/25</strong></p>
-        <div style="overflow-y: auto; max-height: 400px;">
+        <p>Understand the audit process and key focus areas for the upcoming Q2 Shrink and Cash Loss Audit.</p>
+        <button class="accordion"><i class="fas fa-chevron-down"></i> View Audit Guide</button>
+        <div class="panel">
+          <p><strong>Briefing Document: Q2 Shrink and Cash Loss Audit – FY24/25</strong></p>
           <h4>1. Introduction</h4>
           <p>This document summarizes the key changes, focus areas, and requirements for the upcoming Q2 Shrink and Cash Loss Audit. The audit period runs from Monday, January 27th to Friday, April 25th, with a brief pause over Easter (April 14th-21st). The core objective of the audit is to assess compliance with Loss Prevention (LP) standards and drive improvements in key areas, ultimately minimizing shrink and cash loss.</p>
           
           <h4>2. Key Changes and Focus Areas</h4>
-          <p>The Q2 audit introduces some key changes and re-introduces some questions, demonstrating a refinement of focus areas. The pass rate remains at 85%, with all 45 questions being marked (no unmarked questions).</p>
           <ul>
             <li><strong>Removed Question:</strong> The question regarding recording loose produce waste has been removed.</li>
-            <li><strong>Re-introduced Questions:</strong> Waste Management: The audit now assesses if the store has "a clearly identifiable waste area set up for Fresh foods / Frozen & Ambient areas" and whether a "clearly identified waste pre validation area set" is in place. Furthermore, it will be checked if "validated waste is stored separately as part of backhaul, tidy and ready to be returned on salvage." This shows an increased focus on proper waste handling and segregation. As the document explains, "Failure to store these separately may result in waste being missed through validation which increases the potential for unrecorded waste."</li>
-            <li><strong>Food to Go Pizzas:</strong> The process of preparing "Food to Go pizzas" will be checked against the "correct specification."</li>
-            <li><strong>Updated Questions:</strong> Product Protection (BWS): Compliance with new spirits caps and champagne nets will be checked in applicable stores.</li>
-            <li><strong>Scorecard (Transfers):</strong> The "Cafe Transfers" metric is broadened to include all transfers, aligning with the LP Shrink Scorecard. The metric now assesses "transfers generally and not just Cafe transfers."</li>
-            <li><strong>Shrink (Tobacco Backstock):</strong> Auditors will now verify that all tobacco and vape products are "stored securely" and will ask to see "any storage areas in the kiosk area". "It is important that the key processes are followed for tobacco to ensure all stock received is correctly stored once it has arrived at our stores to prevent shrink and maintain availability for our customers."</li>
+            <li><strong>Re-introduced Questions:</strong> Waste Management, Food to Go Pizzas, Product Protection (BWS), Scorecard (Transfers), Shrink (Tobacco Backstock).</li>
+            <li><strong>Updated Questions:</strong> Product Protection (BWS), Scorecard Metrics, etc.</li>
           </ul>
-
+          
           <h4>3. Audit Process and Structure</h4>
           <ul>
             <li><strong>Duration:</strong> The audit is a 90-minute assessment.</li>
             <li><strong>Scoring:</strong> A pass requires a score of 85% or higher across the 45 marked questions.</li>
-            <li><strong>Re-audits:</strong> "Selected stores may also receive a solo re-audit for either hygiene or shrink following their Q1 result and so may be audited twice within this quarter." These re-audits will be at least 4 weeks after the initial audit, and their scores will not be included in Regional Reporting, serving as a tool to drive improvement.</li>
-            <li><strong>Action Plans:</strong> Following each audit, a list of non-conformances and required actions will be sent after the audit challenge window is closed. "Actions should be signed off by the Store Manager and should be closed out within one week."</li>
-            <li><strong>Self-Assessment:</strong> Stores can access a self-assessment platform reflecting the Q2 changes and can complete this assessment using a Google Form. "The full self-assessment dashboard so that you can analyze your performance & track improvement can be found here". Prefilled information for the store can be used for this.</li>
+            <li><strong>Re-audits:</strong> Selected stores may receive a solo re-audit for either hygiene or shrink.</li>
+            <li><strong>Action Plans:</strong> Post-audit actions must be signed off by the Store Manager and closed within one week.</li>
+            <li><strong>Self-Assessment:</strong> Stores can access a self-assessment platform reflecting the Q2 changes.</li>
           </ul>
-
+          
           <h4>4. Key Audit Questions and Criteria</h4>
-          <p>The audit covers a wide range of areas, including:</p>
-          <ul>
-            <li><strong>Scorecard Metrics:</strong> These are data-driven, taken from the two weeks preceding the audit, and include waste validation rates, outstanding transfers, dumpcodes, alarm settings, news & mags credit loss, product scan completion on news & mags, and smart gate utilization.</li>
-            <li><strong>Online:</strong> 100% match between products in online totes/Amazon bags and the receipt.</li>
-            <li><strong>Product Protection:</strong> Covering BWS, health & beauty, baby products, toys, small domestic appliances, batteries, printer ink, in-store produced beef, lamb & pork. The audit emphasizes, "...UP TO 3 UNIQUE PRODUCTS (IRRELEVANT OF QUANTITY) MAY BE UNPROTECTED BEFORE RESULTING IN A FAIL" in several of the product protection sections. The updated guidance will be checked for spirits caps and champagne nets. High-value stock must be secured in a high-value lock-up, cupboard, room, or cage. Nutmeg clothing also has to be correctly product protected.</li>
-            <li><strong>Aisle Capping:</strong> The audit checks that high-value stock such as Health & Beauty products is not on aisle capping shelves.</li>
-            <li><strong>Restricted Fill Indicators:</strong> Compliance with the "Restrict Fill" policy, including locked spirits doors where applicable.</li>
-            <li><strong>Security:</strong> This section checks CCTV systems (cameras, monitors, guarding podiums), security guard uniforms and alertness, guard knowledge of top 5 loss lines, swing gate function, EAS barrier function and testing, smart gate function (where applicable), main bank till barriers, and front-facing self-checkout cameras. Also checks for working mag locks and external doors. Keys must be locked away and signed in/out, and the keyholder list and alarm codes must be up to date.</li>
-            <li><strong>Shrink:</strong> Checks colleague practice on kiosk (handing over product before payment), weekly colleague searches, items found in store without receipt, kiosk door security, placement of carrier bags at SCOs, weekly shrink meetings, and the processing of single cans.</li>
-            <li><strong>Unknown Loss:</strong> Checks correct preparation of cream cakes and food-to-go pizzas (weighing a sample for compliance), if the self-service area is manned and if colleagues are able to describe the use of the smart gate fob, if transfers into canteen and SRP break tables are being recorded, and if there is a clearly identified waste area.</li>
-            <li><strong>Cash:</strong> Reviews if till/banking differences are investigated, if phased till checks are performed daily, if coupon bags are being returned correctly and if the cash logbook is completed.</li>
-          </ul>
-
+          <p>The audit covers areas including Scorecard Metrics, Online Compliance, Product Protection, Aisle Capping, Restricted Fill Indicators, Security, Shrink, Unknown Loss, Cash, etc.</p>
+          
           <h4>5. Specific Question Examples</h4>
           <ul>
-            <li><strong>Unknown Loss 5 (Pizzas):</strong> "Weigh 10 in-store produced pizzas using the Food to Go scales. If the pizza weighs more than 10% over the specification it has failed. If 2 or more of these are overweight the question is failed."</li>
-            <li><strong>Unknown Loss 6 (Waste):</strong> "Visually check there is a clearly identified waste pre-validation area set up... Visually check validated waste is stored separately as part of backhaul... Pass: There are 2 separate clearly identified waste areas for pre-validated waste and validated waste."</li>
-            <li><strong>Shrink 4 (Tobacco):</strong> "The auditor will ask to see where tobacco and vape backstock is stored... Pass - Access cannot be gained into the kiosk - Bunker is locked where applicable - All tobacco & vape products are stored securely Fail - Tobacco and vape products are stored anywhere other than the following areas: - Tobacco Bunker... "</li>
-            <li><strong>Protection 1 (BWS):</strong> "Visually check BWS products... Up to 5 units may be unprotected, or protected incorrectly before resulting in a fail."</li>
-            <li><strong>Security 1 (CCTV):</strong> "Podium not working fully (no repair call logged) - CCTV podium obstructed by stock - Monitors not working / blank / hazy / switched off ..."</li>
+            <li><strong>Unknown Loss 5 (Pizzas):</strong> Weigh 10 in-store produced pizzas using the Food to Go scales.</li>
+            <li><strong>Unknown Loss 6 (Waste):</strong> Visually check waste areas and segregation.</li>
+            <li><strong>Shrink 4 (Tobacco):</strong> Verify storage of tobacco and vape products.</li>
+            <li><strong>Protection 1 (BWS):</strong> Visually check BWS products' protection.</li>
+            <li><strong>Security 1 (CCTV):</strong> Ensure CCTV systems are fully operational.</li>
           </ul>
-
+          
           <h4>6. Key Resources and Contacts</h4>
           <ul>
-            <li><strong>Self Assessment Platform & Dashboard:</strong> Links to the self-assessment form, dashboard, and engagement pack are provided.</li>
-            <li><strong>Prefilled Information:</strong> Prefilled store information is available for self-assessments.</li>
-            <li><strong>Key Contacts:</strong> Terri Waters (Audit and Stocktake Manager), Hannah Cleary and David Grey (Senior Loss Prevention Managers), and Robert Palmer (Loss Prevention Specialist - Data & Analytics).</li>
-          </ul>
-          <p><strong>Shrink Dash:</strong> <a href="https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink" target="_blank" rel="noopener noreferrer">https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink</a></p>
-          <p><strong>Staff Checks:</strong> <a href="https://www.dymension.co.uk/#/account/login" target="_blank" rel="noopener noreferrer">https://www.dymension.co.uk/#/account/login</a></p>
-          <p><strong>Shrink Performance:</strong> <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" target="_blank" rel="noopener noreferrer">https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec</a></p>
-          <p><strong>Stock Adjustments:</strong> <a href="https://drive.google.com/file/d/1lcxZhhyVqYF5L8M30DeFdy13lj21NrGN/view" target="_blank" rel="noopener noreferrer">https://drive.google.com/file/d/1lcxZhhyVqYF5L8M30DeFdy13lj21NrGN/view</a></p>
-        </div>
-      </div>
-
-      <!-- Tagging Guide Dashboard Card -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-tags"></i> Tagging Guide</h3>
-        <p>Comprehensive guidelines for tagging products across various departments to ensure effective loss prevention.</p>
-        <div class="tagging-guide-content">
-          <h4>Health & Beauty</h4>
-          <ul>
-            <li><strong>Baby:</strong> All stages of infant milk £10+ require a soft tag.</li>
-            <li><strong>Skincare:</strong> All facial and body skincare £10+ require a soft tag. Hair removal and women's razors £10+ require a pin tag (or soft tag if pin tag is not possible).</li>
-            <li><strong>Sun Care:</strong> Sun care products £10+ need a soft tag, except for 'Riemann' products, which require a safer case.</li>
-            <li><strong>Dental:</strong> Electric toothbrushes £0 - £30 require a pin tag. Electric toothbrushes £30+ require a spider wrap. All electric toothbrush heads/refills require a pin tag. Toothpaste & whitening £10+ requires a soft tag.</li>
-            <li><strong>Fragrances:</strong> Fragrances £10 and over require a safer case or spider tag.</li>
-            <li><strong>Pregnancy/Family Planning:</strong> All pregnancy test and ovulation kits £10+ need a soft tag (unless source tagged). Lubricants £10+ require a soft tag. Condoms require a soft tag (unless source tagged).</li>
-            <li><strong>Nicotine Replacements:</strong> All Nicorette Quickmist lines require a spider wrap (or pin tag if spider wrap is not possible). All other nicotine products need a soft tag.</li>
-            <li><strong>Nutrition and Vitamins:</strong> Sports nutrition £10+ and all vitamins £10+ need a soft tag.</li>
-            <li><strong>Medicinal (Slimming):</strong> Dietary aids £10+ require a soft tag. Four specific XLS lines are source-tagged, and all other XLS lines require a soft tag.</li>
-            <li><strong>Footcare:</strong> Footcare £10 and over requires a soft tag. All Scholl products £10+ need a pin tag (or soft tag if pin tag is not possible).</li>
-            <li><strong>Manuka Honey:</strong> Manuka honey £10+ requires a soft tag, except for source-tagged lines.</li>
-            <li><strong>Jointcare:</strong> Jointcare £10+ and all Voltarol products £10+ require a soft tag.</li>
-            <li><strong>Men’s Toiletries:</strong> Razor blades (all) need a safer case (or pin tag if a safer case is not possible). All razor handles require a pin tag. Beard trimmers need a spider wrap (or pin tag if spider wrap is not possible). Disposable razors £10+, men’s skincare £10+, and shave care (including gels and oils) £10+ require a soft tag.</li>
-          </ul>
-
-          <h4>General Merchandise</h4>
-          <ul>
-            <li><strong>Clothing:</strong> All clothing (excluding Babywear, Footwear, Accessories, and Bags) £15+ needs a pin tag (or soft tag if pin tag is not possible). Selected stores may tag clothing at £10+.</li>
-            <li><strong>Paint & DIY:</strong> Folding and utility knives require a safer case (or pin tag if safer case is not possible).</li>
-            <li><strong>Batteries, Torches & Bulbs:</strong> All batteries £10+ and torches £10+ require a soft tag (unless source-tagged).</li>
-            <li><strong>JML Products:</strong> JML products £10 and over require a spider wrap. JML products £9.99 and under require a pin tag. Where a spider or pin tag won't fit, use a soft tag.</li>
-            <li><strong>Home Office:</strong> All ink cartridges require a pin tag. Sandisks (all) require a safer case.</li>
-            <li><strong>Small Electrical Appliances:</strong> All products £10+ that are not source-tagged require a spider wrap (or soft tag if spider wrap is not possible).</li>
-            <li><strong>WIGIGS:</strong> All lines over £10 require a soft tag. All lines over £30 require a spider tag.</li>
-          </ul>
-
-          <h4>Beers, Wines, & Spirits</h4>
-          <ul>
-            <li><strong>Spirits:</strong> All spirits (including non-alcoholic) require Bottlelox/caps. Spirits presentation boxes require a UFO tag. Bottles that won't accommodate Bottlelox require a wide neck UFO/net. Chambord requires a soft tag.</li>
-            <li><strong>Champagne & Wine:</strong> All champagne requires a net (in applicable stores) or UFO tag (black). All wine £12+ requires a Bottlelox. Bottles that won't accommodate Bottlelox require a UFO/Wide Neck Bottle Tag/Net.</li>
-          </ul>
-
-          <h4>Other Departments</h4>
-          <ul>
-            <li><strong>Gift Sets:</strong> Where gift sets are not already source-tagged a soft tag should be applied to those £10 or over.</li>
-            <li><strong>Toys:</strong> Toys £10+ require a soft tag or source tag. Toys £30+ require a spider wrap (or soft tag if spider wrap is not possible). Individual LOL dolls need a soft tag, and entire merchandising units should be spider wrapped. All Barbie and Hot Wheels toys require a soft tag.</li>
-            <li><strong>Meat:</strong> Beef, lamb and pork joints and steaks £5 & over require a yellow soft tag (applied to the top left of the GLP label for in-store produced items only, pre-pack products are source tagged).</li>
-            <li><strong>Vape:</strong> Any vape products not source tagged require a soft tag.</li>
-            <li><strong>Flowers:</strong> Bouquets £15 & over require a soft tag.</li>
-          </ul>
-
-          <h4>General Notes:</h4>
-          <ul>
-            <li><strong>Source Tagging:</strong> Products with a live security label do not need an additional soft tag, but may still require other forms of protection if specified.</li>
-            <li><strong>Restricted Fill:</strong> Restricted fill extenders should be used for spirits, champagne, smoking cessation, and skincare products.</li>
-            <li><strong>Capping Shelves:</strong> High-value stock (lines that are product protected) should not be stored on capping shelves.</li>
-            <li><strong>Tag Recycling:</strong> There are recycling containers at the checkout, self-scan checkouts, and trolley stations for used product protection equipment.</li>
-            <li><strong>Red UFO Tags:</strong> Red UFO tags need to be segregated at the checkout, placed in a cardboard-lined banana box, and stored at the checkers desk or back door.</li>
+            <li><strong>Self Assessment Platform & Dashboard:</strong> Links to the self-assessment form, dashboard, and engagement pack.</li>
+            <li><strong>Prefilled Information:</strong> Prefilled store information available for self-assessments.</li>
+            <li><strong>Key Contacts:</strong> Terri Waters, Hannah Cleary, David Grey, Robert Palmer.</li>
           </ul>
         </div>
       </div>
+    </section>
 
-      <!-- Shrink Management Tools Dashboard Card -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-tools"></i> Shrink Management Tools</h3>
-        <p>Access essential tools and resources to effectively manage and reduce shrinkage.</p>
-        <a href="https://sites.google.com/morrisonsplc.co.uk/shrink-management-tools" target="_blank" rel="noopener noreferrer">
-          Visit Shrink Tools
-        </a>
-      </div>
+    <!-- Additional Sections for Guidelines -->
+    <section>
+      <h2>Health & Beauty</h2>
+      <ul>
+        <li><strong>Baby:</strong> All stages of infant milk £10+ require a soft tag.</li>
+        <li><strong>Skincare:</strong> All facial and body skincare £10+ require a soft tag. Hair removal and women's razors £10+ require a pin tag (or soft tag if pin tag is not possible).</li>
+        <li><strong>Sun Care:</strong> Sun care products £10+ need a soft tag, except for 'Riemann' products, which require a safer case.</li>
+        <li><strong>Dental:</strong> Electric toothbrushes £0 - £30 require a pin tag. Electric toothbrushes £30+ require a spider wrap. All electric toothbrush heads/refills require a pin tag. Toothpaste & whitening £10+ requires a soft tag.</li>
+        <li><strong>Fragrances:</strong> Fragrances £10 and over require a safer case or spider tag.</li>
+        <li><strong>Pregnancy/Family Planning:</strong> All pregnancy test and ovulation kits £10+ need a soft tag (unless source tagged). Lubricants £10+ require a soft tag. Condoms require a soft tag (unless source tagged).</li>
+        <li><strong>Nicotine Replacements:</strong> All Nicorette Quickmist lines require a spider wrap (or pin tag if spider wrap is not possible). All other nicotine products need a soft tag.</li>
+        <li><strong>Nutrition and Vitamins:</strong> Sports nutrition £10+ and all vitamins £10+ need a soft tag.</li>
+        <li><strong>Medicinal (Slimming):</strong> Dietary aids £10+ require a soft tag. Four specific XLS lines are source-tagged, and all other XLS lines require a soft tag.</li>
+        <li><strong>Footcare:</strong> Footcare £10 and over requires a soft tag. All Scholl products £10+ need a pin tag (or soft tag if pin tag is not possible).</li>
+        <li><strong>Manuka Honey:</strong> Manuka honey £10+ requires a soft tag, except for source-tagged lines.</li>
+        <li><strong>Jointcare:</strong> Jointcare £10+ and all Voltarol products £10+ require a soft tag.</li>
+        <li><strong>Men’s Toiletries:</strong> Razor blades (all) need a safer case (or pin tag if a safer case is not possible). All razor handles require a pin tag. Beard trimmers need a spider wrap (or pin tag if spider wrap is not possible). Disposable razors £10+, men’s skincare £10+, and shave care (including gels and oils) £10+ require a soft tag.</li>
+      </ul>
 
-      <!-- Shrink Reporting Dashboard Card -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-file-invoice-dollar"></i> Shrink Reporting</h3>
-        <p>Generate and review shrinkage reports to track performance and identify improvement areas.</p>
-        <a href="https://home.morrisons.osp.tech/shrink-reporting" target="_blank" rel="noopener noreferrer">
-          Access Shrink Reporting
-        </a>
-      </div>
+      <h2>General Merchandise</h2>
+      <ul>
+        <li><strong>Clothing:</strong> All clothing (excluding Babywear, Footwear, Accessories, and Bags) £15+ needs a pin tag (or soft tag if pin tag is not possible). Selected stores may tag clothing at £10+.</li>
+        <li><strong>Paint & DIY:</strong> Folding and utility knives require a safer case (or pin tag if safer case is not possible).</li>
+        <li><strong>Batteries, Torches & Bulbs:</strong> All batteries £10+ and torches £10+ require a soft tag (unless source-tagged).</li>
+        <li><strong>JML Products:</strong> JML products £10 and over require a spider wrap. JML products £9.99 and under require a pin tag. Where a spider or pin tag won't fit, use a soft tag.</li>
+        <li><strong>Home Office:</strong> All ink cartridges require a pin tag. Sandisks (all) require a safer case.</li>
+        <li><strong>Small Electrical Appliances:</strong> All products £10+ that are not source-tagged require a spider wrap (or soft tag if spider wrap is not possible).</li>
+        <li><strong>WIGIGS:</strong> All lines over £10 require a soft tag. All lines over £30 require a spider tag.</li>
+      </ul>
+
+      <h2>Beers, Wines, & Spirits</h2>
+      <ul>
+        <li><strong>Spirits:</strong> All spirits (including non-alcoholic) require Bottlelox/caps. Spirits presentation boxes require a UFO tag. Bottles that won't accommodate Bottlelox require a wide neck UFO/net. Chambord requires a soft tag.</li>
+        <li><strong>Champagne & Wine:</strong> All champagne requires a net (in applicable stores) or UFO tag (black). All wine £12+ requires a Bottlelox. Bottles that won't accommodate Bottlelox require a UFO/Wide Neck Bottle Tag/Net.</li>
+      </ul>
+
+      <h2>Other Departments</h2>
+      <ul>
+        <li><strong>Gift Sets:</strong> Where gift sets are not already source-tagged a soft tag should be applied to those £10 or over.</li>
+        <li><strong>Toys:</strong> Toys £10+ require a soft tag or source tag. Toys £30+ require a spider wrap (or soft tag if spider wrap is not possible). Individual LOL dolls need a soft tag, and entire merchandising units should be spider wrapped. All Barbie and Hot Wheels toys require a soft tag.</li>
+        <li><strong>Meat:</strong> Beef, lamb and pork joints and steaks £5 & over require a yellow soft tag (applied to the top left of the GLP label for in-store produced items only, pre-pack products are source tagged).</li>
+        <li><strong>Vape:</strong> Any vape products not source tagged require a soft tag.</li>
+        <li><strong>Flowers:</strong> Bouquets £15 & over require a soft tag.</li>
+      </ul>
+
+      <h3>General Notes:</h3>
+      <ul>
+        <li><strong>Source Tagging:</strong> Products with a live security label do not need an additional soft tag, but may still require other forms of protection if specified.</li>
+        <li><strong>Restricted Fill:</strong> Restricted fill extenders should be used for spirits, champagne, smoking cessation, and skincare products.</li>
+        <li><strong>Capping Shelves:</strong> High value stock (lines that are product protected) should not be stored on capping shelves.</li>
+        <li><strong>Tag Recycling:</strong> There are recycling containers at the checkout, self-scan checkouts, and trolley stations for used product protection equipment.</li>
+        <li><strong>Red UFO tags:</strong> Red UFO tags need to be segregated at the checkout, placed in a cardboard-lined banana box, and stored at the checkers desk or back door.</li>
+      </ul>
     </section>
   </main>
 
@@ -610,6 +605,20 @@
     hamburger.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') hamburger.click();
     });
+
+    /* Accordion for Audit Guide */
+    const acc = document.getElementsByClassName("accordion");
+    for (let i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        const panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
+        }
+      });
+    }
   </script>
 </body>
 </html>
