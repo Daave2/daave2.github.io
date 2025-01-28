@@ -389,7 +389,8 @@
     }
     .save-button,
     .load-button,
-    .clear-button {
+    .clear-button,
+    .print-button {
       background-color: var(--primary-green);
       color: #fff;
       border: none;
@@ -401,18 +402,21 @@
     }
     .save-button:hover,
     .load-button:hover,
-    .clear-button:hover {
+    .clear-button:hover,
+    .print-button:hover {
       background-color: #004d00;
     }
     body.dark-mode .save-button,
     body.dark-mode .load-button,
-    body.dark-mode .clear-button {
+    body.dark-mode .clear-button,
+    body.dark-mode .print-button {
       background-color: #444;
       color: var(--dark-footer-text);
     }
     body.dark-mode .save-button:hover,
     body.dark-mode .load-button:hover,
-    body.dark-mode .clear-button:hover {
+    body.dark-mode .clear-button:hover,
+    body.dark-mode .print-button:hover {
       background-color: #222;
     }
 
@@ -720,6 +724,7 @@
           <button class="save-button">Save</button>
           <button class="load-button">Load</button>
           <button class="clear-button">Clear</button>
+          <button class="print-button">Print</button> <!-- New Print Button -->
         </div>
       </div>
     </section>
@@ -844,6 +849,7 @@
     const clearButton = document.querySelector('.clear-button');
     const saveButton = document.querySelector('.save-button');
     const loadButton = document.querySelector('.load-button');
+    const printButton = document.querySelector('.print-button'); // New Print Button
     const colorPicker = document.querySelector('.color-picker');
     const brushSize = document.querySelector('.brush-size');
 
@@ -939,8 +945,9 @@
     // Clear Whiteboard
     clearButton.addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      localStorage.removeItem('whiteboardImage');
-      showNotification('Whiteboard cleared and saved data removed.');
+      // Removed the line that clears saved data
+      // localStorage.removeItem('whiteboardImage');
+      showNotification('Whiteboard cleared.');
     });
 
     // Save Whiteboard
@@ -968,6 +975,41 @@
       } else {
         showNotification('No saved drawings found');
       }
+    });
+
+    // Print Whiteboard
+    printButton.addEventListener('click', () => {
+      const dataURL = canvas.toDataURL('image/png');
+      const printWindow = window.open('', 'Print Whiteboard', 'width=800,height=600');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Whiteboard</title>
+            <style>
+              body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+              }
+              img {
+                max-width: 100%;
+                height: auto;
+              }
+            </style>
+          </head>
+          <body>
+            <img src="${dataURL}" alt="Whiteboard">
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.onload = function() {
+        printWindow.print();
+        printWindow.close();
+      };
     });
 
     /*******************************************************
