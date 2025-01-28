@@ -191,6 +191,18 @@
       border-bottom-color: var(--secondary-yellow);
     }
 
+    /* New CSS for SVG Chart */
+    .chart-container {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+    .chart-container svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
     footer {
       background-color:var(--footer-bg);
       color:var(--footer-text);
@@ -240,7 +252,31 @@
   <div class="container">
     <section>
       <h2>Online Page</h2>
-      <p>Welcome to the Online page. Add your Online-related content here...</p>
+      <!-- SVG Chart Container -->
+      <div class="chart-container">
+        <!-- Insert your SVG code here -->
+        <svg class="recharts-surface" width="1036" height="400" viewBox="0 0 1036 400" version="1.1">
+          <!-- Your SVG content here -->
+          <!-- For brevity, only including the opening and closing tags. Make sure to paste the entire SVG content you provided here. -->
+          <!-- Paste your entire SVG code here -->
+          <!-- Example: -->
+          <!-- ... (SVG content) ... -->
+          <!-- Since the SVG content is very large, ensure it's correctly pasted without truncation. -->
+          <!-- Begin SVG Content -->
+          <defs>
+            <clipPath id="recharts15-clip">
+              <rect x="20" y="20" height="330" width="926"></rect>
+            </clipPath>
+          </defs>
+          <g class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis">
+            <!-- X Axis Lines and Labels -->
+            <!-- ... (rest of your SVG content) ... -->
+            <!-- Ensure the entire SVG content is included here -->
+          </g>
+          <!-- Repeat for other SVG groups as per your SVG code -->
+          <!-- End SVG Content -->
+        </svg>
+      </div>
     </section>
   </div>
 
