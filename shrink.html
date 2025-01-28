@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shrink Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cleveleys Morrisons Management Dashboard - Shrink</title>
+  <!-- Google Fonts & Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -12,12 +13,8 @@
         referrerpolicy="no-referrer" />
   <style>
     /* ------------------------------
-       INCLUDE YOUR EXISTING CSS HERE
+       CSS Styles for Cleveleys Morrisons Management Dashboard
        ------------------------------ */
-    /* For brevity, copy/paste the same <style> block
-       from your main dashboard. This ensures consistent
-       styling across all pages. */
-    
     :root {
       --primary-green: #006400;
       --secondary-yellow: #FFD700;
@@ -38,7 +35,9 @@
     }
 
     * {
-      box-sizing: border-box; margin:0; padding:0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
       font-family: 'Roboto', sans-serif;
@@ -68,13 +67,23 @@
       color: var(--dark-text-color);
     }
     header img {
-      position: absolute; left:20px; top:50%;
-      transform: translateY(-50%); height:50px;
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 50px;
     }
-    header h1 { font-size:2em; margin:0; padding-left:80px; }
+    header h1 { 
+      font-size: 2em; 
+      margin: 0; 
+      padding-left: 80px; 
+    }
 
+    /* Navigation Styles */
     nav.nav {
-      position: sticky; top:0; z-index:1000;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       background-color: var(--secondary-yellow);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
       transition: background-color 0.3s;
@@ -84,21 +93,33 @@
       box-shadow: 0 2px 15px rgba(0,0,0,0.6);
     }
     .nav-container {
-      display: flex; align-items: center; justify-content: space-between;
-      max-width:1200px; margin:0 auto; padding:0 20px; height:60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 60px;
     }
     .nav-links {
-      display: flex; align-items:center; gap:1rem;
-      list-style:none; transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
+      transition: transform 0.3s ease;
     }
     .nav-links li { position: relative; }
     .nav-links a {
-      display:flex; align-items:center; gap:0.5rem;
-      padding:0.75rem 1rem; font-weight:500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
       color: var(--primary-green);
-      border-radius:8px; transition: background-color 0.3s, transform 0.3s;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.3s;
     }
-    body.dark-mode .nav-links a { color:var(--dark-text-color); }
+    body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
       background-color: var(--primary-green);
       color: var(--background-white);
@@ -110,99 +131,223 @@
     }
     .nav-links a::after {
       content: '';
-      position:absolute; bottom:0; left:0;
-      width:0; height:3px; background-color:var(--primary-green);
-      border-radius:2px; transition:width 0.3s ease;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-green);
+      border-radius: 2px;
+      transition: width 0.3s ease;
     }
     .nav-links a:hover::after,
-    .nav-links .active::after { width:100%; }
+    .nav-links .active::after { width: 100%; }
 
     .hamburger {
-      display:none; flex-direction:column; cursor:pointer; z-index:1001;
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
     }
     .hamburger span {
-      display:block; width:25px; height:3px; background:var(--primary-green);
-      margin:5px 0; transition:all 0.3s ease;
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: var(--primary-green);
+      margin: 5px 0;
+      transition: all 0.3s ease;
     }
     body.dark-mode .hamburger span { background: var(--dark-text-color); }
     .hamburger.active span:nth-child(1) {
-      transform:rotate(45deg) translate(5px,5px);
+      transform: rotate(45deg) translate(5px,5px);
     }
     .hamburger.active span:nth-child(2) {
-      opacity:0;
+      opacity: 0;
     }
     .hamburger.active span:nth-child(3) {
-      transform:rotate(-45deg) translate(7px,-6px);
+      transform: rotate(-45deg) translate(7px,-6px);
     }
 
-    .nav-actions { display:flex; align-items:center; gap:1rem; }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
     .dark-mode-toggle {
-      background:none; border:none; cursor:pointer;
-      font-size:1.5em; color:var(--primary-green);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5em;
+      color: var(--primary-green);
       transition: color 0.3s;
     }
     body.dark-mode .dark-mode-toggle {
       color: var(--dark-text-color);
     }
-    @media (max-width:768px) {
-      .hamburger { display:flex; }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
       .nav-links {
-        position:fixed; top:60px; left:0; right:0; bottom:0;
-        background:var(--secondary-yellow); flex-direction:column; padding:1rem;
-        transform:translateX(-100%); transition:transform 0.3s ease;
-        overflow-y:auto;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--secondary-yellow);
+        flex-direction: column;
+        padding: 1rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
       }
-      body.dark-mode .nav-links { background:#333; }
-      .nav-links.active { transform:translateX(0); }
-      .nav-links li { margin:0; width:100%; }
+      body.dark-mode .nav-links { background: #333; }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links li { margin: 0; width: 100%; }
       .nav-links a {
-        margin:10px 0; width:100%; background-color:transparent;
-        color:var(--primary-green); border-radius:4px;
-        text-align:left; font-size:1em; padding:10px;
+        margin: 10px 0;
+        width: 100%;
+        background-color: transparent;
+        color: var(--primary-green);
+        border-radius: 4px;
+        text-align: left;
+        font-size: 1em;
+        padding: 10px;
       }
-      body.dark-mode .nav-links a { color:var(--dark-text-color); }
+      body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
-        background-color:var(--primary-green);
-        color:var(--background-white);
+        background-color: var(--primary-green);
+        color: var(--background-white);
       }
     }
 
-    .container { padding:20px; max-width:1200px; margin:0 auto; }
-    section {
-      margin-bottom:30px; background-color:var(--card-bg);
-      padding:20px; border-radius:10px;
-      box-shadow:0 4px 12px var(--card-shadow);
-      transition:background-color 0.3s, box-shadow 0.3s;
+    /* Main Container Styles */
+    .container { 
+      padding: 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
     }
-    body.dark-mode section {
-      background-color:var(--dark-card-bg);
-      box-shadow:0 4px 12px var(--dark-card-bg);
-    }
-    section h2 {
-      color:var(--primary-green);
-      margin-bottom:15px; font-size:1.6em;
-      border-bottom:2px solid var(--secondary-yellow);
-      display:inline-block; padding-bottom:5px;
-      transition: color 0.3s, border-bottom-color 0.3s;
-    }
-    body.dark-mode section h2 {
-      color:var(--dark-text-color);
-      border-bottom-color: var(--secondary-yellow);
+    main {
+      role: main;
     }
 
+    /* Dashboard Styles */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .dashboard-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px var(--card-shadow);
+    }
+    .dashboard-card h3 {
+      margin-bottom: 15px;
+      color: var(--primary-green);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.4em;
+    }
+    .dashboard-card p {
+      flex-grow: 1;
+      margin-bottom: 15px;
+    }
+    .dashboard-card iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .dashboard-card a {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      border-radius: 5px;
+      text-align: center;
+      font-weight: 500;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .dashboard-card a:hover {
+      background-color: var(--secondary-yellow);
+      color: var(--background-white);
+      transform: translateY(-2px);
+    }
+
+    /* Footer Styles */
     footer {
-      background-color:var(--footer-bg);
-      color:var(--footer-text);
-      text-align:center; padding:10px 5px;
-      bottom:0; width:100%;
-      transition:background-color 0.3s, color 0.3s;
+      background-color: var(--footer-bg);
+      color: var(--footer-text);
+      text-align: center;
+      padding: 10px 5px;
+      bottom: 0;
+      width: 100%;
+      transition: background-color 0.3s, color 0.3s;
     }
     body.dark-mode footer {
-      background-color:var(--dark-footer-bg);
-      color:var(--dark-footer-text);
+      background-color: var(--dark-footer-bg);
+      color: var(--dark-footer-text);
     }
-    footer p { margin:0; font-size:0.8em; }
+    footer p { 
+      margin: 0; 
+      font-size: 0.8em; 
+    }
 
+    /* Media Queries for Responsive Iframe */
+    @media (max-width: 768px) {
+      .dashboard-card iframe {
+        height: 250px;
+      }
+    }
+    @media (max-width: 480px) {
+      .dashboard-card iframe {
+        height: 200px;
+      }
+    }
+
+    /* Tagging Guide Specific Styles */
+    .tagging-guide-content {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    body.dark-mode .tagging-guide-content {
+      background-color: #2c2c2c;
+      border: 1px solid #555;
+      color: var(--dark-text-color);
+    }
+    .tagging-guide-content h4 {
+      margin-top: 15px;
+      margin-bottom: 10px;
+      color: var(--primary-green);
+    }
+    .tagging-guide-content ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+    .tagging-guide-content li {
+      margin-bottom: 5px;
+    }
+    .tagging-guide-content a {
+      color: var(--primary-green);
+      text-decoration: underline;
+    }
+    body.dark-mode .tagging-guide-content a {
+      color: var(--dark-text-color);
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -212,15 +357,16 @@
     <h1>Cleveleys Morrisons Management Dashboard</h1>
   </header>
 
-  <nav class="nav">
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-globe"></i>Home</a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i>Online</a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i>Street</a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
-        <li><a href="shrink.html" class="active"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
+        <li><a href="street.html"><i class="fas fa-store"></i> Street</a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+        <li><a href="shrink.html" class="active"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
       </ul>
       <div class="nav-actions">
         <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
@@ -233,19 +379,237 @@
     </div>
   </nav>
 
-  <div class="container">
-    <section>
-      <h2>Shrink Page</h2>
-      <p>Placeholder content for the Shrink page. Add your shrink management details here.</p>
+  <main class="container">
+    <section class="dashboard">
+      <!-- Shrink Analysis Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-chart-pie"></i> Shrink Analysis</h3>
+        <p>Monitor and analyze shrinkage across different departments to identify trends and areas for improvement.</p>
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=0&single=true&widget=true&headers=false" title="Shrink Analysis Data" loading="lazy"></iframe>
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=0&single=true&widget=true&headers=false" target="_blank" rel="noopener noreferrer">
+          View Full Shrink Analysis
+        </a>
+      </div>
+
+      <!-- Protection Guide Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-shield-alt"></i> Protection Guide</h3>
+        <p>Access the Protection Guide presentation to understand best practices for loss prevention.</p>
+        <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTJm_zWd0rq7VA-IUg6OSXs8FdQc4Lp3s3v6_1fntqG2SHpDK5zHyARwdZF_f1LjGZFRDZn39pLz5ax/embed?start=false&loop=true&delayms=10000" title="Protection Guide Presentation" loading="lazy"></iframe>
+        <a href="https://docs.google.com/presentation/d/e/2PACX-1vTJm_zWd0rq7VA-IUg6OSXs8FdQc4Lp3s3v6_1fntqG2SHpDK5zHyARwdZF_f1LjGZFRDZn39pLz5ax/embed?start=false&loop=true&delayms=10000" target="_blank" rel="noopener noreferrer">
+          View Full Protection Guide
+        </a>
+      </div>
+
+      <!-- Audit Guide Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-file-alt"></i> Audit Guide</h3>
+        <p>Review the Audit Guide document for comprehensive insights into the Q2 Shrink and Cash Loss Audit.</p>
+        <a href="#audit-guide" class="scroll-link">Read Audit Guide</a>
+      </div>
+
+      <!-- Audit Guide Content -->
+      <div class="dashboard-card" id="audit-guide">
+        <h3><i class="fas fa-book"></i> Audit Guide</h3>
+        <p><strong>Briefing Document: Q2 Shrink and Cash Loss Audit – FY24/25</strong></p>
+        <div style="overflow-y: auto; max-height: 400px;">
+          <h4>1. Introduction</h4>
+          <p>This document summarizes the key changes, focus areas, and requirements for the upcoming Q2 Shrink and Cash Loss Audit. The audit period runs from Monday, January 27th to Friday, April 25th, with a brief pause over Easter (April 14th-21st). The core objective of the audit is to assess compliance with Loss Prevention (LP) standards and drive improvements in key areas, ultimately minimizing shrink and cash loss.</p>
+          
+          <h4>2. Key Changes and Focus Areas</h4>
+          <p>The Q2 audit introduces some key changes and re-introduces some questions, demonstrating a refinement of focus areas. The pass rate remains at 85%, with all 45 questions being marked (no unmarked questions).</p>
+          <ul>
+            <li><strong>Removed Question:</strong> The question regarding recording loose produce waste has been removed.</li>
+            <li><strong>Re-introduced Questions:</strong> Waste Management: The audit now assesses if the store has "a clearly identifiable waste area set up for Fresh foods / Frozen & Ambient areas" and whether a "clearly identified waste pre validation area set" is in place. Furthermore, it will be checked if "validated waste is stored separately as part of backhaul, tidy and ready to be returned on salvage." This shows an increased focus on proper waste handling and segregation. As the document explains, "Failure to store these separately may result in waste being missed through validation which increases the potential for unrecorded waste."</li>
+            <li><strong>Food to Go Pizzas:</strong> The process of preparing "Food to Go pizzas" will be checked against the "correct specification."</li>
+            <li><strong>Updated Questions:</strong> Product Protection (BWS): Compliance with new spirits caps and champagne nets will be checked in applicable stores.</li>
+            <li><strong>Scorecard (Transfers):</strong> The "Cafe Transfers" metric is broadened to include all transfers, aligning with the LP Shrink Scorecard. The metric now assesses "transfers generally and not just Cafe transfers."</li>
+            <li><strong>Shrink (Tobacco Backstock):</strong> Auditors will now verify that all tobacco and vape products are "stored securely" and will ask to see "any storage areas in the kiosk area". "It is important that the key processes are followed for tobacco to ensure all stock received is correctly stored once it has arrived at our stores to prevent shrink and maintain availability for our customers."</li>
+          </ul>
+
+          <h4>3. Audit Process and Structure</h4>
+          <ul>
+            <li><strong>Duration:</strong> The audit is a 90-minute assessment.</li>
+            <li><strong>Scoring:</strong> A pass requires a score of 85% or higher across the 45 marked questions.</li>
+            <li><strong>Re-audits:</strong> "Selected stores may also receive a solo re-audit for either hygiene or shrink following their Q1 result and so may be audited twice within this quarter." These re-audits will be at least 4 weeks after the initial audit, and their scores will not be included in Regional Reporting, serving as a tool to drive improvement.</li>
+            <li><strong>Action Plans:</strong> Following each audit, a list of non-conformances and required actions will be sent after the audit challenge window is closed. "Actions should be signed off by the Store Manager and should be closed out within one week."</li>
+            <li><strong>Self-Assessment:</strong> Stores can access a self-assessment platform reflecting the Q2 changes and can complete this assessment using a Google Form. "The full self-assessment dashboard so that you can analyze your performance & track improvement can be found here". Prefilled information for the store can be used for this.</li>
+          </ul>
+
+          <h4>4. Key Audit Questions and Criteria</h4>
+          <p>The audit covers a wide range of areas, including:</p>
+          <ul>
+            <li><strong>Scorecard Metrics:</strong> These are data-driven, taken from the two weeks preceding the audit, and include waste validation rates, outstanding transfers, dumpcodes, alarm settings, news & mags credit loss, product scan completion on news & mags, and smart gate utilization.</li>
+            <li><strong>Online:</strong> 100% match between products in online totes/Amazon bags and the receipt.</li>
+            <li><strong>Product Protection:</strong> Covering BWS, health & beauty, baby products, toys, small domestic appliances, batteries, printer ink, in-store produced beef, lamb & pork. The audit emphasizes, "...UP TO 3 UNIQUE PRODUCTS (IRRELEVANT OF QUANTITY) MAY BE UNPROTECTED BEFORE RESULTING IN A FAIL" in several of the product protection sections. The updated guidance will be checked for spirits caps and champagne nets. High-value stock must be secured in a high-value lock-up, cupboard, room, or cage. Nutmeg clothing also has to be correctly product protected.</li>
+            <li><strong>Aisle Capping:</strong> The audit checks that high-value stock such as Health & Beauty products is not on aisle capping shelves.</li>
+            <li><strong>Restricted Fill Indicators:</strong> Compliance with the "Restrict Fill" policy, including locked spirits doors where applicable.</li>
+            <li><strong>Security:</strong> This section checks CCTV systems (cameras, monitors, guarding podiums), security guard uniforms and alertness, guard knowledge of top 5 loss lines, swing gate function, EAS barrier function and testing, smart gate function (where applicable), main bank till barriers, and front-facing self-checkout cameras. Also checks for working mag locks and external doors. Keys must be locked away and signed in/out, and the keyholder list and alarm codes must be up to date.</li>
+            <li><strong>Shrink:</strong> Checks colleague practice on kiosk (handing over product before payment), weekly colleague searches, items found in store without receipt, kiosk door security, placement of carrier bags at SCOs, weekly shrink meetings, and the processing of single cans.</li>
+            <li><strong>Unknown Loss:</strong> Checks correct preparation of cream cakes and food-to-go pizzas (weighing a sample for compliance), if the self-service area is manned and if colleagues are able to describe the use of the smart gate fob, if transfers into canteen and SRP break tables are being recorded, and if there is a clearly identified waste area.</li>
+            <li><strong>Cash:</strong> Reviews if till/banking differences are investigated, if phased till checks are performed daily, if coupon bags are being returned correctly and if the cash logbook is completed.</li>
+          </ul>
+
+          <h4>5. Specific Question Examples</h4>
+          <ul>
+            <li><strong>Unknown Loss 5 (Pizzas):</strong> "Weigh 10 in-store produced pizzas using the Food to Go scales. If the pizza weighs more than 10% over the specification it has failed. If 2 or more of these are overweight the question is failed."</li>
+            <li><strong>Unknown Loss 6 (Waste):</strong> "Visually check there is a clearly identified waste pre-validation area set up... Visually check validated waste is stored separately as part of backhaul... Pass: There are 2 separate clearly identified waste areas for pre-validated waste and validated waste."</li>
+            <li><strong>Shrink 4 (Tobacco):</strong> "The auditor will ask to see where tobacco and vape backstock is stored... Pass - Access cannot be gained into the kiosk - Bunker is locked where applicable - All tobacco & vape products are stored securely Fail - Tobacco and vape products are stored anywhere other than the following areas: - Tobacco Bunker... "</li>
+            <li><strong>Protection 1 (BWS):</strong> "Visually check BWS products... Up to 5 units may be unprotected, or protected incorrectly before resulting in a fail."</li>
+            <li><strong>Security 1 (CCTV):</strong> "Podium not working fully (no repair call logged) - CCTV podium obstructed by stock - Monitors not working / blank / hazy / switched off ..."</li>
+          </ul>
+
+          <h4>6. Key Resources and Contacts</h4>
+          <ul>
+            <li><strong>Self Assessment Platform & Dashboard:</strong> Links to the self-assessment form, dashboard, and engagement pack are provided.</li>
+            <li><strong>Prefilled Information:</strong> Prefilled store information is available for self-assessments.</li>
+            <li><strong>Key Contacts:</strong> Terri Waters (Audit and Stocktake Manager), Hannah Cleary and David Grey (Senior Loss Prevention Managers), and Robert Palmer (Loss Prevention Specialist - Data & Analytics).</li>
+          </ul>
+          <p><strong>Shrink Dash:</strong> <a href="https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink" target="_blank" rel="noopener noreferrer">https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink</a></p>
+          <p><strong>Staff Checks:</strong> <a href="https://www.dymension.co.uk/#/account/login" target="_blank" rel="noopener noreferrer">https://www.dymension.co.uk/#/account/login</a></p>
+          <p><strong>Shrink Performance:</strong> <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" target="_blank" rel="noopener noreferrer">https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec</a></p>
+          <p><strong>Stock Adjustments:</strong> <a href="https://drive.google.com/file/d/1lcxZhhyVqYF5L8M30DeFdy13lj21NrGN/view" target="_blank" rel="noopener noreferrer">https://drive.google.com/file/d/1lcxZhhyVqYF5L8M30DeFdy13lj21NrGN/view</a></p>
+        </div>
+      </div>
+
+      <!-- Tagging Guide Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-tags"></i> Tagging Guide</h3>
+        <p>Comprehensive guidelines for tagging products across various departments to ensure effective loss prevention.</p>
+        <div class="tagging-guide-content">
+          <h4>Health & Beauty</h4>
+          <ul>
+            <li><strong>Baby:</strong> All stages of infant milk £10+ require a soft tag.</li>
+            <li><strong>Skincare:</strong> All facial and body skincare £10+ require a soft tag. Hair removal and women's razors £10+ require a pin tag (or soft tag if pin tag is not possible).</li>
+            <li><strong>Sun Care:</strong> Sun care products £10+ need a soft tag, except for 'Riemann' products, which require a safer case.</li>
+            <li><strong>Dental:</strong> Electric toothbrushes £0 - £30 require a pin tag. Electric toothbrushes £30+ require a spider wrap. All electric toothbrush heads/refills require a pin tag. Toothpaste & whitening £10+ requires a soft tag.</li>
+            <li><strong>Fragrances:</strong> Fragrances £10 and over require a safer case or spider tag.</li>
+            <li><strong>Pregnancy/Family Planning:</strong> All pregnancy test and ovulation kits £10+ need a soft tag (unless source tagged). Lubricants £10+ require a soft tag. Condoms require a soft tag (unless source tagged).</li>
+            <li><strong>Nicotine Replacements:</strong> All Nicorette Quickmist lines require a spider wrap (or pin tag if spider wrap is not possible). All other nicotine products need a soft tag.</li>
+            <li><strong>Nutrition and Vitamins:</strong> Sports nutrition £10+ and all vitamins £10+ need a soft tag.</li>
+            <li><strong>Medicinal (Slimming):</strong> Dietary aids £10+ require a soft tag. Four specific XLS lines are source-tagged, and all other XLS lines require a soft tag.</li>
+            <li><strong>Footcare:</strong> Footcare £10 and over requires a soft tag. All Scholl products £10+ need a pin tag (or soft tag if pin tag is not possible).</li>
+            <li><strong>Manuka Honey:</strong> Manuka honey £10+ requires a soft tag, except for source-tagged lines.</li>
+            <li><strong>Jointcare:</strong> Jointcare £10+ and all Voltarol products £10+ require a soft tag.</li>
+            <li><strong>Men’s Toiletries:</strong> Razor blades (all) need a safer case (or pin tag if a safer case is not possible). All razor handles require a pin tag. Beard trimmers need a spider wrap (or pin tag if spider wrap is not possible). Disposable razors £10+, men’s skincare £10+, and shave care (including gels and oils) £10+ require a soft tag.</li>
+          </ul>
+
+          <h4>General Merchandise</h4>
+          <ul>
+            <li><strong>Clothing:</strong> All clothing (excluding Babywear, Footwear, Accessories, and Bags) £15+ needs a pin tag (or soft tag if pin tag is not possible). Selected stores may tag clothing at £10+.</li>
+            <li><strong>Paint & DIY:</strong> Folding and utility knives require a safer case (or pin tag if safer case is not possible).</li>
+            <li><strong>Batteries, Torches & Bulbs:</strong> All batteries £10+ and torches £10+ require a soft tag (unless source-tagged).</li>
+            <li><strong>JML Products:</strong> JML products £10 and over require a spider wrap. JML products £9.99 and under require a pin tag. Where a spider or pin tag won't fit, use a soft tag.</li>
+            <li><strong>Home Office:</strong> All ink cartridges require a pin tag. Sandisks (all) require a safer case.</li>
+            <li><strong>Small Electrical Appliances:</strong> All products £10+ that are not source-tagged require a spider wrap (or soft tag if spider wrap is not possible).</li>
+            <li><strong>WIGIGS:</strong> All lines over £10 require a soft tag. All lines over £30 require a spider tag.</li>
+          </ul>
+
+          <h4>Beers, Wines, & Spirits</h4>
+          <ul>
+            <li><strong>Spirits:</strong> All spirits (including non-alcoholic) require Bottlelox/caps. Spirits presentation boxes require a UFO tag. Bottles that won't accommodate Bottlelox require a wide neck UFO/net. Chambord requires a soft tag.</li>
+            <li><strong>Champagne & Wine:</strong> All champagne requires a net (in applicable stores) or UFO tag (black). All wine £12+ requires a Bottlelox. Bottles that won't accommodate Bottlelox require a UFO/Wide Neck Bottle Tag/Net.</li>
+          </ul>
+
+          <h4>Other Departments</h4>
+          <ul>
+            <li><strong>Gift Sets:</strong> Where gift sets are not already source-tagged a soft tag should be applied to those £10 or over.</li>
+            <li><strong>Toys:</strong> Toys £10+ require a soft tag or source tag. Toys £30+ require a spider wrap (or soft tag if spider wrap is not possible). Individual LOL dolls need a soft tag, and entire merchandising units should be spider wrapped. All Barbie and Hot Wheels toys require a soft tag.</li>
+            <li><strong>Meat:</strong> Beef, lamb and pork joints and steaks £5 & over require a yellow soft tag (applied to the top left of the GLP label for in-store produced items only, pre-pack products are source tagged).</li>
+            <li><strong>Vape:</strong> Any vape products not source tagged require a soft tag.</li>
+            <li><strong>Flowers:</strong> Bouquets £15 & over require a soft tag.</li>
+          </ul>
+
+          <h4>General Notes:</h4>
+          <ul>
+            <li><strong>Source Tagging:</strong> Products with a live security label do not need an additional soft tag, but may still require other forms of protection if specified.</li>
+            <li><strong>Restricted Fill:</strong> Restricted fill extenders should be used for spirits, champagne, smoking cessation, and skincare products.</li>
+            <li><strong>Capping Shelves:</strong> High-value stock (lines that are product protected) should not be stored on capping shelves.</li>
+            <li><strong>Tag Recycling:</strong> There are recycling containers at the checkout, self-scan checkouts, and trolley stations for used product protection equipment.</li>
+            <li><strong>Red UFO Tags:</strong> Red UFO tags need to be segregated at the checkout, placed in a cardboard-lined banana box, and stored at the checkers desk or back door.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Shrink Management Tools Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-tools"></i> Shrink Management Tools</h3>
+        <p>Access essential tools and resources to effectively manage and reduce shrinkage.</p>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/shrink-management-tools" target="_blank" rel="noopener noreferrer">
+          Visit Shrink Tools
+        </a>
+      </div>
+
+      <!-- Shrink Reporting Dashboard Card -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-file-invoice-dollar"></i> Shrink Reporting</h3>
+        <p>Generate and review shrinkage reports to track performance and identify improvement areas.</p>
+        <a href="https://home.morrisons.osp.tech/shrink-reporting" target="_blank" rel="noopener noreferrer">
+          Access Shrink Reporting
+        </a>
+      </div>
     </section>
-  </div>
+  </main>
 
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
+  <!-- Core JavaScript for Dark Mode & Mobile Nav -->
   <script>
-    /* ... (identical JavaScript from online.html) ... */
+    /* Dark mode toggle */
+    const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
+    toggleButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        btn.setAttribute('aria-pressed', isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
+      }
+    });
+
+    /* Hamburger (mobile nav) */
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
+      document.body.classList.toggle('mobile-nav-open');
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      hamburger.setAttribute('aria-expanded', !expanded);
+    });
+    window.addEventListener('click', (event) => {
+      if (!event.target.closest('.nav') && !event.target.closest('.hamburger')) {
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+          document.body.classList.remove('mobile-nav-open');
+          hamburger.setAttribute('aria-expanded', false);
+        }
+      }
+    });
+    const navItems = document.querySelectorAll('.nav-links a');
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+          document.body.classList.remove('mobile-nav-open');
+          hamburger.setAttribute('aria-expanded', false);
+        }
+      });
+    });
+    hamburger.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') hamburger.click();
+    });
   </script>
 </body>
 </html>
