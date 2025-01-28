@@ -237,16 +237,17 @@
                 box-shadow: none;
                 background-color: var(--nav-bg);
                 display: none; /* Ensure it's hidden by default */
+                width: 100%; /* Full width for mobile */
+            }
+            .dropdown.active .dropdown-content {
+                display: block; /* Show submenu on active */
             }
             .dropdown .dropbtn::after {
                 content: ' \25B6'; /* Right arrow for collapsed state */
                 float: right;
                 margin-left: 5px;
             }
-            .dropdown.active .dropdown-content {
-                display: block; /* Change to block for mobile */
-            }
-            /* Ensure dropdown links align correctly */
+            /* Remove float for submenu items */
             .dropdown-content a {
                 padding: 10px 20px;
             }
@@ -304,6 +305,12 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+        /* Responsive Iframe */
+        @media (max-width: 768px) {
+            .iframe-container {
+                padding-bottom: 75%; /* Adjust aspect ratio for smaller screens */
+            }
         }
         /* Footer Styles */
         footer {
