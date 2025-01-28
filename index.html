@@ -87,7 +87,7 @@
         header h1 {
             font-size: 2em;
             margin: 0;
-            padding-left: 80px; /* To prevent overlap with logo */
+            padding-left: 80px; /* To prevent overlap with logo on desktop */
         }
 
         /* Dark Mode Toggle Styles */
@@ -113,7 +113,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 10px; /* Reduced padding for compactness */
+            padding: 8px 10px; 
             box-shadow: 0 2px 4px var(--card-shadow);
             position: sticky;
             top: 0;
@@ -129,18 +129,18 @@
             list-style: none;
         }
         .nav-links li {
-            margin: 5px 10px; /* Reduced margin for compactness */
-            position: relative; /* For dropdown positioning */
+            margin: 5px 10px;
+            position: relative;
         }
         .nav-links a {
             display: block;
-            padding: 8px 15px; /* Reduced padding for compactness */
+            padding: 8px 15px;
             background-color: var(--background-white);
             color: var(--primary-green);
-            border-radius: 20px; /* Rounded for a sleek look */
+            border-radius: 20px;
             font-weight: 700;
             transition: background-color 0.3s, color 0.3s;
-            font-size: 0.95em; /* Slightly smaller font size */
+            font-size: 0.95em;
         }
         body.dark-mode .nav-links a {
             background-color: var(--dark-nav-bg);
@@ -169,7 +169,7 @@
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             border-radius: 5px;
             z-index: 1;
-            top: 40px; /* Adjust based on nav height */
+            top: 40px; /* Adjust for nav height */
             left: 0;
             flex-direction: column;
         }
@@ -227,7 +227,7 @@
                 width: 100%;
                 background-color: var(--nav-bg);
                 position: absolute;
-                top: 60px; /* Adjust based on header/nav height */
+                top: 60px; 
                 left: 0;
             }
             .nav-links.active {
@@ -247,11 +247,11 @@
                 left: 0;
                 box-shadow: none;
                 background-color: var(--nav-bg);
-                display: none; /* Ensure it's hidden by default */
-                width: 100%; /* Full width for mobile */
+                display: none;
+                width: 100%;
             }
             .dropdown.active .dropdown-content {
-                display: block; /* Show submenu on active */
+                display: block;
             }
             .dropdown .dropbtn::after {
                 content: ' \25B6'; /* Right arrow for collapsed state */
@@ -289,7 +289,7 @@
 
         /* Section Styles */
         section {
-            margin-bottom: 30px; /* Reduced margin for compactness */
+            margin-bottom: 30px;
             background-color: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
@@ -302,8 +302,8 @@
         }
         section h2 {
             color: var(--primary-green);
-            margin-bottom: 15px; /* Reduced margin for compactness */
-            font-size: 1.6em; /* Slightly smaller font size */
+            margin-bottom: 15px;
+            font-size: 1.6em;
             border-bottom: 2px solid var(--secondary-yellow);
             display: inline-block;
             padding-bottom: 5px;
@@ -340,7 +340,7 @@
         /* Responsive Iframe */
         @media (max-width: 768px) {
             .iframe-container {
-                padding-bottom: 75%; /* Adjust aspect ratio for smaller screens */
+                padding-bottom: 75%; /* Adjust for smaller screens */
             }
         }
 
@@ -349,7 +349,7 @@
             background-color: var(--footer-bg);
             color: var(--footer-text);
             text-align: center;
-            padding: 10px 5px; /* Reduced padding for compactness */
+            padding: 10px 5px;
             position: relative;
             bottom: 0;
             width: 100%;
@@ -361,7 +361,7 @@
         }
         footer p {
             margin: 0;
-            font-size: 0.8em; /* Smaller font size */
+            font-size: 0.8em;
         }
 
         /* Smooth Scrolling */
@@ -373,7 +373,7 @@
         .whiteboard-container {
             position: relative;
             width: 100%;
-            height: 700px; /* Increased height from 500px to 700px */
+            height: 700px; 
             border: 2px solid var(--primary-green);
             border-radius: 10px;
             background-color: #fff;
@@ -415,7 +415,7 @@
         .save-button:hover,
         .load-button:hover,
         .clear-button:hover {
-            background-color: #004d00; /* Darker green on hover */
+            background-color: #004d00;
         }
         body.dark-mode .save-button,
         body.dark-mode .load-button,
@@ -453,7 +453,7 @@
             text-decoration: none;
             font-weight: 600;
             transition: background-color 0.3s;
-            height: 100px; /* Fixed height for uniformity */
+            height: 100px;
             text-align: center;
             word-wrap: break-word;
         }
@@ -471,12 +471,12 @@
         /* Responsive Whiteboard */
         @media (max-width: 768px) {
             .whiteboard-container {
-                height: 400px; /* Increased from 300px to 400px */
+                height: 400px;
             }
         }
         @media (max-width: 480px) {
             .whiteboard-container {
-                height: 250px; /* Increased from 200px to 250px */
+                height: 250px;
             }
             .link-button {
                 padding: 10px;
@@ -666,6 +666,7 @@
 
     <footer>
         <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+        <!-- Example ElevenLabs voice widget -->
         <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai>
         <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
     </footer>
@@ -681,11 +682,14 @@
             toggleButton.setAttribute('aria-pressed', isDarkMode);
         });
 
-        // Hamburger Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
+        const dropdown = document.querySelector('.dropdown');
+        const dropbtn = dropdown.querySelector('.dropbtn');
 
-        hamburger.addEventListener('click', () => {
+        // Hamburger Menu Toggle
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation(); // Don't let this click close the dropdown
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
             // Update ARIA attribute
@@ -693,19 +697,7 @@
             hamburger.setAttribute('aria-expanded', !expanded);
         });
 
-        // Close the menu when a link is clicked (optional)
-        const navItems = document.querySelectorAll('.nav-links a');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    hamburger.classList.remove('active');
-                    hamburger.setAttribute('aria-expanded', false);
-                }
-            });
-        });
-
-        // Accessibility: Allow toggling hamburger with Enter key
+        // Accessibility: allow toggling hamburger with Enter key
         hamburger.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 hamburger.click();
@@ -713,12 +705,11 @@
         });
 
         // Dropdown Toggle for Mobile
-        const dropdown = document.querySelector('.dropdown');
-        const dropbtn = dropdown.querySelector('.dropbtn');
-
         dropbtn.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) { // Only for mobile
+            // Only toggle if we're in mobile mode
+            if (window.innerWidth <= 768) {
                 e.preventDefault();
+                e.stopPropagation(); 
                 dropdown.classList.toggle('active');
                 // Update ARIA attribute
                 const expanded = dropbtn.getAttribute('aria-expanded') === 'true' || false;
@@ -726,14 +717,35 @@
             }
         });
 
-        // Close the dropdown when clicking outside
-        window.addEventListener('click', function(event) {
-            if (!dropdown.contains(event.target)) {
+        // Close nav or dropdown if clicking outside
+        window.addEventListener('click', (event) => {
+            // If click is outside the entire nav, close everything
+            const nav = document.querySelector('.nav');
+            if (!nav.contains(event.target)) {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', false);
+                }
                 if (dropdown.classList.contains('active')) {
                     dropdown.classList.remove('active');
                     dropbtn.setAttribute('aria-expanded', false);
                 }
             }
+        });
+
+        // Close the menu when a nav link (non-dropdown) is clicked
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // If it's the main "More" link, do nothing. Otherwise close the nav.
+                if (item.classList.contains('dropbtn')) return;
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', false);
+                }
+            });
         });
     </script>
 
@@ -752,7 +764,7 @@
         }
         // Initialize canvas size
         resizeCanvas();
-        // Handle window resize
+        // Re-resize on window resize
         window.addEventListener('resize', resizeCanvas);
 
         let drawing = false;
@@ -760,7 +772,7 @@
         let lastY = 0;
 
         // Set drawing parameters
-        ctx.strokeStyle = '#000000'; // Default black
+        ctx.strokeStyle = '#000000'; 
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
         ctx.lineWidth = 2;
@@ -773,10 +785,9 @@
                 ctx.strokeStyle = '#000000'; // Black in light mode
             }
         }
-        // Initial stroke style
         updateStrokeStyle();
 
-        // Listen for theme changes to update stroke color
+        // Observe body class changes to toggle stroke color
         const observer = new MutationObserver(updateStrokeStyle);
         observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
@@ -799,10 +810,10 @@
         function stopDrawing() {
             drawing = false;
         }
-        // Get X and Y coordinates from event
+        // Get X and Y from event
         function getXY(e) {
-            let x, y;
             const rect = canvas.getBoundingClientRect();
+            let x, y;
             if (e.touches && e.touches.length > 0) {
                 x = e.touches[0].clientX - rect.left;
                 y = e.touches[0].clientY - rect.top;
@@ -813,13 +824,13 @@
             return [x, y];
         }
 
-        // Event listeners for mouse
+        // Mouse events
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
 
-        // Event listeners for touch
+        // Touch events
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             startDrawing(e);
@@ -834,12 +845,12 @@
         // Clear whiteboard
         clearButton.addEventListener('click', () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // Also remove the saved state from Local Storage
+            // Remove saved state from localStorage
             localStorage.removeItem('whiteboardImage');
             alert('Whiteboard cleared and saved data removed.');
         });
 
-        // Save whiteboard to Local Storage
+        // Save whiteboard to localStorage
         saveButton.addEventListener('click', () => {
             const dataURL = canvas.toDataURL();
             try {
@@ -851,13 +862,13 @@
             }
         });
 
-        // Load whiteboard from Local Storage
+        // Load whiteboard from localStorage
         loadButton.addEventListener('click', () => {
             const dataURL = localStorage.getItem('whiteboardImage');
             if (dataURL) {
                 const img = new Image();
                 img.onload = function() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear current canvas before loading
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, 0, 0);
                     alert('Whiteboard loaded successfully!');
                 };
