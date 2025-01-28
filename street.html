@@ -12,8 +12,198 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
   <style>
-    /* Copy the same <style> block used in online.html */
-    /* ... (identical CSS rules) ... */
+    /* ------------------------------
+       INCLUDE YOUR EXISTING CSS HERE
+       ------------------------------ */
+    /* For brevity, copy/paste the same <style> block
+       from your main dashboard. This ensures consistent
+       styling across all pages. */
+    
+    :root {
+      --primary-green: #006400;
+      --secondary-yellow: #FFD700;
+      --background-faint-green: #e6ffe6;
+      --background-white: #FFFFFF;
+      --text-color: #333333;
+      --card-bg: var(--background-white);
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --footer-bg: var(--primary-green);
+      --footer-text: var(--background-white);
+
+      /* Dark Mode */
+      --dark-background: #121212;
+      --dark-card-bg: #1e1e1e;
+      --dark-text-color: #e0e0e0;
+      --dark-footer-bg: #333333;
+      --dark-footer-text: #e0e0e0;
+    }
+
+    * {
+      box-sizing: border-box; margin:0; padding:0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--background-faint-green);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: var(--dark-background);
+      color: var(--dark-text-color);
+    }
+    a { color: inherit; text-decoration: none; }
+    body.mobile-nav-open { overflow: hidden; }
+
+    header {
+      background-color: var(--background-white);
+      color: var(--primary-green);
+      padding: 20px 10px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 2px 4px var(--card-shadow);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode header {
+      background-color: var(--dark-card-bg);
+      color: var(--dark-text-color);
+    }
+    header img {
+      position: absolute; left:20px; top:50%;
+      transform: translateY(-50%); height:50px;
+    }
+    header h1 { font-size:2em; margin:0; padding-left:80px; }
+
+    nav.nav {
+      position: sticky; top:0; z-index:1000;
+      background-color: var(--secondary-yellow);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+    body.dark-mode nav.nav {
+      background-color: #333;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+    }
+    .nav-container {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width:1200px; margin:0 auto; padding:0 20px; height:60px;
+    }
+    .nav-links {
+      display: flex; align-items:center; gap:1rem;
+      list-style:none; transition: transform 0.3s ease;
+    }
+    .nav-links li { position: relative; }
+    .nav-links a {
+      display:flex; align-items:center; gap:0.5rem;
+      padding:0.75rem 1rem; font-weight:500;
+      color: var(--primary-green);
+      border-radius:8px; transition: background-color 0.3s, transform 0.3s;
+    }
+    body.dark-mode .nav-links a { color:var(--dark-text-color); }
+    .nav-links a:hover {
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      transform: translateY(-2px);
+    }
+    .nav-links .active {
+      background-color: var(--primary-green);
+      color: var(--background-white);
+    }
+    .nav-links a::after {
+      content: '';
+      position:absolute; bottom:0; left:0;
+      width:0; height:3px; background-color:var(--primary-green);
+      border-radius:2px; transition:width 0.3s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links .active::after { width:100%; }
+
+    .hamburger {
+      display:none; flex-direction:column; cursor:pointer; z-index:1001;
+    }
+    .hamburger span {
+      display:block; width:25px; height:3px; background:var(--primary-green);
+      margin:5px 0; transition:all 0.3s ease;
+    }
+    body.dark-mode .hamburger span { background: var(--dark-text-color); }
+    .hamburger.active span:nth-child(1) {
+      transform:rotate(45deg) translate(5px,5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity:0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform:rotate(-45deg) translate(7px,-6px);
+    }
+
+    .nav-actions { display:flex; align-items:center; gap:1rem; }
+    .dark-mode-toggle {
+      background:none; border:none; cursor:pointer;
+      font-size:1.5em; color:var(--primary-green);
+      transition: color 0.3s;
+    }
+    body.dark-mode .dark-mode-toggle {
+      color: var(--dark-text-color);
+    }
+    @media (max-width:768px) {
+      .hamburger { display:flex; }
+      .nav-links {
+        position:fixed; top:60px; left:0; right:0; bottom:0;
+        background:var(--secondary-yellow); flex-direction:column; padding:1rem;
+        transform:translateX(-100%); transition:transform 0.3s ease;
+        overflow-y:auto;
+      }
+      body.dark-mode .nav-links { background:#333; }
+      .nav-links.active { transform:translateX(0); }
+      .nav-links li { margin:0; width:100%; }
+      .nav-links a {
+        margin:10px 0; width:100%; background-color:transparent;
+        color:var(--primary-green); border-radius:4px;
+        text-align:left; font-size:1em; padding:10px;
+      }
+      body.dark-mode .nav-links a { color:var(--dark-text-color); }
+      .nav-links a:hover {
+        background-color:var(--primary-green);
+        color:var(--background-white);
+      }
+    }
+
+    .container { padding:20px; max-width:1200px; margin:0 auto; }
+    section {
+      margin-bottom:30px; background-color:var(--card-bg);
+      padding:20px; border-radius:10px;
+      box-shadow:0 4px 12px var(--card-shadow);
+      transition:background-color 0.3s, box-shadow 0.3s;
+    }
+    body.dark-mode section {
+      background-color:var(--dark-card-bg);
+      box-shadow:0 4px 12px var(--dark-card-bg);
+    }
+    section h2 {
+      color:var(--primary-green);
+      margin-bottom:15px; font-size:1.6em;
+      border-bottom:2px solid var(--secondary-yellow);
+      display:inline-block; padding-bottom:5px;
+      transition: color 0.3s, border-bottom-color 0.3s;
+    }
+    body.dark-mode section h2 {
+      color:var(--dark-text-color);
+      border-bottom-color: var(--secondary-yellow);
+    }
+
+    footer {
+      background-color:var(--footer-bg);
+      color:var(--footer-text);
+      text-align:center; padding:10px 5px;
+      bottom:0; width:100%;
+      transition:background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode footer {
+      background-color:var(--dark-footer-bg);
+      color:var(--dark-footer-text);
+    }
+    footer p { margin:0; font-size:0.8em; }
+
   </style>
 </head>
 <body>
