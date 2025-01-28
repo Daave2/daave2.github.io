@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Ensure responsiveness on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleveleys Morrisons Management Dashboard</title>
     <!-- Google Fonts for Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons (Optional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
+          integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* CSS Variables for Light and Dark Themes */
         :root {
@@ -24,6 +27,7 @@
             --card-shadow: rgba(0, 0, 0, 0.1);
             --footer-bg: var(--primary-green);
             --footer-text: var(--background-white);
+
             /* Dark Mode Variables */
             --dark-background: #121212;
             --dark-card-bg: #1e1e1e;
@@ -57,6 +61,7 @@
             color: inherit;
             text-decoration: none;
         }
+
         /* Header Styles */
         header {
             background-color: var(--background-white);
@@ -84,6 +89,7 @@
             margin: 0;
             padding-left: 80px; /* To prevent overlap with logo */
         }
+
         /* Dark Mode Toggle Styles */
         .dark-mode-toggle {
             position: absolute;
@@ -100,6 +106,7 @@
         body.dark-mode .dark-mode-toggle {
             color: var(--dark-text-color);
         }
+
         /* Navigation Bar */
         .nav {
             background-color: var(--nav-bg);
@@ -147,6 +154,7 @@
             background-color: var(--dark-nav-hover-bg);
             color: var(--dark-nav-hover-text);
         }
+
         /* Dropdown Styles */
         .dropdown .dropbtn::after {
             content: ' \25BC'; /* Down arrow */
@@ -186,12 +194,14 @@
             background-color: var(--dark-nav-hover-bg);
             color: var(--dark-nav-hover-text);
         }
+
         /* Show Dropdown on Hover for Desktop */
         @media (min-width: 769px) {
             .dropdown:hover .dropdown-content {
                 display: flex;
             }
         }
+
         /* Hamburger Menu Styles */
         .hamburger {
             display: none;
@@ -208,6 +218,7 @@
         body.dark-mode .hamburger div {
             background-color: var(--dark-text-color);
         }
+
         /* Mobile Navigation */
         @media (max-width: 768px) {
             .nav-links {
@@ -216,7 +227,7 @@
                 width: 100%;
                 background-color: var(--nav-bg);
                 position: absolute;
-                top: 60px; /* Adjust based on header height */
+                top: 60px; /* Adjust based on header/nav height */
                 left: 0;
             }
             .nav-links.active {
@@ -247,17 +258,35 @@
                 float: right;
                 margin-left: 5px;
             }
-            /* Remove float for submenu items */
             .dropdown-content a {
                 padding: 10px 20px;
             }
         }
+
+        /* Mobile Header Improvements */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 5px;
+            }
+            header img {
+                position: static;
+                display: block;
+                margin: 0 auto 10px auto;
+                transform: none;
+            }
+            header h1 {
+                padding-left: 0;
+                font-size: 1.5em;
+            }
+        }
+
         /* Container Styles */
         .container {
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
+
         /* Section Styles */
         section {
             margin-bottom: 30px; /* Reduced margin for compactness */
@@ -284,6 +313,7 @@
             color: var(--dark-text-color);
             border-bottom-color: var(--secondary-yellow);
         }
+
         /* Iframe Container */
         .iframe-container {
             position: relative;
@@ -306,12 +336,14 @@
             height: 100%;
             border: none;
         }
+
         /* Responsive Iframe */
         @media (max-width: 768px) {
             .iframe-container {
                 padding-bottom: 75%; /* Adjust aspect ratio for smaller screens */
             }
         }
+
         /* Footer Styles */
         footer {
             background-color: var(--footer-bg);
@@ -331,10 +363,12 @@
             margin: 0;
             font-size: 0.8em; /* Smaller font size */
         }
+
         /* Smooth Scrolling */
         html {
             scroll-behavior: smooth;
         }
+
         /* Whiteboard Styles */
         .whiteboard-container {
             position: relative;
@@ -356,6 +390,7 @@
             cursor: crosshair;
             background-color: transparent;
         }
+
         /* Button Group Styles */
         .button-group {
             position: absolute;
@@ -365,7 +400,6 @@
             gap: 10px;
             z-index: 10;
         }
-        /* Save, Load, and Clear Button Styles */
         .save-button,
         .load-button,
         .clear-button {
@@ -394,6 +428,7 @@
         body.dark-mode .clear-button:hover {
             background-color: #222;
         }
+
         /* Common Links Styles */
         .common-links-container {
             display: flex;
@@ -432,22 +467,28 @@
         body.dark-mode .link-button:hover {
             background-color: #222;
         }
+
         /* Responsive Whiteboard */
         @media (max-width: 768px) {
             .whiteboard-container {
-                height: 400px; /* Increased height from 300px to 400px */
+                height: 400px; /* Increased from 300px to 400px */
             }
         }
         @media (max-width: 480px) {
             .whiteboard-container {
-                height: 250px; /* Increased height from 200px to 250px */
+                height: 250px; /* Increased from 200px to 250px */
             }
             .link-button {
                 padding: 10px;
                 height: 80px;
                 font-size: 0.9em;
             }
+            /* Collapse the link grid to a single column on very small screens */
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
         }
+
         /* Focus Styles for Accessibility */
         a:focus, .dropbtn:focus {
             outline: 2px solid var(--primary-green);
@@ -465,6 +506,7 @@
             &#9790;
         </button>
     </header>
+
     <nav class="nav">
         <ul class="nav-links">
             <li><a href="#tasks">Wheel</a></li>
@@ -494,6 +536,7 @@
             <div></div>
         </div>
     </nav>
+
     <div class="container">
         <!-- Tasks Section -->
         <section id="tasks">
@@ -513,7 +556,9 @@
         <section id="important-links">
             <h2>Important Links</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml" title="Important Links"></iframe>
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml" 
+                        title="Important Links">
+                </iframe>
             </div>
         </section>
 
@@ -522,23 +567,40 @@
             <h2>Common Links</h2>
             <div class="common-links-container">
                 <div class="links-grid">
-                    <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9" class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
-                    <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB" class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform" class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
-                    <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc" class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw1zgD308hbP3ix1j8yrD1cO" class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
-                    <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD" class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
-                    <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd" class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE" class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
-                    <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1" class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
-                    <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB" class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
-                    <a href="https://lookerstudio.google.com/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD" class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
-                    <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs" class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform" class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
+                    <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
+                    <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
+                    <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw1zgD308hbP3ix1j8yrD1cO" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
+                    <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
+                    <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
+                    <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
+                    <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
+                    <a href="https://lookerstudio.google.com/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
+                    <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform" 
+                       class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
                 </div>
             </div>
         </section>
@@ -547,7 +609,10 @@
         <section id="who-is-in">
             <h2>Who Is In Today?</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" title="Who Is In Today?"></iframe>
+                <iframe 
+                    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true" 
+                    title="Who Is In Today?">
+                </iframe>
             </div>
         </section>
 
@@ -555,7 +620,10 @@
         <section id="management-rota">
             <h2>Management Rota</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml" title="Management Rota"></iframe>
+                <iframe 
+                    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml" 
+                    title="Management Rota">
+                </iframe>
             </div>
         </section>
 
@@ -563,7 +631,10 @@
         <section id="add-reminder">
             <h2>Add New Reminder</h2>
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true" title="Add New Reminder"></iframe>
+                <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true" 
+                    title="Add New Reminder">
+                </iframe>
             </div>
         </section>
 
@@ -571,7 +642,10 @@
         <section id="calendar">
             <h2>Calendar</h2>
             <div class="iframe-container">
-                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FLondon&showPrint=0&showTz=0&showCalendars=0&hl=en_GB&src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F09300&color=%23616161" style="border-width:0" frameborder="0" scrolling="no" title="Calendar"></iframe>
+                <iframe 
+                    src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FLondon&showPrint=0&showTz=0&showCalendars=0&hl=en_GB&src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F09300&color=%23616161" 
+                    style="border-width:0" frameborder="0" scrolling="no" title="Calendar">
+                </iframe>
             </div>
         </section>
 
@@ -589,6 +663,7 @@
             </div>
         </section>
     </div>
+
     <footer>
         <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
         <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai>
@@ -675,10 +750,8 @@
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
         }
-
         // Initialize canvas size
         resizeCanvas();
-
         // Handle window resize
         window.addEventListener('resize', resizeCanvas);
 
@@ -700,7 +773,6 @@
                 ctx.strokeStyle = '#000000'; // Black in light mode
             }
         }
-
         // Initial stroke style
         updateStrokeStyle();
 
@@ -713,7 +785,6 @@
             drawing = true;
             [lastX, lastY] = getXY(e);
         }
-
         // Draw
         function draw(e) {
             if (!drawing) return;
@@ -724,21 +795,18 @@
             ctx.stroke();
             [lastX, lastY] = [x, y];
         }
-
         // Stop drawing
         function stopDrawing() {
             drawing = false;
         }
-
         // Get X and Y coordinates from event
         function getXY(e) {
             let x, y;
+            const rect = canvas.getBoundingClientRect();
             if (e.touches && e.touches.length > 0) {
-                const rect = canvas.getBoundingClientRect();
                 x = e.touches[0].clientX - rect.left;
                 y = e.touches[0].clientY - rect.top;
             } else {
-                const rect = canvas.getBoundingClientRect();
                 x = e.clientX - rect.left;
                 y = e.clientY - rect.top;
             }
@@ -752,8 +820,14 @@
         canvas.addEventListener('mouseout', stopDrawing);
 
         // Event listeners for touch
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e);
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        });
         canvas.addEventListener('touchend', stopDrawing);
         canvas.addEventListener('touchcancel', stopDrawing);
 
@@ -779,11 +853,6 @@
 
         // Load whiteboard from Local Storage
         loadButton.addEventListener('click', () => {
-            loadWhiteboard();
-        });
-
-        // Function to load whiteboard from Local Storage
-        function loadWhiteboard() {
             const dataURL = localStorage.getItem('whiteboardImage');
             if (dataURL) {
                 const img = new Image();
@@ -796,11 +865,7 @@
             } else {
                 alert('No saved whiteboards found.');
             }
-        }
-
-        // Prevent scrolling on touch devices when drawing
-        canvas.addEventListener('touchstart', (e) => e.preventDefault());
-        canvas.addEventListener('touchmove', (e) => e.preventDefault());
+        });
     </script>
 </body>
 </html>
