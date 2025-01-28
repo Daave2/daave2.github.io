@@ -66,7 +66,7 @@
 
     /* Lock body scrolling when mobile nav is open */
     body.mobile-nav-open {
-      overflow: hidden; /* prevents scrolling the main page underneath the side nav */
+      overflow: hidden;
     }
 
     /* Header Styles */
@@ -235,7 +235,7 @@
         top: 0;
         left: 0;
         width: 80%;
-        max-width: 300px; 
+        max-width: 300px;
         height: 100vh;
         background-color: var(--nav-bg);
         display: flex;
@@ -245,7 +245,7 @@
         padding: 60px 20px 20px;
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        overflow-y: auto; /* scroller within the side nav */
+        overflow-y: auto;
         z-index: 9999;
       }
       body.dark-mode .nav-links {
@@ -285,7 +285,7 @@
         color: var(--nav-hover-text);
       }
 
-      /* Mobile "More" styling: we show arrow to indicate sub-menu can expand */
+      /* Mobile "More" styling: arrow to indicate sub-menu can expand */
       .dropdown .dropbtn::after {
         content: ' \25B6'; /* Right arrow for collapsed state */
         float: right;
@@ -299,10 +299,10 @@
         background-color: transparent;
         display: none;
         width: 100%;
-        padding-left: 10px; 
+        padding-left: 10px;
       }
       .dropdown.active .dropdown-content {
-        display: block; /* show sub-links when tapped on mobile */
+        display: block;
       }
       .dropdown-content a {
         padding: 8px 20px;
@@ -528,6 +528,68 @@
       outline: 2px solid var(--primary-green);
       outline-offset: 2px;
     }
+
+    /* ------------------------------------------
+       Additional Styles for Spinner, Whiteboard Tools, Notifications
+       ------------------------------------------- */
+    /* Improved Loading Spinner for Iframes */
+    .iframe-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Whiteboard Toolbar */
+    .whiteboard-tools {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 15;
+    }
+    body.dark-mode .whiteboard-tools {
+      background: rgba(30, 30, 30, 0.9);
+    }
+    .color-picker,
+    .brush-size {
+      height: 30px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: var(--card-bg);
+      cursor: pointer;
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 5px;
+      background: var(--primary-green);
+      color: white;
+      display: none;
+      z-index: 10000;
+    }
+    body.dark-mode .notification {
+      background: var(--dark-nav-hover-bg);
+    }
   </style>
 </head>
 <body>
@@ -695,6 +757,15 @@
       <h2>Notes</h2>
       <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your notes and "Load" to retrieve them. Click "Clear" to erase the whiteboard.</p>
       <div class="whiteboard-container">
+        <!-- Whiteboard Tools -->
+        <div class="whiteboard-tools">
+          <input type="color" class="color-picker" value="#000000" aria-label="Select drawing color">
+          <select class="brush-size" aria-label="Select brush size">
+            <option value="2">Small</option>
+            <option value="4">Medium</option>
+            <option value="6">Large</option>
+          </select>
+        </div>
         <canvas id="whiteboard"></canvas>
         <div class="button-group">
           <button class="save-button">Save</button>
@@ -711,6 +782,9 @@
     <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai>
     <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
   </footer>
+
+  <!-- Notification Element -->
+  <div class="notification" id="notification"></div>
 
   <!-- JavaScript for Dark Mode Toggle & Mobile Nav -->
   <script>
@@ -792,13 +866,26 @@
     });
   </script>
 
-  <!-- JavaScript for Whiteboard Functionality -->
+  <!-- JavaScript for Whiteboard and Additional Enhancements -->
   <script>
+    // Notification System
+    function showNotification(message, duration = 3000) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, duration);
+    }
+
+    // Whiteboard Setup
     const canvas = document.getElementById('whiteboard');
     const ctx = canvas.getContext('2d');
     const clearButton = document.querySelector('.clear-button');
     const saveButton = document.querySelector('.save-button');
     const loadButton = document.querySelector('.load-button');
+    const colorPicker = document.querySelector('.color-picker');
+    const brushSize = document.querySelector('.brush-size');
 
     function resizeCanvas() {
       canvas.width = canvas.parentElement.clientWidth;
@@ -813,24 +900,28 @@
     let lastX = 0;
     let lastY = 0;
 
-    // Stroke defaults
+    // Drawing defaults
     ctx.strokeStyle = '#000000';
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 2;
 
-    // Update stroke color based on theme
-    function updateStrokeStyle() {
-      if (document.body.classList.contains('dark-mode')) {
-        ctx.strokeStyle = '#FFFFFF';
-      } else {
-        ctx.strokeStyle = '#000000';
-      }
+    // Update stroke color/width based on UI
+    function updateDrawingSettings() {
+      ctx.strokeStyle = colorPicker.value;
+      ctx.lineWidth = brushSize.value;
     }
-    updateStrokeStyle();
+    colorPicker.addEventListener('input', updateDrawingSettings);
+    brushSize.addEventListener('change', updateDrawingSettings);
 
-    // Observe body class changes to toggle stroke color
-    const observer = new MutationObserver(updateStrokeStyle);
+    // Also update stroke style if dark mode toggles
+    function updateStrokeStyleForTheme() {
+      // If you want the brush color to invert in dark mode, 
+      // comment out these next lines and rely on colorPicker alone.
+      // But if you'd like to forcibly turn white in dark mode, you can do that here.
+      // For now, we won't override the color chosen by colorPicker.
+    }
+    const observer = new MutationObserver(updateStrokeStyleForTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     // Start drawing
@@ -848,11 +939,11 @@
       ctx.stroke();
       [lastX, lastY] = [x, y];
     }
-    // Stop
+    // Stop drawing
     function stopDrawing() {
       drawing = false;
     }
-    // Get XY
+    // Get coordinates
     function getXY(e) {
       const rect = canvas.getBoundingClientRect();
       if (e.touches && e.touches.length > 0) {
@@ -872,34 +963,41 @@
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       startDrawing(e);
+      // Disable scroll while touching the canvas
+      document.body.style.overflow = 'hidden';
     });
     canvas.addEventListener('touchmove', (e) => {
       e.preventDefault();
       draw(e);
     });
-    canvas.addEventListener('touchend', stopDrawing);
-    canvas.addEventListener('touchcancel', stopDrawing);
+    canvas.addEventListener('touchend', () => {
+      stopDrawing();
+      document.body.style.overflow = '';
+    });
+    canvas.addEventListener('touchcancel', () => {
+      stopDrawing();
+      document.body.style.overflow = '';
+    });
 
-    // Clear
+    // Clear Whiteboard
     clearButton.addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       localStorage.removeItem('whiteboardImage');
-      alert('Whiteboard cleared and saved data removed.');
+      showNotification('Whiteboard cleared and saved data removed.');
     });
 
-    // Save
+    // Save Whiteboard
     saveButton.addEventListener('click', () => {
-      const dataURL = canvas.toDataURL();
       try {
-        localStorage.setItem('whiteboardImage', dataURL);
-        alert('Whiteboard saved successfully!');
+        localStorage.setItem('whiteboardImage', canvas.toDataURL());
+        showNotification('Whiteboard saved successfully!');
       } catch (e) {
         console.error('Error saving whiteboard:', e);
-        alert('Failed to save whiteboard. Please try again.');
+        showNotification('Failed to save: Storage limit exceeded', 5000);
       }
     });
 
-    // Load
+    // Load Whiteboard
     loadButton.addEventListener('click', () => {
       const dataURL = localStorage.getItem('whiteboardImage');
       if (dataURL) {
@@ -907,12 +1005,43 @@
         img.onload = function() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0);
-          alert('Whiteboard loaded successfully!');
+          showNotification('Whiteboard loaded successfully!');
         };
         img.src = dataURL;
       } else {
-        alert('No saved whiteboards found.');
+        showNotification('No saved drawings found');
       }
+    });
+
+    // Lazy Load Iframes
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        // Create spinner
+        const loader = document.createElement('div');
+        loader.className = 'iframe-loading';
+        iframe.parentNode.insertBefore(loader, iframe);
+
+        // Listen for load event
+        iframe.addEventListener('load', () => {
+          loader.remove();
+        });
+
+        // Move existing src -> data-src for lazy load
+        iframe.dataset.src = iframe.src;
+        iframe.removeAttribute('src');
+
+        // Intersection Observer to load when visible
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              iframe.src = iframe.dataset.src;
+              observer.unobserve(iframe);
+            }
+          });
+        });
+        observer.observe(iframe);
+      });
     });
   </script>
 </body>
