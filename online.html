@@ -13,12 +13,8 @@
         referrerpolicy="no-referrer" />
   <style>
     /* ------------------------------
-       INCLUDE YOUR EXISTING CSS HERE
+       CSS Styles for Cleveleys Morrisons Management Dashboard
        ------------------------------ */
-    /* For brevity, copy/paste the same <style> block
-       from your main dashboard. This ensures consistent
-       styling across all pages. */
-    
     :root {
       --primary-green: #006400;
       --secondary-yellow: #FFD700;
@@ -39,7 +35,9 @@
     }
 
     * {
-      box-sizing: border-box; margin:0; padding:0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
       font-family: 'Roboto', sans-serif;
@@ -69,13 +67,23 @@
       color: var(--dark-text-color);
     }
     header img {
-      position: absolute; left:20px; top:50%;
-      transform: translateY(-50%); height:50px;
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 50px;
     }
-    header h1 { font-size:2em; margin:0; padding-left:80px; }
+    header h1 { 
+      font-size: 2em; 
+      margin: 0; 
+      padding-left: 80px; 
+    }
 
+    /* Navigation Styles */
     nav.nav {
-      position: sticky; top:0; z-index:1000;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       background-color: var(--secondary-yellow);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
       transition: background-color 0.3s;
@@ -85,21 +93,33 @@
       box-shadow: 0 2px 15px rgba(0,0,0,0.6);
     }
     .nav-container {
-      display: flex; align-items: center; justify-content: space-between;
-      max-width:1200px; margin:0 auto; padding:0 20px; height:60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 60px;
     }
     .nav-links {
-      display: flex; align-items:center; gap:1rem;
-      list-style:none; transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
+      transition: transform 0.3s ease;
     }
     .nav-links li { position: relative; }
     .nav-links a {
-      display:flex; align-items:center; gap:0.5rem;
-      padding:0.75rem 1rem; font-weight:500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
       color: var(--primary-green);
-      border-radius:8px; transition: background-color 0.3s, transform 0.3s;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.3s;
     }
-    body.dark-mode .nav-links a { color:var(--dark-text-color); }
+    body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
       background-color: var(--primary-green);
       color: var(--background-white);
@@ -111,63 +131,102 @@
     }
     .nav-links a::after {
       content: '';
-      position:absolute; bottom:0; left:0;
-      width:0; height:3px; background-color:var(--primary-green);
-      border-radius:2px; transition:width 0.3s ease;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-green);
+      border-radius: 2px;
+      transition: width 0.3s ease;
     }
     .nav-links a:hover::after,
-    .nav-links .active::after { width:100%; }
+    .nav-links .active::after { width: 100%; }
 
     .hamburger {
-      display:none; flex-direction:column; cursor:pointer; z-index:1001;
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
     }
     .hamburger span {
-      display:block; width:25px; height:3px; background:var(--primary-green);
-      margin:5px 0; transition:all 0.3s ease;
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: var(--primary-green);
+      margin: 5px 0;
+      transition: all 0.3s ease;
     }
     body.dark-mode .hamburger span { background: var(--dark-text-color); }
     .hamburger.active span:nth-child(1) {
-      transform:rotate(45deg) translate(5px,5px);
+      transform: rotate(45deg) translate(5px,5px);
     }
     .hamburger.active span:nth-child(2) {
-      opacity:0;
+      opacity: 0;
     }
     .hamburger.active span:nth-child(3) {
-      transform:rotate(-45deg) translate(7px,-6px);
+      transform: rotate(-45deg) translate(7px,-6px);
     }
 
-    .nav-actions { display:flex; align-items:center; gap:1rem; }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
     .dark-mode-toggle {
-      background:none; border:none; cursor:pointer;
-      font-size:1.5em; color:var(--primary-green);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5em;
+      color: var(--primary-green);
       transition: color 0.3s;
     }
     body.dark-mode .dark-mode-toggle {
       color: var(--dark-text-color);
     }
-    @media (max-width:768px) {
-      .hamburger { display:flex; }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
       .nav-links {
-        position:fixed; top:60px; left:0; right:0; bottom:0;
-        background:var(--secondary-yellow); flex-direction:column; padding:1rem;
-        transform:translateX(-100%); transition:transform 0.3s ease;
-        overflow-y:auto;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--secondary-yellow);
+        flex-direction: column;
+        padding: 1rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
       }
-      body.dark-mode .nav-links { background:#333; }
-      .nav-links.active { transform:translateX(0); }
-      .nav-links li { margin:0; width:100%; }
+      body.dark-mode .nav-links { background: #333; }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links li { margin: 0; width: 100%; }
       .nav-links a {
-        margin:10px 0; width:100%; background-color:transparent;
-        color:var(--primary-green); border-radius:4px;
-        text-align:left; font-size:1em; padding:10px;
+        margin: 10px 0;
+        width: 100%;
+        background-color: transparent;
+        color: var(--primary-green);
+        border-radius: 4px;
+        text-align: left;
+        font-size: 1em;
+        padding: 10px;
       }
-      body.dark-mode .nav-links a { color:var(--dark-text-color); }
+      body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
-        background-color:var(--primary-green);
-        color:var(--background-white);
+        background-color: var(--primary-green);
+        color: var(--background-white);
       }
     }
 
+    /* Main Container Styles */
+    .container { 
+      padding: 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+    }
+    main {
+      role: main;
+    }
+
+    /* Dashboard Styles */
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -180,6 +239,9 @@
       box-shadow: 0 4px 12px var(--card-shadow);
       padding: 20px;
       transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .dashboard-card:hover {
       transform: translateY(-5px);
@@ -193,26 +255,61 @@
       gap: 10px;
       font-size: 1.4em;
     }
+    .dashboard-card p {
+      flex-grow: 1;
+      margin-bottom: 15px;
+    }
     .dashboard-card iframe {
       width: 100%;
-      height: 400px;
+      height: 300px;
       border: none;
       border-radius: 5px;
+      margin-bottom: 15px;
     }
     .dashboard-card a {
       display: inline-block;
-      margin-top: 10px;
-      color: var(--primary-green);
+      padding: 10px 15px;
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      border-radius: 5px;
+      text-align: center;
       font-weight: 500;
-      transition: color 0.3s;
+      transition: background-color 0.3s, transform 0.3s;
     }
     .dashboard-card a:hover {
-      color: var(--secondary-yellow);
+      background-color: var(--secondary-yellow);
+      color: var(--background-white);
+      transform: translateY(-2px);
     }
-    /* Responsive iframe height */
+
+    /* Footer Styles */
+    footer {
+      background-color: var(--footer-bg);
+      color: var(--footer-text);
+      text-align: center;
+      padding: 10px 5px;
+      bottom: 0;
+      width: 100%;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode footer {
+      background-color: var(--dark-footer-bg);
+      color: var(--dark-footer-text);
+    }
+    footer p { 
+      margin: 0; 
+      font-size: 0.8em; 
+    }
+
+    /* Media Queries for Responsive Iframe */
     @media (max-width: 768px) {
       .dashboard-card iframe {
-        height: 300px;
+        height: 250px;
+      }
+    }
+    @media (max-width: 480px) {
+      .dashboard-card iframe {
+        height: 200px;
       }
     }
   </style>
@@ -229,12 +326,12 @@
     <div class="nav-container">
       <ul class="nav-links">
         <!-- Note: Add 'active' class to the current page link -->
-        <li><a href="index.html"><i class="fas fa-globe"></i>Home</a></li>
-        <li><a href="online.html" class="active"><i class="fas fa-globe"></i>Online</a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i>Street</a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="online.html" class="active"><i class="fas fa-globe"></i> Online</a></li>
+        <li><a href="street.html"><i class="fas fa-store"></i> Street</a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
       </ul>
       <div class="nav-actions">
         <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
@@ -247,51 +344,63 @@
     </div>
   </nav>
 
-  <div class="container">
+  <main class="container">
     <section class="dashboard">
       <!-- Amazon Seller Dashboard -->
       <div class="dashboard-card">
-        <h3><i class="fas fa-amazon"></i> Amazon Seller Dashboard</h3>
+        <h3><i class="fab fa-amazon"></i> Amazon Seller Dashboard</h3>
         <p>Manage your Amazon sales, inventory, and orders directly from the dashboard.</p>
-        <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer">Access Amazon Seller Dashboard</a>
+        <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer">
+          Access Amazon Seller Dashboard
+        </a>
       </div>
 
       <!-- Deliveroo Hub -->
       <div class="dashboard-card">
         <h3><i class="fas fa-burger-soda"></i> Deliveroo Hub</h3>
         <p>Manage your Deliveroo restaurant operations, orders, and menu.</p>
-        <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer">Access Deliveroo Hub</a>
+        <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer">
+          Access Deliveroo Hub
+        </a>
       </div>
 
       <!-- Amazon Daily Update -->
       <div class="dashboard-card">
         <h3><i class="fas fa-chart-line"></i> Amazon Daily Update</h3>
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
-        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" target="_blank" rel="noopener noreferrer">View Full Sheet</a>
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" title="Amazon Daily Update"></iframe>
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" target="_blank" rel="noopener noreferrer">
+          View Full Sheet
+        </a>
       </div>
 
       <!-- Online Toolkit -->
       <div class="dashboard-card">
         <h3><i class="fas fa-tools"></i> Online Toolkit</h3>
         <p>Access essential tools and resources for managing online operations.</p>
-        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home" target="_blank" rel="noopener noreferrer">Visit Online Toolkit</a>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home" target="_blank" rel="noopener noreferrer">
+          Visit Online Toolkit
+        </a>
       </div>
 
       <!-- Click & Collect (C&C) Guide -->
       <div class="dashboard-card">
         <h3><i class="fas fa-shopping-cart"></i> Click & Collect Guide</h3>
         <p>Detailed guidelines and procedures for the Click & Collect service.</p>
-        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer">View C&C Guide</a>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer">
+          View C&C Guide
+        </a>
       </div>
 
       <!-- OSP (Online Store Platform) -->
       <div class="dashboard-card">
         <h3><i class="fas fa-laptop-code"></i> OSP Platform</h3>
         <p>Manage your online store operations through the OSP.</p>
-        <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">Access OSP Platform</a>
+        <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">
+          Access OSP Platform
+        </a>
       </div>
     </section>
-  </div>
+  </main>
 
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
