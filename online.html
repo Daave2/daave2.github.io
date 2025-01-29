@@ -56,7 +56,7 @@
 
     /* Transition for Smooth Theme Change */
     :root, .yellow-theme {
-      transition: all 2s ease;
+      transition: all 4s ease; /* Slower transition */
     }
 
     /* Existing CSS Styles */
@@ -145,17 +145,17 @@
       font-weight: 500;
       color: var(--primary-green);
       border-radius: 8px;
-      transition: background-color 0.3s, transform 0.3s;
+      transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
     body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
       background-color: var(--primary-green);
-      color: var(--background-white);
+      color: var(--secondary-yellow); /* Dark Green text on yellow background */
       transform: translateY(-2px);
     }
     .nav-links .active {
       background-color: var(--primary-green);
-      color: var(--background-white);
+      color: var(--secondary-yellow); /* Dark Green text on yellow background */
     }
     .nav-links a::after {
       content: '';
@@ -240,7 +240,7 @@
       body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
         background-color: var(--primary-green);
-        color: var(--background-white);
+        color: var(--secondary-yellow); /* Dark Green text on yellow background */
       }
     }
 
@@ -282,6 +282,7 @@
       align-items: center;
       gap: 10px;
       font-size: 1.4em;
+      transition: color 0.3s;
     }
     .dashboard-card p {
       flex-grow: 1;
@@ -306,7 +307,7 @@
     }
     .dashboard-card a:hover {
       background-color: var(--secondary-yellow);
-      color: var(--background-white);
+      color: var(--primary-green); /* Dark Green text on yellow background */
       transform: translateY(-2px);
     }
 
