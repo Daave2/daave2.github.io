@@ -147,6 +147,10 @@
       border-radius: 8px;
       transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
+    /* Yellow Theme: Dark Green text on yellow background */
+    .yellow-theme .nav-links a {
+      color: var(--secondary-yellow);
+    }
     body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
       background-color: var(--primary-green);
@@ -224,6 +228,9 @@
         transition: transform 0.3s ease;
         overflow-y: auto;
       }
+      .yellow-theme .nav-links {
+        background: var(--secondary-yellow);
+      }
       body.dark-mode .nav-links { background: #333; }
       .nav-links.active { transform: translateX(0); }
       .nav-links li { margin: 0; width: 100%; }
@@ -236,6 +243,9 @@
         text-align: left;
         font-size: 1em;
         padding: 10px;
+      }
+      .yellow-theme .nav-links a {
+        color: var(--secondary-yellow);
       }
       body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
@@ -270,6 +280,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      color: var(--text-color); /* Default text color */
+      transition: color 0.3s, background-color 0.3s; /* Ensure color transitions smoothly */
     }
     .dashboard-card:hover {
       transform: translateY(-5px);
@@ -303,12 +315,25 @@
       border-radius: 5px;
       text-align: center;
       font-weight: 500;
-      transition: background-color 0.3s, transform 0.3s;
+      transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
     .dashboard-card a:hover {
       background-color: var(--secondary-yellow);
-      color: var(--primary-green); /* Dark Green text on yellow background */
+      color: var(--secondary-yellow); /* Dark Green text on yellow background */
       transform: translateY(-2px);
+    }
+
+    /* Yellow Theme: Dark Green text on yellow elements */
+    .yellow-theme .dashboard-card h3,
+    .yellow-theme .dashboard-card a {
+      color: var(--secondary-yellow); /* Dark Green text */
+    }
+
+    /* Dark Mode: Darker text in dashboard cards */
+    body.dark-mode .dashboard-card h3,
+    body.dark-mode .dashboard-card p,
+    body.dark-mode .dashboard-card a {
+      color: var(--secondary-yellow); /* Dark Green text */
     }
 
     /* Footer Styles */
@@ -444,7 +469,11 @@
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
         btn.setAttribute('aria-pressed', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        if (isDark) {
+          localStorage.setItem('theme', 'dark');
+        } else {
+          localStorage.setItem('theme', 'yellow'); // Assuming default theme is yellow after transition
+        }
       });
     });
     document.addEventListener('DOMContentLoaded', () => {
@@ -452,12 +481,15 @@
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
-      }
-
-      /* Apply Yellow Theme After Page Load */
-      setTimeout(() => {
+      } else if (savedTheme === 'yellow') {
         document.body.classList.add('yellow-theme');
-      }, 500); // Adjust the delay as needed (in milliseconds)
+      } else {
+        /* Apply Yellow Theme After Page Load if not already set */
+        setTimeout(() => {
+          document.body.classList.add('yellow-theme');
+          localStorage.setItem('theme', 'yellow');
+        }, 500); // Adjust the delay as needed (in milliseconds)
+      }
     });
 
     /* Hamburger (mobile nav) */
