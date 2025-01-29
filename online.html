@@ -149,7 +149,7 @@
     }
     /* Yellow Theme: Dark Green text on yellow background */
     .yellow-theme .nav-links a {
-      color: var(--secondary-yellow);
+      color: var(--secondary-yellow); /* Dark Green text */
     }
     body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
@@ -245,7 +245,7 @@
         padding: 10px;
       }
       .yellow-theme .nav-links a {
-        color: var(--secondary-yellow);
+        color: var(--secondary-yellow); /* Dark Green text */
       }
       body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
@@ -276,12 +276,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px var(--card-shadow);
       padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s, color 0.3s, background-color 0.3s;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       color: var(--text-color); /* Default text color */
-      transition: color 0.3s, background-color 0.3s; /* Ensure color transitions smoothly */
     }
     .dashboard-card:hover {
       transform: translateY(-5px);
