@@ -13,12 +13,12 @@
         referrerpolicy="no-referrer" />
   <style>
     /* ------------------------------
-       CSS Styles for Cleveleys Morrisons Management Dashboard
+       CSS Styles for Cleveleys Morrisons Management Dashboard - Online
        ------------------------------ */
     :root {
-      --primary-green: #006400;
-      --secondary-yellow: #FFD700;
-      --background-faint-green: #e6ffe6;
+      --primary-green: #006400; /* Dark Green */
+      --secondary-yellow: #FFD700; /* Yellow */
+      --background-faint-green: #e6ffe6; /* Faint Green */
       --background-white: #FFFFFF;
       --text-color: #333333;
       --card-bg: var(--background-white);
@@ -26,7 +26,7 @@
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
-      /* Dark Mode */
+      /* Dark Mode Variables */
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
       --dark-text-color: #e0e0e0;
@@ -34,6 +34,32 @@
       --dark-footer-text: #e0e0e0;
     }
 
+    /* Yellow Theme Variables */
+    .yellow-theme {
+      --primary-green: #FFD700; /* Yellow */
+      --secondary-yellow: #006400; /* Dark Green */
+      --background-faint-green: #ffffe6; /* Faint Yellow */
+      --background-white: #FFFFFF;
+      --text-color: #333333;
+      --card-bg: var(--background-white);
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --footer-bg: var(--primary-green);
+      --footer-text: var(--background-white);
+
+      /* Dark Mode Overrides for Yellow Theme */
+      --dark-background: #1a1a0a;
+      --dark-card-bg: #2e2e0e;
+      --dark-text-color: #f0e0e0;
+      --dark-footer-bg: #4d4d00;
+      --dark-footer-text: #f0e0e0;
+    }
+
+    /* Transition for Smooth Theme Change */
+    :root, .yellow-theme {
+      transition: all 2s ease;
+    }
+
+    /* Existing CSS Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -72,6 +98,8 @@
       top: 50%;
       transform: translateY(-50%);
       height: 50px;
+      /* Ensure the logo is not affected by theme changes */
+      transition: none;
     }
     header h1 { 
       font-size: 2em; 
@@ -424,6 +452,11 @@
         document.body.classList.add('dark-mode');
         toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
       }
+
+      /* Apply Yellow Theme After Page Load */
+      setTimeout(() => {
+        document.body.classList.add('yellow-theme');
+      }, 500); // Adjust the delay as needed (in milliseconds)
     });
 
     /* Hamburger (mobile nav) */
