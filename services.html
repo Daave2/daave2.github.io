@@ -16,6 +16,26 @@
        CSS Styles for Cleveleys Morrisons Management Dashboard - Services
        ------------------------------ */
     :root {
+      --primary-green: #006400; /* Dark Green */
+      --secondary-yellow: #FFD700; /* Yellow */
+      --background-faint-green: #e6ffe6; /* Faint Green */
+      --background-white: #FFFFFF;
+      --text-color: #333333;
+      --card-bg: var(--background-white);
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --footer-bg: var(--primary-green);
+      --footer-text: var(--background-white);
+
+      /* Dark Mode Variables */
+      --dark-background: #121212;
+      --dark-card-bg: #1e1e1e;
+      --dark-text-color: #e0e0e0;
+      --dark-footer-bg: #333333;
+      --dark-footer-text: #e0e0e0;
+    }
+
+    /* Purple Theme Variables */
+    .purple-theme {
       --primary-purple: #4B0082; /* Indigo */
       --secondary-purple: #D8BFD8; /* Thistle */
       --background-faint-purple: #f3e6ff; /* Faint Lavender */
@@ -26,32 +46,12 @@
       --footer-bg: var(--primary-purple);
       --footer-text: var(--background-white);
 
-      /* Dark Mode Variables */
+      /* Dark Mode Overrides for Purple Theme */
       --dark-background: #1a1a1a;
       --dark-card-bg: #2e2e2e;
       --dark-text-color: #e0e0e0;
       --dark-footer-bg: #4d004d;
       --dark-footer-text: #e0e0e0;
-    }
-
-    /* Purple Theme Variables */
-    .purple-theme {
-      --primary-purple: #D8BFD8; /* Thistle */
-      --secondary-purple: #4B0082; /* Indigo */
-      --background-faint-purple: #e6e6ff; /* Faint Purple */
-      --background-white: #FFFFFF;
-      --text-color: #333333;
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.1);
-      --footer-bg: var(--primary-purple);
-      --footer-text: var(--background-white);
-
-      /* Dark Mode Overrides for Purple Theme */
-      --dark-background: #1a001a;
-      --dark-card-bg: #2e002e;
-      --dark-text-color: #f0e0f0;
-      --dark-footer-bg: #4d004d;
-      --dark-footer-text: #f0e0f0;
     }
 
     /* Transition for Smooth Theme Change */
@@ -67,7 +67,7 @@
     }
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: var(--background-faint-purple);
+      background-color: var(--background-faint-green);
       color: var(--text-color);
       line-height: 1.6;
       transition: background-color 0.3s, color 0.3s;
@@ -81,7 +81,7 @@
 
     header {
       background-color: var(--background-white);
-      color: var(--primary-purple);
+      color: var(--primary-green);
       padding: 20px 10px;
       text-align: center;
       position: relative;
@@ -112,7 +112,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background-color: var(--secondary-purple);
+      background-color: var(--secondary-yellow);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
       transition: background-color 0.3s;
     }
@@ -143,7 +143,7 @@
       gap: 0.5rem;
       padding: 0.75rem 1rem;
       font-weight: 500;
-      color: var(--primary-purple);
+      color: var(--primary-green);
       border-radius: 8px;
       transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
@@ -378,13 +378,13 @@
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <!-- Note: Add 'active' class to the current page link -->
-        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="services.html" class="active"><i class="fas fa-concierge-bell"></i> Services</a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
-        <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
-        <li><a href="support.html"><i class="fas fa-life-ring"></i> Support</a></li>
+        <li><a href="index.html" class="active"><i class="fas fa-globe"></i>Home</a></li>        
+        <li><a href="online.html"><i class="fas fa-globe"></i>Online</a></li>
+        <li><a href="street.html"><i class="fas fa-store"></i>Street</a></li>
+        <li><a href="services.html"><i class="fas fa-globe"></i>Services</a></li>        
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
+        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
       </ul>
       <div class="nav-actions">
         <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
