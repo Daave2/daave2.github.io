@@ -841,7 +841,7 @@
         }
       }
 
-      // Handle high-DPI scaling in the canvas
+      // High-DPI canvas support
       function resizeCanvas() {
         const parentWidth = canvas.parentElement.clientWidth;
         const parentHeight = canvas.parentElement.clientHeight;
@@ -851,7 +851,6 @@
         canvas.height = parentHeight * ratio;
         canvas.style.width = parentWidth + 'px';
         canvas.style.height = parentHeight + 'px';
-        // Reset any existing transform then scale
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(ratio, ratio);
         if (dataURL) {
@@ -861,7 +860,6 @@
         }
       }
       window.addEventListener('resize', debounce(resizeCanvas, 200));
-      // Initial canvas setup
       resizeCanvas();
 
       // Set default drawing settings
@@ -879,7 +877,7 @@
       colorPicker.addEventListener('input', updateDrawingSettings);
       brushSize.addEventListener('change', updateDrawingSettings);
 
-      // Drawing state and smoothing (using quadratic curves)
+      // Drawing state using continuous line (no dotted segments)
       let drawing = false, lastX = 0, lastY = 0;
       function getXY(e) {
         const rect = canvas.getBoundingClientRect();
@@ -892,15 +890,13 @@
       function startDrawing(e) {
         drawing = true;
         [lastX, lastY] = getXY(e);
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
       }
       function draw(e) {
         if (!drawing) return;
         const [x, y] = getXY(e);
-        const midX = (lastX + x) / 2;
-        const midY = (lastY + y) / 2;
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.quadraticCurveTo(lastX, lastY, midX, midY);
+        ctx.lineTo(x, y);
         ctx.stroke();
         lastX = x;
         lastY = y;
@@ -916,7 +912,7 @@
       canvas.addEventListener('mousemove', draw);
       canvas.addEventListener('mouseup', stopDrawing);
       canvas.addEventListener('mouseout', stopDrawing);
-      // Touch events (with passive:false so preventDefault works)
+      // Touch events (passive:false so preventDefault works)
       canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         startDrawing(e);
@@ -956,7 +952,9 @@
           const img = new Image();
           img.onload = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0);
+            const parentWidth = canvas.parentElement.clientWidth;
+            const parentHeight = canvas.parentElement.clientHeight;
+            ctx.drawImage(img, 0, 0, parentWidth, parentHeight);
             showNotification('Whiteboard loaded successfully!');
           };
           img.src = dataURL;
@@ -970,7 +968,9 @@
           const img = new Image();
           img.onload = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0);
+            const parentWidth = canvas.parentElement.clientWidth;
+            const parentHeight = canvas.parentElement.clientHeight;
+            ctx.drawImage(img, 0, 0, parentWidth, parentHeight);
             showNotification('Undo successful.');
           };
           img.src = state;
@@ -1009,11 +1009,11 @@
         eraserEnabled = !eraserEnabled;
         eraserButton.classList.toggle('active', eraserEnabled);
         if (eraserEnabled) {
-          // Set stroke to the whiteboard background color based on theme
-          const bgColor = document.body.classList.contains('dark-mode') ? '#2e2e2e' : '#ffffff';
-          ctx.strokeStyle = bgColor;
+          // Compute the whiteboard container's background color dynamically
+          const container = document.querySelector('.whiteboard-container');
+          const containerBg = window.getComputedStyle(container).backgroundColor;
+          ctx.strokeStyle = containerBg;
         } else {
-          // Restore stroke color from color picker
           ctx.strokeStyle = colorPicker.value;
         }
       });
