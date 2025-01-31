@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cleveleys Morrisons Management Dashboard - Services</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+  <style>
+    /* ------------------------------
+       CSS Styles for Cleveleys Morrisons Management Dashboard - Services
+       ------------------------------ */
+    :root {
+      --primary-purple: #4B0082; /* Indigo */
+      --secondary-purple: #D8BFD8; /* Thistle */
+      --background-faint-purple: #f3e6ff; /* Faint Lavender */
+      --background-white: #FFFFFF;
+      --text-color: #333333;
+      --card-bg: var(--background-white);
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --footer-bg: var(--primary-purple);
+      --footer-text: var(--background-white);
+
+      /* Dark Mode Variables */
+      --dark-background: #1a1a1a;
+      --dark-card-bg: #2e2e2e;
+      --dark-text-color: #e0e0e0;
+      --dark-footer-bg: #4d004d;
+      --dark-footer-text: #e0e0e0;
+    }
+
+    /* Purple Theme Variables */
+    .purple-theme {
+      --primary-purple: #D8BFD8; /* Thistle */
+      --secondary-purple: #4B0082; /* Indigo */
+      --background-faint-purple: #e6e6ff; /* Faint Purple */
+      --background-white: #FFFFFF;
+      --text-color: #333333;
+      --card-bg: var(--background-white);
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --footer-bg: var(--primary-purple);
+      --footer-text: var(--background-white);
+
+      /* Dark Mode Overrides for Purple Theme */
+      --dark-background: #1a001a;
+      --dark-card-bg: #2e002e;
+      --dark-text-color: #f0e0f0;
+      --dark-footer-bg: #4d004d;
+      --dark-footer-text: #f0e0f0;
+    }
+
+    /* Transition for Smooth Theme Change */
+    :root, .purple-theme {
+      transition: all 4s ease; /* Slower transition */
+    }
+
+    /* Existing CSS Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--background-faint-purple);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: var(--dark-background);
+      color: var(--dark-text-color);
+    }
+    a { color: inherit; text-decoration: none; }
+    body.mobile-nav-open { overflow: hidden; }
+
+    header {
+      background-color: var(--background-white);
+      color: var(--primary-purple);
+      padding: 20px 10px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 2px 4px var(--card-shadow);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode header {
+      background-color: var(--dark-card-bg);
+      color: var(--dark-text-color);
+    }
+    header img {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 50px;
+      /* Ensure the logo is not affected by theme changes */
+      transition: none;
+    }
+    header h1 { 
+      font-size: 2em; 
+      margin: 0; 
+      padding-left: 80px; 
+    }
+
+    /* Navigation Styles */
+    nav.nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--secondary-purple);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+    body.dark-mode nav.nav {
+      background-color: #333;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 60px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
+      transition: transform 0.3s ease;
+    }
+    .nav-links li { position: relative; }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      color: var(--primary-purple);
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.3s, color 0.3s;
+    }
+    /* Purple Theme: Dark Purple text on light purple background */
+    .purple-theme .nav-links a {
+      color: var(--secondary-purple); /* Dark Purple text */
+    }
+    body.dark-mode .nav-links a { color: var(--dark-text-color); }
+    .nav-links a:hover {
+      background-color: var(--primary-purple);
+      color: var(--secondary-purple); /* Dark Purple text on light purple background */
+      transform: translateY(-2px);
+    }
+    .nav-links .active {
+      background-color: var(--primary-purple);
+      color: var(--secondary-purple); /* Dark Purple text on light purple background */
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-purple);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links .active::after { width: 100%; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: var(--primary-purple);
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+    body.dark-mode .hamburger span { background: var(--dark-text-color); }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px,5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px,-6px);
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    .dark-mode-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5em;
+      color: var(--primary-purple);
+      transition: color 0.3s;
+    }
+    body.dark-mode .dark-mode-toggle {
+      color: var(--dark-text-color);
+    }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--secondary-purple);
+        flex-direction: column;
+        padding: 1rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
+      }
+      .purple-theme .nav-links {
+        background: var(--secondary-purple);
+      }
+      body.dark-mode .nav-links { background: #333; }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links li { margin: 0; width: 100%; }
+      .nav-links a {
+        margin: 10px 0;
+        width: 100%;
+        background-color: transparent;
+        color: var(--primary-purple);
+        border-radius: 4px;
+        text-align: left;
+        font-size: 1em;
+        padding: 10px;
+      }
+      .purple-theme .nav-links a {
+        color: var(--secondary-purple); /* Dark Purple text */
+      }
+      body.dark-mode .nav-links a { color: var(--dark-text-color); }
+      .nav-links a:hover {
+        background-color: var(--primary-purple);
+        color: var(--secondary-purple); /* Dark Purple text on light purple background */
+      }
+    }
+
+    /* Main Container Styles */
+    .container { 
+      padding: 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+    }
+    main {
+      role: main;
+    }
+
+    /* Dashboard Styles */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .dashboard-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s, color 0.3s, background-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: var(--text-color); /* Default text color */
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px var(--card-shadow);
+    }
+    .dashboard-card h3 {
+      margin-bottom: 15px;
+      color: var(--primary-purple);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.4em;
+      transition: color 0.3s;
+    }
+    .dashboard-card p {
+      flex-grow: 1;
+      margin-bottom: 15px;
+    }
+    .dashboard-card iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .dashboard-card a {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: var(--primary-purple);
+      color: var(--background-white);
+      border-radius: 5px;
+      text-align: center;
+      font-weight: 500;
+      transition: background-color 0.3s, transform 0.3s, color 0.3s;
+    }
+    .dashboard-card a:hover {
+      background-color: var(--secondary-purple);
+      color: var(--secondary-purple); /* Dark Purple text on light purple background */
+      transform: translateY(-2px);
+    }
+
+    /* Purple Theme: Dark Purple text on purple elements */
+    .purple-theme .dashboard-card h3,
+    .purple-theme .dashboard-card a {
+      color: var(--secondary-purple); /* Dark Purple text */
+    }
+
+    /* Dark Mode: Darker text in dashboard cards */
+    body.dark-mode .dashboard-card h3,
+    body.dark-mode .dashboard-card p,
+    body.dark-mode .dashboard-card a {
+      color: var(--secondary-purple); /* Dark Purple text */
+    }
+
+    /* Footer Styles */
+    footer {
+      background-color: var(--footer-bg);
+      color: var(--footer-text);
+      text-align: center;
+      padding: 10px 5px;
+      bottom: 0;
+      width: 100%;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode footer {
+      background-color: var(--dark-footer-bg);
+      color: var(--dark-footer-text);
+    }
+    footer p { 
+      margin: 0; 
+      font-size: 0.8em; 
+    }
+
+    /* Media Queries for Responsive Iframe */
+    @media (max-width: 768px) {
+      .dashboard-card iframe {
+        height: 250px;
+      }
+    }
+    @media (max-width: 480px) {
+      .dashboard-card iframe {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
+         alt="Morrisons Logo">
+    <h1>Cleveleys Morrisons Management Dashboard</h1>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav" role="navigation" aria-label="Primary Navigation">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <!-- Note: Add 'active' class to the current page link -->
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="services.html" class="active"><i class="fas fa-concierge-bell"></i> Services</a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+        <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+        <li><a href="support.html"><i class="fas fa-life-ring"></i> Support</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
+          🌓
+        </button>
+      </div>
+      <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="dashboard">
+      <!-- Service 1 -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-cogs"></i> Operational Management</h3>
+        <p>Optimize your store operations with our comprehensive management tools and analytics.</p>
+        <a href="https://services.morrisons.co.uk/operational-management" target="_blank" rel="noopener noreferrer">
+          Learn More
+        </a>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-chart-pie"></i> Data Analytics</h3>
+        <p>Leverage data-driven insights to make informed decisions and drive growth.</p>
+        <a href="https://services.morrisons.co.uk/data-analytics" target="_blank" rel="noopener noreferrer">
+          Explore Analytics
+        </a>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-user-shield"></i> Security Services</h3>
+        <p>Ensure the safety and security of your store with our advanced security solutions.</p>
+        <a href="https://services.morrisons.co.uk/security-services" target="_blank" rel="noopener noreferrer">
+          Secure Your Store
+        </a>
+      </div>
+
+      <!-- Service 4 -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-headset"></i> Customer Support</h3>
+        <p>Provide exceptional customer service with our dedicated support team and resources.</p>
+        <a href="https://services.morrisons.co.uk/customer-support" target="_blank" rel="noopener noreferrer">
+          Get Support
+        </a>
+      </div>
+
+      <!-- Service 5 -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-truck"></i> Logistics Management</h3>
+        <p>Streamline your supply chain and logistics to enhance efficiency and reduce costs.</p>
+        <a href="https://services.morrisons.co.uk/logistics-management" target="_blank" rel="noopener noreferrer">
+          Optimize Logistics
+        </a>
+      </div>
+
+      <!-- Service 6 -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-lightbulb"></i> Innovation Hub</h3>
+        <p>Stay ahead of the curve with our innovation hub, offering the latest tools and technologies.</p>
+        <a href="https://services.morrisons.co.uk/innovation-hub" target="_blank" rel="noopener noreferrer">
+          Innovate Now
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+  </footer>
+
+  <!-- Core JavaScript for Dark Mode & Mobile Nav -->
+  <script>
+    /* Dark mode toggle */
+    const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
+    toggleButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        btn.setAttribute('aria-pressed', isDark);
+        if (isDark) {
+          localStorage.setItem('theme', 'dark');
+        } else {
+          localStorage.setItem('theme', 'purple'); // Assuming default theme is purple after transition
+        }
+      });
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
+      } else if (savedTheme === 'purple') {
+        document.body.classList.add('purple-theme');
+      } else {
+        /* Apply Purple Theme After Page Load if not already set */
+        setTimeout(() => {
+          document.body.classList.add('purple-theme');
+          localStorage.setItem('theme', 'purple');
+        }, 500); // Adjust the delay as needed (in milliseconds)
+      }
+    });
+
+    /* Hamburger (mobile nav) */
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
+      document.body.classList.toggle('mobile-nav-open');
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      hamburger.setAttribute('aria-expanded', !expanded);
+    });
+    window.addEventListener('click', (event) => {
+      if (!event.target.closest('.nav') && !event.target.closest('.hamburger')) {
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+          document.body.classList.remove('mobile-nav-open');
+          hamburger.setAttribute('aria-expanded', false);
+        }
+      }
+    });
+    const navItems = document.querySelectorAll('.nav-links a');
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+          document.body.classList.remove('mobile-nav-open');
+          hamburger.setAttribute('aria-expanded', false);
+        }
+      });
+    });
+    hamburger.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') hamburger.click();
+    });
+  </script>
+</body>
+</html>
