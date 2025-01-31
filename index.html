@@ -689,15 +689,18 @@
     <!-- Notes Section (Interactive Whiteboard) -->
     <section id="notes">
       <h2>Notes</h2>
-      <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your notes, "Load" to retrieve them, "Undo" to step back one stroke, or "Clear" to erase the whiteboard. You may also toggle the Eraser tool.</p>
+      <p>
+        Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your notes, "Load" to retrieve them, "Undo" to step back one stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase the whiteboard. You may also toggle the Eraser tool.
+      </p>
       <div class="whiteboard-container">
         <!-- Whiteboard Tools -->
         <div class="whiteboard-tools">
           <input type="color" class="color-picker" value="#000000" aria-label="Select drawing color">
           <select class="brush-size" aria-label="Select brush size">
-            <option value="2">Small</option>
-            <option value="4">Medium</option>
-            <option value="6">Large</option>
+            <option value="2">Small (2px)</option>
+            <option value="4" selected>Medium (4px)</option>
+            <option value="8">Large (8px)</option>
+            <option value="12">Extra Large (12px)</option>
           </select>
         </div>
         <canvas id="whiteboard"></canvas>
@@ -705,6 +708,7 @@
           <button class="save-button">Save</button>
           <button class="load-button">Load</button>
           <button class="undo-button">Undo</button>
+          <button class="fill-button">Fill</button>
           <button class="eraser-button">Eraser</button>
           <button class="clear-button">Clear</button>
           <button class="print-button">Print</button>
@@ -823,6 +827,7 @@
       const undoButton = document.querySelector('.undo-button');
       const eraserButton = document.querySelector('.eraser-button');
       const printButton = document.querySelector('.print-button');
+      const fillButton = document.querySelector('.fill-button');
       const colorPicker = document.querySelector('.color-picker');
       const brushSize = document.querySelector('.brush-size');
 
@@ -831,10 +836,13 @@
       const maxUndoStack = 20;
       function pushUndoState() {
         try {
-          const state = canvas.toDataURL();
-          undoStack.push(state);
-          if (undoStack.length > maxUndoStack) {
-            undoStack.shift();
+          const newState = canvas.toDataURL();
+          // Only push if different from last state
+          if (!undoStack.length || undoStack[undoStack.length - 1] !== newState) {
+            undoStack.push(newState);
+            if (undoStack.length > maxUndoStack) {
+              undoStack.shift();
+            }
           }
         } catch (e) {
           console.error("Unable to push undo state:", e);
@@ -877,7 +885,7 @@
       colorPicker.addEventListener('input', updateDrawingSettings);
       brushSize.addEventListener('change', updateDrawingSettings);
 
-      // Drawing state using continuous line (no dotted segments)
+      // Drawing state using continuous line
       let drawing = false, lastX = 0, lastY = 0;
       function getXY(e) {
         const rect = canvas.getBoundingClientRect();
@@ -1009,13 +1017,24 @@
         eraserEnabled = !eraserEnabled;
         eraserButton.classList.toggle('active', eraserEnabled);
         if (eraserEnabled) {
-          // Compute the whiteboard container's background color dynamically
+          // Use the container's background color dynamically
           const container = document.querySelector('.whiteboard-container');
           const containerBg = window.getComputedStyle(container).backgroundColor;
           ctx.strokeStyle = containerBg;
         } else {
           ctx.strokeStyle = colorPicker.value;
         }
+      });
+
+      // Fill tool functionality: fills entire canvas with selected color
+      fillButton.addEventListener('click', () => {
+        pushUndoState(); // Save current state before filling
+        const parentWidth = canvas.parentElement.clientWidth;
+        const parentHeight = canvas.parentElement.clientHeight;
+        ctx.fillStyle = colorPicker.value;
+        ctx.fillRect(0, 0, parentWidth, parentHeight);
+        showNotification('Canvas filled.');
+        pushUndoState(); // Save state after filling
       });
 
       /* --------------------------
