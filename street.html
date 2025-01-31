@@ -299,6 +299,57 @@
       border-bottom-color: var(--secondary-yellow);
     }
 
+    /* Dashboard Card Styles */
+    .dashboard-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px var(--card-shadow);
+    }
+    .dashboard-card h3 {
+      margin-bottom: 15px;
+      color: var(--primary-green);
+      font-size: 1.4em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dashboard-card iframe {
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    /* Specific styles for the Food to Order iframe */
+    .dashboard-card iframe#foodIframe {
+      height: 500px;
+    }
+    /* Specific styles for the Looker Studio Report iframe */
+    .dashboard-card iframe#lookerIframe {
+      width: 600px;
+      height: 550px;
+      max-width: 100%;
+    }
+    .dashboard-card button {
+      padding: 10px 15px;
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .dashboard-card button:hover {
+      background-color: var(--secondary-yellow);
+      transform: translateY(-2px);
+    }
+
     footer {
       background-color: var(--footer-bg);
       color: var(--footer-text);
@@ -351,13 +402,30 @@
       <h2>Street Page</h2>
       <p>Placeholder content for the Street page. Add whatever you need here.</p>
     </section>
+
+    <!-- Dashboard Card: Food to Order -->
+    <div class="dashboard-card">
+      <h3><i class="fas fa-utensils"></i> Food to order</h3>
+      <iframe id="foodIframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+      <button onclick="printFoodToOrder()">Print</button>
+    </div>
+
+    <!-- Dashboard Card: Looker Studio Report -->
+    <div class="dashboard-card">
+      <h3><i class="fas fa-chart-line"></i> Looker Studio Report</h3>
+      <iframe id="lookerIframe" 
+              src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld" 
+              frameborder="0" style="border:0" allowfullscreen 
+              sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+      <button onclick="printLookerReport()">Print Report</button>
+    </div>
   </div>
 
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript for dark mode, hamburger, etc. -->
+  <!-- JavaScript for dark mode, hamburger, and printing the iframes -->
   <script>
     /* Dark mode toggle */
     const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
@@ -379,7 +447,7 @@
       /* Apply Pink Theme After Page Load */
       setTimeout(() => {
         document.body.classList.add('pink-theme');
-      }, 500); // Adjust delay if needed
+      }, 500);
     });
 
     /* Hamburger (mobile nav) */
@@ -417,6 +485,26 @@
     hamburger.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') hamburger.click();
     });
+
+    /* Print function for Food to Order iframe */
+    function printFoodToOrder() {
+      const url = document.getElementById("foodIframe").src;
+      const printWindow = window.open(url, '_blank');
+      printWindow.focus();
+      printWindow.onload = function() {
+        printWindow.print();
+      };
+    }
+
+    /* Print function for Looker Studio Report iframe */
+    function printLookerReport() {
+      const url = document.getElementById("lookerIframe").src;
+      const printWindow = window.open(url, '_blank');
+      printWindow.focus();
+      printWindow.onload = function() {
+        printWindow.print();
+      };
+    }
   </script>
 </body>
 </html>
