@@ -400,6 +400,50 @@
       outline: 2px solid var(--secondary-yellow);
     }
 
+    /* Export Dropdown Styles */
+    .export-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .export-dropdown-button {
+      background-color: var(--primary-green);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background-color 0.3s;
+    }
+    .export-dropdown-button:hover {
+      background-color: #004d00;
+    }
+    .export-dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      margin-top: 4px;
+      background-color: var(--background-white);
+      min-width: 150px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 5px;
+      overflow: hidden;
+      z-index: 100;
+    }
+    .export-dropdown-menu li {
+      list-style: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .export-dropdown-menu li:hover {
+      background-color: var(--secondary-yellow);
+    }
+    /* Show menu when active */
+    .export-dropdown.show .export-dropdown-menu {
+      display: block;
+    }
+
     /* --------------------------------------------------
        Whiteboard Toolbar
        -------------------------------------------------- */
@@ -546,10 +590,10 @@
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html" class="active"><i class="fas fa-globe"></i>Home</a></li>        
+        <li><a href="index.html" class="active"><i class="fas fa-globe"></i>Home</a></li>
         <li><a href="online.html"><i class="fas fa-globe"></i>Online</a></li>
         <li><a href="street.html"><i class="fas fa-store"></i>Street</a></li>
-        <li><a href="services.html"><i class="fas fa-globe"></i>Services</a></li>        
+        <li><a href="services.html"><i class="fas fa-globe"></i>Services</a></li>
         <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
@@ -690,7 +734,7 @@
     <section id="notes">
       <h2>Notes</h2>
       <p>
-        Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your notes, "Load" to retrieve them, "Undo" to step back one stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase the whiteboard. You may also toggle the Eraser tool.
+        Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing (as JSON), "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. All export options (Print, PNG, JPEG, JSON) are combined in the Export Options dropdown.
       </p>
       <div class="whiteboard-container">
         <!-- Whiteboard Tools -->
@@ -711,7 +755,16 @@
           <button class="fill-button">Fill</button>
           <button class="eraser-button">Eraser</button>
           <button class="clear-button">Clear</button>
-          <button class="print-button">Print</button>
+          <!-- Export Dropdown -->
+          <div class="export-dropdown">
+            <button class="export-dropdown-button">Export Options</button>
+            <ul class="export-dropdown-menu">
+              <li data-export="print">Print</li>
+              <li data-export="png">Export PNG</li>
+              <li data-export="jpeg">Export JPEG</li>
+              <li data-export="json">Export JSON</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -817,224 +870,272 @@
       }
 
       /* --------------------------
-         Whiteboard Setup and Improvements
+         Whiteboard Variables and Setup
          -------------------------- */
       const canvas = document.getElementById('whiteboard');
       const ctx = canvas.getContext('2d');
-      const clearButton = document.querySelector('.clear-button');
-      const saveButton = document.querySelector('.save-button');
-      const loadButton = document.querySelector('.load-button');
-      const undoButton = document.querySelector('.undo-button');
-      const eraserButton = document.querySelector('.eraser-button');
-      const printButton = document.querySelector('.print-button');
-      const fillButton = document.querySelector('.fill-button');
-      const colorPicker = document.querySelector('.color-picker');
-      const brushSize = document.querySelector('.brush-size');
+      // We'll store strokes (or fill actions) in an array.
+      let strokes = [];
+      let currentStroke = null;
+      let eraserEnabled = false;
 
-      // For undo functionality
-      let undoStack = [];
-      const maxUndoStack = 20;
-      function pushUndoState() {
-        try {
-          const newState = canvas.toDataURL();
-          // Only push if different from last state
-          if (!undoStack.length || undoStack[undoStack.length - 1] !== newState) {
-            undoStack.push(newState);
-            if (undoStack.length > maxUndoStack) {
-              undoStack.shift();
-            }
-          }
-        } catch (e) {
-          console.error("Unable to push undo state:", e);
-        }
-      }
-
-      // High-DPI canvas support
+      // High-DPI canvas support: re-render everything on resize
       function resizeCanvas() {
         const parentWidth = canvas.parentElement.clientWidth;
         const parentHeight = canvas.parentElement.clientHeight;
         const ratio = window.devicePixelRatio || 1;
-        const dataURL = canvas.toDataURL();
         canvas.width = parentWidth * ratio;
         canvas.height = parentHeight * ratio;
         canvas.style.width = parentWidth + 'px';
         canvas.style.height = parentHeight + 'px';
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(ratio, ratio);
-        if (dataURL) {
-          const img = new Image();
-          img.onload = () => { ctx.drawImage(img, 0, 0, parentWidth, parentHeight); };
-          img.src = dataURL;
-        }
+        renderAll();
       }
       window.addEventListener('resize', debounce(resizeCanvas, 200));
       resizeCanvas();
 
-      // Set default drawing settings
-      ctx.strokeStyle = '#000000';
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.lineWidth = parseInt(brushSize.value, 10);
-
-      function updateDrawingSettings() {
-        if (!eraserEnabled) {
-          ctx.strokeStyle = colorPicker.value;
-        }
-        ctx.lineWidth = parseInt(brushSize.value, 10);
+      // Render all strokes/fills from the strokes array
+      function renderAll() {
+        const parentWidth = canvas.parentElement.clientWidth;
+        const parentHeight = canvas.parentElement.clientHeight;
+        ctx.clearRect(0, 0, parentWidth, parentHeight);
+        strokes.forEach(stroke => {
+          if (stroke.tool === 'fill') {
+            ctx.fillStyle = stroke.color;
+            ctx.fillRect(0, 0, parentWidth, parentHeight);
+          } else {
+            ctx.strokeStyle = stroke.color;
+            ctx.lineWidth = stroke.lineWidth;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            if (stroke.points.length) {
+              ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+              for (let i = 1; i < stroke.points.length; i++) {
+                ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+              }
+              ctx.stroke();
+            }
+          }
+        });
       }
-      colorPicker.addEventListener('input', updateDrawingSettings);
-      brushSize.addEventListener('change', updateDrawingSettings);
 
-      // Drawing state using continuous line
-      let drawing = false, lastX = 0, lastY = 0;
+      // Get coordinates relative to the canvas
       function getXY(e) {
         const rect = canvas.getBoundingClientRect();
         if (e.touches && e.touches.length > 0) {
-          return [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
+          return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
         } else {
-          return [e.clientX - rect.left, e.clientY - rect.top];
+          return { x: e.clientX - rect.left, y: e.clientY - rect.top };
         }
       }
+
+      // Start drawing a new stroke
       function startDrawing(e) {
-        drawing = true;
-        [lastX, lastY] = getXY(e);
+        const pos = getXY(e);
+        currentStroke = {
+          tool: eraserEnabled ? 'eraser' : 'pen',
+          color: eraserEnabled 
+                   ? window.getComputedStyle(document.querySelector('.whiteboard-container')).backgroundColor 
+                   : colorPicker.value,
+          lineWidth: parseInt(brushSize.value, 10),
+          points: [pos]
+        };
         ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
+        ctx.moveTo(pos.x, pos.y);
       }
+
+      // Continue drawing: add point to current stroke and draw line segment
       function draw(e) {
-        if (!drawing) return;
-        const [x, y] = getXY(e);
-        ctx.lineTo(x, y);
+        if (!currentStroke) return;
+        const pos = getXY(e);
+        currentStroke.points.push(pos);
+        ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
-        lastX = x;
-        lastY = y;
       }
+
+      // End drawing: push current stroke into strokes array and re-render
       function stopDrawing() {
-        if (drawing) {
-          drawing = false;
-          pushUndoState();
+        if (currentStroke && currentStroke.points.length > 1) {
+          strokes.push(currentStroke);
         }
+        currentStroke = null;
       }
+
       // Mouse events
-      canvas.addEventListener('mousedown', startDrawing);
-      canvas.addEventListener('mousemove', draw);
-      canvas.addEventListener('mouseup', stopDrawing);
-      canvas.addEventListener('mouseout', stopDrawing);
-      // Touch events (passive:false so preventDefault works)
+      let drawing = false;
+      canvas.addEventListener('mousedown', (e) => {
+        drawing = true;
+        startDrawing(e);
+      });
+      canvas.addEventListener('mousemove', (e) => {
+        if (drawing) draw(e);
+      });
+      canvas.addEventListener('mouseup', (e) => {
+        drawing = false;
+        stopDrawing();
+      });
+      canvas.addEventListener('mouseout', (e) => {
+        drawing = false;
+        stopDrawing();
+      });
+      // Touch events (with passive:false so preventDefault works)
       canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
+        drawing = true;
         startDrawing(e);
         document.body.style.overflow = 'hidden';
       }, { passive: false });
       canvas.addEventListener('touchmove', (e) => {
         e.preventDefault();
-        draw(e);
+        if (drawing) draw(e);
       }, { passive: false });
-      canvas.addEventListener('touchend', () => {
+      canvas.addEventListener('touchend', (e) => {
+        drawing = false;
         stopDrawing();
         document.body.style.overflow = '';
       });
-      canvas.addEventListener('touchcancel', () => {
+      canvas.addEventListener('touchcancel', (e) => {
+        drawing = false;
         stopDrawing();
         document.body.style.overflow = '';
       });
 
-      // Whiteboard Buttons
-      clearButton.addEventListener('click', () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        undoStack = [];
+      // Button Handlers
+
+      // Clear button: clear strokes and re-render
+      document.querySelector('.clear-button').addEventListener('click', () => {
+        strokes = [];
+        renderAll();
         showNotification('Whiteboard cleared.');
       });
-      saveButton.addEventListener('click', () => {
+
+      // Save button: export strokes as JSON to localStorage
+      document.querySelector('.save-button').addEventListener('click', () => {
         try {
-          localStorage.setItem('whiteboardImage', canvas.toDataURL());
+          localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes));
           showNotification('Whiteboard saved successfully!');
         } catch (e) {
           console.error('Error saving whiteboard:', e);
           showNotification('Failed to save: Storage limit exceeded', 5000);
         }
       });
-      loadButton.addEventListener('click', () => {
-        const dataURL = localStorage.getItem('whiteboardImage');
-        if (dataURL) {
-          const img = new Image();
-          img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const parentWidth = canvas.parentElement.clientWidth;
-            const parentHeight = canvas.parentElement.clientHeight;
-            ctx.drawImage(img, 0, 0, parentWidth, parentHeight);
+
+      // Load button: load strokes from localStorage and re-render
+      document.querySelector('.load-button').addEventListener('click', () => {
+        const data = localStorage.getItem('whiteboardStrokes');
+        if (data) {
+          try {
+            strokes = JSON.parse(data);
+            renderAll();
             showNotification('Whiteboard loaded successfully!');
-          };
-          img.src = dataURL;
+          } catch (e) {
+            showNotification('Error parsing saved drawing.');
+          }
         } else {
-          showNotification('No saved drawings found');
+          showNotification('No saved drawing found.');
         }
       });
-      undoButton.addEventListener('click', () => {
-        if (undoStack.length > 0) {
-          const state = undoStack.pop();
-          const img = new Image();
-          img.onload = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const parentWidth = canvas.parentElement.clientWidth;
-            const parentHeight = canvas.parentElement.clientHeight;
-            ctx.drawImage(img, 0, 0, parentWidth, parentHeight);
-            showNotification('Undo successful.');
-          };
-          img.src = state;
+
+      // Undo button: remove last stroke and re-render
+      document.querySelector('.undo-button').addEventListener('click', () => {
+        if (strokes.length > 0) {
+          strokes.pop();
+          renderAll();
+          showNotification('Undo successful.');
         } else {
           showNotification('No more undo steps.');
         }
       });
-      printButton.addEventListener('click', () => {
-        const dataURL = canvas.toDataURL('image/png');
-        const printWindow = window.open('', 'Print Whiteboard', 'width=800,height=600');
-        printWindow.document.write(`
-          <html>
-            <head>
-              <title>Print Whiteboard</title>
-              <style>
-                body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-                img { max-width: 100%; height: auto; }
-              </style>
-            </head>
-            <body>
-              <img src="${dataURL}" alt="Whiteboard">
-            </body>
-          </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.onload = () => {
-          printWindow.print();
-          printWindow.close();
+
+      // Fill button: add a fill action to strokes and re-render
+      document.querySelector('.fill-button').addEventListener('click', () => {
+        const fillStroke = {
+          tool: 'fill',
+          color: colorPicker.value
         };
+        strokes.push(fillStroke);
+        renderAll();
+        showNotification('Canvas filled.');
       });
 
-      // Eraser toggle functionality
-      let eraserEnabled = false;
-      eraserButton.addEventListener('click', () => {
+      // Eraser toggle: switch between drawing and erasing
+      document.querySelector('.eraser-button').addEventListener('click', () => {
         eraserEnabled = !eraserEnabled;
-        eraserButton.classList.toggle('active', eraserEnabled);
-        if (eraserEnabled) {
-          // Use the container's background color dynamically
-          const container = document.querySelector('.whiteboard-container');
-          const containerBg = window.getComputedStyle(container).backgroundColor;
-          ctx.strokeStyle = containerBg;
-        } else {
+        document.querySelector('.eraser-button').classList.toggle('active', eraserEnabled);
+        if (!eraserEnabled) {
           ctx.strokeStyle = colorPicker.value;
         }
       });
 
-      // Fill tool functionality: fills entire canvas with selected color
-      fillButton.addEventListener('click', () => {
-        pushUndoState(); // Save current state before filling
-        const parentWidth = canvas.parentElement.clientWidth;
-        const parentHeight = canvas.parentElement.clientHeight;
-        ctx.fillStyle = colorPicker.value;
-        ctx.fillRect(0, 0, parentWidth, parentHeight);
-        showNotification('Canvas filled.');
-        pushUndoState(); // Save state after filling
+      /* --------------------------
+         Export Options (Dropdown)
+         -------------------------- */
+      const exportDropdown = document.querySelector('.export-dropdown');
+      const exportDropdownButton = document.querySelector('.export-dropdown-button');
+      const exportDropdownMenu = document.querySelector('.export-dropdown-menu');
+
+      // Toggle dropdown menu visibility
+      exportDropdownButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        exportDropdown.classList.toggle('show');
+      });
+      // Hide dropdown when clicking elsewhere
+      window.addEventListener('click', () => {
+        exportDropdown.classList.remove('show');
+      });
+
+      // Export functionality based on selected option
+      exportDropdownMenu.addEventListener('click', (e) => {
+        const option = e.target.getAttribute('data-export');
+        if (!option) return;
+        if (option === 'print') {
+          const dataURL = canvas.toDataURL('image/png');
+          const printWindow = window.open('', 'Print Whiteboard', 'width=800,height=600');
+          printWindow.document.write(`
+            <html>
+              <head>
+                <title>Print Whiteboard</title>
+                <style>
+                  body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+                  img { max-width: 100%; height: auto; }
+                </style>
+              </head>
+              <body>
+                <img src="${dataURL}" alt="Whiteboard">
+              </body>
+            </html>
+          `);
+          printWindow.document.close();
+          printWindow.focus();
+          printWindow.onload = () => {
+            printWindow.print();
+            printWindow.close();
+          };
+        } else if (option === 'png') {
+          const dataURL = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = dataURL;
+          link.download = 'whiteboard.png';
+          link.click();
+        } else if (option === 'jpeg') {
+          const dataURL = canvas.toDataURL('image/jpeg');
+          const link = document.createElement('a');
+          link.href = dataURL;
+          link.download = 'whiteboard.jpg';
+          link.click();
+        } else if (option === 'json') {
+          const dataStr = JSON.stringify(strokes, null, 2);
+          const blob = new Blob([dataStr], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'whiteboard.json';
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+        exportDropdown.classList.remove('show');
       });
 
       /* --------------------------
