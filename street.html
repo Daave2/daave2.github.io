@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Street Page</title>
   <!-- Google Fonts & Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
   <style>
-    /* ------------------------------
-       CSS Styles for Cleveleys Morrisons Management Dashboard
-       ------------------------------ */
+    /* Root Variables & Theme Settings */
     :root {
       --primary-green: #006400;
       --secondary-yellow: #FFD700;
@@ -25,7 +23,6 @@
       --card-shadow: rgba(0, 0, 0, 0.1);
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
-
       /* Dark Mode Variables */
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
@@ -36,16 +33,15 @@
 
     /* Pink Theme Variables */
     .pink-theme {
-      --primary-green: #FF1493; /* DeepPink */
-      --secondary-yellow: #FFB6C1; /* LightPink */
-      --background-faint-green: #FFE4E1; /* MistyRose */
-      --background-white: #FFF0F5; /* LavenderBlush */
-      --text-color: #8B008B; /* DarkMagenta */
+      --primary-green: #FF1493;
+      --secondary-yellow: #FFB6C1;
+      --background-faint-green: #FFE4E1;
+      --background-white: #FFF0F5;
+      --text-color: #8B008B;
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.2);
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
-
       /* Dark Mode Overrides for Pink Theme */
       --dark-background: #2F0F2F;
       --dark-card-bg: #3D1F3D;
@@ -54,15 +50,15 @@
       --dark-footer-text: #F8E0F8;
     }
 
-    /* Transition for Smooth Theme Change */
+    /* Smooth Theme Transition */
     :root, .pink-theme {
       transition: all 2s ease;
     }
 
     /* Base Styles */
     * {
-      box-sizing: border-box; 
-      margin: 0; 
+      box-sizing: border-box;
+      margin: 0;
       padding: 0;
     }
     body {
@@ -76,14 +72,15 @@
       background-color: var(--dark-background);
       color: var(--dark-text-color);
     }
-    a { 
-      color: inherit; 
-      text-decoration: none; 
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    body.mobile-nav-open { 
-      overflow: hidden; 
+    body.mobile-nav-open {
+      overflow: hidden;
     }
 
+    /* Header */
     header {
       background-color: var(--background-white);
       color: var(--primary-green);
@@ -98,21 +95,22 @@
       color: var(--dark-text-color);
     }
     header img {
-      position: absolute; 
-      left: 20px; 
+      position: absolute;
+      left: 20px;
       top: 50%;
-      transform: translateY(-50%); 
+      transform: translateY(-50%);
       height: 50px;
     }
-    header h1 { 
-      font-size: 2em; 
-      margin: 0; 
-      padding-left: 80px; 
+    header h1 {
+      font-size: 2em;
+      margin: 0;
+      padding-left: 80px;
     }
 
+    /* Navigation */
     nav.nav {
-      position: sticky; 
-      top: 0; 
+      position: sticky;
+      top: 0;
       z-index: 1000;
       background-color: var(--secondary-yellow);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
@@ -123,36 +121,36 @@
       box-shadow: 0 2px 15px rgba(0,0,0,0.6);
     }
     .nav-container {
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      max-width: 1200px; 
-      margin: 0 auto; 
-      padding: 0 20px; 
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
       height: 60px;
     }
     .nav-links {
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       gap: 1rem;
-      list-style: none; 
+      list-style: none;
       transition: transform 0.3s ease;
     }
-    .nav-links li { 
-      position: relative; 
+    .nav-links li {
+      position: relative;
     }
     .nav-links a {
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       gap: 0.5rem;
-      padding: 0.75rem 1rem; 
+      padding: 0.75rem 1rem;
       font-weight: 500;
       color: var(--primary-green);
-      border-radius: 8px; 
+      border-radius: 8px;
       transition: background-color 0.3s, transform 0.3s;
     }
-    body.dark-mode .nav-links a { 
-      color: var(--dark-text-color); 
+    body.dark-mode .nav-links a {
+      color: var(--dark-text-color);
     }
     .nav-links a:hover {
       background-color: var(--primary-green);
@@ -165,102 +163,105 @@
     }
     .nav-links a::after {
       content: '';
-      position: absolute; 
-      bottom: 0; 
+      position: absolute;
+      bottom: 0;
       left: 0;
-      width: 0; 
-      height: 3px; 
+      width: 0;
+      height: 3px;
       background-color: var(--primary-green);
-      border-radius: 2px; 
+      border-radius: 2px;
       transition: width 0.3s ease;
     }
     .nav-links a:hover::after,
-    .nav-links .active::after { 
-      width: 100%; 
+    .nav-links .active::after {
+      width: 100%;
     }
 
+    /* Hamburger for Mobile Navigation */
     .hamburger {
-      display: none; 
-      flex-direction: column; 
-      cursor: pointer; 
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
       z-index: 1001;
     }
     .hamburger span {
-      display: block; 
-      width: 25px; 
-      height: 3px; 
+      display: block;
+      width: 25px;
+      height: 3px;
       background: var(--primary-green);
-      margin: 5px 0; 
+      margin: 5px 0;
       transition: all 0.3s ease;
     }
-    body.dark-mode .hamburger span { 
-      background: var(--dark-text-color); 
+    body.dark-mode .hamburger span {
+      background: var(--dark-text-color);
     }
     .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px,5px);
+      transform: rotate(45deg) translate(5px, 5px);
     }
     .hamburger.active span:nth-child(2) {
       opacity: 0;
     }
     .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px,-6px);
+      transform: rotate(-45deg) translate(7px, -6px);
     }
 
-    .nav-actions { 
-      display: flex; 
-      align-items: center; 
-      gap: 1rem; 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
     .dark-mode-toggle {
-      background: none; 
-      border: none; 
+      background: none;
+      border: none;
       cursor: pointer;
-      font-size: 1.5em; 
+      font-size: 1.5em;
       color: var(--primary-green);
       transition: color 0.3s;
     }
     body.dark-mode .dark-mode-toggle {
       color: var(--dark-text-color);
     }
+
+    /* Responsive Navigation */
     @media (max-width: 768px) {
-      .hamburger { 
-        display: flex; 
+      .hamburger {
+        display: flex;
       }
       .nav-links {
-        position: fixed; 
-        top: 60px; 
-        left: 0; 
-        right: 0; 
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
         bottom: 0;
-        background: var(--secondary-yellow); 
-        flex-direction: column; 
+        background: var(--secondary-yellow);
+        flex-direction: column;
         padding: 1rem;
-        transform: translateX(-100%); 
+        transform: translateX(-100%);
         transition: transform 0.3s ease;
         overflow-y: auto;
       }
-      body.dark-mode .nav-links { 
-        background: #333; 
+      body.dark-mode .nav-links {
+        background: #333;
       }
-      .nav-links.active { 
-        transform: translateX(0); 
+      .nav-links.active {
+        transform: translateX(0);
       }
-      .nav-links li { 
-        margin: 0; 
-        width: 100%; 
+      .nav-links li {
+        margin: 0;
+        width: 100%;
       }
       .nav-links a {
-        margin: 10px 0; 
-        width: 100%; 
+        margin: 10px 0;
+        width: 100%;
         background-color: transparent;
-        color: var(--primary-green); 
+        color: var(--primary-green);
         border-radius: 4px;
-        text-align: left; 
-        font-size: 1em; 
+        text-align: left;
+        font-size: 1em;
         padding: 10px;
       }
-      body.dark-mode .nav-links a { 
-        color: var(--dark-text-color); 
+      body.dark-mode .nav-links a {
+        color: var(--dark-text-color);
       }
       .nav-links a:hover {
         background-color: var(--primary-green);
@@ -268,18 +269,22 @@
       }
     }
 
-    .container { 
-      padding: 20px; 
-      max-width: 1200px; 
-      margin: 0 auto; 
+    /* Main Content & Dashboard Cards */
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    main {
+      margin-bottom: 30px;
     }
     section {
-      margin-bottom: 30px; 
       background-color: var(--card-bg);
-      padding: 20px; 
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 12px var(--card-shadow);
       transition: background-color 0.3s, box-shadow 0.3s;
+      margin-bottom: 30px;
     }
     body.dark-mode section {
       background-color: var(--dark-card-bg);
@@ -287,10 +292,10 @@
     }
     section h2 {
       color: var(--primary-green);
-      margin-bottom: 15px; 
+      margin-bottom: 15px;
       font-size: 1.6em;
       border-bottom: 2px solid var(--secondary-yellow);
-      display: inline-block; 
+      display: inline-block;
       padding-bottom: 5px;
       transition: color 0.3s, border-bottom-color 0.3s;
     }
@@ -299,7 +304,6 @@
       border-bottom-color: var(--secondary-yellow);
     }
 
-    /* Dashboard Card Styles */
     .dashboard-card {
       background-color: var(--card-bg);
       border-radius: 10px;
@@ -326,12 +330,11 @@
       border-radius: 5px;
       margin-bottom: 15px;
     }
-    /* Specific styles for the Food to Order iframe */
-    .dashboard-card iframe#foodIframe {
+    /* Specific Iframe Sizes */
+    #foodIframe {
       height: 500px;
     }
-    /* Specific styles for the Looker Studio Report iframe */
-    .dashboard-card iframe#lookerIframe {
+    #lookerIframe {
       width: 600px;
       height: 550px;
       max-width: 100%;
@@ -350,12 +353,12 @@
       transform: translateY(-2px);
     }
 
+    /* Footer */
     footer {
       background-color: var(--footer-bg);
       color: var(--footer-text);
-      text-align: center; 
+      text-align: center;
       padding: 10px 5px;
-      bottom: 0; 
       width: 100%;
       transition: background-color 0.3s, color 0.3s;
     }
@@ -363,41 +366,40 @@
       background-color: var(--dark-footer-bg);
       color: var(--dark-footer-text);
     }
-    footer p { 
-      margin: 0; 
-      font-size: 0.8em; 
+    footer p {
+      margin: 0;
+      font-size: 0.8em;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
-         alt="Morrisons Logo">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo" />
     <h1>Cleveleys Morrisons Management Dashboard</h1>
   </header>
 
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-globe"></i>Home</a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i>Online</a></li>
-        <li><a href="street.html" class="active"><i class="fas fa-store"></i>Street</a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
+        <li><a href="index.html"><i class="fas fa-globe"></i> Home</a></li>
+        <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
+        <li><a href="street.html" class="active"><i class="fas fa-store"></i> Street</a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
-          🌓
-        </button>
+        <button type="button" class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
       </div>
-      <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
-        <span></span><span></span><span></span>
+      <div class="hamburger" role="button" tabindex="0" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
   </nav>
 
-  <div class="container">
+  <main class="container">
     <section>
       <h2>Street Page</h2>
       <p>Placeholder content for the Street page. Add whatever you need here.</p>
@@ -405,9 +407,9 @@
 
     <!-- Dashboard Card: Food to Order -->
     <div class="dashboard-card">
-      <h3><i class="fas fa-utensils"></i> Food to order</h3>
+      <h3><i class="fas fa-utensils"></i> Food to Order</h3>
       <iframe id="foodIframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
-      <button onclick="printFoodToOrder()">Print</button>
+      <button type="button" onclick="printIframe('foodIframe')">Print Food Order</button>
     </div>
 
     <!-- Dashboard Card: Looker Studio Report -->
@@ -415,21 +417,21 @@
       <h3><i class="fas fa-chart-line"></i> Looker Studio Report</h3>
       <iframe id="lookerIframe" 
               src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld" 
-              frameborder="0" style="border:0" allowfullscreen 
+              frameborder="0" allowfullscreen
               sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-      <button onclick="printLookerReport()">Print Report</button>
+      <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
     </div>
-  </div>
+  </main>
 
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript for dark mode, hamburger, and printing the iframes -->
+  <!-- JavaScript -->
   <script>
-    /* Dark mode toggle */
-    const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
-    toggleButtons.forEach(btn => {
+    // Toggle Dark Mode and Save Preference
+    const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
+    darkModeToggleButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
@@ -437,71 +439,63 @@
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
       });
     });
+
+    // Load saved theme and apply Pink Theme after page load
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
-        toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
+        darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
       }
-      
-      /* Apply Pink Theme After Page Load */
+      // Apply Pink Theme after a short delay for smooth transition
       setTimeout(() => {
         document.body.classList.add('pink-theme');
       }, 500);
     });
 
-    /* Hamburger (mobile nav) */
+    // Hamburger Menu for Mobile Navigation
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
+
+    const toggleNav = () => {
       navLinks.classList.toggle('active');
       hamburger.classList.toggle('active');
       document.body.classList.toggle('mobile-nav-open');
-      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
       hamburger.setAttribute('aria-expanded', !expanded);
+    };
+
+    hamburger.addEventListener('click', event => {
+      event.stopPropagation();
+      toggleNav();
     });
-    window.addEventListener('click', (event) => {
-      if (!event.target.closest('.nav') && !event.target.closest('.hamburger')) {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-          hamburger.classList.remove('active');
-          document.body.classList.remove('mobile-nav-open');
-          hamburger.setAttribute('aria-expanded', false);
-        }
+
+    hamburger.addEventListener('keypress', e => {
+      if (e.key === 'Enter') toggleNav();
+    });
+
+    // Close mobile menu if clicking outside
+    window.addEventListener('click', event => {
+      if (!event.target.closest('.nav') && navLinks.classList.contains('active')) {
+        toggleNav();
       }
     });
-    const navItems = document.querySelectorAll('.nav-links a');
-    navItems.forEach(item => {
+
+    // Close mobile menu when a navigation item is clicked
+    document.querySelectorAll('.nav-links a').forEach(item => {
       item.addEventListener('click', () => {
         if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-          hamburger.classList.remove('active');
-          document.body.classList.remove('mobile-nav-open');
-          hamburger.setAttribute('aria-expanded', false);
+          toggleNav();
         }
       });
     });
-    hamburger.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') hamburger.click();
-    });
 
-    /* Print function for Food to Order iframe */
-    function printFoodToOrder() {
-      const url = document.getElementById("foodIframe").src;
-      const printWindow = window.open(url, '_blank');
+    // Reusable function to print content from an iframe
+    function printIframe(iframeId) {
+      const iframeSrc = document.getElementById(iframeId).src;
+      const printWindow = window.open(iframeSrc, '_blank');
       printWindow.focus();
-      printWindow.onload = function() {
-        printWindow.print();
-      };
-    }
-
-    /* Print function for Looker Studio Report iframe */
-    function printLookerReport() {
-      const url = document.getElementById("lookerIframe").src;
-      const printWindow = window.open(url, '_blank');
-      printWindow.focus();
-      printWindow.onload = function() {
+      printWindow.onload = function () {
         printWindow.print();
       };
     }
