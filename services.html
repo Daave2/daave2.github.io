@@ -12,15 +12,15 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
   <style>
-    /* ------------------------------
-       CSS Styles for Cleveleys Morrisons Management Dashboard - Services
-       ------------------------------ */
+    /* --------------------------------------------------
+       CSS Variables for Light and Dark Themes
+       -------------------------------------------------- */
     :root {
       --primary-green: #006400; /* Dark Green */
-      --secondary-yellow: #FFD700; /* Yellow */
+      --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
       --background-faint-green: #e6ffe6; /* Faint Green */
-      --background-white: #FFFFFF;
-      --text-color: #333333;
+      --background-white: #FFFFFF; /* White */
+      --text-color: #333333; /* Dark Gray */
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.1);
       --footer-bg: var(--primary-green);
@@ -34,13 +34,15 @@
       --dark-footer-text: #e0e0e0;
     }
 
-    /* Purple Theme Variables */
+    /* --------------------------------------------------
+       Purple Theme Variables
+       -------------------------------------------------- */
     .purple-theme {
       --primary-green: #4B0082; /* Indigo (replacing Dark Green) */
       --secondary-yellow: #D8BFD8; /* Thistle (replacing Yellow) */
       --background-faint-green: #f3e6ff; /* Faint Lavender (replacing Faint Green) */
-      --background-white: #FFFFFF;
-      --text-color: #333333;
+      /* --background-white remains unchanged */
+      /* --text-color remains unchanged */
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.1);
       --footer-bg: var(--primary-green);
@@ -54,12 +56,19 @@
       --dark-footer-text: #e0e0e0;
     }
 
-    /* Transition for Smooth Theme Change */
-    :root, .purple-theme {
-      transition: all 4s ease; /* Slower transition for effect */
+    /* --------------------------------------------------
+       Transition for Smooth Theme Change
+       -------------------------------------------------- */
+    :root {
+      transition: all 4s ease; /* Initial transition settings */
+    }
+    .purple-theme {
+      transition: all 4s ease; /* Ensure transition when class is added */
     }
 
-    /* Existing CSS Styles */
+    /* --------------------------------------------------
+       Reset and Base Styles
+       -------------------------------------------------- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -70,15 +79,25 @@
       background-color: var(--background-faint-green);
       color: var(--text-color);
       line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s;
+      transition: background-color 4s ease, color 4s ease;
     }
     body.dark-mode {
       background-color: var(--dark-background);
       color: var(--dark-text-color);
     }
-    a { color: inherit; text-decoration: none; }
-    body.mobile-nav-open { overflow: hidden; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
+    /* Lock body scrolling when mobile nav is open */
+    body.mobile-nav-open {
+      overflow: hidden;
+    }
+
+    /* --------------------------------------------------
+       Header Styles
+       -------------------------------------------------- */
     header {
       background-color: var(--background-white);
       color: var(--primary-green);
@@ -86,11 +105,12 @@
       text-align: center;
       position: relative;
       box-shadow: 0 2px 4px var(--card-shadow);
-      transition: background-color 0.3s, color 0.3s;
+      transition: background-color 4s ease, color 4s ease;
     }
     body.dark-mode header {
       background-color: var(--dark-card-bg);
       color: var(--dark-text-color);
+      box-shadow: 0 2px 4px var(--dark-card-bg);
     }
     header img {
       position: absolute;
@@ -101,25 +121,28 @@
       /* Ensure the logo is not affected by theme changes */
       transition: none;
     }
-    header h1 { 
-      font-size: 2em; 
-      margin: 0; 
-      padding-left: 80px; 
+    header h1 {
+      font-size: 2em;
+      margin: 0;
+      padding-left: 80px; /* Prevent overlap with logo (desktop) */
     }
 
-    /* Navigation Styles */
+    /* --------------------------------------------------
+       Navigation (Improved)
+       -------------------------------------------------- */
     nav.nav {
       position: sticky;
       top: 0;
       z-index: 1000;
       background-color: var(--secondary-yellow);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
+      transition: background-color 4s ease;
     }
     body.dark-mode nav.nav {
       background-color: #333;
       box-shadow: 0 2px 15px rgba(0,0,0,0.6);
     }
+
     .nav-container {
       display: flex;
       align-items: center;
@@ -129,6 +152,8 @@
       padding: 0 20px;
       height: 60px;
     }
+
+    /* Navigation Links */
     .nav-links {
       display: flex;
       align-items: center;
@@ -136,7 +161,9 @@
       list-style: none;
       transition: transform 0.3s ease;
     }
-    .nav-links li { position: relative; }
+    .nav-links li {
+      position: relative;
+    }
     .nav-links a {
       display: flex;
       align-items: center;
@@ -147,20 +174,22 @@
       border-radius: 8px;
       transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
-    /* Purple Theme: Dark Purple text on light purple background */
-    .purple-theme .nav-links a {
-      color: var(--primary-green); /* Now Purple */
+    body.dark-mode .nav-links a {
+      color: var(--dark-text-color);
     }
-    body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
-      background-color: var(--primary-green); /* Purple Hover */
-      color: var(--secondary-yellow); /* Light Purple text */
+      background-color: var(--primary-green);
+      color: var(--background-white);
       transform: translateY(-2px);
     }
+
+    /* Active link indicator */
     .nav-links .active {
-      background-color: var(--primary-green); /* Purple Active */
-      color: var(--secondary-yellow); /* Light Purple text */
+      background-color: var(--primary-green);
+      color: var(--background-white);
     }
+
+    /* Animated underline on hover */
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -168,13 +197,16 @@
       left: 0;
       width: 0;
       height: 3px;
-      background-color: var(--primary-green); /* Purple underline */
+      background-color: var(--primary-green);
       border-radius: 2px;
       transition: width 0.3s ease;
     }
     .nav-links a:hover::after,
-    .nav-links .active::after { width: 100%; }
+    .nav-links .active::after {
+      width: 100%;
+    }
 
+    /* Hamburger Menu Icon */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -185,11 +217,13 @@
       display: block;
       width: 25px;
       height: 3px;
-      background: var(--primary-green); /* Purple */
+      background: var(--primary-green);
       margin: 5px 0;
       transition: all 0.3s ease;
     }
-    body.dark-mode .hamburger span { background: var(--dark-text-color); }
+    body.dark-mode .hamburger span {
+      background: var(--dark-text-color);
+    }
     .hamburger.active span:nth-child(1) {
       transform: rotate(45deg) translate(5px,5px);
     }
@@ -200,28 +234,38 @@
       transform: rotate(-45deg) translate(7px,-6px);
     }
 
-    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    /* Nav Actions (Dark Mode Toggle, etc.) */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
     .dark-mode-toggle {
       background: none;
       border: none;
       cursor: pointer;
       font-size: 1.5em;
-      color: var(--primary-green); /* Purple */
+      color: var(--primary-green);
       transition: color 0.3s;
     }
     body.dark-mode .dark-mode-toggle {
       color: var(--dark-text-color);
     }
 
+    /* ------------------------------------------
+       Mobile Navigation
+       ------------------------------------------ */
     @media (max-width: 768px) {
-      .hamburger { display: flex; }
+      .hamburger {
+        display: flex;
+      }
       .nav-links {
         position: fixed;
         top: 60px;
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--secondary-yellow); /* Light Purple */
+        background: var(--secondary-yellow);
         flex-direction: column;
         padding: 1rem;
         transform: translateX(-100%);
@@ -229,42 +273,75 @@
         overflow-y: auto;
       }
       .purple-theme .nav-links {
-        background: var(--secondary-yellow); /* Light Purple */
+        background: var(--secondary-yellow);
       }
-      body.dark-mode .nav-links { background: #333; }
-      .nav-links.active { transform: translateX(0); }
-      .nav-links li { margin: 0; width: 100%; }
+      body.dark-mode .nav-links {
+        background: #333;
+      }
+      .nav-links.active {
+        transform: translateX(0);
+      }
+      .nav-links li {
+        margin: 0;
+        width: 100%;
+      }
       .nav-links a {
         margin: 10px 0;
         width: 100%;
         background-color: transparent;
-        color: var(--primary-green); /* Purple */
+        color: var(--primary-green);
         border-radius: 4px;
         text-align: left;
         font-size: 1em;
         padding: 10px;
       }
-      .purple-theme .nav-links a {
-        color: var(--primary-green); /* Purple */
+      body.dark-mode .nav-links a {
+        color: var(--dark-text-color);
       }
-      body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
-        background-color: var(--primary-green); /* Purple Hover */
-        color: var(--secondary-yellow); /* Light Purple text */
+        background-color: var(--primary-green);
+        color: var(--background-white);
       }
     }
 
-    /* Main Container Styles */
-    .container { 
-      padding: 20px; 
-      max-width: 1200px; 
-      margin: 0 auto; 
-    }
-    main {
-      role: main;
+    /* --------------------------------------------------
+       Container and Sections
+       -------------------------------------------------- */
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    /* Dashboard Styles */
+    section {
+      margin-bottom: 30px;
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      transition: background-color 4s ease, box-shadow 4s ease;
+    }
+    body.dark-mode section {
+      background-color: var(--dark-card-bg);
+      box-shadow: 0 4px 12px var(--dark-card-bg);
+    }
+    section h2 {
+      color: var(--primary-green);
+      margin-bottom: 15px;
+      font-size: 1.6em;
+      border-bottom: 2px solid var(--secondary-yellow);
+      display: inline-block;
+      padding-bottom: 5px;
+      transition: color 4s ease, border-bottom-color 4s ease;
+    }
+    body.dark-mode section h2 {
+      color: var(--dark-text-color);
+      border-bottom-color: var(--secondary-yellow);
+    }
+
+    /* --------------------------------------------------
+       Dashboard Styles
+       -------------------------------------------------- */
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -276,11 +353,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px var(--card-shadow);
       padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s, color 0.3s, background-color 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s, color 4s ease, background-color 4s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      color: var(--text-color); /* Default text color */
+      color: var(--text-color);
     }
     .dashboard-card:hover {
       transform: translateY(-5px);
@@ -288,12 +365,12 @@
     }
     .dashboard-card h3 {
       margin-bottom: 15px;
-      color: var(--primary-green); /* Purple */
+      color: var(--primary-green);
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 1.4em;
-      transition: color 0.3s;
+      transition: color 4s ease;
     }
     .dashboard-card p {
       flex-grow: 1;
@@ -309,7 +386,7 @@
     .dashboard-card a {
       display: inline-block;
       padding: 10px 15px;
-      background-color: var(--primary-green); /* Purple */
+      background-color: var(--primary-green);
       color: var(--background-white);
       border-radius: 5px;
       text-align: center;
@@ -317,38 +394,36 @@
       transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
     .dashboard-card a:hover {
-      background-color: var(--secondary-yellow); /* Light Purple */
-      color: var(--secondary-yellow); /* Light Purple text on Purple background */
+      background-color: var(--secondary-yellow);
+      color: var(--primary-green);
       transform: translateY(-2px);
     }
 
-    /* Dark Mode: Adjust text colors in dashboard cards */
-    body.dark-mode .dashboard-card h3,
-    body.dark-mode .dashboard-card p,
-    body.dark-mode .dashboard-card a {
-      color: var(--dark-text-color); /* Light text in dark mode */
-    }
-
-    /* Footer Styles */
+    /* --------------------------------------------------
+       Footer
+       -------------------------------------------------- */
     footer {
-      background-color: var(--footer-bg); /* Purple */
+      background-color: var(--footer-bg);
       color: var(--footer-text);
       text-align: center;
       padding: 10px 5px;
+      position: relative;
       bottom: 0;
       width: 100%;
-      transition: background-color 0.3s, color 0.3s;
+      transition: background-color 4s ease, color 4s ease;
     }
     body.dark-mode footer {
       background-color: var(--dark-footer-bg);
       color: var(--dark-footer-text);
     }
-    footer p { 
-      margin: 0; 
-      font-size: 0.8em; 
+    footer p {
+      margin: 0;
+      font-size: 0.8em;
     }
 
-    /* Media Queries for Responsive Iframe */
+    /* --------------------------------------------------
+       Responsive Iframe Heights
+       -------------------------------------------------- */
     @media (max-width: 768px) {
       .dashboard-card iframe {
         height: 250px;
@@ -469,6 +544,7 @@
         }
       });
     });
+
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
