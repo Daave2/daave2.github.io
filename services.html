@@ -16,11 +16,11 @@
        CSS Styles for Cleveleys Morrisons Management Dashboard
        ------------------------------ */
     :root {
-      --primary-green: #006400; /* Dark Green */
-      --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
-      --background-faint-green: #e6ffe6; /* Faint Green */
-      --background-white: #FFFFFF; /* White */
-      --text-color: #333333; /* Dark Gray */
+      --primary-green: #006400;
+      --secondary-yellow: #FFD700;
+      --background-faint-green: #e6ffe6;
+      --background-white: #FFFFFF;
+      --text-color: #333333;
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.1);
       --footer-bg: var(--primary-green);
@@ -36,14 +36,14 @@
 
     /* Purple Theme Variables */
     .purple-theme {
-      --primary-purple: #4B0082; /* Indigo */
-      --secondary-purple: #9370DB; /* Medium Purple */
-      --background-faint-purple: #f3e6ff; /* Faint Purple */
+      --primary-green: #6A0DAD; /* Purple */
+      --secondary-yellow: #9370DB; /* Medium Purple */
+      --background-faint-green: #f0e6ff; /* Faint Purple */
       --background-white: #F8F0FF; /* Soft White with Purple Tint */
       --text-color: #2E0854; /* Darker Text for Purple Theme */
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.2);
-      --footer-bg: var(--primary-purple);
+      --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
       /* Dark Mode Overrides for Purple Theme */
@@ -67,7 +67,7 @@
     }
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: var(--background-faint-purple);
+      background-color: var(--background-faint-green);
       color: var(--text-color);
       line-height: 1.6;
       transition: background-color 0.3s, color 0.3s;
@@ -81,7 +81,7 @@
 
     header {
       background-color: var(--background-white);
-      color: var(--primary-purple);
+      color: var(--primary-green);
       padding: 20px 10px;
       text-align: center;
       position: relative;
@@ -112,7 +112,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background-color: var(--secondary-purple);
+      background-color: var(--secondary-yellow);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
       transition: background-color 0.3s;
     }
@@ -143,18 +143,18 @@
       gap: 0.5rem;
       padding: 0.75rem 1rem;
       font-weight: 500;
-      color: var(--primary-purple);
+      color: var(--primary-green);
       border-radius: 8px;
       transition: background-color 0.3s, transform 0.3s;
     }
     body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
-      background-color: var(--primary-purple);
+      background-color: var(--primary-green);
       color: var(--background-white);
       transform: translateY(-2px);
     }
     .nav-links .active {
-      background-color: var(--primary-purple);
+      background-color: var(--primary-green);
       color: var(--background-white);
     }
     .nav-links a::after {
@@ -164,7 +164,7 @@
       left: 0;
       width: 0;
       height: 3px;
-      background-color: var(--primary-purple);
+      background-color: var(--primary-green);
       border-radius: 2px;
       transition: width 0.3s ease;
     }
@@ -181,7 +181,7 @@
       display: block;
       width: 25px;
       height: 3px;
-      background: var(--primary-purple);
+      background: var(--primary-green);
       margin: 5px 0;
       transition: all 0.3s ease;
     }
@@ -202,7 +202,7 @@
       border: none;
       cursor: pointer;
       font-size: 1.5em;
-      color: var(--primary-purple);
+      color: var(--primary-green);
       transition: color 0.3s;
     }
     body.dark-mode .dark-mode-toggle {
@@ -217,7 +217,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--secondary-purple);
+        background: var(--secondary-yellow);
         flex-direction: column;
         padding: 1rem;
         transform: translateX(-100%);
@@ -231,7 +231,7 @@
         margin: 10px 0;
         width: 100%;
         background-color: transparent;
-        color: var(--primary-purple);
+        color: var(--primary-green);
         border-radius: 4px;
         text-align: left;
         font-size: 1em;
@@ -239,7 +239,7 @@
       }
       body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
-        background-color: var(--primary-purple);
+        background-color: var(--primary-green);
         color: var(--background-white);
       }
     }
@@ -277,7 +277,7 @@
     }
     .dashboard-card h3 {
       margin-bottom: 15px;
-      color: var(--primary-purple);
+      color: var(--primary-green);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -297,7 +297,7 @@
     .dashboard-card a {
       display: inline-block;
       padding: 10px 15px;
-      background-color: var(--primary-purple);
+      background-color: var(--primary-green);
       color: var(--background-white);
       border-radius: 5px;
       text-align: center;
@@ -305,7 +305,7 @@
       transition: background-color 0.3s, transform 0.3s;
     }
     .dashboard-card a:hover {
-      background-color: var(--secondary-purple);
+      background-color: var(--secondary-yellow);
       color: var(--background-white);
       transform: translateY(-2px);
     }
@@ -333,7 +333,7 @@
     }
     .accordion:hover,
     .accordion.active {
-      background-color: var(--primary-purple);
+      background-color: var(--primary-green);
       color: var(--background-white);
     }
     .accordion::after {
