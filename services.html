@@ -12,18 +12,18 @@
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
   <style>
-    /* --------------------------------------------------
-       CSS Variables for Light and Dark Themes
-       -------------------------------------------------- */
+    /* ------------------------------
+       CSS Styles for Cleveleys Morrisons Management Dashboard
+       ------------------------------ */
     :root {
-      --primary-green: #006400; /* Dark Green */
-      --secondary-yellow: #FFD700; /* Less Vibrant Yellow */
-      --background-faint-green: #e6ffe6; /* Faint Green */
-      --background-white: #FFFFFF; /* White */
-      --text-color: #333333; /* Dark Gray */
+      --primary-purple: #6a0dad;
+      --secondary-purple: #dda0dd;
+      --background-faint-purple: #f0e6ff;
+      --background-white: #FFFFFF;
+      --text-color: #333333;
       --card-bg: var(--background-white);
       --card-shadow: rgba(0, 0, 0, 0.1);
-      --footer-bg: var(--primary-green);
+      --footer-bg: var(--primary-purple);
       --footer-text: var(--background-white);
 
       /* Dark Mode Variables */
@@ -34,31 +34,32 @@
       --dark-footer-text: #e0e0e0;
     }
 
-    /* --------------------------------------------------
-       Purple Theme Variables
-       -------------------------------------------------- */
+    /* Purple Theme Variables */
     .purple-theme {
-      --primary-green: #4B0082; /* Indigo (replacing Dark Green) */
-      --secondary-yellow: #D8BFD8; /* Thistle (replacing Yellow) */
-      --background-faint-green: #f3e6ff; /* Faint Lavender (replacing Faint Green) */
-      /* --background-white remains unchanged */
-      /* --text-color remains unchanged */
+      --primary-purple: #4B0082; /* Indigo */
+      --secondary-purple: #9370DB; /* Medium Purple */
+      --background-faint-purple: #f3e6ff; /* Faint Purple */
+      --background-white: #F8F0FF; /* Soft White with Purple Tint */
+      --text-color: #2E0854; /* Darker Text for Purple Theme */
       --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.1);
-      --footer-bg: var(--primary-green);
+      --card-shadow: rgba(0, 0, 0, 0.2);
+      --footer-bg: var(--primary-purple);
       --footer-text: var(--background-white);
 
       /* Dark Mode Overrides for Purple Theme */
-      --dark-background: #1a1a1a;
-      --dark-card-bg: #2e2e2e;
-      --dark-text-color: #e0e0e0;
-      --dark-footer-bg: #4d004d;
-      --dark-footer-text: #e0e0e0;
+      --dark-background: #1a0a33;
+      --dark-card-bg: #2e0e4d;
+      --dark-text-color: #f0e0ff;
+      --dark-footer-bg: #4d0080;
+      --dark-footer-text: #f0e0ff;
     }
 
-    /* --------------------------------------------------
-       Reset and Base Styles
-       -------------------------------------------------- */
+    /* Transition for Smooth Theme Change */
+    :root, .purple-theme {
+      transition: all 2s ease;
+    }
+
+    /* Existing CSS Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -66,41 +67,30 @@
     }
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: var(--background-faint-green);
+      background-color: var(--background-faint-purple);
       color: var(--text-color);
       line-height: 1.6;
-      transition: background-color 4s ease, color 4s ease;
+      transition: background-color 0.3s, color 0.3s;
     }
     body.dark-mode {
       background-color: var(--dark-background);
       color: var(--dark-text-color);
     }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
+    body.mobile-nav-open { overflow: hidden; }
 
-    /* Lock body scrolling when mobile nav is open */
-    body.mobile-nav-open {
-      overflow: hidden;
-    }
-
-    /* --------------------------------------------------
-       Header Styles
-       -------------------------------------------------- */
     header {
       background-color: var(--background-white);
-      color: var(--primary-green);
+      color: var(--primary-purple);
       padding: 20px 10px;
       text-align: center;
       position: relative;
       box-shadow: 0 2px 4px var(--card-shadow);
-      transition: background-color 4s ease, color 4s ease;
+      transition: background-color 0.3s, color 0.3s;
     }
     body.dark-mode header {
       background-color: var(--dark-card-bg);
       color: var(--dark-text-color);
-      box-shadow: 0 2px 4px var(--dark-card-bg);
     }
     header img {
       position: absolute;
@@ -111,28 +101,25 @@
       /* Ensure the logo is not affected by theme changes */
       transition: none;
     }
-    header h1 {
-      font-size: 2em;
-      margin: 0;
-      padding-left: 80px; /* Prevent overlap with logo (desktop) */
+    header h1 { 
+      font-size: 2em; 
+      margin: 0; 
+      padding-left: 80px; 
     }
 
-    /* --------------------------------------------------
-       Navigation Styles
-       -------------------------------------------------- */
+    /* Navigation Styles */
     nav.nav {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background-color: var(--secondary-yellow);
+      background-color: var(--secondary-purple);
       box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-      transition: background-color 4s ease;
+      transition: background-color 0.3s;
     }
     body.dark-mode nav.nav {
       background-color: #333;
       box-shadow: 0 2px 15px rgba(0,0,0,0.6);
     }
-
     .nav-container {
       display: flex;
       align-items: center;
@@ -142,8 +129,6 @@
       padding: 0 20px;
       height: 60px;
     }
-
-    /* Navigation Links */
     .nav-links {
       display: flex;
       align-items: center;
@@ -151,35 +136,27 @@
       list-style: none;
       transition: transform 0.3s ease;
     }
-    .nav-links li {
-      position: relative;
-    }
+    .nav-links li { position: relative; }
     .nav-links a {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1rem;
       font-weight: 500;
-      color: var(--primary-green);
+      color: var(--primary-purple);
       border-radius: 8px;
-      transition: background-color 0.3s, transform 0.3s, color 0.3s;
+      transition: background-color 0.3s, transform 0.3s;
     }
-    body.dark-mode .nav-links a {
-      color: var(--dark-text-color);
-    }
+    body.dark-mode .nav-links a { color: var(--dark-text-color); }
     .nav-links a:hover {
-      background-color: var(--primary-green);
+      background-color: var(--primary-purple);
       color: var(--background-white);
       transform: translateY(-2px);
     }
-
-    /* Active link indicator */
     .nav-links .active {
-      background-color: var(--primary-green);
+      background-color: var(--primary-purple);
       color: var(--background-white);
     }
-
-    /* Animated underline on hover and active */
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -187,16 +164,13 @@
       left: 0;
       width: 0;
       height: 3px;
-      background-color: var(--primary-green);
+      background-color: var(--primary-purple);
       border-radius: 2px;
       transition: width 0.3s ease;
     }
     .nav-links a:hover::after,
-    .nav-links .active::after {
-      width: 100%;
-    }
+    .nav-links .active::after { width: 100%; }
 
-    /* Hamburger Menu Icon */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -207,13 +181,11 @@
       display: block;
       width: 25px;
       height: 3px;
-      background: var(--primary-green);
+      background: var(--primary-purple);
       margin: 5px 0;
       transition: all 0.3s ease;
     }
-    body.dark-mode .hamburger span {
-      background: var(--dark-text-color);
-    }
+    body.dark-mode .hamburger span { background: var(--dark-text-color); }
     .hamburger.active span:nth-child(1) {
       transform: rotate(45deg) translate(5px,5px);
     }
@@ -224,117 +196,68 @@
       transform: rotate(-45deg) translate(7px,-6px);
     }
 
-    /* Nav Actions (Dark Mode Toggle, etc.) */
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
     .dark-mode-toggle {
       background: none;
       border: none;
       cursor: pointer;
       font-size: 1.5em;
-      color: var(--primary-green);
+      color: var(--primary-purple);
       transition: color 0.3s;
     }
     body.dark-mode .dark-mode-toggle {
       color: var(--dark-text-color);
     }
 
-    /* ------------------------------------------
-       Mobile Navigation
-       ------------------------------------------ */
     @media (max-width: 768px) {
-      .hamburger {
-        display: flex;
-      }
+      .hamburger { display: flex; }
       .nav-links {
         position: fixed;
         top: 60px;
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--secondary-yellow);
+        background: var(--secondary-purple);
         flex-direction: column;
         padding: 1rem;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         overflow-y: auto;
       }
-      .purple-theme .nav-links {
-        background: var(--secondary-yellow);
-      }
-      body.dark-mode .nav-links {
-        background: #333;
-      }
-      .nav-links.active {
-        transform: translateX(0);
-      }
-      .nav-links li {
-        margin: 0;
-        width: 100%;
-      }
+      body.dark-mode .nav-links { background: #333; }
+      .nav-links.active { transform: translateX(0); }
+      .nav-links li { margin: 0; width: 100%; }
       .nav-links a {
         margin: 10px 0;
         width: 100%;
         background-color: transparent;
-        color: var(--primary-green);
+        color: var(--primary-purple);
         border-radius: 4px;
         text-align: left;
         font-size: 1em;
         padding: 10px;
       }
-      body.dark-mode .nav-links a {
-        color: var(--dark-text-color);
-      }
+      body.dark-mode .nav-links a { color: var(--dark-text-color); }
       .nav-links a:hover {
-        background-color: var(--primary-green);
+        background-color: var(--primary-purple);
         color: var(--background-white);
       }
     }
 
-    /* --------------------------------------------------
-       Container and Sections
-       -------------------------------------------------- */
-    .container {
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* Main Container Styles */
+    .container { 
+      padding: 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+    }
+    main {
+      role: main;
     }
 
-    section {
-      margin-bottom: 30px;
-      background-color: var(--card-bg);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      transition: background-color 4s ease, box-shadow 4s ease;
-    }
-    body.dark-mode section {
-      background-color: var(--dark-card-bg);
-      box-shadow: 0 4px 12px var(--dark-card-bg);
-    }
-    section h2 {
-      color: var(--primary-green);
-      margin-bottom: 15px;
-      font-size: 1.6em;
-      border-bottom: 2px solid var(--secondary-yellow);
-      display: inline-block;
-      padding-bottom: 5px;
-      transition: color 4s ease, border-bottom-color 4s ease;
-    }
-    body.dark-mode section h2 {
-      color: var(--dark-text-color);
-      border-bottom-color: var(--secondary-yellow);
-    }
-
-    /* --------------------------------------------------
-       Dashboard Styles
-       -------------------------------------------------- */
+    /* Dashboard Styles */
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       padding: 20px 0;
     }
@@ -343,11 +266,10 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px var(--card-shadow);
       padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s, color 4s ease, background-color 4s ease;
+      transition: transform 0.3s, box-shadow 0.3s;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      color: var(--text-color);
     }
     .dashboard-card:hover {
       transform: translateY(-5px);
@@ -355,12 +277,11 @@
     }
     .dashboard-card h3 {
       margin-bottom: 15px;
-      color: var(--primary-green);
+      color: var(--primary-purple);
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 1.4em;
-      transition: color 4s ease;
     }
     .dashboard-card p {
       flex-grow: 1;
@@ -368,40 +289,91 @@
     }
     .dashboard-card iframe {
       width: 100%;
-      height: 300px;
+      height: 400px;
       border: none;
       border-radius: 5px;
       margin-bottom: 15px;
-      transition: height 0.3s ease;
     }
     .dashboard-card a {
       display: inline-block;
       padding: 10px 15px;
-      background-color: var(--primary-green);
+      background-color: var(--primary-purple);
       color: var(--background-white);
       border-radius: 5px;
       text-align: center;
       font-weight: 500;
-      transition: background-color 0.3s, transform 0.3s, color 0.3s;
+      transition: background-color 0.3s, transform 0.3s;
     }
     .dashboard-card a:hover {
-      background-color: var(--secondary-yellow);
-      color: var(--primary-green);
+      background-color: var(--secondary-purple);
+      color: var(--background-white);
       transform: translateY(-2px);
     }
 
-    /* --------------------------------------------------
-       Footer
-       -------------------------------------------------- */
+    /* Full-Width Card Modifier */
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* Accordion Styles */
+    .accordion {
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      padding: 15px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.2em;
+      transition: background-color 0.3s;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      margin-bottom: 10px;
+    }
+    .accordion:hover,
+    .accordion.active {
+      background-color: var(--primary-purple);
+      color: var(--background-white);
+    }
+    .accordion::after {
+      content: '\002B'; /* Plus sign */
+      font-size: 1.2em;
+      float: right;
+    }
+    .accordion.active::after {
+      content: '\2212'; /* Minus sign */
+    }
+    .panel {
+      padding: 0 15px;
+      background-color: var(--card-bg);
+      display: none;
+      overflow: hidden;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      margin-bottom: 20px;
+    }
+    body.dark-mode .panel {
+      background-color: var(--dark-card-bg);
+      color: var(--dark-text-color);
+    }
+    .panel p, .panel ul {
+      padding: 15px 0;
+      line-height: 1.6;
+    }
+    .panel ul {
+      list-style: disc inside;
+    }
+
+    /* Footer Styles */
     footer {
       background-color: var(--footer-bg);
       color: var(--footer-text);
       text-align: center;
       padding: 10px 5px;
-      position: relative;
       bottom: 0;
       width: 100%;
-      transition: background-color 4s ease, color 4s ease;
+      transition: background-color 0.3s, color 0.3s;
     }
     body.dark-mode footer {
       background-color: var(--dark-footer-bg);
@@ -415,12 +387,12 @@
     /* Media Queries for Responsive Iframe */
     @media (max-width: 768px) {
       .dashboard-card iframe {
-        height: 250px;
+        height: 300px;
       }
     }
     @media (max-width: 480px) {
       .dashboard-card iframe {
-        height: 200px;
+        height: 250px;
       }
     }
   </style>
@@ -436,12 +408,12 @@
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-globe"></i> Home</a></li>        
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
         <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
         <li><a href="street.html"><i class="fas fa-store"></i> Street</a></li>
-        <li><a href="services.html" class="active"><i class="fas fa-globe"></i> Services</a></li>        
         <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+        <li><a href="services.html" class="active"><i class="fas fa-concierge-bell"></i> Services</a></li>
         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
       </ul>
       <div class="nav-actions">
@@ -457,59 +429,62 @@
 
   <main class="container">
     <section class="dashboard">
-      <!-- Service 1 -->
+      <!-- Example Dashboard Card for Services -->
       <div class="dashboard-card">
-        <h3><i class="fas fa-cogs"></i> Operational Management</h3>
-        <p>Optimize your store operations with our comprehensive management tools and analytics.</p>
-        <a href="https://services.morrisons.co.uk/operational-management" target="_blank" rel="noopener noreferrer">
-          Learn More
+        <h3><i class="fas fa-concierge-bell"></i> Service Overview</h3>
+        <p>Access the Services dashboard to monitor and manage various service-related metrics across departments.</p>
+        <a href="https://example.com/services-dashboard" target="_blank" rel="noopener noreferrer">
+          View Services
         </a>
       </div>
 
-      <!-- Service 2 -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-chart-pie"></i> Data Analytics</h3>
-        <p>Leverage data-driven insights to make informed decisions and drive growth.</p>
-        <a href="https://services.morrisons.co.uk/data-analytics" target="_blank" rel="noopener noreferrer">
-          Explore Analytics
-        </a>
+      <!-- Additional Dashboard Cards Relevant to Services -->
+      <!-- Add or modify cards as needed -->
+
+      <!-- Full-Width Cards -->
+      <!-- Example Full-Width Card -->
+      <div class="dashboard-card full-width">
+        <h3><i class="fas fa-file-alt"></i> Service Guide</h3>
+        <p>Understand the service processes and key focus areas for improving customer satisfaction and operational efficiency.</p>
+        <button class="accordion"><i class="fas fa-chevron-down"></i> View Service Guide</button>
+        <div class="panel">
+          <p><strong>Service Improvement Plan – Q1/Q2</strong></p>
+          <h4>1. Introduction</h4>
+          <p>This document outlines the key strategies, focus areas, and requirements for enhancing our service delivery in Q1 and Q2. The primary objective is to elevate customer satisfaction and streamline operational processes.</p>
+          
+          <h4>2. Key Strategies and Focus Areas</h4>
+          <ul>
+            <li><strong>Customer Feedback:</strong> Implement regular surveys to gather customer insights.</li>
+            <li><strong>Staff Training:</strong> Enhance training programs to improve service quality.</li>
+            <li><strong>Process Optimization:</strong> Identify and eliminate bottlenecks in service delivery.</li>
+          </ul>
+          
+          <h4>3. Implementation Plan</h4>
+          <ul>
+            <li><strong>Timeline:</strong> Outline of key milestones and deadlines.</li>
+            <li><strong>Resources:</strong> Allocation of necessary resources for implementation.</li>
+            <li><strong>Monitoring:</strong> Establish metrics to track progress and effectiveness.</li>
+          </ul>
+          
+          <h4>4. Roles and Responsibilities</h4>
+          <p>Define the roles of team members in executing the service improvement plan.</p>
+          
+          <h4>5. Evaluation and Feedback</h4>
+          <ul>
+            <li><strong>Regular Reviews:</strong> Schedule periodic reviews to assess progress.</li>
+            <li><strong>Adjustments:</strong> Make necessary adjustments based on feedback and performance data.</li>
+          </ul>
+          
+          <h4>6. Key Resources and Contacts</h4>
+          <ul>
+            <li><strong>Service Dashboard:</strong> Link to the service metrics dashboard.</li>
+            <li><strong>Training Materials:</strong> Access to updated training resources.</li>
+            <li><strong>Contacts:</strong> Jane Doe, John Smith, Emily Johnson.</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Service 3 -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-user-shield"></i> Security Services</h3>
-        <p>Ensure the safety and security of your store with our advanced security solutions.</p>
-        <a href="https://services.morrisons.co.uk/security-services" target="_blank" rel="noopener noreferrer">
-          Secure Your Store
-        </a>
-      </div>
-
-      <!-- Service 4 -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-headset"></i> Customer Support</h3>
-        <p>Provide exceptional customer service with our dedicated support team and resources.</p>
-        <a href="https://services.morrisons.co.uk/customer-support" target="_blank" rel="noopener noreferrer">
-          Get Support
-        </a>
-      </div>
-
-      <!-- Service 5 -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-truck"></i> Logistics Management</h3>
-        <p>Streamline your supply chain and logistics to enhance efficiency and reduce costs.</p>
-        <a href="https://services.morrisons.co.uk/logistics-management" target="_blank" rel="noopener noreferrer">
-          Optimize Logistics
-        </a>
-      </div>
-
-      <!-- Service 6 -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-lightbulb"></i> Innovation Hub</h3>
-        <p>Stay ahead of the curve with our innovation hub, offering the latest tools and technologies.</p>
-        <a href="https://services.morrisons.co.uk/innovation-hub" target="_blank" rel="noopener noreferrer">
-          Innovate Now
-        </a>
-      </div>
+      <!-- Add more full-width or regular dashboard cards as needed -->
     </section>
   </main>
 
@@ -517,7 +492,7 @@
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- Core JavaScript for Dark Mode & Mobile Nav -->
+  <!-- Core JavaScript for Dark Mode, Mobile Nav & Accordion -->
   <script>
     /* Dark mode toggle */
     const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
@@ -526,28 +501,20 @@
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
         btn.setAttribute('aria-pressed', isDark);
-        if (isDark) {
-          localStorage.setItem('theme', 'dark');
-        } else {
-          localStorage.setItem('theme', 'purple');
-        }
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
       });
     });
-
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
-      } else if (savedTheme === 'purple') {
-        document.body.classList.add('purple-theme');
-      } else {
-        /* Apply Purple Theme After Page Load if not already set */
-        setTimeout(() => {
-          document.body.classList.add('purple-theme');
-          localStorage.setItem('theme', 'purple');
-        }, 500); // Adjust the delay as needed (in milliseconds)
       }
+
+      /* Apply Purple Theme After Page Load */
+      setTimeout(() => {
+        document.body.classList.add('purple-theme');
+      }, 500); // Adjust the delay as needed (in milliseconds)
     });
 
     /* Hamburger (mobile nav) */
@@ -585,6 +552,20 @@
     hamburger.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') hamburger.click();
     });
+
+    /* Accordion for Service Guide and Other Panels */
+    const acc = document.getElementsByClassName("accordion");
+    for (let i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        const panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
+        }
+      });
+    }
   </script>
 </body>
 </html>
