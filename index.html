@@ -796,7 +796,6 @@
           }
         });
       });
-
       /* --------------------------
          Smooth Scroll for In-Page Links
          -------------------------- */
@@ -823,6 +822,10 @@
          -------------------------- */
       const canvas = document.getElementById('whiteboard');
       const ctx = canvas.getContext('2d');
+      // Add the missing element selectors for color picker and brush size
+      const colorPicker = document.querySelector('.color-picker');
+      const brushSize = document.querySelector('.brush-size');
+
       // We'll now store strokes (or fill actions) in an array.
       let strokes = [];
       let currentStroke = null;
