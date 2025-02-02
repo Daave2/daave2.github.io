@@ -366,14 +366,15 @@
       cursor: crosshair;
       background-color: transparent;
     }
+    /* Button group now arranged vertically on the right */
     .button-group {
       position: absolute;
       top: 10px;
       right: 10px;
       display: flex;
+      flex-direction: column;
       gap: 10px;
       z-index: 10;
-      flex-wrap: wrap;
     }
     .button-group button {
       background-color: var(--primary-green);
@@ -690,7 +691,7 @@
     <section id="notes">
       <h2>Notes</h2>
       <p>
-        Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing, "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. Additional export options let you download the drawing as PNG, JPEG, or JSON.
+        Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing, "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. Use "Download" to save your drawing as a PNG image.
       </p>
       <div class="whiteboard-container">
         <!-- Whiteboard Tools -->
@@ -705,15 +706,13 @@
         </div>
         <canvas id="whiteboard"></canvas>
         <div class="button-group">
-          <button class="save-button">Save</button>
-          <button class="load-button">Load</button>
-          <button class="undo-button">Undo</button>
-          <button class="fill-button">Fill</button>
-          <button class="eraser-button">Eraser</button>
-          <button class="clear-button">Clear</button>
-          <button class="export-png-button">Export PNG</button>
-          <button class="export-jpeg-button">Export JPEG</button>
-          <button class="export-json-button">Export JSON</button>
+          <button class="save-button" title="Save drawing">Save</button>
+          <button class="load-button" title="Load saved drawing">Load</button>
+          <button class="undo-button" title="Undo last stroke">Undo</button>
+          <button class="fill-button" title="Fill canvas with current color">Fill</button>
+          <button class="eraser-button" title="Toggle eraser tool">Eraser</button>
+          <button class="clear-button" title="Clear whiteboard">Clear</button>
+          <button class="export-png-button" title="Download drawing as PNG">Download</button>
         </div>
       </div>
     </section>
@@ -1044,36 +1043,13 @@
         }
       });
 
-      // Export Options
-
-      // Export PNG
+      // Download drawing as PNG
       document.querySelector('.export-png-button').addEventListener('click', () => {
         const dataURL = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = dataURL;
         link.download = 'whiteboard.png';
         link.click();
-      });
-
-      // Export JPEG
-      document.querySelector('.export-jpeg-button').addEventListener('click', () => {
-        const dataURL = canvas.toDataURL('image/jpeg');
-        const link = document.createElement('a');
-        link.href = dataURL;
-        link.download = 'whiteboard.jpg';
-        link.click();
-      });
-
-      // Export JSON (strokes data)
-      document.querySelector('.export-json-button').addEventListener('click', () => {
-        const dataStr = JSON.stringify(strokes, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'whiteboard.json';
-        link.click();
-        URL.revokeObjectURL(url);
       });
 
       /* --------------------------
