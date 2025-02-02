@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <!-- Ensure responsiveness on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling, and more.">
   <title>Cleveleys Morrisons Management Dashboard</title>
   <!-- Google Fonts for Modern Typography -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -59,7 +60,7 @@
       color: inherit;
       text-decoration: none;
     }
-    /* Lock body scrolling when mobile nav is open */
+    /* Prevent scrolling when mobile nav is open */
     body.mobile-nav-open {
       overflow: hidden;
     }
@@ -258,12 +259,16 @@
     }
 
     /* --------------------------------------------------
-       Container and Sections
+       Container, Main Content & Sections
        -------------------------------------------------- */
     .container {
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
+    }
+    main {
+      /* Wrap the primary sections for better semantics */
+      margin-bottom: 30px;
     }
     section {
       margin-bottom: 30px;
@@ -360,13 +365,14 @@
       background-color: #2e2e2e;
       border-color: var(--dark-text-color);
     }
+    /* Added aria-label for accessibility */
     #whiteboard {
       width: 100%;
       height: 100%;
       cursor: crosshair;
       background-color: transparent;
     }
-    /* Button group now arranged vertically on the right */
+    /* Button group arranged vertically on the right */
     .button-group {
       position: absolute;
       top: 10px;
@@ -396,7 +402,7 @@
     body.dark-mode .button-group button:hover {
       background-color: #222;
     }
-    /* Optional: indicate active state for toggle buttons (like Eraser) */
+    /* Active state for toggle buttons (e.g., Eraser) */
     .button-group button.active {
       outline: 2px solid var(--secondary-yellow);
     }
@@ -428,7 +434,9 @@
       cursor: pointer;
     }
 
-    /* Notifications */
+    /* --------------------------------------------------
+       Notifications
+       -------------------------------------------------- */
     .notification {
       position: fixed;
       bottom: 20px;
@@ -439,6 +447,10 @@
       color: white;
       display: none;
       z-index: 10000;
+    }
+    /* ARIA live region to announce notifications */
+    .notification[role="alert"] {
+      aria-live: assertive;
     }
     body.dark-mode .notification {
       background: #444;
@@ -547,10 +559,10 @@
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html" class="active"><i class="fas fa-globe"></i>Home</a></li>        
+        <li><a href="index.html" class="active"><i class="fas fa-globe"></i>Home</a></li>
         <li><a href="online.html"><i class="fas fa-globe"></i>Online</a></li>
         <li><a href="street.html"><i class="fas fa-store"></i>Street</a></li>
-        <li><a href="services.html"><i class="fas fa-globe"></i>Services</a></li>        
+        <li><a href="services.html"><i class="fas fa-globe"></i>Services</a></li>
         <li><a href="contacts.html"><i class="fas fa-address-book"></i>Contacts</a></li>
         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
@@ -569,153 +581,156 @@
   </nav>
 
   <div class="container">
-    <!-- Tasks Section -->
-    <section id="tasks">
-      <h2>Wheel</h2>
-      <div class="iframe-container">
-        <iframe
-          data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0Et9lglBWMLQuMJUAgmMF-EbvCJlCn4_a8s_azQjE1tlz1ZqOGAHNk-s99BHS9jK_Nvo1DMhuqG40/pubhtml?gid=1073365529&amp;single=true&amp;widget=true&amp;headers=false"
-          title="Wheel"
-          allowfullscreen
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Important Links Section -->
-    <section id="important-links">
-      <h2>Important Links</h2>
-      <div class="iframe-container">
-        <iframe
-          data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml"
-          title="Important Links"
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Common Links Section -->
-    <section id="common-links">
-      <h2>Common Links</h2>
-      <div class="common-links-container">
-        <div class="links-grid">
-          <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c"
-             class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9"
-             class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform"
-             class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
-             class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
-          <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB"
-             class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform"
-             class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
-          <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc"
-             class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
-             class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
-             class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
-          <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD"
-             class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
-          <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd"
-             class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
-             class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
-          <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1"
-             class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
-          <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB"
-             class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
-          <a href="https://lookerstudio.google.com/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD"
-             class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
-          <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs"
-             class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform"
-             class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
+    <main>
+      <!-- Tasks Section -->
+      <section id="tasks">
+        <h2>Wheel</h2>
+        <div class="iframe-container">
+          <iframe
+            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0Et9lglBWMLQuMJUAgmMF-EbvCJlCn4_a8s_azQjE1tlz1ZqOGAHNk-s99BHS9jK_Nvo1DMhuqG40/pubhtml?gid=1073365529&amp;single=true&amp;widget=true&amp;headers=false"
+            title="Wheel"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Who Is In Today Section -->
-    <section id="who-is-in">
-      <h2>Who Is In Today?</h2>
-      <div class="iframe-container">
-        <iframe
-          data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true"
-          title="Who Is In Today?"
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Management Rota Section -->
-    <section id="management-rota">
-      <h2>Management Rota</h2>
-      <div class="iframe-container">
-        <iframe
-          data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml"
-          title="Management Rota"
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Add New Reminder Section -->
-    <section id="add-reminder">
-      <h2>Add New Reminder</h2>
-      <div class="iframe-container">
-        <iframe
-          data-src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true"
-          title="Add New Reminder"
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Calendar Section -->
-    <section id="calendar">
-      <h2>Calendar</h2>
-      <div class="iframe-container">
-        <iframe
-          data-src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;ctz=Europe%2FLondon&amp;showPrint=0&amp;showTz=0&amp;showCalendars=0&amp;hl=en_GB&amp;src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&amp;src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&amp;color=%23F09300&amp;color=%23616161"
-          frameborder="0"
-          scrolling="no"
-          title="Calendar"
-          loading="lazy">
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Notes Section (Interactive Whiteboard) -->
-    <section id="notes">
-      <h2>Notes</h2>
-      <p>
-        Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing, "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. Use "Download" to save your drawing as a PNG image.
-      </p>
-      <div class="whiteboard-container">
-        <!-- Whiteboard Tools -->
-        <div class="whiteboard-tools">
-          <input type="color" class="color-picker" value="#000000" aria-label="Select drawing color">
-          <select class="brush-size" aria-label="Select brush size">
-            <option value="2">Small (2px)</option>
-            <option value="4" selected>Medium (4px)</option>
-            <option value="8">Large (8px)</option>
-            <option value="12">Extra Large (12px)</option>
-          </select>
+      <!-- Important Links Section -->
+      <section id="important-links">
+        <h2>Important Links</h2>
+        <div class="iframe-container">
+          <iframe
+            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml"
+            title="Important Links"
+            loading="lazy">
+          </iframe>
         </div>
-        <canvas id="whiteboard"></canvas>
-        <div class="button-group">
-          <button class="save-button" title="Save drawing">Save</button>
-          <button class="load-button" title="Load saved drawing">Load</button>
-          <button class="undo-button" title="Undo last stroke">Undo</button>
-          <button class="fill-button" title="Fill canvas with current color">Fill</button>
-          <button class="eraser-button" title="Toggle eraser tool">Eraser</button>
-          <button class="clear-button" title="Clear whiteboard">Clear</button>
-          <button class="export-png-button" title="Download drawing as PNG">Download</button>
+      </section>
+
+      <!-- Common Links Section -->
+      <section id="common-links">
+        <h2>Common Links</h2>
+        <div class="common-links-container">
+          <div class="links-grid">
+            <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c"
+               class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
+            <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9"
+               class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform"
+               class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
+            <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
+               class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
+            <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB"
+               class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform"
+               class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
+            <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc"
+               class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
+            <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
+               class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
+            <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
+               class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
+            <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD"
+               class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
+            <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd"
+               class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
+            <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
+               class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
+            <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1"
+               class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
+            <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB"
+               class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
+            <a href="https://lookerstudio.google.com/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD"
+               class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
+            <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs"
+               class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform"
+               class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- Who Is In Today Section -->
+      <section id="who-is-in">
+        <h2>Who Is In Today?</h2>
+        <div class="iframe-container">
+          <iframe
+            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true"
+            title="Who Is In Today?"
+            loading="lazy">
+          </iframe>
+        </div>
+      </section>
+
+      <!-- Management Rota Section -->
+      <section id="management-rota">
+        <h2>Management Rota</h2>
+        <div class="iframe-container">
+          <iframe
+            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml"
+            title="Management Rota"
+            loading="lazy">
+          </iframe>
+        </div>
+      </section>
+
+      <!-- Add New Reminder Section -->
+      <section id="add-reminder">
+        <h2>Add New Reminder</h2>
+        <div class="iframe-container">
+          <iframe
+            data-src="https://docs.google.com/forms/d/e/1FAIpQLSfqiTrGLia5IollumAUr_87X4A-Gg-NnxZSvJqkL8kVm-gxvg/viewform?embedded=true"
+            title="Add New Reminder"
+            loading="lazy">
+          </iframe>
+        </div>
+      </section>
+
+      <!-- Calendar Section -->
+      <section id="calendar">
+        <h2>Calendar</h2>
+        <div class="iframe-container">
+          <iframe
+            data-src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=2&amp;ctz=Europe%2FLondon&amp;showPrint=0&amp;showTz=0&amp;showCalendars=0&amp;hl=en_GB&amp;src=Y185ZmY3MDgzNmJjNjA5YzMyMzFmMjIxNmJlODQ5MmFiZGYzMTBkMjM5NTkyMzZlNTJhMzc0ODNiYzdkOGM4NDQwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&amp;src=ZW4udWsjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&amp;color=%23F09300&amp;color=%23616161"
+            frameborder="0"
+            scrolling="no"
+            title="Calendar"
+            loading="lazy">
+          </iframe>
+        </div>
+      </section>
+
+      <!-- Notes Section (Interactive Whiteboard) -->
+      <section id="notes">
+        <h2>Notes</h2>
+        <p>
+          Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing, "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. Use "Download" to save your drawing as a PNG image.
+        </p>
+        <div class="whiteboard-container">
+          <!-- Whiteboard Tools -->
+          <div class="whiteboard-tools">
+            <input type="color" class="color-picker" value="#000000" aria-label="Select drawing color">
+            <select class="brush-size" aria-label="Select brush size">
+              <option value="2">Small (2px)</option>
+              <option value="4" selected>Medium (4px)</option>
+              <option value="8">Large (8px)</option>
+              <option value="12">Extra Large (12px)</option>
+            </select>
+          </div>
+          <!-- Added aria-label for screen readers -->
+          <canvas id="whiteboard" aria-label="Interactive whiteboard"></canvas>
+          <div class="button-group">
+            <button class="save-button" title="Save drawing">Save</button>
+            <button class="load-button" title="Load saved drawing">Load</button>
+            <button class="undo-button" title="Undo last stroke">Undo</button>
+            <button class="fill-button" title="Fill canvas with current color">Fill</button>
+            <button class="eraser-button" title="Toggle eraser tool">Eraser</button>
+            <button class="clear-button" title="Clear whiteboard">Clear</button>
+            <button class="export-png-button" title="Download drawing as PNG">Download</button>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
   <footer>
@@ -725,8 +740,8 @@
     <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
   </footer>
 
-  <!-- Notification Element -->
-  <div class="notification" id="notification"></div>
+  <!-- Notification Element with ARIA attributes -->
+  <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
 
   <!-- JavaScript for Enhanced Navigation and Whiteboard Interactivity -->
   <script>
@@ -818,26 +833,23 @@
       }
 
       /* --------------------------
-         Whiteboard Variables and Setup
+         Whiteboard Setup
          -------------------------- */
       const canvas = document.getElementById('whiteboard');
       const ctx = canvas.getContext('2d');
-      // Get the color picker and brush size elements
       const colorPicker = document.querySelector('.color-picker');
       const brushSize = document.querySelector('.brush-size');
 
-      // We'll store strokes (or fill actions) in an array.
       let strokes = [];
       let currentStroke = null;
       let eraserEnabled = false;
       let drawing = false;
 
-      // Helper to get the current eraser color based on dark mode.
       function getEraserColor() {
         return document.body.classList.contains('dark-mode') ? '#2e2e2e' : '#fff';
       }
 
-      // Update context when inputs change (if not drawing)
+      // Update drawing style when color or brush size changes
       colorPicker.addEventListener('change', () => {
         if (!drawing) {
           ctx.strokeStyle = eraserEnabled ? getEraserColor() : colorPicker.value;
@@ -849,7 +861,7 @@
         }
       });
 
-      // High-DPI canvas support (re-draw using renderAll)
+      /* High-DPI canvas support */
       function resizeCanvas() {
         const parentWidth = canvas.parentElement.clientWidth;
         const parentHeight = canvas.parentElement.clientHeight;
@@ -865,7 +877,7 @@
       window.addEventListener('resize', debounce(resizeCanvas, 200));
       resizeCanvas();
 
-      // Render all strokes/fills from the strokes array
+      /* Render all strokes */
       function renderAll() {
         const parentWidth = canvas.parentElement.clientWidth;
         const parentHeight = canvas.parentElement.clientHeight;
@@ -891,7 +903,7 @@
         });
       }
 
-      // Get mouse/touch coordinates relative to canvas
+      /* Get coordinates relative to canvas */
       function getXY(e) {
         const rect = canvas.getBoundingClientRect();
         if (e.touches && e.touches.length > 0) {
@@ -901,20 +913,17 @@
         }
       }
 
-      // Start drawing a new stroke
       function startDrawing(e) {
         drawing = true;
         const pos = getXY(e);
         const currentColor = eraserEnabled ? getEraserColor() : colorPicker.value;
         const currentLineWidth = parseInt(brushSize.value, 10);
-        // Create a new stroke object
         currentStroke = {
           tool: eraserEnabled ? 'eraser' : 'pen',
           color: currentColor,
           lineWidth: currentLineWidth,
           points: [pos]
         };
-        // Update the context with current stroke settings
         ctx.beginPath();
         ctx.strokeStyle = currentColor;
         ctx.lineWidth = currentLineWidth;
@@ -923,7 +932,6 @@
         ctx.moveTo(pos.x, pos.y);
       }
 
-      // Continue drawing: add points to current stroke and draw line segment
       function draw(e) {
         if (!currentStroke) return;
         const pos = getXY(e);
@@ -932,31 +940,20 @@
         ctx.stroke();
       }
 
-      // End drawing: push the stroke into strokes array and re-render
       function stopDrawing() {
-        if (currentStroke) {
-          if (currentStroke.points.length > 1) {
-            strokes.push(currentStroke);
-          }
-          currentStroke = null;
+        if (currentStroke && currentStroke.points.length > 1) {
+          strokes.push(currentStroke);
         }
+        currentStroke = null;
         drawing = false;
       }
 
       // Mouse events
-      canvas.addEventListener('mousedown', (e) => {
-        startDrawing(e);
-      });
-      canvas.addEventListener('mousemove', (e) => {
-        if (drawing) draw(e);
-      });
-      canvas.addEventListener('mouseup', (e) => {
-        stopDrawing();
-      });
-      canvas.addEventListener('mouseout', (e) => {
-        stopDrawing();
-      });
-      // Touch events (with passive:false so preventDefault works)
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', (e) => { if (drawing) draw(e); });
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      // Touch events with proper handling
       canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         startDrawing(e);
@@ -975,16 +972,15 @@
         document.body.style.overflow = '';
       });
 
-      // Button Handlers
-
-      // Clear the canvas and reset strokes
+      /* --------------------------
+         Button Handlers
+         -------------------------- */
       document.querySelector('.clear-button').addEventListener('click', () => {
         strokes = [];
         renderAll();
         showNotification('Whiteboard cleared.');
       });
 
-      // Save drawing (export strokes as JSON in localStorage)
       document.querySelector('.save-button').addEventListener('click', () => {
         try {
           localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes));
@@ -995,7 +991,6 @@
         }
       });
 
-      // Load drawing from localStorage
       document.querySelector('.load-button').addEventListener('click', () => {
         const data = localStorage.getItem('whiteboardStrokes');
         if (data) {
@@ -1011,7 +1006,6 @@
         }
       });
 
-      // Undo: Remove the last stroke and re-render
       document.querySelector('.undo-button').addEventListener('click', () => {
         if (strokes.length > 0) {
           strokes.pop();
@@ -1022,7 +1016,6 @@
         }
       });
 
-      // Fill tool: Fill entire canvas with selected color
       document.querySelector('.fill-button').addEventListener('click', () => {
         const fillStroke = {
           tool: 'fill',
@@ -1033,17 +1026,14 @@
         showNotification('Canvas filled.');
       });
 
-      // Eraser toggle: Switch between drawing and erasing
       document.querySelector('.eraser-button').addEventListener('click', () => {
         eraserEnabled = !eraserEnabled;
         document.querySelector('.eraser-button').classList.toggle('active', eraserEnabled);
-        // Update the context immediately if not drawing
         if (!drawing) {
           ctx.strokeStyle = eraserEnabled ? getEraserColor() : colorPicker.value;
         }
       });
 
-      // Download drawing as PNG
       document.querySelector('.export-png-button').addEventListener('click', () => {
         const dataURL = canvas.toDataURL('image/png');
         const link = document.createElement('a');
@@ -1084,9 +1074,9 @@
           iframe.addEventListener('load', () => { loader.remove(); });
         });
       }
-      
+
       /* --------------------------
-         Initialize on DOMContentLoaded
+         Initialization on DOMContentLoaded
          -------------------------- */
       document.addEventListener('DOMContentLoaded', () => {
         if (localStorage.getItem('theme') === 'dark') {
@@ -1095,7 +1085,6 @@
         }
         initLazyIframes();
       });
-
     })();
   </script>
 </body>
