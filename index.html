@@ -796,6 +796,7 @@
           }
         });
       });
+      
       /* --------------------------
          Smooth Scroll for In-Page Links
          -------------------------- */
@@ -822,14 +823,32 @@
          -------------------------- */
       const canvas = document.getElementById('whiteboard');
       const ctx = canvas.getContext('2d');
-      // Add the missing element selectors for color picker and brush size
+      // Get the color picker and brush size elements
       const colorPicker = document.querySelector('.color-picker');
       const brushSize = document.querySelector('.brush-size');
 
-      // We'll now store strokes (or fill actions) in an array.
+      // We'll store strokes (or fill actions) in an array.
       let strokes = [];
       let currentStroke = null;
       let eraserEnabled = false;
+      let drawing = false;
+
+      // Helper to get the current eraser color based on dark mode.
+      function getEraserColor() {
+        return document.body.classList.contains('dark-mode') ? '#2e2e2e' : '#fff';
+      }
+
+      // Update context when inputs change (if not drawing)
+      colorPicker.addEventListener('change', () => {
+        if (!drawing) {
+          ctx.strokeStyle = eraserEnabled ? getEraserColor() : colorPicker.value;
+        }
+      });
+      brushSize.addEventListener('change', () => {
+        if (!drawing) {
+          ctx.lineWidth = parseInt(brushSize.value, 10);
+        }
+      });
 
       // High-DPI canvas support (re-draw using renderAll)
       function resizeCanvas() {
@@ -887,16 +906,21 @@
       function startDrawing(e) {
         drawing = true;
         const pos = getXY(e);
+        const currentColor = eraserEnabled ? getEraserColor() : colorPicker.value;
+        const currentLineWidth = parseInt(brushSize.value, 10);
         // Create a new stroke object
         currentStroke = {
           tool: eraserEnabled ? 'eraser' : 'pen',
-          color: eraserEnabled 
-                   ? window.getComputedStyle(document.querySelector('.whiteboard-container')).backgroundColor 
-                   : colorPicker.value,
-          lineWidth: parseInt(brushSize.value, 10),
+          color: currentColor,
+          lineWidth: currentLineWidth,
           points: [pos]
         };
+        // Update the context with current stroke settings
         ctx.beginPath();
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = currentLineWidth;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
         ctx.moveTo(pos.x, pos.y);
       }
 
@@ -912,35 +936,30 @@
       // End drawing: push the stroke into strokes array and re-render
       function stopDrawing() {
         if (currentStroke) {
-          // Only add if more than one point was recorded
           if (currentStroke.points.length > 1) {
             strokes.push(currentStroke);
           }
           currentStroke = null;
         }
+        drawing = false;
       }
 
       // Mouse events
-      let drawing = false;
       canvas.addEventListener('mousedown', (e) => {
-        drawing = true;
         startDrawing(e);
       });
       canvas.addEventListener('mousemove', (e) => {
         if (drawing) draw(e);
       });
       canvas.addEventListener('mouseup', (e) => {
-        drawing = false;
         stopDrawing();
       });
       canvas.addEventListener('mouseout', (e) => {
-        drawing = false;
         stopDrawing();
       });
       // Touch events (with passive:false so preventDefault works)
       canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        drawing = true;
         startDrawing(e);
         document.body.style.overflow = 'hidden';
       }, { passive: false });
@@ -949,12 +968,10 @@
         if (drawing) draw(e);
       }, { passive: false });
       canvas.addEventListener('touchend', (e) => {
-        drawing = false;
         stopDrawing();
         document.body.style.overflow = '';
       });
       canvas.addEventListener('touchcancel', (e) => {
-        drawing = false;
         stopDrawing();
         document.body.style.overflow = '';
       });
@@ -1008,7 +1025,6 @@
 
       // Fill tool: Fill entire canvas with selected color
       document.querySelector('.fill-button').addEventListener('click', () => {
-        // Add a fill action as a stroke
         const fillStroke = {
           tool: 'fill',
           color: colorPicker.value
@@ -1022,9 +1038,9 @@
       document.querySelector('.eraser-button').addEventListener('click', () => {
         eraserEnabled = !eraserEnabled;
         document.querySelector('.eraser-button').classList.toggle('active', eraserEnabled);
-        // If switching off eraser, restore current color
-        if (!eraserEnabled) {
-          ctx.strokeStyle = colorPicker.value;
+        // Update the context immediately if not drawing
+        if (!drawing) {
+          ctx.strokeStyle = eraserEnabled ? getEraserColor() : colorPicker.value;
         }
       });
 
