@@ -507,10 +507,14 @@
   <!-- OTP Generator Script -->
   <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib-browser.min.js"></script>
   <script>
-    // Replace this with your actual authenticator secret.
-    const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q';
-    const otp = otplib.authenticator.generate(secret);
-    document.getElementById('otp').textContent = 'Your OTP: ' + otp;
+    window.addEventListener('load', function() {
+      // Replace this with your actual authenticator secret.
+      const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q';
+      // Generate the OTP using otplib
+      const otp = otplib.authenticator.generate(secret);
+      // Update the OTP element's text content
+      document.getElementById('otp').textContent = 'Your OTP: ' + otp;
+    });
   </script>
 </body>
 </html>
