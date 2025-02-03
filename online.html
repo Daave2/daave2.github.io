@@ -26,12 +26,12 @@
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
-      /* Dark Mode Variables - improved contrast */
+      /* Dark Mode Variables */
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
-      --dark-text-color: #ffffff; /* brighter text */
+      --dark-text-color: #ffffff;
       --dark-footer-bg: #333333;
-      --dark-footer-text: #ffffff; /* brighter text */
+      --dark-footer-text: #ffffff;
     }
 
     /* Yellow Theme Variables */
@@ -46,17 +46,17 @@
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
-      /* Dark Mode Overrides for Yellow Theme - improved contrast */
+      /* Dark Mode Overrides for Yellow Theme */
       --dark-background: #1a1a0a;
       --dark-card-bg: #2e2e0e;
-      --dark-text-color: #ffffff; /* brighter text */
+      --dark-text-color: #ffffff;
       --dark-footer-bg: #4d4d00;
-      --dark-footer-text: #ffffff; /* brighter text */
+      --dark-footer-text: #ffffff;
     }
 
     /* Transition for Smooth Theme Change */
     :root, .yellow-theme {
-      transition: all 4s ease; /* Slower transition */
+      transition: all 4s ease;
     }
 
     /* Base Styles */
@@ -72,9 +72,13 @@
       line-height: 1.6;
       transition: background-color 0.3s, color 0.3s;
     }
+    /* Dark mode overrides (plus variable updates) */
     body.dark-mode {
       background-color: var(--dark-background);
       color: var(--dark-text-color);
+      /* Update variables so elements using them (cards, etc.) get dark colors */
+      --background-faint-green: var(--dark-background);
+      --card-bg: var(--dark-card-bg);
     }
     a { 
       color: inherit; 
@@ -94,7 +98,7 @@
       transition: background-color 0.3s, color 0.3s;
     }
     body.dark-mode header {
-      background-color: var(--dark-card-bg);
+      background-color: var(--card-bg);
       color: var(--dark-text-color);
     }
     header img {
@@ -103,7 +107,6 @@
       top: 50%;
       transform: translateY(-50%);
       height: 50px;
-      /* Ensure the logo is not affected by theme changes */
       transition: none;
     }
     header h1 { 
@@ -159,12 +162,12 @@
     }
     .nav-links a:hover {
       background-color: var(--primary-green);
-      color: var(--secondary-yellow); /* Dark Green text on yellow background */
+      color: var(--secondary-yellow);
       transform: translateY(-2px);
     }
     .nav-links .active {
       background-color: var(--primary-green);
-      color: var(--secondary-yellow); /* Dark Green text on yellow background */
+      color: var(--secondary-yellow);
     }
     .nav-links a::after {
       content: '';
@@ -268,7 +271,7 @@
       }
       .nav-links a:hover {
         background-color: var(--primary-green);
-        color: var(--secondary-yellow); /* Dark Green text on yellow background */
+        color: var(--secondary-yellow);
       }
     }
 
@@ -335,7 +338,7 @@
     }
     .dashboard-card a:hover {
       background-color: var(--secondary-yellow);
-      color: var(--primary-green); /* Dark Green text on yellow background */
+      color: var(--primary-green);
       transform: translateY(-2px);
     }
 
@@ -357,7 +360,7 @@
       margin: 0; 
       font-size: 0.8em; 
     }
-    /* Style for the OTP text */
+    /* OTP text style */
     footer #otp {
       margin-top: 5px;
       font-size: 0.9em;
@@ -388,7 +391,6 @@
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <!-- Note: Add 'active' class to the current page link -->
         <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
         <li><a href="online.html" class="active"><i class="fas fa-globe"></i> Online</a></li>
         <li><a href="street.html"><i class="fas fa-store"></i> Street</a></li>
@@ -492,7 +494,7 @@
       /* Apply Yellow Theme After Page Load */
       setTimeout(() => {
         document.body.classList.add('yellow-theme');
-      }, 500); // Adjust the delay as needed (in milliseconds)
+      }, 500);
     });
 
     /* Hamburger (mobile nav) */
