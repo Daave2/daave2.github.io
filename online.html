@@ -504,16 +504,29 @@
     });
   </script>
 
-  <!-- OTP Generator Script -->
-  <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib-browser.min.js"></script>
+  <!-- OTP Generator Script with defer on otplib -->
+  <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib-browser.min.js" defer></script>
   <script>
-    window.addEventListener('load', function() {
-      // Replace this with your actual authenticator secret.
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof otplib === 'undefined') {
+        console.error('otplib is not loaded');
+        return;
+      }
       const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q';
-      // Generate the OTP using otplib
-      const otp = otplib.authenticator.generate(secret);
-      // Update the OTP element's text content
-      document.getElementById('otp').textContent = 'Your OTP: ' + otp;
+      // Function to update the OTP
+      function updateOTP() {
+        const otp = otplib.authenticator.generate(secret);
+        const otpElement = document.getElementById('otp');
+        if (otpElement) {
+          otpElement.textContent = 'Your OTP: ' + otp;
+        } else {
+          console.error('OTP element not found');
+        }
+      }
+      // Update the OTP immediately
+      updateOTP();
+      // Then update every 60,000 milliseconds (1 minute)
+      setInterval(updateOTP, 60000);
     });
   </script>
 </body>
