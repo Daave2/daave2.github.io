@@ -329,6 +329,12 @@
       margin: 0; 
       font-size: 0.8em; 
     }
+    /* Style for the OTP text */
+    footer #otp {
+      margin-top: 5px;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
 
     /* Media Queries for Responsive Iframe */
     @media (max-width: 768px) {
@@ -433,6 +439,7 @@
 
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    <p id="otp">Generating OTP...</p>
   </footer>
 
   <!-- Core JavaScript for Dark Mode & Mobile Nav -->
@@ -495,6 +502,15 @@
     hamburger.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') hamburger.click();
     });
+  </script>
+
+  <!-- OTP Generator Script -->
+  <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib-browser.min.js"></script>
+  <script>
+    // Replace this with your actual authenticator secret.
+    const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q';
+    const otp = otplib.authenticator.generate(secret);
+    document.getElementById('otp').textContent = 'Your OTP: ' + otp;
   </script>
 </body>
 </html>
