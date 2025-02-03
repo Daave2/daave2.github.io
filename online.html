@@ -26,12 +26,12 @@
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
-      /* Dark Mode Variables */
+      /* Dark Mode Variables - improved contrast */
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
-      --dark-text-color: #e0e0e0;
+      --dark-text-color: #ffffff; /* brighter text */
       --dark-footer-bg: #333333;
-      --dark-footer-text: #e0e0e0;
+      --dark-footer-text: #ffffff; /* brighter text */
     }
 
     /* Yellow Theme Variables */
@@ -46,12 +46,12 @@
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
 
-      /* Dark Mode Overrides for Yellow Theme */
+      /* Dark Mode Overrides for Yellow Theme - improved contrast */
       --dark-background: #1a1a0a;
       --dark-card-bg: #2e2e0e;
-      --dark-text-color: #f0e0e0;
+      --dark-text-color: #ffffff; /* brighter text */
       --dark-footer-bg: #4d4d00;
-      --dark-footer-text: #f0e0e0;
+      --dark-footer-text: #ffffff; /* brighter text */
     }
 
     /* Transition for Smooth Theme Change */
@@ -59,7 +59,7 @@
       transition: all 4s ease; /* Slower transition */
     }
 
-    /* Existing CSS Styles */
+    /* Base Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -76,8 +76,13 @@
       background-color: var(--dark-background);
       color: var(--dark-text-color);
     }
-    a { color: inherit; text-decoration: none; }
-    body.mobile-nav-open { overflow: hidden; }
+    a { 
+      color: inherit; 
+      text-decoration: none; 
+    }
+    body.mobile-nav-open { 
+      overflow: hidden; 
+    }
 
     header {
       background-color: var(--background-white);
@@ -136,7 +141,9 @@
       list-style: none;
       transition: transform 0.3s ease;
     }
-    .nav-links li { position: relative; }
+    .nav-links li { 
+      position: relative; 
+    }
     .nav-links a {
       display: flex;
       align-items: center;
@@ -147,7 +154,9 @@
       border-radius: 8px;
       transition: background-color 0.3s, transform 0.3s, color 0.3s;
     }
-    body.dark-mode .nav-links a { color: var(--dark-text-color); }
+    body.dark-mode .nav-links a { 
+      color: var(--dark-text-color); 
+    }
     .nav-links a:hover {
       background-color: var(--primary-green);
       color: var(--secondary-yellow); /* Dark Green text on yellow background */
@@ -169,7 +178,9 @@
       transition: width 0.3s ease;
     }
     .nav-links a:hover::after,
-    .nav-links .active::after { width: 100%; }
+    .nav-links .active::after { 
+      width: 100%; 
+    }
 
     .hamburger {
       display: none;
@@ -185,7 +196,9 @@
       margin: 5px 0;
       transition: all 0.3s ease;
     }
-    body.dark-mode .hamburger span { background: var(--dark-text-color); }
+    body.dark-mode .hamburger span { 
+      background: var(--dark-text-color); 
+    }
     .hamburger.active span:nth-child(1) {
       transform: rotate(45deg) translate(5px,5px);
     }
@@ -196,7 +209,11 @@
       transform: rotate(-45deg) translate(7px,-6px);
     }
 
-    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    .nav-actions { 
+      display: flex; 
+      align-items: center; 
+      gap: 1rem; 
+    }
     .dark-mode-toggle {
       background: none;
       border: none;
@@ -210,7 +227,9 @@
     }
 
     @media (max-width: 768px) {
-      .hamburger { display: flex; }
+      .hamburger { 
+        display: flex; 
+      }
       .nav-links {
         position: fixed;
         top: 60px;
@@ -224,9 +243,16 @@
         transition: transform 0.3s ease;
         overflow-y: auto;
       }
-      body.dark-mode .nav-links { background: #333; }
-      .nav-links.active { transform: translateX(0); }
-      .nav-links li { margin: 0; width: 100%; }
+      body.dark-mode .nav-links { 
+        background: #333; 
+      }
+      .nav-links.active { 
+        transform: translateX(0); 
+      }
+      .nav-links li { 
+        margin: 0; 
+        width: 100%; 
+      }
       .nav-links a {
         margin: 10px 0;
         width: 100%;
@@ -237,7 +263,9 @@
         font-size: 1em;
         padding: 10px;
       }
-      body.dark-mode .nav-links a { color: var(--dark-text-color); }
+      body.dark-mode .nav-links a { 
+        color: var(--dark-text-color); 
+      }
       .nav-links a:hover {
         background-color: var(--primary-green);
         color: var(--secondary-yellow); /* Dark Green text on yellow background */
@@ -504,16 +532,15 @@
     });
   </script>
 
-  <!-- OTP Generator Script with defer on otplib -->
+  <!-- OTP Generator Script with improved DOMContentLoaded handling -->
   <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib-browser.min.js" defer></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function runOTP() {
       if (typeof otplib === 'undefined') {
         console.error('otplib is not loaded');
         return;
       }
       const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q';
-      // Function to update the OTP
       function updateOTP() {
         const otp = otplib.authenticator.generate(secret);
         const otpElement = document.getElementById('otp');
@@ -523,11 +550,14 @@
           console.error('OTP element not found');
         }
       }
-      // Update the OTP immediately
       updateOTP();
-      // Then update every 60,000 milliseconds (1 minute)
       setInterval(updateOTP, 60000);
-    });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runOTP);
+    } else {
+      runOTP();
+    }
   </script>
 </body>
 </html>
