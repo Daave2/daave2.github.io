@@ -469,24 +469,37 @@
         fallbackMessage.style.display = "none";
         // Set fallback link href
         fallbackLink.href = url;
-        // Set iframe src to load the new URL
+        // Start loading the URL in the iframe
         contentFrame.src = url;
         frameContainer.classList.add('active');
         // Start a timeout (10 seconds) to show fallback if not loaded
         frameLoadTimeout = setTimeout(() => {
           fallbackMessage.style.display = "block";
         }, 10000);
-        // Listen for iframe load event to clear timeout and hide fallback
-        contentFrame.onload = () => {
-          clearTimeout(frameLoadTimeout);
-          fallbackMessage.style.display = "none";
-        };
-        // In case an error event fires, also show the fallback
-        contentFrame.onerror = () => {
-          clearTimeout(frameLoadTimeout);
-          fallbackMessage.style.display = "block";
-        };
       }
+
+      // Updated onload handler to detect blocked content
+      contentFrame.onload = function() {
+        clearTimeout(frameLoadTimeout);
+        try {
+          // Attempt to access the iframe's document
+          const doc = contentFrame.contentDocument || contentFrame.contentWindow.document;
+          // If the document is inaccessible or empty, assume block
+          if (!doc || !doc.body || doc.body.innerHTML.trim() === "") {
+            throw new Error("Blocked or empty content");
+          }
+          fallbackMessage.style.display = "none";
+        } catch (e) {
+          // Likely blocked by X-Frame-Options or CSP
+          fallbackMessage.style.display = "block";
+        }
+      };
+
+      // In case an error event fires (less reliable)
+      contentFrame.onerror = function() {
+        clearTimeout(frameLoadTimeout);
+        fallbackMessage.style.display = "block";
+      };
 
       dashboardItems.forEach(item => {
         item.addEventListener('click', function(e) {
