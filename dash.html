@@ -345,45 +345,45 @@
   <!-- Dashboard Grid -->
   <div class="dashboard-container">
     <div class="dashboard-grid">
-      <!-- Existing Links -->
-      <a href="https://storemobile.apps.mymorri.com/#/login" class="dashboard-item">
+      <!-- Working in frame -->
+      <a href="https://storemobile.apps.mymorri.com/#/login" class="dashboard-item" data-open="frame">
         <i class="fas fa-mobile-alt"></i>
         <span>Store App</span>
       </a>
-      <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item">
+      <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame">
         <i class="fas fa-user-check"></i>
         <span>Staff Checks</span>
       </a>
-      <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item">
+      <!-- The rest will open externally -->
+      <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external">
         <i class="fas fa-book"></i>
         <span>Logbook</span>
       </a>
-      <!-- New Links -->
-      <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item">
+      <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external">
         <i class="fas fa-chart-line"></i>
         <span>Delivery Volume</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external">
         <i class="fas fa-comments"></i>
         <span>Complaints</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external">
         <i class="fas fa-sync-alt"></i>
         <span>Retail Wheel</span>
       </a>
-      <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item">
+      <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item" data-open="external">
         <i class="fas fa-smile"></i>
         <span>NPS</span>
       </a>
-      <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item">
+      <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external">
         <i class="fas fa-exchange-alt"></i>
         <span>Transfers</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external">
         <i class="fas fa-reply"></i>
         <span>Complaints Reply</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzJZnla-nRdlfnp_KDx_X3wS33eXKCgY-ghWprNDk13qXBXUvci2DTCBAmd0URT8i8/exec" class="dashboard-item">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzJZnla-nRdlfnp_KDx_X3wS33eXKCgY-ghWprNDk13qXBXUvci2DTCBAmd0URT8i8/exec" class="dashboard-item" data-open="external">
         <i class="fas fa-calendar-check"></i>
         <span>Reminders</span>
       </a>
@@ -454,7 +454,7 @@
         });
       });
 
-      // Dashboard Item Click Handler to Load Content into the Frame with Fallback
+      // Dashboard Item Click Handler: decide based on data-open attribute whether to load in frame or externally
       const dashboardItems = document.querySelectorAll('.dashboard-item');
       const frameContainer = document.getElementById('frame-container');
       const contentFrame = document.getElementById('content-frame');
@@ -469,7 +469,7 @@
         fallbackMessage.style.display = "none";
         // Set fallback link href
         fallbackLink.href = url;
-        // Start loading the URL in the iframe
+        // Load the URL in the iframe
         contentFrame.src = url;
         frameContainer.classList.add('active');
         // Start a timeout (10 seconds) to show fallback if not loaded
@@ -482,15 +482,12 @@
       contentFrame.onload = function() {
         clearTimeout(frameLoadTimeout);
         try {
-          // Attempt to access the iframe's document
           const doc = contentFrame.contentDocument || contentFrame.contentWindow.document;
-          // If the document is inaccessible or empty, assume block
           if (!doc || !doc.body || doc.body.innerHTML.trim() === "") {
             throw new Error("Blocked or empty content");
           }
           fallbackMessage.style.display = "none";
         } catch (e) {
-          // Likely blocked by X-Frame-Options or CSP
           fallbackMessage.style.display = "block";
         }
       };
@@ -505,9 +502,15 @@
         item.addEventListener('click', function(e) {
           e.preventDefault();
           const url = this.getAttribute('href');
-          loadContent(url);
-          // Scroll to frame container
-          frameContainer.scrollIntoView({ behavior: 'smooth' });
+          const openType = this.dataset.open; // "frame" or "external"
+          if (openType === "external") {
+            // Open in a new tab if designated
+            window.open(url, '_blank');
+          } else {
+            // Otherwise, attempt to load in the iframe
+            loadContent(url);
+            frameContainer.scrollIntoView({ behavior: 'smooth' });
+          }
         });
       });
 
