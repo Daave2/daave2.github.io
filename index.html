@@ -8,7 +8,7 @@
   <title>Cleveleys Morrisons Management Dashboard</title>
   <!-- Google Fonts for Modern Typography -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome for Icons (Optional) -->
+  <!-- Font Awesome for Icons (Solid) -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg=="
@@ -28,7 +28,6 @@
       --card-shadow: rgba(0, 0, 0, 0.1);
       --footer-bg: var(--primary-green);
       --footer-text: var(--background-white);
-
       /* Dark Mode Variables */
       --dark-background: #121212;
       --dark-card-bg: #1e1e1e;
@@ -90,7 +89,7 @@
     header h1 {
       font-size: 2em;
       margin: 0;
-      padding-left: 80px; /* Prevent overlap with logo */
+      padding-left: 80px;
     }
     /* --------------------------------------------------
        Navigation
@@ -206,7 +205,7 @@
       color: var(--dark-text-color);
     }
     /* --------------------------------------------------
-       Dashboard (Dash) Section
+       Dashboard Section
        -------------------------------------------------- */
     #dashboard {
       margin-bottom: 30px;
@@ -289,7 +288,7 @@
     #close-frame:hover {
       background-color: #004d00;
     }
-    /* Fallback message styling */
+    /* Fallback message styling (simplified) */
     #fallback-message {
       display: none;
       text-align: center;
@@ -301,7 +300,7 @@
       font-weight: bold;
     }
     /* --------------------------------------------------
-       Other Sections (Wheel, Who Is In Today, Management Rota, Notes)
+       Other Sections: Wheel, Who Is In Today, Management Rota, Notes
        -------------------------------------------------- */
     .container {
       padding: 20px;
@@ -336,12 +335,10 @@
       color: var(--dark-text-color);
       border-bottom-color: var(--secondary-yellow);
     }
-    /* --------------------------------------------------
-       Iframe Container for Other Sections
-       -------------------------------------------------- */
+    /* Iframe Container for Other Sections */
     .iframe-container {
       position: relative;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
       border-radius: 10px;
@@ -362,11 +359,11 @@
     }
     @media (max-width: 768px) {
       .iframe-container {
-        padding-bottom: 75%; /* Adjust for smaller screens */
+        padding-bottom: 75%;
       }
     }
     /* --------------------------------------------------
-       Whiteboard Styles (Notes)
+       Whiteboard (Notes) Styles
        -------------------------------------------------- */
     .whiteboard-container {
       position: relative;
@@ -530,7 +527,7 @@
       <section id="dashboard">
         <h2>Dashboard</h2>
         <div class="dashboard-grid">
-          <!-- These tiles use data-open to decide behavior:
+          <!-- Tiles with data-open to decide behavior:
                data-open="frame" loads in the iframe,
                data-open="external" opens in a new tab -->
           <a href="https://storemobile.apps.mymorri.com/#/login" class="dashboard-item" data-open="frame">
@@ -575,13 +572,12 @@
           </a>
         </div>
       </section>
-      <!-- Content Frame Container for Dashboard Items (if loaded in frame) -->
+      <!-- Content Frame Container for Dashboard Items -->
       <div id="frame-container">
         <button id="close-frame">Close</button>
         <iframe id="content-frame" src=""></iframe>
         <div id="fallback-message">
-          <p>Unable to load this page within the frame.<br>
-          <a id="fallback-link" href="" target="_blank">Click here</a> to open it in a new tab.</p>
+          <p><a id="fallback-link" href="" target="_blank">Click here</a> to open it in a new tab.</p>
         </div>
       </div>
       <!-- Wheel Section -->
@@ -735,7 +731,6 @@
       const fallbackLink = document.getElementById('fallback-link');
       let frameLoadTimeout;
       function loadContent(url) {
-        // Reset iframe and fallback
         contentFrame.src = "";
         fallbackMessage.style.display = "none";
         fallbackLink.href = url;
