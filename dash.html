@@ -215,6 +215,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
     .dashboard-item:hover {
       background-color: #004d00;
@@ -226,6 +227,41 @@
     }
     .dashboard-item span {
       font-weight: bold;
+    }
+
+    /* --------------------------------------------------
+       Content Frame Layout
+       -------------------------------------------------- */
+    #frame-container {
+      display: none;
+      max-width: 1200px;
+      margin: 20px auto;
+      position: relative;
+    }
+    #frame-container.active {
+      display: block;
+    }
+    #content-frame {
+      width: 100%;
+      height: 600px;
+      border: none;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      border-radius: 10px;
+    }
+    #close-frame {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #close-frame:hover {
+      background-color: #004d00;
     }
 
     /* --------------------------------------------------
@@ -298,7 +334,7 @@
   <!-- Dashboard Grid -->
   <div class="dashboard-container">
     <div class="dashboard-grid">
-      <!-- Placeholder Dashboard Item -->
+      <!-- Placeholder Dashboard Items -->
       <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" class="dashboard-item">
         <i class="fas fa-chart-pie"></i>
         <span>2024 Wheel</span>
@@ -370,14 +406,21 @@
     </div>
   </div>
 
+  <!-- Content Frame Container -->
+  <div id="frame-container">
+    <button id="close-frame">Close</button>
+    <iframe id="content-frame" src=""></iframe>
+  </div>
+
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript for Dark Mode and Mobile Navigation -->
+  <!-- JavaScript for Dark Mode, Mobile Navigation, and Loading Content into Frame -->
   <script>
     (function() {
       'use strict';
+      // Dark Mode Toggle
       const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
       function toggleDarkMode() {
         const isDark = document.body.classList.toggle('dark-mode');
@@ -388,6 +431,7 @@
         btn.addEventListener('click', toggleDarkMode);
       });
 
+      // Mobile Navigation Toggle
       const hamburger = document.querySelector('.hamburger');
       const navLinks = document.querySelector('.nav-links');
       hamburger.addEventListener('click', (e) => {
@@ -420,6 +464,29 @@
             hamburger.setAttribute('aria-expanded', 'false');
           }
         });
+      });
+
+      // Dashboard Item Click Handler to Load Content into the Frame
+      const dashboardItems = document.querySelectorAll('.dashboard-item');
+      const frameContainer = document.getElementById('frame-container');
+      const contentFrame = document.getElementById('content-frame');
+      const closeFrame = document.getElementById('close-frame');
+
+      dashboardItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const url = this.getAttribute('href');
+          contentFrame.src = url;
+          frameContainer.classList.add('active');
+          // Scroll to the frame container if needed
+          frameContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // Close Frame Button Handler
+      closeFrame.addEventListener('click', function() {
+        frameContainer.classList.remove('active');
+        contentFrame.src = "";
       });
     })();
   </script>
