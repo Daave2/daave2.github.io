@@ -263,6 +263,17 @@
     #close-frame:hover {
       background-color: #004d00;
     }
+    /* Fallback message styling */
+    #fallback-message {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+    }
+    #fallback-message a {
+      color: var(--primary-green);
+      text-decoration: underline;
+      font-weight: bold;
+    }
 
     /* --------------------------------------------------
        Footer
@@ -410,13 +421,17 @@
   <div id="frame-container">
     <button id="close-frame">Close</button>
     <iframe id="content-frame" src=""></iframe>
+    <div id="fallback-message">
+      <p>Unable to load this page within the frame.<br>
+      <a id="fallback-link" href="" target="_blank">Click here</a> to open it in a new tab.</p>
+    </div>
   </div>
 
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript for Dark Mode, Mobile Navigation, and Loading Content into Frame -->
+  <!-- JavaScript for Dark Mode, Mobile Navigation, and Loading Content into Frame with Fallback -->
   <script>
     (function() {
       'use strict';
@@ -466,19 +481,46 @@
         });
       });
 
-      // Dashboard Item Click Handler to Load Content into the Frame
+      // Dashboard Item Click Handler to Load Content into the Frame with Fallback
       const dashboardItems = document.querySelectorAll('.dashboard-item');
       const frameContainer = document.getElementById('frame-container');
       const contentFrame = document.getElementById('content-frame');
       const closeFrame = document.getElementById('close-frame');
+      const fallbackMessage = document.getElementById('fallback-message');
+      const fallbackLink = document.getElementById('fallback-link');
+      let frameLoadTimeout;
+
+      function loadContent(url) {
+        // Reset iframe and fallback
+        contentFrame.src = "";
+        fallbackMessage.style.display = "none";
+        // Set fallback link href
+        fallbackLink.href = url;
+        // Set iframe src to load the new URL
+        contentFrame.src = url;
+        frameContainer.classList.add('active');
+        // Start a timeout (10 seconds) to show fallback if not loaded
+        frameLoadTimeout = setTimeout(() => {
+          fallbackMessage.style.display = "block";
+        }, 10000);
+        // Listen for iframe load event to clear timeout and hide fallback
+        contentFrame.onload = () => {
+          clearTimeout(frameLoadTimeout);
+          fallbackMessage.style.display = "none";
+        };
+        // In case an error event fires, also show the fallback
+        contentFrame.onerror = () => {
+          clearTimeout(frameLoadTimeout);
+          fallbackMessage.style.display = "block";
+        };
+      }
 
       dashboardItems.forEach(item => {
         item.addEventListener('click', function(e) {
           e.preventDefault();
           const url = this.getAttribute('href');
-          contentFrame.src = url;
-          frameContainer.classList.add('active');
-          // Scroll to the frame container if needed
+          loadContent(url);
+          // Scroll to frame container
           frameContainer.scrollIntoView({ behavior: 'smooth' });
         });
       });
@@ -487,6 +529,7 @@
       closeFrame.addEventListener('click', function() {
         frameContainer.classList.remove('active');
         contentFrame.src = "";
+        fallbackMessage.style.display = "none";
       });
     })();
   </script>
