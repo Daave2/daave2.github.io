@@ -36,7 +36,6 @@
       --dark-footer-bg: #333333;
       --dark-footer-text: #e0e0e0;
     }
-
     /* --------------------------------------------------
        Reset and Base Styles
        -------------------------------------------------- */
@@ -64,7 +63,6 @@
     body.mobile-nav-open {
       overflow: hidden;
     }
-
     /* --------------------------------------------------
        Header Styles
        -------------------------------------------------- */
@@ -92,9 +90,8 @@
     header h1 {
       font-size: 2em;
       margin: 0;
-      padding-left: 80px; /* Prevent overlap with logo (desktop) */
+      padding-left: 80px; /* Prevent overlap with logo */
     }
-
     /* --------------------------------------------------
        Navigation
        -------------------------------------------------- */
@@ -208,58 +205,103 @@
     body.dark-mode .dark-mode-toggle {
       color: var(--dark-text-color);
     }
-
     /* --------------------------------------------------
-       Mobile Navigation
+       Dashboard (Dash) Section
        -------------------------------------------------- */
-    @media (max-width: 768px) {
-      .hamburger {
-        display: flex;
-      }
-      .nav-links {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--secondary-yellow);
-        flex-direction: column;
-        padding: 1rem;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        overflow-y: auto;
-      }
-      body.dark-mode .nav-links {
-        background: #333;
-      }
-      .nav-links.active {
-        transform: translateX(0);
-      }
-      .nav-links li {
-        margin: 0;
-        width: 100%;
-      }
-      .nav-links a {
-        margin: 10px 0;
-        width: 100%;
-        background-color: transparent;
-        color: var(--primary-green);
-        border-radius: 4px;
-        text-align: left;
-        font-size: 1em;
-        padding: 10px;
-      }
-      body.dark-mode .nav-links a {
-        color: var(--dark-text-color);
-      }
-      .nav-links a:hover {
-        background-color: var(--primary-green);
-        color: var(--background-white);
-      }
+    #dashboard {
+      margin-bottom: 30px;
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      transition: background-color 0.3s, box-shadow 0.3s;
     }
-
+    #dashboard h2 {
+      color: var(--primary-green);
+      margin-bottom: 15px;
+      font-size: 1.6em;
+      border-bottom: 2px solid var(--secondary-yellow);
+      display: inline-block;
+      padding-bottom: 5px;
+      transition: color 0.3s, border-bottom-color 0.3s;
+    }
+    #dashboard .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 20px;
+    }
+    #dashboard .dashboard-item {
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      border-radius: 10px;
+      text-align: center;
+      padding: 20px 10px;
+      text-decoration: none;
+      transition: background-color 0.3s, transform 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    #dashboard .dashboard-item:hover {
+      background-color: #004d00;
+      transform: translateY(-2px);
+    }
+    #dashboard .dashboard-item i {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    #dashboard .dashboard-item span {
+      font-weight: bold;
+    }
     /* --------------------------------------------------
-       Container, Main Content & Sections
+       Iframe Container for Dashboard Items
+       -------------------------------------------------- */
+    #frame-container {
+      display: none;
+      max-width: 1200px;
+      margin: 20px auto;
+      position: relative;
+    }
+    #frame-container.active {
+      display: block;
+    }
+    #content-frame {
+      width: 100%;
+      height: 600px;
+      border: none;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      border-radius: 10px;
+    }
+    #close-frame {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background-color: var(--primary-green);
+      color: var(--background-white);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #close-frame:hover {
+      background-color: #004d00;
+    }
+    /* Fallback message styling */
+    #fallback-message {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+    }
+    #fallback-message a {
+      color: var(--primary-green);
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    /* --------------------------------------------------
+       Other Sections (Wheel, Who Is In Today, Management Rota, Notes)
        -------------------------------------------------- */
     .container {
       padding: 20px;
@@ -267,7 +309,6 @@
       margin: 0 auto;
     }
     main {
-      /* Wrap the primary sections for better semantics */
       margin-bottom: 30px;
     }
     section {
@@ -295,9 +336,8 @@
       color: var(--dark-text-color);
       border-bottom-color: var(--secondary-yellow);
     }
-
     /* --------------------------------------------------
-       Iframe Container
+       Iframe Container for Other Sections
        -------------------------------------------------- */
     .iframe-container {
       position: relative;
@@ -325,31 +365,8 @@
         padding-bottom: 75%; /* Adjust for smaller screens */
       }
     }
-
     /* --------------------------------------------------
-       Footer
-       -------------------------------------------------- */
-    footer {
-      background-color: var(--footer-bg);
-      color: var(--footer-text);
-      text-align: center;
-      padding: 10px 5px;
-      position: relative;
-      bottom: 0;
-      width: 100%;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode footer {
-      background-color: var(--dark-footer-bg);
-      color: var(--dark-footer-text);
-    }
-    footer p {
-      margin: 0;
-      font-size: 0.8em;
-    }
-
-    /* --------------------------------------------------
-       Whiteboard
+       Whiteboard Styles (Notes)
        -------------------------------------------------- */
     .whiteboard-container {
       position: relative;
@@ -365,14 +382,12 @@
       background-color: #2e2e2e;
       border-color: var(--dark-text-color);
     }
-    /* Added aria-label for accessibility */
     #whiteboard {
       width: 100%;
       height: 100%;
       cursor: crosshair;
       background-color: transparent;
     }
-    /* Button group arranged vertically on the right */
     .button-group {
       position: absolute;
       top: 10px;
@@ -402,14 +417,9 @@
     body.dark-mode .button-group button:hover {
       background-color: #222;
     }
-    /* Active state for toggle buttons (e.g., Eraser) */
     .button-group button.active {
       outline: 2px solid var(--secondary-yellow);
     }
-
-    /* --------------------------------------------------
-       Whiteboard Toolbar
-       -------------------------------------------------- */
     .whiteboard-tools {
       position: absolute;
       top: 10px;
@@ -433,102 +443,40 @@
       background: var(--card-bg);
       cursor: pointer;
     }
-
     /* --------------------------------------------------
-       Notifications
+       Footer
        -------------------------------------------------- */
-    .notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      border-radius: 5px;
-      background: var(--primary-green);
-      color: white;
-      display: none;
-      z-index: 10000;
-    }
-    /* ARIA live region to announce notifications */
-    .notification[role="alert"] {
-      aria-live: assertive;
-    }
-    body.dark-mode .notification {
-      background: #444;
-    }
-
-    /* --------------------------------------------------
-       Common Links Grid
-       -------------------------------------------------- */
-    .common-links-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      width: 100%;
-      margin-top: 20px;
-    }
-    .link-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--primary-green);
-      color: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s;
-      height: 100px;
+    footer {
+      background-color: var(--footer-bg);
+      color: var(--footer-text);
       text-align: center;
-      word-wrap: break-word;
+      padding: 10px 5px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      transition: background-color 0.3s, color 0.3s;
     }
-    .link-button:hover {
-      background-color: #004d00;
-    }
-    body.dark-mode .link-button {
-      background-color: #444;
+    body.dark-mode footer {
+      background-color: var(--dark-footer-bg);
       color: var(--dark-footer-text);
     }
-    body.dark-mode .link-button:hover {
-      background-color: #222;
+    footer p {
+      margin: 0;
+      font-size: 0.8em;
     }
-
-    /* Responsive Whiteboard and Links */
-    @media (max-width: 768px) {
-      .whiteboard-container {
-        height: 400px;
-      }
-    }
-    @media (max-width: 480px) {
-      .whiteboard-container {
-        height: 250px;
-      }
-      .link-button {
-        padding: 10px;
-        height: 80px;
-        font-size: 0.9em;
-      }
-      .links-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Smooth Scrolling */
+    /* --------------------------------------------------
+       Smooth Scrolling & Accessibility Focus
+       -------------------------------------------------- */
     html {
       scroll-behavior: smooth;
     }
-
-    /* Focus Styles for Accessibility */
     a:focus, .dropbtn:focus, .hamburger:focus, .dark-mode-toggle:focus, button:focus, select:focus, input:focus {
       outline: 2px solid var(--primary-green);
       outline-offset: 2px;
     }
-
-    /* Enhanced Loading Spinner for Iframes */
+    /* --------------------------------------------------
+       Enhanced Loading Spinner for Iframes
+       -------------------------------------------------- */
     .iframe-loading {
       position: absolute;
       top: 50%;
@@ -554,7 +502,6 @@
          alt="Morrisons Logo">
     <h1>Cleveleys Morrisons Management Dashboard</h1>
   </header>
-
   <!-- Navigation -->
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
@@ -568,9 +515,7 @@
         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe and Legal</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
-          🌓
-        </button>
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
       </div>
       <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
         <span></span>
@@ -579,122 +524,95 @@
       </div>
     </div>
   </nav>
-
   <div class="container">
     <main>
-      <!-- Tasks Section -->
+      <!-- Dashboard Section -->
+      <section id="dashboard">
+        <h2>Dashboard</h2>
+        <div class="dashboard-grid">
+          <!-- These tiles use data-open to decide behavior:
+               data-open="frame" loads in the iframe,
+               data-open="external" opens in a new tab -->
+          <a href="https://storemobile.apps.mymorri.com/#/login" class="dashboard-item" data-open="frame">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Store App</span>
+          </a>
+          <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame">
+            <i class="fas fa-user-check"></i>
+            <span>Staff Checks</span>
+          </a>
+          <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external">
+            <i class="fas fa-book"></i>
+            <span>Logbook</span>
+          </a>
+          <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external">
+            <i class="fas fa-chart-line"></i>
+            <span>Delivery Volume</span>
+          </a>
+          <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external">
+            <i class="fas fa-comments"></i>
+            <span>Complaints</span>
+          </a>
+          <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external">
+            <i class="fas fa-sync-alt"></i>
+            <span>Retail Wheel</span>
+          </a>
+          <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item" data-open="external">
+            <i class="fas fa-smile"></i>
+            <span>NPS</span>
+          </a>
+          <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Transfers</span>
+          </a>
+          <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external">
+            <i class="fas fa-reply"></i>
+            <span>Complaints Reply</span>
+          </a>
+          <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzJZnla-nRdlfnp_KDx_X3wS33eXKCgY-ghWprNDk13qXBXUvci2DTCBAmd0URT8i8/exec" class="dashboard-item" data-open="external">
+            <i class="fas fa-calendar-check"></i>
+            <span>Reminders</span>
+          </a>
+        </div>
+      </section>
+      <!-- Content Frame Container for Dashboard Items (if loaded in frame) -->
+      <div id="frame-container">
+        <button id="close-frame">Close</button>
+        <iframe id="content-frame" src=""></iframe>
+        <div id="fallback-message">
+          <p>Unable to load this page within the frame.<br>
+          <a id="fallback-link" href="" target="_blank">Click here</a> to open it in a new tab.</p>
+        </div>
+      </div>
+      <!-- Wheel Section -->
       <section id="tasks">
         <h2>Wheel</h2>
         <div class="iframe-container">
-          <iframe
-            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0Et9lglBWMLQuMJUAgmMF-EbvCJlCn4_a8s_azQjE1tlz1ZqOGAHNk-s99BHS9jK_Nvo1DMhuqG40/pubhtml?gid=1073365529&amp;single=true&amp;widget=true&amp;headers=false"
-            title="Wheel"
-            allowfullscreen
-            loading="lazy">
-          </iframe>
+          <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0Et9lglBWMLQuMJUAgmMF-EbvCJlCn4_a8s_azQjE1tlz1ZqOGAHNk-s99BHS9jK_Nvo1DMhuqG40/pubhtml?gid=1073365529&amp;single=true&amp;widget=true&amp;headers=false"
+                  title="Wheel" allowfullscreen loading="lazy"></iframe>
         </div>
       </section>
-
-      <!-- Important Links Section -->
-      <section id="important-links">
-        <h2>Important Links</h2>
-        <div class="iframe-container">
-          <iframe
-            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRoJKvCW4iUrAjjoAlX_Io0I_xBBlnKNFjba7udLrfEnuLr4eZFbhcZk4_YOwP9xWFE2q46CpB8yHMh/pubhtml"
-            title="Important Links"
-            loading="lazy">
-          </iframe>
-        </div>
-      </section>
-
-      <!-- Common Links Section -->
-      <section id="common-links">
-        <h2>Common Links</h2>
-        <div class="common-links-container">
-          <div class="links-grid">
-            <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c"
-               class="link-button" target="_blank" rel="noopener noreferrer">2024 Wheel</a>
-            <a href="https://www.google.com/url?q=https%3A%2F%2Fstoremobile.apps.mymorri.com%2F%23%2Flogin&sa=D&sntz=1&usg=AOvVaw2PNKouG0ViOQf1rUrOSkK9"
-               class="link-button" target="_blank" rel="noopener noreferrer">Store Mobile App</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScj1F1dKJvPxviVc9u0r_gBMgbg7ehxEx2DuvwfdMLfh8VZUw/viewform"
-               class="link-button" target="_blank" rel="noopener noreferrer">Waste Collection</a>
-            <a href="https://www.google.com/url?q=https%3A%2F%2Fwww.dymension.co.uk%2F%23%2Faccount%2Flogin&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
-               class="link-button" target="_blank" rel="noopener noreferrer">Staff Checks</a>
-            <a href="https://datastudio.google.com/u/0/reporting/11ab7c4a-2562-4cb0-9de7-36bc5e5e2b28/page/Ie1iB"
-               class="link-button" target="_blank" rel="noopener noreferrer">Supply Update</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZyavQthIVTbssrWQ9gErlqANdX0lginWSne7U-Tc5OhQY_A/closedform"
-               class="link-button" target="_blank" rel="noopener noreferrer">Stock Escalation</a>
-            <a href="https://datastudio.google.com/u/0/reporting/fd33a21f-6245-4c71-9982-f940f012be22/page/p_ph2o4goarc"
-               class="link-button" target="_blank" rel="noopener noreferrer">Stock Management</a>
-            <a href="https://www.google.com/url?q=https%3A%2F%2Fpriceintegrity.apps.mymorri.com%2F%23%2Fchecks&sa=D&sntz=1&usg=AOvVaw1A0CHrR7UaACtUO9XXuxlA"
-               class="link-button" target="_blank" rel="noopener noreferrer">Pi Logbook</a>
-            <a href="https://www.google.com/url?q=https%3A%2F%2Frestaurant-hub.deliveroo.net%2Fanalytics%3ForgId%3D144353%26dateRangePreset%3Dprevious_month%26branchId%3D323150&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
-               class="link-button" target="_blank" rel="noopener noreferrer">Deliveroo</a>
-            <a href="https://lookerstudio.google.com/u/0/reporting/01fc83f0-5e21-4503-8925-0be14b6949ea/page/7famD"
-               class="link-button" target="_blank" rel="noopener noreferrer">Front End Dash Board</a>
-            <a href="https://lookerstudio.google.com/reporting/aacc478b-5dfa-4f19-9e5e-87befc32b390/page/p_l8znucslhd"
-               class="link-button" target="_blank" rel="noopener noreferrer">News And Mags</a>
-            <a href="https://www.google.com/url?q=https%3A%2F%2Fimpact.focal.systems%2Fhome%3Fcot%3D19%253A00%26r%3Dall%26s%3Dmorrisons_41%26t%3Dtoday&sa=D&sntz=1&usg=AOvVaw36Se8CgiHbCzIE4VPHgNtE"
-               class="link-button" target="_blank" rel="noopener noreferrer">Focal</a>
-            <a href="https://www.google.com/url?q=https%3A%2F%2Fsellercentral.amazon.co.uk%2Fsnowdash%2Fref%3Dxx_shopdash_dnav_xx&sa=D&sntz=1&usg=AOvVaw3EnYI3pRDOmBLuJyRdm4V1"
-               class="link-button" target="_blank" rel="noopener noreferrer">Amazon</a>
-            <a href="https://datastudio.google.com/u/0/reporting/e1632c5b-18fc-4f2e-8d5d-e0b6a03a3129/page/yOsdB"
-               class="link-button" target="_blank" rel="noopener noreferrer">Click & Collect</a>
-            <a href="https://lookerstudio.google.com/reporting/4053e579-708e-41f3-a422-7275518828c2/page/Hk1GD"
-               class="link-button" target="_blank" rel="noopener noreferrer">Checkout Shape Of The Week</a>
-            <a href="https://datastudio.google.com/reporting/ed315650-bfb3-4233-a6d8-e7d82af88a7e/page/p_s46e1lu0wc?s=qgjlC7OBsKs"
-               class="link-button" target="_blank" rel="noopener noreferrer">Just Eat cafe</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdS99hJrFMg1z0JdZoBCHi4RBZE1Za7ozhhHKzBdYAgLmxm3w/viewform"
-               class="link-button" target="_blank" rel="noopener noreferrer">Flowers Missing Delivery</a>
-          </div>
-        </div>
-      </section>
-
       <!-- Who Is In Today Section -->
       <section id="who-is-in">
         <h2>Who Is In Today?</h2>
         <div class="iframe-container">
-          <iframe
-            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true"
-            title="Who Is In Today?"
-            loading="lazy">
-          </iframe>
+          <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&amp;single=true"
+                  title="Who Is In Today?" loading="lazy"></iframe>
         </div>
       </section>
-
       <!-- Management Rota Section -->
       <section id="management-rota">
         <h2>Management Rota</h2>
         <div class="iframe-container">
-          <iframe
-            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml"
-            title="Management Rota"
-            loading="lazy">
-          </iframe>
+          <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0roX9No6LRpedp7gdmHAQrgiOUeYCOZ2dJWzouWekf0QiibsVpxWe9Uv5aa14XOvPuks3Wl-j1L2a/pubhtml"
+                  title="Management Rota" loading="lazy"></iframe>
         </div>
       </section>
-
-      <!-- New Calendar Embed in Place of Reminders -->
-      <section id="add-reminder">
-        <h2>Calendar</h2>
-        <div class="iframe-container">
-          <iframe
-            src="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec"
-            title="Calendar"
-            sandbox="allow-scripts allow-same-origin"
-            loading="lazy">
-          </iframe>
-        </div>
-      </section>
-
       <!-- Notes Section (Interactive Whiteboard) -->
       <section id="notes">
         <h2>Notes</h2>
-        <p>
-          Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing, "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. Use "Download" to save your drawing as a PNG image.
-        </p>
+        <p>Use the whiteboard below to doodle or take immediate notes. Click and drag to draw. Use "Save" to store your drawing, "Load" to retrieve it, "Undo" to remove the last stroke, "Fill" to fill the canvas with the selected color, or "Clear" to erase. You may also toggle the Eraser tool. Use "Download" to save your drawing as a PNG image.</p>
         <div class="whiteboard-container">
-          <!-- Whiteboard Tools -->
           <div class="whiteboard-tools">
             <input type="color" class="color-picker" value="#000000" aria-label="Select drawing color">
             <select class="brush-size" aria-label="Select brush size">
@@ -704,7 +622,6 @@
               <option value="12">Extra Large (12px)</option>
             </select>
           </div>
-          <!-- Added aria-label for screen readers -->
           <canvas id="whiteboard" aria-label="Interactive whiteboard"></canvas>
           <div class="button-group">
             <button class="save-button" title="Save drawing">Save</button>
@@ -719,22 +636,17 @@
       </section>
     </main>
   </div>
-
   <footer>
     <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
-    <!-- Example ElevenLabs voice widget -->
     <elevenlabs-convai agent-id="nEnCEooAd1mpnRZYj3mR"></elevenlabs-convai>
     <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
   </footer>
-
-  <!-- Notification Element with ARIA attributes -->
+  <!-- Notification Element -->
   <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
-
-  <!-- JavaScript for Enhanced Navigation and Whiteboard Interactivity -->
+  <!-- JavaScript for Navigation, Dashboard, Iframe Handling, and Whiteboard -->
   <script>
     (function() {
       'use strict';
-
       /* --------------------------
          Helper: Debounce Function
          -------------------------- */
@@ -745,7 +657,6 @@
           timeout = setTimeout(() => func.apply(this, args), wait);
         };
       }
-
       /* --------------------------
          Dark Mode Toggle
          -------------------------- */
@@ -758,7 +669,6 @@
       darkModeToggleButtons.forEach(btn => {
         btn.addEventListener('click', toggleDarkMode);
       });
-
       /* --------------------------
          Mobile Navigation Toggle
          -------------------------- */
@@ -782,11 +692,9 @@
           }
         }
       });
-      // Allow keyboard activation on hamburger
       hamburger.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') hamburger.click();
       });
-      // Close mobile nav when a link is clicked
       document.querySelectorAll('.nav-links a').forEach(item => {
         item.addEventListener('click', () => {
           if (navLinks.classList.contains('active')) {
@@ -797,7 +705,6 @@
           }
         });
       });
-      
       /* --------------------------
          Smooth Scroll for In-Page Links
          -------------------------- */
@@ -808,7 +715,6 @@
           if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
-
       /* --------------------------
          Notification System
          -------------------------- */
@@ -818,25 +724,75 @@
         notification.style.display = 'block';
         setTimeout(() => { notification.style.display = 'none'; }, duration);
       }
-
       /* --------------------------
-         Whiteboard Setup
+         Dashboard Item Click Handler & Iframe Fallback
+         -------------------------- */
+      const dashboardItems = document.querySelectorAll('#dashboard .dashboard-item');
+      const frameContainer = document.getElementById('frame-container');
+      const contentFrame = document.getElementById('content-frame');
+      const closeFrame = document.getElementById('close-frame');
+      const fallbackMessage = document.getElementById('fallback-message');
+      const fallbackLink = document.getElementById('fallback-link');
+      let frameLoadTimeout;
+      function loadContent(url) {
+        // Reset iframe and fallback
+        contentFrame.src = "";
+        fallbackMessage.style.display = "none";
+        fallbackLink.href = url;
+        contentFrame.src = url;
+        frameContainer.classList.add('active');
+        frameLoadTimeout = setTimeout(() => {
+          fallbackMessage.style.display = "block";
+        }, 10000);
+      }
+      contentFrame.onload = function() {
+        clearTimeout(frameLoadTimeout);
+        try {
+          const doc = contentFrame.contentDocument || contentFrame.contentWindow.document;
+          if (!doc || !doc.body || doc.body.innerHTML.trim() === "") {
+            throw new Error("Blocked or empty content");
+          }
+          fallbackMessage.style.display = "none";
+        } catch (e) {
+          fallbackMessage.style.display = "block";
+        }
+      };
+      contentFrame.onerror = function() {
+        clearTimeout(frameLoadTimeout);
+        fallbackMessage.style.display = "block";
+      };
+      dashboardItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const url = this.getAttribute('href');
+          const openType = this.dataset.open; // "frame" or "external"
+          if (openType === "external") {
+            window.open(url, '_blank');
+          } else {
+            loadContent(url);
+            frameContainer.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+      closeFrame.addEventListener('click', function() {
+        frameContainer.classList.remove('active');
+        contentFrame.src = "";
+        fallbackMessage.style.display = "none";
+      });
+      /* --------------------------
+         Whiteboard Setup (Notes Section)
          -------------------------- */
       const canvas = document.getElementById('whiteboard');
       const ctx = canvas.getContext('2d');
       const colorPicker = document.querySelector('.color-picker');
       const brushSize = document.querySelector('.brush-size');
-
       let strokes = [];
       let currentStroke = null;
       let eraserEnabled = false;
       let drawing = false;
-
       function getEraserColor() {
         return document.body.classList.contains('dark-mode') ? '#2e2e2e' : '#fff';
       }
-
-      // Update drawing style when color or brush size changes
       colorPicker.addEventListener('change', () => {
         if (!drawing) {
           ctx.strokeStyle = eraserEnabled ? getEraserColor() : colorPicker.value;
@@ -847,8 +803,6 @@
           ctx.lineWidth = parseInt(brushSize.value, 10);
         }
       });
-
-      /* High-DPI canvas support */
       function resizeCanvas() {
         const parentWidth = canvas.parentElement.clientWidth;
         const parentHeight = canvas.parentElement.clientHeight;
@@ -861,10 +815,6 @@
         ctx.scale(ratio, ratio);
         renderAll();
       }
-      window.addEventListener('resize', debounce(resizeCanvas, 200));
-      resizeCanvas();
-
-      /* Render all strokes */
       function renderAll() {
         const parentWidth = canvas.parentElement.clientWidth;
         const parentHeight = canvas.parentElement.clientHeight;
@@ -889,8 +839,8 @@
           }
         });
       }
-
-      /* Get coordinates relative to canvas */
+      window.addEventListener('resize', debounce(resizeCanvas, 200));
+      resizeCanvas();
       function getXY(e) {
         const rect = canvas.getBoundingClientRect();
         if (e.touches && e.touches.length > 0) {
@@ -899,7 +849,6 @@
           return { x: e.clientX - rect.left, y: e.clientY - rect.top };
         }
       }
-
       function startDrawing(e) {
         drawing = true;
         const pos = getXY(e);
@@ -918,7 +867,6 @@
         ctx.lineCap = 'round';
         ctx.moveTo(pos.x, pos.y);
       }
-
       function draw(e) {
         if (!currentStroke) return;
         const pos = getXY(e);
@@ -926,7 +874,6 @@
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
       }
-
       function stopDrawing() {
         if (currentStroke && currentStroke.points.length > 1) {
           strokes.push(currentStroke);
@@ -934,13 +881,10 @@
         currentStroke = null;
         drawing = false;
       }
-
-      // Mouse events
       canvas.addEventListener('mousedown', startDrawing);
       canvas.addEventListener('mousemove', (e) => { if (drawing) draw(e); });
       canvas.addEventListener('mouseup', stopDrawing);
       canvas.addEventListener('mouseout', stopDrawing);
-      // Touch events with proper handling
       canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         startDrawing(e);
@@ -958,16 +902,11 @@
         stopDrawing();
         document.body.style.overflow = '';
       });
-
-      /* --------------------------
-         Button Handlers
-         -------------------------- */
       document.querySelector('.clear-button').addEventListener('click', () => {
         strokes = [];
         renderAll();
         showNotification('Whiteboard cleared.');
       });
-
       document.querySelector('.save-button').addEventListener('click', () => {
         try {
           localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes));
@@ -977,7 +916,6 @@
           showNotification('Failed to save: Storage limit exceeded', 5000);
         }
       });
-
       document.querySelector('.load-button').addEventListener('click', () => {
         const data = localStorage.getItem('whiteboardStrokes');
         if (data) {
@@ -992,7 +930,6 @@
           showNotification('No saved drawing found.');
         }
       });
-
       document.querySelector('.undo-button').addEventListener('click', () => {
         if (strokes.length > 0) {
           strokes.pop();
@@ -1002,7 +939,6 @@
           showNotification('No more undo steps.');
         }
       });
-
       document.querySelector('.fill-button').addEventListener('click', () => {
         const fillStroke = {
           tool: 'fill',
@@ -1012,7 +948,6 @@
         renderAll();
         showNotification('Canvas filled.');
       });
-
       document.querySelector('.eraser-button').addEventListener('click', () => {
         eraserEnabled = !eraserEnabled;
         document.querySelector('.eraser-button').classList.toggle('active', eraserEnabled);
@@ -1020,7 +955,6 @@
           ctx.strokeStyle = eraserEnabled ? getEraserColor() : colorPicker.value;
         }
       });
-
       document.querySelector('.export-png-button').addEventListener('click', () => {
         const dataURL = canvas.toDataURL('image/png');
         const link = document.createElement('a');
@@ -1028,9 +962,8 @@
         link.download = 'whiteboard.png';
         link.click();
       });
-
       /* --------------------------
-         Lazy Load Iframes
+         Lazy Load Iframes for other sections
          -------------------------- */
       function initLazyIframes() {
         const iframes = document.querySelectorAll('iframe[data-src]');
@@ -1061,10 +994,6 @@
           iframe.addEventListener('load', () => { loader.remove(); });
         });
       }
-
-      /* --------------------------
-         Initialization on DOMContentLoaded
-         -------------------------- */
       document.addEventListener('DOMContentLoaded', () => {
         if (localStorage.getItem('theme') === 'dark') {
           document.body.classList.add('dark-mode');
