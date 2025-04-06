@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,14 +8,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* --- Base styles and other sections CSS remain identical --- */
+    /* Styles remain identical to the previous version */
     :root {
       --primary-green: #006400; --secondary-yellow: #FFD700; --background-faint-green: #e6ffe6; --background-white: #FFFFFF; --text-color: #333333; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.1); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
       /* Dark Mode Variables */
       --dark-background: #121212; --dark-card-bg: #1e1e1e; --dark-text-color: #e0e0e0; --dark-footer-bg: #333333; --dark-footer-text: #e0e0e0;
        /* Specific theme background colors for JS */
-       --light-bg-color: #ffffff; /* Whiteboard light background */
-       --dark-bg-color: #2e2e2e;  /* Whiteboard dark background */
+       --light-bg-color: var(--background-white);
+       --dark-bg-color: #2e2e2e;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Roboto', sans-serif; background-color: var(--background-faint-green); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
@@ -47,23 +46,34 @@
     .nav-actions { display: flex; align-items: center; gap: 1rem; }
     .dark-mode-toggle { background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--primary-green); transition: color 0.3s; }
     body.dark-mode .dark-mode-toggle { color: var(--dark-text-color); }
-     @media (max-width: 992px) { .hamburger { display: flex; } .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; } body.dark-mode .nav-links { background: #333; } .nav-links.active { transform: translateX(0); } .nav-links li { margin: 0; width: 100%; } .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; } body.dark-mode .nav-links a { color: var(--dark-text-color); } .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); } .nav-links .active { border-bottom: none; } .nav-links a::after { display: none; } }
+     @media (max-width: 992px) { /* Adjusted breakpoint for better nav wrapping */
+        .hamburger { display: flex; }
+        .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; }
+        body.dark-mode .nav-links { background: #333; }
+        .nav-links.active { transform: translateX(0); }
+        .nav-links li { margin: 0; width: 100%; }
+        .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; }
+        body.dark-mode .nav-links a { color: var(--dark-text-color); }
+        .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); }
+        .nav-links .active { border-bottom: none; }
+        .nav-links a::after { display: none; }
+    }
     #dashboard { margin-bottom: 30px; background-color: var(--card-bg); padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; }
     #dashboard h2 { color: var(--primary-green); margin-bottom: 15px; font-size: 1.6em; border-bottom: 2px solid var(--secondary-yellow); display: inline-block; padding-bottom: 5px; transition: color 0.3s, border-bottom-color 0.3s; }
     body.dark-mode #dashboard h2 { color: var(--secondary-yellow); border-bottom-color: var(--primary-green); }
     #dashboard .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; }
-    #dashboard .dashboard-item { background-color: var(--primary-green); color: var(--background-white); border-radius: 10px; text-align: center; padding: 20px 10px; text-decoration: none; transition: background-color 0.3s, transform 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; min-height: 100px; }
+    #dashboard .dashboard-item { background-color: var(--primary-green); color: var(--background-white); border-radius: 10px; text-align: center; padding: 20px 10px; text-decoration: none; transition: background-color 0.3s, transform 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; min-height: 100px; /* Ensure consistent height */ }
     #dashboard .dashboard-item:hover { background-color: #004d00; transform: translateY(-2px); }
     #dashboard .dashboard-item i { font-size: 2em; margin-bottom: 10px; }
     #dashboard .dashboard-item span { font-weight: bold; font-size: 0.9em; }
     #frame-container { display: none; max-width: 1200px; margin: 20px auto; position: relative; }
     #frame-container.active { display: block; }
-    #content-frame { width: 100%; height: 600px; border: none; box-shadow: 0 4px 12px var(--card-shadow); border-radius: 10px; background-color: var(--background-white); }
+    #content-frame { width: 100%; height: 600px; border: none; box-shadow: 0 4px 12px var(--card-shadow); border-radius: 10px; background-color: var(--background-white); } /* Added background */
     #close-frame { position: absolute; top: -40px; right: 0; background-color: var(--primary-green); color: var(--background-white); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; font-size: 0.9em; }
     #close-frame:hover { background-color: #004d00; }
     #fallback-message { display: none; text-align: center; margin-top: 10px; padding: 15px; background-color: var(--secondary-yellow); color: var(--primary-green); border-radius: 5px; }
     #fallback-message a { color: var(--primary-green); text-decoration: underline; font-weight: bold; }
-    .container { padding: 20px; max-width: 1200px; margin: 20px auto; }
+    .container { padding: 20px; max-width: 1200px; margin: 20px auto; } /* Added top margin */
     main { margin-bottom: 30px; }
     section { margin-bottom: 30px; background-color: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; }
     body.dark-mode section { background-color: var(--dark-card-bg); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05); }
@@ -75,19 +85,9 @@
     body.dark-mode .iframe-container { background-color: var(--dark-card-bg); box-shadow: 0 2px 8px rgba(255,255,255,0.1); }
     .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     @media (max-width: 768px) { .iframe-container { padding-bottom: 75%; } }
-    /* --------------------------------------------------
-       Whiteboard (Notes) Styles - UPDATED
-       -------------------------------------------------- */
-    .whiteboard-container { position: relative; width: 100%; height: 600px; border: 1px solid var(--primary-green); border-radius: 8px; background-color: var(--light-bg-color); overflow: hidden; transition: background-color 0.3s, border-color 0.3s; }
-    body.dark-mode .whiteboard-container { background-color: var(--dark-bg-color); border-color: var(--dark-text-color); }
-    #whiteboard { display: block; width: 100%; height: 100%; cursor: crosshair; background-color: transparent; /* Canvas itself is transparent */ }
-    /* Improved Eraser Cursor */
-    #whiteboard.eraser-active { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>') 12 12, auto; }
-    body.dark-mode #whiteboard.eraser-active { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>') 12 12, auto; }
-    /* Text Input Overlay */
-    #text-input-overlay { position: absolute; background: rgba(255, 255, 255, 0.9); border: 1px dashed var(--primary-green); padding: 5px; z-index: 20; resize: none; /* Prevent manual resize */ overflow: hidden; /* Hide scrollbars initially */ line-height: 1.2; /* Match font line height */ display: none; /* Hidden by default */ }
-    body.dark-mode #text-input-overlay { background: rgba(50, 50, 50, 0.9); border-color: var(--secondary-yellow); color: var(--dark-text-color); }
-
+    .whiteboard-container { position: relative; width: 100%; height: 600px; border: 1px solid var(--primary-green); border-radius: 8px; background-color: var(--light-bg-color); /* Use variable */ overflow: hidden; transition: background-color 0.3s, border-color 0.3s; }
+    body.dark-mode .whiteboard-container { background-color: var(--dark-bg-color); /* Use variable */ border-color: var(--dark-text-color); }
+    #whiteboard { display: block; width: 100%; height: 100%; cursor: crosshair; background-color: transparent; }
     .button-group { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
     .button-group button { background-color: var(--primary-green); color: #fff; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85em; transition: background-color 0.3s; display: flex; align-items: center; gap: 5px; }
     .button-group button:hover { background-color: #004d00; }
@@ -96,9 +96,8 @@
     .button-group button.active { outline: 2px solid var(--secondary-yellow); box-shadow: 0 0 5px var(--secondary-yellow); }
     .whiteboard-tools { position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 15; }
     body.dark-mode .whiteboard-tools { background: rgba(30, 30, 30, 0.9); }
-    .color-picker, .brush-size, .font-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--card-bg); cursor: pointer; padding: 0 5px; }
-    body.dark-mode .color-picker, body.dark-mode .brush-size, body.dark-mode .font-size { background: var(--dark-card-bg); color: var(--dark-text-color); border-color: #555; }
-    /* --- End of Whiteboard CSS --- */
+    .color-picker, .brush-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--card-bg); cursor: pointer; padding: 0 5px; }
+    body.dark-mode .color-picker, body.dark-mode .brush-size { background: var(--dark-card-bg); color: var(--dark-text-color); border-color: #555; }
     footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
     body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
     footer p { margin: 0; font-size: 0.9em; }
@@ -115,75 +114,142 @@
   </style>
 </head>
 <body>
-  <header> <!-- Header content --> </header>
-  <nav class="nav" role="navigation" aria-label="Primary Navigation"> <!-- Navigation content --> </nav>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
+    <h1>Cleveleys Morrisons Management Dashboard</h1>
+  </header>
+
+  <nav class="nav" role="navigation" aria-label="Primary Navigation">
+     <div class="nav-container">
+       <ul class="nav-links">
+           <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+           <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
+           <li><a href="street.html"><i class="fas fa-store"></i> Market Street</a></li>
+           <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Front End</a></li>
+           <li><a href="operations.html"><i class="fas fa-cogs"></i> Operations</a></li>
+           <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+           <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+           <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe & Legal</a></li>
+       </ul>
+       <div class="nav-actions">
+         <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
+       </div>
+       <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
+         <span></span><span></span><span></span>
+       </div>
+     </div>
+   </nav>
 
   <div class="container">
     <main>
        <!-- Intro Section - Shortened -->
        <section id="welcome">
         <h2>Welcome to the Dashboard</h2>
-        <p>This dashboard provides quick access to essential tools, reports, and operational guides for Cleveleys Morrisons management. Please use the navigation bar or the quick links below to explore different sections.</p>
+        <p>Quick access to essential tools, reports, and operational guides. Use the navigation or quick links below.</p>
        </section>
 
       <!-- Dashboard Quick Links Section -->
       <section id="dashboard">
-          <h2>Quick Links Dashboard</h2>
-          <div class="dashboard-grid"> <!-- Dashboard items --> </div>
+        <h2>Quick Links Dashboard</h2>
+        <div class="dashboard-grid">
+           <!-- Tiles -->
+           <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="dashboard-item" data-open="frame" title="Morrisons Store Mobile App"> <i class="fas fa-mobile-alt"></i> <span>Store App</span> </a>
+           <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame" title="Dymension Staff Checks"> <i class="fas fa-user-check"></i> <span>Staff Checks</span> </a>
+           <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external" title="Price Integrity Logbook"> <i class="fas fa-book"></i> <span>Logbook</span> </a>
+           <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external" title="Looker Delivery Volume Report"> <i class="fas fa-chart-line"></i> <span>Delivery Volume</span> </a>
+           <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="dashboard-item" data-open="external" title="Retail Wheel Dashboard"> <i class="fas fa-tachometer-alt"></i> <span>Retail Wheel</span> </a>
+           <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item" data-open="external" title="Looker Studio NPS Report"> <i class="fas fa-smile"></i> <span>NPS</span> </a>
+           <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external" title="Looker Studio Transfers Report"> <i class="fas fa-exchange-alt"></i> <span>Transfers</span> </a>
+           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints"> <i class="fas fa-comments"></i> <span>Complaints</span> </a>
+           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints Reply"> <i class="fas fa-reply"></i> <span>Complaints Reply</span> </a>
+           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="dashboard-item" data-open="external" title="Google Script - Reminders"> <i class="fas fa-calendar-check"></i> <span>Reminders</span> </a>
+           <a href="operations.html" class="dashboard-item" data-open="self" title="Operational Guides"> <i class="fas fa-cogs"></i> <span>Operations Guide</span> </a>
+           <a href="shrink.html" class="dashboard-item" data-open="self" title="Shrink Management Guides"> <i class="fas fa-compress-arrows-alt"></i> <span>Shrink Guide</span> </a>
+        </div>
       </section>
 
       <!-- Content Frame Container -->
-      <div id="frame-container"> <!-- Iframe loading structure --> </div>
+      <div id="frame-container">
+        <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
+        <div class="iframe-loading-container">
+             <div class="iframe-loading"></div>
+             <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
+        </div>
+        <div id="fallback-message" role="alert">
+          <p>Unable to load this page within the frame.<br>
+          <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
+        </div>
+      </div>
 
       <!-- Who Is In Today Section -->
-      <section id="who-is-in"> <!-- Who is in iframe --> </section>
+      <section id="who-is-in">
+        <h2>Who Is In Today?</h2>
+         <div class="iframe-loading-container">
+             <div class="iframe-loading"></div>
+             <div class="iframe-container">
+                 <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
+             </div>
+         </div>
+      </section>
 
       <!-- Management Rota Section -->
-      <section id="management-rota"> <!-- Rota iframe --> </section>
+      <section id="management-rota">
+        <h2>Management Rota</h2>
+         <div class="iframe-loading-container">
+             <div class="iframe-loading"></div>
+             <div class="iframe-container">
+                <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
+             </div>
+         </div>
+      </section>
 
        <!-- Wheel Section -->
-      <section id="wheel"> <!-- Wheel iframe --> </section>
+      <section id="wheel">
+        <h2>Retail Wheel</h2>
+        <p>Access the Retail Wheel for a comprehensive overview of store performance metrics.</p>
+         <div class="iframe-loading-container">
+             <div class="iframe-loading"></div>
+             <div class="iframe-container">
+                 <iframe data-src="https://morrisonsprd.cloud.looker.com/dashboards/32" title="Retail Wheel Dashboard" loading="lazy"></iframe>
+             </div>
+         </div>
+         <p style="margin-top: 1em;"><a href="https://morrisonsprd.cloud.looker.com/dashboards/32" target="_blank" rel="noopener noreferrer" class="button-link">Open Retail Wheel in New Tab <i class="fas fa-external-link-alt"></i></a></p>
+      </section>
 
       <!-- Notes Section (Interactive Whiteboard) -->
       <section id="notes">
         <h2>Notes Whiteboard</h2>
-        <p>Use the whiteboard for notes or brainstorming. Drawings & text can be saved/loaded locally. Use tools for color/size and buttons for actions.</p>
+        <p>Use the whiteboard below for quick notes or brainstorming. Drawings can be saved and loaded locally in your browser. Use the toolbar for color/size and the buttons for actions.</p>
         <div class="whiteboard-container">
           <div class="whiteboard-tools">
-            <input type="color" class="color-picker" value="#000000" aria-label="Select drawing/text color" title="Color">
+            <input type="color" class="color-picker" value="#000000" aria-label="Select drawing color" title="Drawing Color">
             <select class="brush-size" aria-label="Select brush size" title="Brush Size">
-              <option value="2">2px</option>
-              <option value="4" selected>4px</option>
-              <option value="8">8px</option>
-              <option value="12">12px</option>
-            </select>
-             <select class="font-size" aria-label="Select font size" title="Font Size">
-                <option value="14">14px</option>
-                <option value="18" selected>18px</option>
-                <option value="24">24px</option>
-                <option value="32">32px</option>
+              <option value="2">Small</option>
+              <option value="4" selected>Medium</option>
+              <option value="8">Large</option>
+              <option value="12">X-Large</option>
             </select>
           </div>
           <canvas id="whiteboard" aria-label="Interactive whiteboard for notes"></canvas>
-          <!-- Text input overlay - will be positioned by JS -->
-          <textarea id="text-input-overlay" aria-label="Text input area"></textarea>
           <div class="button-group">
-            <button class="pen-button active" title="Pen Tool"><i class="fas fa-pencil-alt"></i> Pen</button> <!-- Default active -->
-            <button class="text-button" title="Text Tool"><i class="fas fa-font"></i> Text</button>
+            <button class="save-button" title="Save drawing to local storage"><i class="fas fa-save"></i> Save</button>
+            <button class="load-button" title="Load drawing from local storage"><i class="fas fa-upload"></i> Load</button>
+            <button class="undo-button" title="Undo last stroke"><i class="fas fa-undo"></i> Undo</button>
+            <button class="fill-button" title="Fill canvas with current color"><i class="fas fa-fill-drip"></i> Fill</button>
             <button class="eraser-button" title="Toggle eraser tool"><i class="fas fa-eraser"></i> Eraser</button>
-            <button class="fill-button" title="Fill canvas background"><i class="fas fa-fill-drip"></i> Fill BG</button>
-            <button class="undo-button" title="Undo last action"><i class="fas fa-undo"></i> Undo</button>
             <button class="clear-button" title="Clear whiteboard"><i class="fas fa-trash"></i> Clear</button>
-            <button class="save-button" title="Save to local storage"><i class="fas fa-save"></i> Save</button>
-            <button class="load-button" title="Load from local storage"><i class="fas fa-upload"></i> Load</button>
-            <button class="export-png-button" title="Download as PNG"><i class="fas fa-download"></i> Download</button>
+            <button class="export-png-button" title="Download drawing as PNG image"><i class="fas fa-download"></i> Download</button>
           </div>
         </div>
       </section>
     </main>
   </div>
 
-  <footer> <!-- Footer content --> </footer>
+  <footer>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+  </footer>
+
+  <!-- Notification Element -->
   <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
 
   <!-- JavaScript -->
@@ -210,176 +276,124 @@
       function showNotification(message, duration = 3000) { const notification = document.getElementById('notification'); if (!notification) return; notification.textContent = message; notification.style.display = 'block'; notification.style.opacity = 1; setTimeout(() => { notification.style.opacity = 0; setTimeout(() => { notification.style.display = 'none'; }, 300); }, duration); }
 
       /* --- Dashboard Item Click Handler & Iframe --- */
-      // ... (Iframe loading code remains the same as previous version) ...
-        const dashboardItems = document.querySelectorAll('#dashboard .dashboard-item');
-       const frameContainer = document.getElementById('frame-container');
-       const contentFrame = document.getElementById('content-frame');
-       const closeFrame = document.getElementById('close-frame');
-       const fallbackMessage = document.getElementById('fallback-message');
-       const fallbackLink = document.getElementById('fallback-link');
-       const frameSpinner = frameContainer ? frameContainer.querySelector('.iframe-loading') : null;
-       let frameLoadTimeout;
-       function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
-       function loadContentInFrame(url) { if (!frameContainer || !contentFrame || !fallbackLink || !fallbackMessage || !closeFrame ) return; contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; fallbackLink.href = url; frameContainer.classList.add('active'); showFrameSpinner(true); contentFrame.src = url; clearTimeout(frameLoadTimeout); frameLoadTimeout = setTimeout(() => { showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Content took too long to load.", 4000); }, 15000); frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-       if (contentFrame) { contentFrame.onload = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); let accessible = false; try { const doc = contentFrame.contentDocument || contentFrame.contentWindow?.document; if (doc && doc.body && doc.body.childNodes.length > 0) { accessible = true; } else if (doc) { accessible = true; } } catch (e) { accessible = true; console.warn("Cross-origin frame loaded.", e); } fallbackMessage.style.display = accessible ? "none" : "block"; }; contentFrame.onerror = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Error loading content in frame.", 4000); }; }
-       dashboardItems.forEach(item => { item.addEventListener('click', function(e) { const url = this.getAttribute('href'); const openType = this.dataset.open; if (openType === "external") { e.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); } else if (openType === "frame") { e.preventDefault(); loadContentInFrame(url); } }); });
-       if (closeFrame) { closeFrame.addEventListener('click', function() { if (!frameContainer || !contentFrame) return; frameContainer.classList.remove('active'); contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; showFrameSpinner(false); clearTimeout(frameLoadTimeout); }); }
-
+      const dashboardItems = document.querySelectorAll('#dashboard .dashboard-item');
+      const frameContainer = document.getElementById('frame-container');
+      const contentFrame = document.getElementById('content-frame');
+      const closeFrame = document.getElementById('close-frame');
+      const fallbackMessage = document.getElementById('fallback-message');
+      const fallbackLink = document.getElementById('fallback-link');
+      const frameSpinner = frameContainer ? frameContainer.querySelector('.iframe-loading') : null;
+      let frameLoadTimeout;
+      function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
+      function loadContentInFrame(url) { if (!frameContainer || !contentFrame || !fallbackLink || !fallbackMessage || !closeFrame ) return; contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; fallbackLink.href = url; frameContainer.classList.add('active'); showFrameSpinner(true); contentFrame.src = url; clearTimeout(frameLoadTimeout); frameLoadTimeout = setTimeout(() => { showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Content took too long to load.", 4000); }, 15000); frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      if (contentFrame) { contentFrame.onload = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); let accessible = false; try { const doc = contentFrame.contentDocument || contentFrame.contentWindow?.document; if (doc && doc.body && doc.body.childNodes.length > 0) { accessible = true; } else if (doc) { accessible = true; } } catch (e) { accessible = true; console.warn("Cross-origin frame loaded.", e); } fallbackMessage.style.display = accessible ? "none" : "block"; }; contentFrame.onerror = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Error loading content in frame.", 4000); }; }
+      dashboardItems.forEach(item => { item.addEventListener('click', function(e) { const url = this.getAttribute('href'); const openType = this.dataset.open; if (openType === "external") { e.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); } else if (openType === "frame") { e.preventDefault(); loadContentInFrame(url); } }); });
+      if (closeFrame) { closeFrame.addEventListener('click', function() { if (!frameContainer || !contentFrame) return; frameContainer.classList.remove('active'); contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; showFrameSpinner(false); clearTimeout(frameLoadTimeout); }); }
 
       /* --- Whiteboard Setup --- */
       const canvas = document.getElementById('whiteboard');
-      let ctx, colorPicker, brushSizeSelect, fontSizeSelect, textInputOverlay,
-          strokes = [], currentStroke = null, currentTool = 'pen', drawing = false, textInputActive = false;
+      let ctx, colorPicker, brushSize, strokes = [], currentStroke = null, eraserEnabled = false, drawing = false;
 
       if (canvas) {
-           ctx = canvas.getContext('2d');
+           ctx = canvas.getContext('2d', { willReadFrequently: false }); // Standard context
            colorPicker = document.querySelector('.color-picker');
-           brushSizeSelect = document.querySelector('.brush-size');
-           fontSizeSelect = document.querySelector('.font-size'); // Get font size selector
-           textInputOverlay = document.getElementById('text-input-overlay');
+           brushSize = document.querySelector('.brush-size');
 
+           // Function to get the effective background color based on theme and last fill
            const getEffectiveBackgroundColor = () => {
-                const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill');
-                if (lastFill) return lastFill.color;
-                const styles = getComputedStyle(document.documentElement);
-                return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim();
-            };
+               const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill');
+               if (lastFill) {
+                   return lastFill.color; // Use last fill color
+               }
+               // Otherwise, use theme background
+               const styles = getComputedStyle(document.documentElement);
+               return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim();
+           };
 
-           const renderAll = () => {
-               if (!ctx) return;
-               const ratio = window.devicePixelRatio || 1;
-               const width = canvas.width / ratio;
-               const height = canvas.height / ratio;
-               const originalCompositeOperation = ctx.globalCompositeOperation;
-               const originalFillStyle = ctx.fillStyle; // Save original fill style
+            const renderAll = () => {
+                if (!ctx) return;
+                const ratio = window.devicePixelRatio || 1;
+                const width = canvas.width / ratio;
+                const height = canvas.height / ratio;
 
-               // --- Clear canvas with effective background ---
-                ctx.globalCompositeOperation = 'source-over'; // Ensure normal drawing mode for clear
+                // Store current settings
+                const originalCompositeOperation = ctx.globalCompositeOperation;
+                const originalStrokeStyle = ctx.strokeStyle;
+                const originalLineWidth = ctx.lineWidth;
+                const originalFillStyle = ctx.fillStyle;
+
+                // Set default operation
+                ctx.globalCompositeOperation = 'source-over';
+                // Clear with the effective background color
                 ctx.fillStyle = getEffectiveBackgroundColor();
                 ctx.fillRect(0, 0, width, height);
 
+                // Draw strokes
+                strokes.forEach(stroke => {
+                    if (!stroke || !stroke.points || stroke.points.length < 1) return;
 
-               // --- Draw strokes ---
-               strokes.forEach(stroke => {
-                   if (!stroke) return;
-                   ctx.lineJoin = 'round';
-                   ctx.lineCap = 'round';
+                    if (stroke.tool === 'fill') {
+                        // Fill operation already handled by setting the background for subsequent redraws
+                        // We track it in strokes array to determine the correct background
+                        // But we draw the fill *during* the initial clear/background fill phase
+                        // However, we need to reset fillStyle for subsequent strokes
+                        ctx.fillStyle = getEffectiveBackgroundColor(); // Reset to current bg for safety
+                    } else {
+                         ctx.lineJoin = 'round';
+                         ctx.lineCap = 'round';
+                         ctx.lineWidth = stroke.lineWidth;
+                         ctx.strokeStyle = stroke.color; // Use stroke's stored color
 
-                   if (stroke.tool === 'pen' || stroke.tool === 'eraser') {
-                       if (!stroke.points || stroke.points.length < 1) return;
-                       ctx.lineWidth = stroke.lineWidth;
-                       ctx.strokeStyle = stroke.color; // Use stored color
-                       ctx.globalCompositeOperation = stroke.tool === 'eraser' ? 'destination-out' : 'source-over';
-                       ctx.beginPath();
-                       ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-                       for (let i = 1; i < stroke.points.length; i++) {
-                            if (stroke.points[i]) ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
-                       }
-                       ctx.stroke();
-                   } else if (stroke.tool === 'text') {
-                       ctx.globalCompositeOperation = 'source-over'; // Ensure normal drawing for text
-                       ctx.fillStyle = stroke.color;
-                       ctx.font = `${stroke.fontSize}px Roboto, sans-serif`;
-                       ctx.textAlign = 'left';
-                       ctx.textBaseline = 'top';
-                       // Draw multi-line text
-                       const lines = stroke.text.split('\n');
-                       lines.forEach((line, index) => {
-                           ctx.fillText(line, stroke.x, stroke.y + index * (stroke.fontSize * 1.2)); // Adjust line height slightly
-                       });
-                   }
-                   // 'fill' tool doesn't draw here, it affects the background clear
-               });
+                         // Set composite operation for eraser strokes
+                        if (stroke.tool === 'eraser') {
+                            ctx.globalCompositeOperation = 'destination-out';
+                            // The actual stroke color doesn't matter for destination-out,
+                            // but setting it might help debug if needed. Let's use black.
+                             ctx.strokeStyle = '#000000';
+                        } else {
+                            ctx.globalCompositeOperation = 'source-over'; // Ensure pen uses normal drawing
+                        }
 
-               // --- Restore context state ---
-               ctx.globalCompositeOperation = originalCompositeOperation;
-                ctx.fillStyle = originalFillStyle; // Restore fill style
-               // Restore current tool settings for cursor etc.
-               ctx.lineWidth = parseInt(brushSizeSelect.value, 10);
-               ctx.strokeStyle = colorPicker.value;
+                        ctx.beginPath();
+                        ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+                        for (let i = 1; i < stroke.points.length; i++) {
+                             if (stroke.points[i]) {
+                               ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+                            }
+                        }
+                        ctx.stroke();
+                    }
+                });
 
+                // Restore settings for future drawing/cursor state
+                ctx.globalCompositeOperation = originalCompositeOperation;
+                ctx.strokeStyle = originalStrokeStyle;
+                ctx.lineWidth = originalLineWidth;
+                ctx.fillStyle = originalFillStyle;
            };
 
-           const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.scale(ratio, ratio); renderAll(); };
+            const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.scale(ratio, ratio); renderAll(); };
 
-           const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
-
-           const handleTextInput = (startX, startY) => {
-                if (textInputActive) return; // Prevent multiple text boxes
-                textInputActive = true;
-                textInputOverlay.style.left = `${startX}px`;
-                textInputOverlay.style.top = `${startY}px`;
-                textInputOverlay.style.display = 'block';
-                textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`;
-                textInputOverlay.style.color = colorPicker.value;
-                textInputOverlay.value = '';
-                textInputOverlay.focus();
-
-                const finalizeText = () => {
-                    if (!textInputActive) return;
-                    const text = textInputOverlay.value.trim();
-                    if (text) {
-                        strokes.push({
-                            tool: 'text',
-                            text: text,
-                            x: startX,
-                            y: startY,
-                            color: colorPicker.value,
-                            fontSize: parseInt(fontSizeSelect.value, 10)
-                        });
-                        renderAll();
-                    }
-                    textInputOverlay.style.display = 'none';
-                    textInputActive = false;
-                     // Remove listeners specific to this text input session
-                     textInputOverlay.onblur = null;
-                     textInputOverlay.onkeydown = null;
-                };
-
-                // Finalize on blur
-                textInputOverlay.onblur = finalizeText;
-
-                // Finalize on Enter (but allow Shift+Enter for new lines)
-                textInputOverlay.onkeydown = (e) => {
-                     if (e.key === 'Enter' && !e.shiftKey) {
-                         e.preventDefault(); // Prevent default Enter behavior (new line)
-                         finalizeText();
-                    } else if (e.key === 'Escape') {
-                        // Cancel on Escape
-                         textInputOverlay.value = ''; // Clear just in case
-                         finalizeText();
-                    }
-                };
-            };
-
+            // --- Whiteboard Drawing Functions ---
+            const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
 
             const startDrawing = (e) => {
-                if (textInputActive) { // If text input is active, finalize it first
-                    textInputOverlay.blur(); // Trigger finalization logic
-                    return;
-                 }
-                if (currentTool === 'text') {
-                    const pos = getXY(e);
-                    if(pos) handleTextInput(pos.x, pos.y);
-                    return; // Don't start drawing path for text tool
-                }
-
                 const pos = getXY(e);
-                if (!pos) return;
+                if (!pos) return; // Exit if no valid coordinates
                 drawing = true;
-                const currentLineWidth = parseInt(brushSizeSelect.value, 10);
-                const isEraser = currentTool === 'eraser';
+                const currentLineWidth = parseInt(brushSize.value, 10);
 
-                currentStroke = {
-                    tool: isEraser ? 'eraser' : 'pen',
-                    color: isEraser ? '#000000' : colorPicker.value, // Store color even for eraser for potential future use/type checking
-                    lineWidth: currentLineWidth,
-                    points: [pos]
-                };
-
+                if (eraserEnabled) {
+                    // For eraser using destination-out, color doesn't visually matter,
+                    // but we store it to identify the tool type.
+                    currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] };
+                    ctx.globalCompositeOperation = 'destination-out';
+                } else {
+                    currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] };
+                    ctx.globalCompositeOperation = 'source-over'; // Ensure pen mode
+                }
+                ctx.strokeStyle = currentStroke.color; // Set stroke style for the path
                 ctx.lineWidth = currentLineWidth;
-                ctx.strokeStyle = isEraser ? '#000000' : colorPicker.value; // Eraser uses black conceptually for destination-out
-                ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
                 ctx.lineJoin = 'round';
                 ctx.lineCap = 'round';
                 ctx.beginPath();
@@ -387,28 +401,28 @@
             };
 
            const draw = (e) => {
-               if (!drawing || !currentStroke || currentTool === 'text') return;
+               if (!drawing || !currentStroke) return;
                const pos = getXY(e);
                if (!pos) return;
-               const isEraser = currentTool === 'eraser';
 
-               ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
-               ctx.lineTo(pos.x, pos.y);
-               ctx.stroke();
-               currentStroke.points.push(pos);
+                // Apply correct composite operation for this stroke type
+                ctx.globalCompositeOperation = eraserEnabled ? 'destination-out' : 'source-over';
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke(); // Draw the segment
+                currentStroke.points.push(pos); // Add point after drawing segment
             };
 
            const stopDrawing = () => {
-               if (!drawing || currentTool === 'text') return;
+               if (!drawing) return;
                drawing = false;
                if (currentStroke && currentStroke.points.length > 1) { strokes.push(currentStroke); }
                currentStroke = null;
-               ctx.globalCompositeOperation = 'source-over'; // Reset
+               ctx.globalCompositeOperation = 'source-over'; // Reset composite operation after drawing stops
             };
 
             // --- Whiteboard Event Listeners ---
-           canvas.addEventListener('mousedown', (e) => startDrawing(e));
-           canvas.addEventListener('mousemove', (e) => draw(e));
+           canvas.addEventListener('mousedown', startDrawing);
+           canvas.addEventListener('mousemove', draw);
            canvas.addEventListener('mouseup', stopDrawing);
            canvas.addEventListener('mouseleave', stopDrawing);
            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); document.body.style.overflow = 'hidden'; }, { passive: false });
@@ -416,50 +430,36 @@
            canvas.addEventListener('touchend', () => { stopDrawing(); document.body.style.overflow = ''; });
            canvas.addEventListener('touchcancel', () => { stopDrawing(); document.body.style.overflow = ''; });
 
-            // --- Tool/Button Listeners ---
-            const toolButtons = {
-                pen: document.querySelector('.pen-button'),
-                text: document.querySelector('.text-button'),
-                eraser: document.querySelector('.eraser-button'),
-                 fill: document.querySelector('.fill-button') // Added fill
-            };
-
-             const setActiveTool = (toolName) => {
-                if (textInputActive) textInputOverlay.blur(); // Finalize text if switching tool
-                currentTool = toolName;
-                Object.values(toolButtons).forEach(btn => btn?.classList.remove('active'));
-                if (toolButtons[toolName]) {
-                    toolButtons[toolName].classList.add('active');
-                 }
-                 canvas.classList.toggle('eraser-active', toolName === 'eraser');
-                 ctx.globalCompositeOperation = toolName === 'eraser' ? 'destination-out' : 'source-over';
-             };
-
-            toolButtons.pen?.addEventListener('click', () => setActiveTool('pen'));
-            toolButtons.text?.addEventListener('click', () => setActiveTool('text'));
-            toolButtons.eraser?.addEventListener('click', () => setActiveTool('eraser'));
-
-           colorPicker.addEventListener('input', () => { if (currentTool === 'pen') ctx.strokeStyle = colorPicker.value; });
-           brushSizeSelect.addEventListener('change', () => { if (currentTool === 'pen' || currentTool === 'eraser') ctx.lineWidth = parseInt(brushSizeSelect.value, 10); });
-           // Font size select listener (no immediate canvas change needed)
-           fontSizeSelect.addEventListener('change', () => {
-                if(textInputActive) textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`;
-           });
+           colorPicker.addEventListener('input', () => { if (!eraserEnabled && !drawing) ctx.strokeStyle = colorPicker.value; }); // Use input for live color change
+           brushSize.addEventListener('change', () => { if (!drawing) ctx.lineWidth = parseInt(brushSize.value, 10); });
 
            document.querySelector('.clear-button')?.addEventListener('click', () => { strokes = []; renderAll(); showNotification('Whiteboard cleared.'); });
            document.querySelector('.save-button')?.addEventListener('click', () => { try { localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); showNotification('Whiteboard saved locally!'); } catch (e) { console.error('Error saving whiteboard:', e); showNotification('Failed to save: Storage limit likely exceeded.', 5000); } });
            document.querySelector('.load-button')?.addEventListener('click', () => { const data = localStorage.getItem('whiteboardStrokes'); if (data) { try { strokes = JSON.parse(data); renderAll(); showNotification('Whiteboard loaded!'); } catch (e) { showNotification('Error parsing saved drawing.'); strokes = []; renderAll(); } } else { showNotification('No saved drawing found.'); } });
            document.querySelector('.undo-button')?.addEventListener('click', () => { if (strokes.length > 0) { strokes.pop(); renderAll(); showNotification('Undo successful.'); } else { showNotification('Nothing to undo.'); } });
-           document.querySelector('.fill-button')?.addEventListener('click', () => { strokes.push({ tool: 'fill', color: colorPicker.value }); renderAll(); showNotification('Canvas background filled.'); setActiveTool('pen'); }); // Switch back to pen after fill
+            document.querySelector('.fill-button')?.addEventListener('click', () => {
+                // Add fill instruction to stroke history
+                strokes.push({ tool: 'fill', color: colorPicker.value });
+                // Trigger a full redraw which will now use this fill color as background
+                renderAll();
+                showNotification('Canvas background filled.');
+            });
+           document.querySelector('.eraser-button')?.addEventListener('click', function() {
+               eraserEnabled = !eraserEnabled;
+               this.classList.toggle('active', eraserEnabled);
+                // Update context immediately if not drawing
+               if (!drawing) {
+                   ctx.globalCompositeOperation = eraserEnabled ? 'destination-out' : 'source-over';
+                   ctx.strokeStyle = eraserEnabled ? '#000000' : colorPicker.value; // Update stroke style too
+               }
+               showNotification(`Eraser ${eraserEnabled ? 'ON' : 'OFF'}`);
+            });
            document.querySelector('.export-png-button')?.addEventListener('click', () => { const dataURL = canvas.toDataURL('image/png'); const link = document.createElement('a'); link.href = dataURL; link.download = 'morrisons-dashboard-notes.png'; document.body.appendChild(link); link.click(); document.body.removeChild(link); showNotification('Downloaded as PNG.'); });
 
            window.addEventListener('resize', debounce(resizeCanvas, 200));
            resizeCanvas();
            const initialData = localStorage.getItem('whiteboardStrokes');
             if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
-
-           // Set initial tool state
-           setActiveTool('pen');
 
        } else { console.log("Whiteboard canvas not found."); }
 
