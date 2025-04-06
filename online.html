@@ -4,404 +4,138 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cleveleys Morrisons Management Dashboard - Online</title>
-  <!-- Google Fonts & Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Removed integrity attribute to avoid hash mismatch error -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     /* ------------------------------
-       CSS Styles for Cleveleys Morrisons Management Dashboard - Online
+       Base CSS (Consistent across pages)
        ------------------------------ */
     :root {
-      --primary-green: #006400; /* Dark Green */
-      --secondary-yellow: #FFD700; /* Yellow */
-      --background-faint-green: #e6ffe6; /* Faint Green */
-      --background-white: #FFFFFF;
-      --text-color: #333333;
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.1);
-      --footer-bg: var(--primary-green);
-      --footer-text: var(--background-white);
-
-      /* Dark Mode Variables */
-      --dark-background: #121212;
-      --dark-card-bg: #1e1e1e;
-      --dark-text-color: #ffffff;
-      --dark-footer-bg: #333333;
-      --dark-footer-text: #ffffff;
+      --primary-green: #006400; --secondary-yellow: #FFD700; --background-faint-green: #e6ffe6; --background-white: #FFFFFF; --text-color: #333333; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.1); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
+      /* Dark Mode */
+      --dark-background: #121212; --dark-card-bg: #1e1e1e; --dark-text-color: #e0e0e0; --dark-footer-bg: #333333; --dark-footer-text: #e0e0e0;
     }
-
-    /* Yellow Theme Variables */
-    .yellow-theme {
-      --primary-green: #FFD700; /* Yellow */
-      --secondary-yellow: #006400; /* Dark Green */
-      --background-faint-green: #ffffe6; /* Faint Yellow */
-      --background-white: #FFFFFF;
-      --text-color: #333333;
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.1);
+     /* Yellow Theme Variables */
+    body.yellow-theme {
+      --primary-green: #FFB800; /* Brighter Yellow for primary */
+      --secondary-yellow: #006400; /* Dark Green for secondary */
+      --background-faint-green: #fffadf; /* Lighter Faint Yellow */
+      --text-color: #4d3800; /* Darker text for readability on yellow */
+      --card-shadow: rgba(0, 0, 0, 0.15);
       --footer-bg: var(--primary-green);
-      --footer-text: var(--background-white);
+      --footer-text: #333; /* Dark text on yellow footer */
 
       /* Dark Mode Overrides for Yellow Theme */
-      --dark-background: #1a1a0a;
-      --dark-card-bg: #2e2e0e;
-      --dark-text-color: #ffffff;
-      --dark-footer-bg: #4d4d00;
-      --dark-footer-text: #ffffff;
+       &.dark-mode {
+           --primary-green: #FFD700; /* Gold in dark mode */
+           --secondary-yellow: #008000; /* Brighter Green */
+           --background-faint-green: var(--dark-background); /* Use dark background */
+           --dark-card-bg: #2a2a11; /* Dark yellow-tinted card */
+           --dark-text-color: #fff5cc; /* Light yellow text */
+           --dark-footer-bg: #4d3800; /* Dark brown/gold footer */
+           --dark-footer-text: #fff5cc;
+       }
     }
 
-    /* Transition for Smooth Theme Change */
-    :root, .yellow-theme {
-      transition: all 4s ease;
+    /* Smooth Theme Transition */
+    body { transition: background-color 0.6s ease, color 0.6s ease; }
+    :root, body.yellow-theme { transition: none; /* Prevent initial transition jump */ }
+
+    /* Base Styles (Same as index.html) */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto', sans-serif; background-color: var(--background-faint-green); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+    body.dark-mode { background-color: var(--dark-background); color: var(--dark-text-color); --card-bg: var(--dark-card-bg); }
+    a { color: inherit; text-decoration: none; }
+    body.mobile-nav-open { overflow: hidden; }
+    header { background-color: var(--background-white); color: var(--primary-green); padding: 20px 10px; text-align: center; position: relative; box-shadow: 0 2px 4px var(--card-shadow); transition: background-color 0.3s, color 0.3s; }
+    body.dark-mode header { background-color: var(--dark-card-bg); color: var(--dark-text-color); }
+    header img { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 50px; transition: none; }
+    header h1 { font-size: 2em; margin: 0; padding-left: 80px; }
+
+    /* Navigation Styles (Same as index.html) */
+    nav.nav { position: sticky; top: 0; z-index: 1000; background-color: var(--secondary-yellow); box-shadow: 0 2px 15px rgba(0,0,0,0.1); transition: background-color 0.3s; }
+    body.dark-mode nav.nav { background-color: #333; box-shadow: 0 2px 15px rgba(0,0,0,0.6); }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 60px; }
+    .nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; transition: transform 0.3s ease; }
+    .nav-links li { position: relative; }
+    .nav-links a { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; font-weight: 500; color: var(--primary-green); border-radius: 8px; transition: background-color 0.3s, transform 0.3s, color 0.3s; }
+    body.dark-mode .nav-links a { color: var(--dark-text-color); }
+    .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); transform: translateY(-2px); }
+    .nav-links .active { background-color: var(--primary-green); color: var(--background-white); }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--primary-green); border-radius: 2px; transition: width 0.3s ease; }
+    .nav-links a:hover::after, .nav-links .active::after { width: 100%; }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; z-index: 1001; }
+    .hamburger span { display: block; width: 25px; height: 3px; background: var(--primary-green); margin: 5px 0; transition: all 0.3s ease; }
+    body.dark-mode .hamburger span { background: var(--dark-text-color); }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    .dark-mode-toggle { background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--primary-green); transition: color 0.3s; }
+    body.dark-mode .dark-mode-toggle { color: var(--dark-text-color); }
+     @media (max-width: 992px) { /* Adjusted breakpoint */
+        .hamburger { display: flex; }
+        .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; }
+        body.dark-mode .nav-links { background: #333; }
+        .nav-links.active { transform: translateX(0); }
+        .nav-links li { margin: 0; width: 100%; }
+        .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; }
+        body.dark-mode .nav-links a { color: var(--dark-text-color); }
+        .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); }
+        .nav-links .active { border-bottom: none; }
+        .nav-links a::after { display: none; }
     }
 
-    /* Base Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--background-faint-green);
-      color: var(--text-color);
-      line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    /* Dark mode overrides (plus variable updates) */
-    body.dark-mode {
-      background-color: var(--dark-background);
-      color: var(--dark-text-color);
-      /* Update variables so elements using them (cards, etc.) get dark colors */
-      --background-faint-green: var(--dark-background);
-      --card-bg: var(--dark-card-bg);
-    }
-    a { 
-      color: inherit; 
-      text-decoration: none; 
-    }
-    body.mobile-nav-open { 
-      overflow: hidden; 
-    }
+    /* Main Container & Dashboard Styles (Similar to index.html, adapted for cards) */
+    .container { padding: 20px; max-width: 1200px; margin: 20px auto; }
+    main { role: main; }
+    .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 20px 0; } /* Adjusted gap */
+    .dashboard-card { background-color: var(--card-bg); border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); padding: 25px; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+    body.dark-mode .dashboard-card { background-color: var(--dark-card-bg); }
+    .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px var(--card-shadow); }
+    .dashboard-card h3 { margin-bottom: 15px; color: var(--primary-green); display: flex; align-items: center; gap: 10px; font-size: 1.5em; transition: color 0.3s; } /* Increased font size */
+    body.dark-mode .dashboard-card h3 { color: var(--secondary-yellow); /* Adjusted dark mode heading color for theme */ }
+    .dashboard-card p { flex-grow: 1; margin-bottom: 20px; font-size: 1em; } /* Increased font size */
+    .dashboard-card iframe { width: 100%; height: 300px; border: none; border-radius: 8px; margin-bottom: 15px; background-color: #fff; /* Ensure iframe background is white */ }
+    .dashboard-card a.button-link { display: inline-block; padding: 12px 20px; background-color: var(--primary-green); color: var(--background-white); border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; align-self: flex-start; font-size: 0.95em; } /* Styled like a button */
+    body.dark-mode .dashboard-card a.button-link { color: var(--dark-background); /* Adjust text color for dark mode */ }
+    .dashboard-card a.button-link:hover { background-color: var(--secondary-yellow); color: var(--primary-green); transform: translateY(-2px); }
+    body.dark-mode .dashboard-card a.button-link:hover { color: var(--dark-background); /* Adjust hover text color */ }
 
-    header {
-      background-color: var(--background-white);
-      color: var(--primary-green);
-      padding: 20px 10px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 2px 4px var(--card-shadow);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode header {
-      background-color: var(--card-bg);
-      color: var(--dark-text-color);
-    }
-    header img {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 50px;
-      transition: none;
-    }
-    header h1 { 
-      font-size: 2em; 
-      margin: 0; 
-      padding-left: 80px; 
-    }
 
-    /* Navigation Styles */
-    nav.nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: var(--secondary-yellow);
-      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
-    }
-    body.dark-mode nav.nav {
-      background-color: #333;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
-    }
-    .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      height: 60px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      list-style: none;
-      transition: transform 0.3s ease;
-    }
-    .nav-links li { 
-      position: relative; 
-    }
-    .nav-links a {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-weight: 500;
-      color: var(--primary-green);
-      border-radius: 8px;
-      transition: background-color 0.3s, transform 0.3s, color 0.3s;
-    }
-    body.dark-mode .nav-links a { 
-      color: var(--dark-text-color); 
-    }
-    .nav-links a:hover {
-      background-color: var(--primary-green);
-      color: var(--secondary-yellow);
-      transform: translateY(-2px);
-    }
-    .nav-links .active {
-      background-color: var(--primary-green);
-      color: var(--secondary-yellow);
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background-color: var(--primary-green);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover::after,
-    .nav-links .active::after { 
-      width: 100%; 
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      z-index: 1001;
-    }
-    .hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: var(--primary-green);
-      margin: 5px 0;
-      transition: all 0.3s ease;
-    }
-    body.dark-mode .hamburger span { 
-      background: var(--dark-text-color); 
-    }
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px,5px);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px,-6px);
-    }
-
-    .nav-actions { 
-      display: flex; 
-      align-items: center; 
-      gap: 1rem; 
-    }
-    .dark-mode-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.5em;
-      color: var(--primary-green);
-      transition: color 0.3s;
-    }
-    body.dark-mode .dark-mode-toggle {
-      color: var(--dark-text-color);
-    }
-
-    @media (max-width: 768px) {
-      .hamburger { 
-        display: flex; 
-      }
-      .nav-links {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--secondary-yellow);
-        flex-direction: column;
-        padding: 1rem;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        overflow-y: auto;
-      }
-      body.dark-mode .nav-links { 
-        background: #333; 
-      }
-      .nav-links.active { 
-        transform: translateX(0); 
-      }
-      .nav-links li { 
-        margin: 0; 
-        width: 100%; 
-      }
-      .nav-links a {
-        margin: 10px 0;
-        width: 100%;
-        background-color: transparent;
-        color: var(--primary-green);
-        border-radius: 4px;
-        text-align: left;
-        font-size: 1em;
-        padding: 10px;
-      }
-      body.dark-mode .nav-links a { 
-        color: var(--dark-text-color); 
-      }
-      .nav-links a:hover {
-        background-color: var(--primary-green);
-        color: var(--secondary-yellow);
-      }
-    }
-
-    /* Main Container Styles */
-    .container { 
-      padding: 20px; 
-      max-width: 1200px; 
-      margin: 0 auto; 
-    }
-    main {
-      role: main;
-    }
-
-    /* Dashboard Styles */
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .dashboard-card {
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .dashboard-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px var(--card-shadow);
-    }
-    .dashboard-card h3 {
-      margin-bottom: 15px;
-      color: var(--primary-green);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.4em;
-      transition: color 0.3s;
-    }
-    .dashboard-card p {
-      flex-grow: 1;
-      margin-bottom: 15px;
-    }
-    .dashboard-card iframe {
-      width: 100%;
-      height: 300px;
-      border: none;
-      border-radius: 5px;
-      margin-bottom: 15px;
-    }
-    .dashboard-card a {
-      display: inline-block;
-      padding: 10px 15px;
-      background-color: var(--primary-green);
-      color: var(--background-white);
-      border-radius: 5px;
-      text-align: center;
-      font-weight: 500;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-    .dashboard-card a:hover {
-      background-color: var(--secondary-yellow);
-      color: var(--primary-green);
-      transform: translateY(-2px);
-    }
-
-    /* Footer Styles */
-    footer {
-      background-color: var(--footer-bg);
-      color: var(--footer-text);
-      text-align: center;
-      padding: 10px 5px;
-      bottom: 0;
-      width: 100%;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode footer {
-      background-color: var(--dark-footer-bg);
-      color: var(--dark-footer-text);
-    }
-    footer p { 
-      margin: 0; 
-      font-size: 0.8em; 
-    }
+    /* Footer Styles (Same as index.html) */
+    footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
+    body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
+    footer p { margin: 0; font-size: 0.9em; }
     /* OTP text style */
-    footer #otp {
-      margin-top: 5px;
-      font-size: 0.9em;
-      font-weight: bold;
-    }
+    footer #otp { margin-top: 8px; font-size: 1em; font-weight: bold; color: var(--footer-text); /* Ensure OTP color matches footer text */}
+    body.dark-mode footer #otp { color: var(--dark-footer-text); }
 
-    /* Media Queries for Responsive Iframe */
-    @media (max-width: 768px) {
-      .dashboard-card iframe {
-        height: 250px;
-      }
-    }
-    @media (max-width: 480px) {
-      .dashboard-card iframe {
-        height: 200px;
-      }
-    }
+     /* Media Queries for Responsive Iframe */
+    @media (max-width: 768px) { .dashboard-card iframe { height: 250px; } }
+    @media (max-width: 480px) { .dashboard-card iframe { height: 200px; } }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
-         alt="Morrisons Logo">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
     <h1>Cleveleys Morrisons Management Dashboard</h1>
   </header>
 
-  <!-- Navigation -->
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
-      <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="online.html" class="active"><i class="fas fa-globe"></i> Online</a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i> Street</a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
-      </ul>
+       <ul class="nav-links">
+         <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+         <li><a href="online.html" class="active"><i class="fas fa-globe"></i> Online</a></li>
+         <li><a href="street.html"><i class="fas fa-store"></i> Market Street</a></li>
+         <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Front End</a></li>
+         <li><a href="operations.html"><i class="fas fa-cogs"></i> Operations</a></li>
+         <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe & Legal</a></li>
+       </ul>
       <div class="nav-actions">
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
-          🌓
-        </button>
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
       </div>
       <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
         <span></span><span></span><span></span>
@@ -415,55 +149,71 @@
       <div class="dashboard-card">
         <h3><i class="fab fa-amazon"></i> Amazon Seller Dashboard</h3>
         <p>Manage your Amazon sales, inventory, and orders directly from the dashboard.</p>
-        <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer">
-          Access Amazon Seller Dashboard
+        <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer" class="button-link">
+          Access Amazon Seller <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
       </div>
 
       <!-- Deliveroo Hub -->
       <div class="dashboard-card">
-        <h3><i class="fas fa-burger-soda"></i> Deliveroo Hub</h3>
+        <h3><i class="fas fa-motorcycle"></i> Deliveroo Hub</h3> <!-- Updated icon -->
         <p>Manage your Deliveroo restaurant operations, orders, and menu.</p>
-        <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer">
-          Access Deliveroo Hub
+        <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer" class="button-link">
+          Access Deliveroo Hub <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
       </div>
 
       <!-- Amazon Daily Update -->
       <div class="dashboard-card">
         <h3><i class="fas fa-chart-line"></i> Amazon Daily Update</h3>
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" title="Amazon Daily Update"></iframe>
-        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" target="_blank" rel="noopener noreferrer">
-          View Full Sheet
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" title="Amazon Daily Update Spreadsheet"></iframe>
+        <a href="https://docs.google.com/spreadsheets/d/14B7m8Zq5dK3nO9lP8sW1rT0vY2xZ5eF8aJ7cI9oB6kM/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link"> <!-- Direct link to sheet if pubhtml fails -->
+          View Full Sheet <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
       </div>
 
       <!-- Online Toolkit -->
       <div class="dashboard-card">
         <h3><i class="fas fa-tools"></i> Online Toolkit</h3>
-        <p>Access essential tools and resources for managing online operations.</p>
-        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home" target="_blank" rel="noopener noreferrer">
-          Visit Online Toolkit
+        <p>Access essential tools and resources for managing online operations via the Online Support Centre.</p>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home" target="_blank" rel="noopener noreferrer" class="button-link">
+          Visit Online Toolkit <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
       </div>
 
       <!-- Click & Collect (C&C) Guide -->
       <div class="dashboard-card">
         <h3><i class="fas fa-shopping-cart"></i> Click & Collect Guide</h3>
-        <p>Detailed guidelines and procedures for the Click & Collect service.</p>
-        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer">
-          View C&C Guide
+        <p>Detailed guidelines and procedures for the Click & Collect service, part of the Online Support Centre.</p>
+        <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer" class="button-link">
+          View C&C Guide <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
       </div>
 
       <!-- OSP (Online Store Platform) -->
       <div class="dashboard-card">
         <h3><i class="fas fa-laptop-code"></i> OSP Platform</h3>
-        <p>Manage your online store operations through the OSP.</p>
-        <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">
-          Access OSP Platform
+        <p>Manage your online store operations through the OSP (Online Store Platform).</p>
+        <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer" class="button-link">
+          Access OSP Platform <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
       </div>
+
+       <!-- Online Service Promises -->
+        <div class="dashboard-card">
+           <h3><i class="fas fa-handshake"></i> Online Customer Promises</h3>
+           <p>Remember our commitments to online customers (from the Customer First Toolkit):</p>
+           <ul>
+               <li><strong>Availability:</strong> Send ordered products or suitable alternatives.</li>
+               <li><strong>Communication:</strong> Inform about substitutes/missing items, offer choices.</li>
+               <li><strong>Packing Standards:</strong> Pick, handle, and pack items with care.</li>
+               <li><strong>Quality & Date Life:</strong> Pick products with the best quality and date life.</li>
+               <li><strong>Doorstep Service:</strong> Drive safely, deliver on time, assist with queries.</li>
+               <li><strong>Click & Collect Service:</strong> Happily load shopping into the customer's car.</li>
+           </ul>
+           <a href="operations.html#customer-first" class="button-link">Customer First Details</a> <!-- Link to relevant section -->
+       </div>
+
     </section>
   </main>
 
@@ -472,95 +222,128 @@
     <p id="otp">Generating OTP...</p>
   </footer>
 
-  <!-- Core JavaScript for Dark Mode & Mobile Nav -->
-  <script>
-    /* Dark mode toggle */
-    const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
-    toggleButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        btn.setAttribute('aria-pressed', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-    });
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
+  <!-- Core JavaScript (Identical Base JS) -->
+   <script>
+    // Basic JS for Dark Mode Toggle and Mobile Nav (Identical to index.html)
+    (function() {
+      'use strict';
+      // Dark Mode Toggle
+      const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
+      function toggleDarkMode() {
+          const isDark = document.body.classList.toggle('dark-mode');
+          darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', isDark));
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          // Re-apply theme class if needed after dark mode toggle
+          if(document.body.classList.contains('yellow-theme')) {
+              // No action needed usually, CSS handles overrides
+          }
       }
-
-      /* Apply Yellow Theme After Page Load */
-      setTimeout(() => {
-        document.body.classList.add('yellow-theme');
-      }, 500);
-    });
-
-    /* Hamburger (mobile nav) */
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      document.body.classList.toggle('mobile-nav-open');
-      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-      hamburger.setAttribute('aria-expanded', !expanded);
-    });
-    window.addEventListener('click', (event) => {
-      if (!event.target.closest('.nav') && !event.target.closest('.hamburger')) {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-          hamburger.classList.remove('active');
-          document.body.classList.remove('mobile-nav-open');
-          hamburger.setAttribute('aria-expanded', false);
-        }
-      }
-    });
-    const navItems = document.querySelectorAll('.nav-links a');
-    navItems.forEach(item => {
-      item.addEventListener('click', () => {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-          hamburger.classList.remove('active');
-          document.body.classList.remove('mobile-nav-open');
-          hamburger.setAttribute('aria-expanded', false);
-        }
+      darkModeToggleButtons.forEach(btn => {
+          btn.addEventListener('click', toggleDarkMode);
       });
-    });
-    hamburger.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') hamburger.click();
-    });
+       // Initial theme and dark mode load
+       document.addEventListener('DOMContentLoaded', () => {
+           const savedTheme = localStorage.getItem('theme');
+           if (savedTheme === 'dark') {
+               document.body.classList.add('dark-mode');
+               darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', 'true'));
+           }
+           // Apply Yellow Theme After Page Load and DOM ready
+           setTimeout(() => {
+               document.body.classList.add('yellow-theme');
+               // Force style recalculation if needed
+               void document.body.offsetHeight;
+           }, 100); // Shorter delay now that it's in DOMContentLoaded
+       });
+
+      // Mobile Navigation Toggle (Identical to index.html)
+       const hamburger = document.querySelector('.hamburger');
+       const navLinks = document.querySelector('.nav-links');
+       if (hamburger && navLinks) {
+           hamburger.addEventListener('click', (e) => {
+               e.stopPropagation();
+               const isActive = navLinks.classList.toggle('active');
+               hamburger.classList.toggle('active');
+               hamburger.setAttribute('aria-expanded', isActive);
+               document.body.classList.toggle('mobile-nav-open', isActive);
+           });
+            hamburger.addEventListener('keypress', (e) => {
+               if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); }
+           });
+           document.addEventListener('click', (e) => {
+               if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                   navLinks.classList.remove('active');
+                   hamburger.classList.remove('active');
+                   hamburger.setAttribute('aria-expanded', 'false');
+                   document.body.classList.remove('mobile-nav-open');
+               }
+           });
+           navLinks.querySelectorAll('a').forEach(link => {
+               link.addEventListener('click', () => {
+                   if (navLinks.classList.contains('active')) {
+                       navLinks.classList.remove('active');
+                       hamburger.classList.remove('active');
+                       hamburger.setAttribute('aria-expanded', 'false');
+                       document.body.classList.remove('mobile-nav-open');
+                   }
+               });
+           });
+       }
+    })();
   </script>
 
-  <!-- OTP Generator Script with improved DOMContentLoaded handling -->
-  <!-- Using the UMD build of otplib-browser so that 'otplib' is defined globally -->
+  <!-- OTP Generator Script -->
   <script src="https://cdn.jsdelivr.net/npm/otplib-browser@12.0.1/dist/otplib-browser.umd.min.js" defer></script>
   <script>
     function runOTP() {
       if (typeof otplib === 'undefined') {
-        console.error('otplib is not loaded');
+        console.error('otplib library failed to load.');
+        const otpElement = document.getElementById('otp');
+        if (otpElement) otpElement.textContent = 'OTP Error: Library not loaded';
         return;
       }
-      const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q';
+      // IMPORTANT: Secret should ideally be fetched securely or configured, not hardcoded directly for production systems.
+      const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q'; // Example secret
+      const otpElement = document.getElementById('otp');
+
       function updateOTP() {
-        const otp = otplib.authenticator.generate(secret);
-        const otpElement = document.getElementById('otp');
-        if (otpElement) {
-          otpElement.textContent = 'Your OTP: ' + otp;
-        } else {
-          console.error('OTP element not found');
-        }
+         try {
+             const token = otplib.authenticator.generate(secret);
+             if (otpElement) {
+                otpElement.textContent = 'Current OTP: ' + token;
+            }
+         } catch (err) {
+             console.error("Error generating OTP:", err);
+              if (otpElement) {
+                 otpElement.textContent = 'OTP Error';
+             }
+         }
       }
-      updateOTP();
-      setInterval(updateOTP, 60000);
+
+      if (!otpElement) {
+          console.error('OTP display element not found');
+          return;
+      }
+
+      updateOTP(); // Initial generation
+      setInterval(updateOTP, 30000); // Update every 30 seconds
     }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', runOTP);
-    } else {
-      runOTP();
-    }
+
+    // Ensure otplib is loaded before running
+     function checkOtpLibAndRun() {
+         if (typeof otplib !== 'undefined') {
+             runOTP();
+         } else {
+             // Check again shortly, in case of slow script load
+             setTimeout(checkOtpLibAndRun, 500);
+         }
+     }
+
+     if (document.readyState === 'loading') {
+         document.addEventListener('DOMContentLoaded', checkOtpLibAndRun);
+     } else {
+         checkOtpLibAndRun(); // Already loaded
+     }
   </script>
 </body>
 </html>
