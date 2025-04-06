@@ -78,37 +78,30 @@
     /* --- Whiteboard Styles --- */
     .whiteboard-container { position: relative; width: 100%; height: 600px; border: 1px solid var(--primary-green); border-radius: 8px; background-color: var(--light-bg-color); overflow: hidden; transition: background-color 0.3s, border-color 0.3s; }
     body.dark-mode .whiteboard-container { background-color: var(--dark-bg-color); border-color: var(--dark-text-color); }
-    #whiteboard { display: block; width: 100%; height: 100%; background-color: transparent; /* Cursor is set dynamically via JS */ }
-    /* Dynamic Cursor Styles */
+    #whiteboard { display: block; width: 100%; height: 100%; background-color: transparent; }
     #whiteboard.pen-cursor { cursor: crosshair; }
     #whiteboard.text-cursor { cursor: text; }
-    #whiteboard.eraser-cursor { cursor: none; /* Hide default cursor */ }
-     #eraser-preview { position: absolute; border-radius: 50%; border: 1px dashed grey; pointer-events: none; /* Don't interfere with clicks */ display: none; /* Hidden by default */ background-color: rgba(128, 128, 128, 0.3); /* Optional preview fill */ }
-
+    #whiteboard.eraser-cursor { cursor: none; }
+     #eraser-preview { position: absolute; border-radius: 50%; border: 1px dashed grey; pointer-events: none; display: none; background-color: rgba(128, 128, 128, 0.3); }
     .button-group { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
     .button-group button { background-color: var(--primary-green); color: #fff; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85em; transition: background-color 0.3s; display: flex; align-items: center; gap: 5px; }
     .button-group button:hover { background-color: #004d00; }
     body.dark-mode .button-group button { background-color: #444; color: var(--dark-footer-text); }
     body.dark-mode .button-group button:hover { background-color: #222; }
-    .button-group button.active { outline: 2px solid var(--secondary-yellow); box-shadow: 0 0 5px var(--secondary-yellow); background-color: #004d00; } /* More distinct active style */
-    body.dark-mode .button-group button.active { background-color: #222; }
-
-    .whiteboard-tools { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; /* Allow wrapping */ gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 15; }
+    /* .button-group button.active now handled by tool button active style */
+    .whiteboard-tools { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 15; }
     body.dark-mode .whiteboard-tools { background: rgba(30, 30, 30, 0.9); }
-    .tool-button { background: none; border: 1px solid #ccc; padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; font-size: 1.1em; } /* Button style for tools */
+    .tool-button { background: none; border: 1px solid #ccc; padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; font-size: 1.1em; }
     .tool-button:hover { background-color: #eee; }
     .tool-button.active { background-color: var(--primary-green); color: white; border-color: var(--primary-green); }
     body.dark-mode .tool-button { border-color: #555; color: var(--dark-text-color); }
     body.dark-mode .tool-button:hover { background-color: #444; }
     body.dark-mode .tool-button.active { background-color: var(--secondary-yellow); color: var(--dark-background); border-color: var(--secondary-yellow); }
-    .color-picker, .brush-size, .font-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--card-bg); cursor: pointer; padding: 0 5px; vertical-align: middle; } /* Align tools */
+    .color-picker, .brush-size, .font-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--card-bg); cursor: pointer; padding: 0 5px; vertical-align: middle; }
     body.dark-mode .color-picker, body.dark-mode .brush-size, body.dark-mode .font-size { background: var(--dark-card-bg); color: var(--dark-text-color); border-color: #555; }
-    .whiteboard-tools label { font-size: 0.8em; margin-right: 2px; vertical-align: middle;} /* Labels for selects */
-
-     /* Style for the temporary text input */
-     #text-input-overlay { position: absolute; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; padding: 5px; font-family: 'Roboto', sans-serif; z-index: 20; resize: none; /* Prevent manual resize */ box-shadow: 0 2px 5px rgba(0,0,0,0.2); outline: none; min-width: 100px; min-height: 40px; line-height: 1.4; }
-     body.dark-mode #text-input-overlay { background: rgba(40, 40, 40, 0.9); border-color: #555; color: var(--dark-text-color); }
-
+    .whiteboard-tools label { font-size: 0.8em; margin-right: 2px; vertical-align: middle;}
+     #text-input-overlay { position: absolute; background: rgba(255, 255, 255, 0.95); border: 1px solid #aaa; padding: 5px; font-family: 'Roboto', sans-serif; z-index: 20; resize: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); outline: none; min-width: 100px; min-height: 40px; line-height: 1.4; white-space: pre-wrap; /* Respect newlines */ overflow: hidden; /* Hide scrollbars initially */ }
+     body.dark-mode #text-input-overlay { background: rgba(40, 40, 40, 0.95); border-color: #555; color: var(--dark-text-color); }
     footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
     body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
     footer p { margin: 0; font-size: 0.9em; }
@@ -125,7 +118,7 @@
   </style>
 </head>
 <body>
-  <header>
+   <header>
      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
      <h1>Cleveleys Morrisons Management Dashboard</h1>
    </header>
@@ -154,79 +147,79 @@
 
   <div class="container">
     <main>
-       <!-- Intro Section - Shortened -->
+       <!-- Intro Section -->
        <section id="welcome">
         <h2>Welcome to the Dashboard</h2>
         <p>Quick access to essential tools, reports, and operational guides. Use the navigation or quick links below.</p>
        </section>
 
-      <!-- Dashboard Quick Links Section -->
+       <!-- Dashboard Quick Links Section -->
        <section id="dashboard">
-        <h2>Quick Links Dashboard</h2>
-        <div class="dashboard-grid">
-           <!-- Tiles -->
-           <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="dashboard-item" data-open="frame" title="Morrisons Store Mobile App"> <i class="fas fa-mobile-alt"></i> <span>Store App</span> </a>
-           <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame" title="Dymension Staff Checks"> <i class="fas fa-user-check"></i> <span>Staff Checks</span> </a>
-           <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external" title="Price Integrity Logbook"> <i class="fas fa-book"></i> <span>Logbook</span> </a>
-           <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external" title="Looker Delivery Volume Report"> <i class="fas fa-chart-line"></i> <span>Delivery Volume</span> </a>
-           <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="dashboard-item" data-open="external" title="Retail Wheel Dashboard"> <i class="fas fa-tachometer-alt"></i> <span>Retail Wheel</span> </a>
-           <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item" data-open="external" title="Looker Studio NPS Report"> <i class="fas fa-smile"></i> <span>NPS</span> </a>
-           <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external" title="Looker Studio Transfers Report"> <i class="fas fa-exchange-alt"></i> <span>Transfers</span> </a>
-           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints"> <i class="fas fa-comments"></i> <span>Complaints</span> </a>
-           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints Reply"> <i class="fas fa-reply"></i> <span>Complaints Reply</span> </a>
-           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="dashboard-item" data-open="external" title="Google Script - Reminders"> <i class="fas fa-calendar-check"></i> <span>Reminders</span> </a>
-           <a href="operations.html" class="dashboard-item" data-open="self" title="Operational Guides"> <i class="fas fa-cogs"></i> <span>Operations Guide</span> </a>
-           <a href="shrink.html" class="dashboard-item" data-open="self" title="Shrink Management Guides"> <i class="fas fa-compress-arrows-alt"></i> <span>Shrink Guide</span> </a>
-        </div>
+         <h2>Quick Links Dashboard</h2>
+         <div class="dashboard-grid">
+            <!-- Tiles (Same as before) -->
+            <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="dashboard-item" data-open="frame" title="Morrisons Store Mobile App"> <i class="fas fa-mobile-alt"></i> <span>Store App</span> </a>
+            <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame" title="Dymension Staff Checks"> <i class="fas fa-user-check"></i> <span>Staff Checks</span> </a>
+            <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external" title="Price Integrity Logbook"> <i class="fas fa-book"></i> <span>Logbook</span> </a>
+            <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external" title="Looker Delivery Volume Report"> <i class="fas fa-chart-line"></i> <span>Delivery Volume</span> </a>
+            <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="dashboard-item" data-open="external" title="Retail Wheel Dashboard"> <i class="fas fa-tachometer-alt"></i> <span>Retail Wheel</span> </a>
+            <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item" data-open="external" title="Looker Studio NPS Report"> <i class="fas fa-smile"></i> <span>NPS</span> </a>
+            <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external" title="Looker Studio Transfers Report"> <i class="fas fa-exchange-alt"></i> <span>Transfers</span> </a>
+            <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints"> <i class="fas fa-comments"></i> <span>Complaints</span> </a>
+            <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints Reply"> <i class="fas fa-reply"></i> <span>Complaints Reply</span> </a>
+            <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="dashboard-item" data-open="external" title="Google Script - Reminders"> <i class="fas fa-calendar-check"></i> <span>Reminders</span> </a>
+            <a href="operations.html" class="dashboard-item" data-open="self" title="Operational Guides"> <i class="fas fa-cogs"></i> <span>Operations Guide</span> </a>
+            <a href="shrink.html" class="dashboard-item" data-open="self" title="Shrink Management Guides"> <i class="fas fa-compress-arrows-alt"></i> <span>Shrink Guide</span> </a>
+         </div>
        </section>
 
        <!-- Content Frame Container -->
-      <div id="frame-container">
-        <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
-        <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
-             <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
-        </div>
-        <div id="fallback-message" role="alert">
-          <p>Unable to load this page within the frame.<br>
-          <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
-        </div>
-      </div>
-
-      <!-- Who Is In Today Section -->
-      <section id="who-is-in">
-        <h2>Who Is In Today?</h2>
+       <div id="frame-container">
+         <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
          <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
-             <div class="iframe-container">
-                 <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
-             </div>
+              <div class="iframe-loading"></div>
+              <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
          </div>
-      </section>
+         <div id="fallback-message" role="alert">
+           <p>Unable to load this page within the frame.<br>
+           <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
+         </div>
+       </div>
 
-      <!-- Management Rota Section -->
-      <section id="management-rota">
-        <h2>Management Rota</h2>
-         <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
-             <div class="iframe-container">
-                <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
-             </div>
-         </div>
-      </section>
+       <!-- Who Is In Today Section -->
+       <section id="who-is-in">
+         <h2>Who Is In Today?</h2>
+          <div class="iframe-loading-container">
+              <div class="iframe-loading"></div>
+              <div class="iframe-container">
+                  <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
+              </div>
+          </div>
+       </section>
 
-       <!-- Wheel Section -->
-      <section id="wheel">
-        <h2>Retail Wheel</h2>
-        <p>Access the Retail Wheel for a comprehensive overview of store performance metrics.</p>
-         <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
-             <div class="iframe-container">
-                 <iframe data-src="https://morrisonsprd.cloud.looker.com/dashboards/32" title="Retail Wheel Dashboard" loading="lazy"></iframe>
-             </div>
-         </div>
-         <p style="margin-top: 1em;"><a href="https://morrisonsprd.cloud.looker.com/dashboards/32" target="_blank" rel="noopener noreferrer" class="button-link">Open Retail Wheel in New Tab <i class="fas fa-external-link-alt"></i></a></p>
-      </section>
+       <!-- Management Rota Section -->
+       <section id="management-rota">
+         <h2>Management Rota</h2>
+          <div class="iframe-loading-container">
+              <div class="iframe-loading"></div>
+              <div class="iframe-container">
+                 <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
+              </div>
+          </div>
+       </section>
+
+        <!-- Wheel Section -->
+       <section id="wheel">
+         <h2>Retail Wheel</h2>
+         <p>Access the Retail Wheel for a comprehensive overview of store performance metrics.</p>
+          <div class="iframe-loading-container">
+              <div class="iframe-loading"></div>
+              <div class="iframe-container">
+                  <iframe data-src="https://morrisonsprd.cloud.looker.com/dashboards/32" title="Retail Wheel Dashboard" loading="lazy"></iframe>
+              </div>
+          </div>
+          <p style="margin-top: 1em;"><a href="https://morrisonsprd.cloud.looker.com/dashboards/32" target="_blank" rel="noopener noreferrer" class="button-link">Open Retail Wheel in New Tab <i class="fas fa-external-link-alt"></i></a></p>
+       </section>
 
       <!-- Notes Section (Interactive Whiteboard) -->
       <section id="notes">
@@ -236,16 +229,17 @@
           <div class="whiteboard-tools">
              <button class="tool-button active" data-tool="pen" title="Pen Tool"><i class="fas fa-pencil-alt"></i></button>
              <button class="tool-button" data-tool="text" title="Text Tool"><i class="fas fa-font"></i></button>
-             <button class="tool-button eraser-tool-btn" data-tool="eraser" title="Eraser Tool"><i class="fas fa-eraser"></i></button>
+             <button class="tool-button" data-tool="eraser" title="Eraser Tool"><i class="fas fa-eraser"></i></button> <!-- Eraser Tool Button -->
              <label for="colorPicker">Color:</label>
              <input type="color" id="colorPicker" class="color-picker" value="#000000" aria-label="Select drawing color" title="Drawing Color">
-             <label for="brushSize">Brush:</label>
-             <select id="brushSize" class="brush-size" aria-label="Select brush size" title="Brush Size">
+             <label for="brushSize">Size:</label>
+             <select id="brushSize" class="brush-size" aria-label="Select brush/eraser size" title="Brush/Eraser Size">
                <option value="2">2px</option>
                <option value="4" selected>4px</option>
                <option value="8">8px</option>
                <option value="12">12px</option>
-               <option value="20">20px</option> <!-- Added larger size -->
+               <option value="20">20px</option>
+               <option value="30">30px</option> <!-- Even larger eraser -->
              </select>
              <label for="fontSize">Font:</label>
               <select id="fontSize" class="font-size" aria-label="Select font size" title="Font Size">
@@ -316,50 +310,52 @@
        dashboardItems.forEach(item => { item.addEventListener('click', function(e) { const url = this.getAttribute('href'); const openType = this.dataset.open; if (openType === "external") { e.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); } else if (openType === "frame") { e.preventDefault(); loadContentInFrame(url); } }); });
        if (closeFrame) { closeFrame.addEventListener('click', function() { if (!frameContainer || !contentFrame) return; frameContainer.classList.remove('active'); contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; showFrameSpinner(false); clearTimeout(frameLoadTimeout); }); }
 
-      /* --- Whiteboard Setup --- */
-      const canvas = document.getElementById('whiteboard');
-      let ctx, colorPicker, brushSizeSelect, fontSizeSelect, currentTool = 'pen', strokes = [], currentStroke = null, drawing = false, textInputOverlay = null;
-      const eraserPreview = document.getElementById('eraser-preview');
+       /* --- Whiteboard Setup --- */
+       const canvas = document.getElementById('whiteboard');
+       let ctx, colorPicker, brushSizeSelect, fontSizeSelect, currentTool = 'pen', strokes = [], currentStroke = null, drawing = false, textInputOverlay = null;
+       const eraserPreview = document.getElementById('eraser-preview');
 
-      if (canvas) {
-           ctx = canvas.getContext('2d');
+       if (canvas) {
+           ctx = canvas.getContext('2d'); // No need for willReadFrequently unless exporting frequently
            colorPicker = document.getElementById('colorPicker');
            brushSizeSelect = document.getElementById('brushSize');
-           fontSizeSelect = document.getElementById('fontSize'); // Get font size select
+           fontSizeSelect = document.getElementById('fontSize');
 
            const getThemeBgColor = () => {
                 const styles = getComputedStyle(document.documentElement);
                 return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim();
            }
 
-            const getEffectiveBackgroundColor = () => {
+           const getEffectiveBackgroundColor = () => {
                 const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill');
                 return lastFill ? lastFill.color : getThemeBgColor();
-            };
+           };
 
             const renderAll = () => {
                 if (!ctx) return;
                 const ratio = window.devicePixelRatio || 1;
                 const width = canvas.width / ratio;
                 const height = canvas.height / ratio;
-                const originalCompositeOperation = ctx.globalCompositeOperation;
+                const originalCompositeOperation = ctx.globalCompositeOperation; // Save current state
 
-                // Clear with effective background
+                ctx.globalCompositeOperation = 'source-over'; // Ensure normal drawing for clearing
                 ctx.fillStyle = getEffectiveBackgroundColor();
                 ctx.fillRect(0, 0, width, height);
-                ctx.globalCompositeOperation = 'source-over'; // Reset for drawing
 
                 strokes.forEach(stroke => {
                     if (!stroke) return;
+                    // Set stroke-specific composite operation *before* drawing it
+                    ctx.globalCompositeOperation = (stroke.tool === 'eraser') ? 'destination-out' : 'source-over';
+
                     if (stroke.tool === 'pen' || stroke.tool === 'eraser') {
                         if (!stroke.points || stroke.points.length < 1) return;
                         ctx.lineJoin = 'round';
                         ctx.lineCap = 'round';
                         ctx.lineWidth = stroke.lineWidth;
-                        ctx.strokeStyle = stroke.color;
-                        ctx.globalCompositeOperation = stroke.tool === 'eraser' ? 'destination-out' : 'source-over';
-                        if(stroke.tool === 'eraser') ctx.strokeStyle = '#000000'; // Use opaque color for destination-out
-
+                        // For eraser (destination-out), the strokeStyle color doesn't matter visually,
+                        // but setting it explicitly can help avoid unexpected behavior if context state leaks.
+                        // Using black is common.
+                        ctx.strokeStyle = (stroke.tool === 'eraser') ? '#000000' : stroke.color;
                         ctx.beginPath();
                         ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
                         for (let i = 1; i < stroke.points.length; i++) {
@@ -367,49 +363,46 @@
                         }
                         ctx.stroke();
                     } else if (stroke.tool === 'text') {
-                        ctx.globalCompositeOperation = 'source-over'; // Text should draw normally
+                        // Ensure text draws normally over anything else
+                        ctx.globalCompositeOperation = 'source-over';
                         ctx.fillStyle = stroke.color;
                         ctx.font = `${stroke.fontSize}px Roboto, sans-serif`;
                         ctx.textAlign = 'left';
                         ctx.textBaseline = 'top';
-                        // Split text into lines and draw each
                         const lines = stroke.text.split('\n');
                         lines.forEach((line, index) => {
-                             ctx.fillText(line, stroke.x, stroke.y + index * (stroke.fontSize * 1.2)); // Adjust line height
+                             ctx.fillText(line, stroke.x, stroke.y + index * (stroke.fontSize * 1.2)); // Basic line height
                         });
                     }
-                    // 'fill' tool is handled by getEffectiveBackgroundColor during clear
+                    // 'fill' tool is handled by getEffectiveBackgroundColor during initial clear
                 });
-                ctx.globalCompositeOperation = originalCompositeOperation; // Restore default
+                ctx.globalCompositeOperation = originalCompositeOperation; // Restore original state
            };
 
-            const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.scale(ratio, ratio); renderAll(); };
+            const resizeCanvas = () => { /* ... same as before ... */ if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.scale(ratio, ratio); renderAll(); };
 
             // --- Whiteboard Drawing/Text Functions ---
-            const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
+            const getXY = (e) => { /* ... same as before ... */ const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
 
             const startDrawing = (e) => {
+                finalizeTextInput(); // Finalize any existing text input
                 if (currentTool === 'text') {
-                    // Don't start drawing if in text mode, wait for text input creation
-                     finalizeTextInput(); // Finalize any existing text input first
                     createTextInput(e);
-                    return;
+                    return; // Don't start drawing path for text tool
                 }
-                 finalizeTextInput(); // Finalize text if user starts drawing
                 const pos = getXY(e);
                 if (!pos) return;
                 drawing = true;
                 const currentLineWidth = parseInt(brushSizeSelect.value, 10);
+                const toolType = currentTool; // 'pen' or 'eraser'
+                // Eraser color doesn't matter for destination-out, store black for consistency
+                const strokeColor = (toolType === 'eraser') ? '#000000' : colorPicker.value;
 
-                if (currentTool === 'eraser') {
-                    currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] };
-                    ctx.globalCompositeOperation = 'destination-out';
-                } else { // Pen tool
-                    currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] };
-                    ctx.globalCompositeOperation = 'source-over';
-                }
-                ctx.strokeStyle = currentStroke.color;
+                currentStroke = { tool: toolType, color: strokeColor, lineWidth: currentLineWidth, points: [pos] };
+
+                ctx.globalCompositeOperation = (toolType === 'eraser') ? 'destination-out' : 'source-over';
                 ctx.lineWidth = currentLineWidth;
+                ctx.strokeStyle = strokeColor; // Use the determined color
                 ctx.lineJoin = 'round';
                 ctx.lineCap = 'round';
                 ctx.beginPath();
@@ -420,10 +413,13 @@
                if (!drawing || !currentStroke || currentTool === 'text') return;
                const pos = getXY(e);
                if (!pos) return;
-               ctx.globalCompositeOperation = currentTool === 'eraser' ? 'destination-out' : 'source-over';
-               ctx.lineTo(pos.x, pos.y);
-               ctx.stroke();
-               currentStroke.points.push(pos);
+
+                // Set the composite operation *during* draw for the active tool
+                ctx.globalCompositeOperation = (currentTool === 'eraser') ? 'destination-out' : 'source-over';
+                // The context's strokeStyle and lineWidth should already be set from startDrawing
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                currentStroke.points.push(pos);
             };
 
            const stopDrawing = () => {
@@ -431,62 +427,72 @@
                drawing = false;
                if (currentStroke && currentStroke.points.length > 1) { strokes.push(currentStroke); }
                currentStroke = null;
-               ctx.globalCompositeOperation = 'source-over';
+               ctx.globalCompositeOperation = 'source-over'; // Reset composite operation after stroke ends
             };
 
             // --- Text Input Handling ---
             function createTextInput(e) {
-                 if (textInputOverlay) { document.body.removeChild(textInputOverlay); } // Remove existing first
+                 if (textInputOverlay) finalizeTextInput(); // Finalize any previous one
                  const pos = getXY(e);
                  if (!pos) return;
 
                  textInputOverlay = document.createElement('textarea');
                  textInputOverlay.id = 'text-input-overlay';
-                 textInputOverlay.style.left = `${pos.x + canvas.offsetLeft}px`;
-                 textInputOverlay.style.top = `${pos.y + canvas.offsetTop}px`;
+                 // Position relative to the canvas container, then add canvas offset
+                 const containerRect = canvas.parentElement.getBoundingClientRect();
+                 const canvasRect = canvas.getBoundingClientRect();
+                 textInputOverlay.style.left = `${pos.x + canvasRect.left - containerRect.left}px`;
+                 textInputOverlay.style.top = `${pos.y + canvasRect.top - containerRect.top}px`;
                  textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`;
                  textInputOverlay.style.color = colorPicker.value;
-                 textInputOverlay.wrap = 'soft'; // Allow wrapping
+                 textInputOverlay.wrap = 'soft';
 
-                 textInputOverlay.addEventListener('keypress', (event) => {
-                     // Submit on Enter unless Shift is pressed
-                     if (event.key === 'Enter' && !event.shiftKey) {
-                         event.preventDefault(); // Prevent newline in textarea
-                         finalizeTextInput();
-                     }
-                 });
+                 textInputOverlay.addEventListener('blur', finalizeTextInput); // Finalize when focus leaves
+                 textInputOverlay.addEventListener('keypress', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); finalizeTextInput(); } });
 
-                 // Finalize if user clicks outside the textarea
-                 setTimeout(() => { // Timeout to prevent immediate finalize from the initiating click
-                      document.addEventListener('click', handleClickOutsideText, true);
-                 }, 10);
+                 // Add listener to remove on next click *outside*
+                  // We need a slight delay because the initial click would immediately trigger this
+                 setTimeout(() => {
+                    document.addEventListener('click', handleClickOutsideText, { capture: true, once: true });
+                 }, 0);
 
-                 document.body.appendChild(textInputOverlay);
+
+                 canvas.parentElement.appendChild(textInputOverlay); // Append to container for correct relative positioning
                  textInputOverlay.focus();
-             }
+            }
 
              function finalizeTextInput() {
                  if (!textInputOverlay) return;
-                 const text = textInputOverlay.value.trim();
-                 const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft;
-                 const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop;
+
+                 const text = textInputOverlay.value.trimEnd(); // Trim trailing whitespace/newlines
+                 const x = parseFloat(textInputOverlay.style.left); // Position is already relative to container
+                 const y = parseFloat(textInputOverlay.style.top);
                  const fontSize = parseInt(fontSizeSelect.value, 10);
-                 const color = colorPicker.value; // Use current color picker value
+                 const color = colorPicker.value;
 
                  if (text) {
                      strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color });
-                     renderAll(); // Redraw canvas with the new text
+                     renderAll();
                  }
-                 document.body.removeChild(textInputOverlay);
+                  if (textInputOverlay.parentNode) {
+                     textInputOverlay.parentNode.removeChild(textInputOverlay);
+                 }
                  textInputOverlay = null;
-                 document.removeEventListener('click', handleClickOutsideText, true); // Clean up listener
+                 document.removeEventListener('click', handleClickOutsideText, { capture: true }); // Clean up listener
              }
 
-             function handleClickOutsideText(event) {
-                  if (textInputOverlay && !textInputOverlay.contains(event.target)) {
-                      finalizeTextInput();
-                  }
-              }
+            function handleClickOutsideText(event) {
+                if (textInputOverlay && !textInputOverlay.contains(event.target) && event.target !== canvas) {
+                     // Only finalize if the click is truly outside the textarea AND not on the canvas itself (to allow drawing start)
+                     finalizeTextInput();
+                 } else {
+                     // Re-add listener if click was inside or on canvas
+                      document.removeEventListener('click', handleClickOutsideText, { capture: true }); // Remove previous
+                      setTimeout(() => { // Add again after short delay
+                          document.addEventListener('click', handleClickOutsideText, { capture: true, once: true });
+                     }, 0);
+                 }
+             }
 
              // --- Set Cursor & Eraser Preview ---
              function updateCursor() {
@@ -494,29 +500,31 @@
                   if (currentTool === 'pen') canvas.classList.add('pen-cursor');
                   else if (currentTool === 'text') canvas.classList.add('text-cursor');
                   else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor');
-              }
+                  hideEraserPreview(); // Hide preview when switching tools
+             }
 
              function showEraserPreview(e) {
                  if (currentTool !== 'eraser' || !eraserPreview) return;
                  const pos = getXY(e);
                  if(!pos) return;
                  const size = parseInt(brushSizeSelect.value, 10);
+                 // Position relative to the canvas container
+                 const containerRect = canvas.parentElement.getBoundingClientRect();
+                 const canvasRect = canvas.getBoundingClientRect();
                  eraserPreview.style.width = `${size}px`;
                  eraserPreview.style.height = `${size}px`;
-                 eraserPreview.style.left = `${pos.x + canvas.offsetLeft - size / 2}px`;
-                 eraserPreview.style.top = `${pos.y + canvas.offsetTop - size / 2}px`;
+                 eraserPreview.style.left = `${pos.x + canvasRect.left - containerRect.left - size / 2}px`;
+                 eraserPreview.style.top = `${pos.y + canvasRect.top - containerRect.top - size / 2}px`;
                  eraserPreview.style.display = 'block';
              }
-             function hideEraserPreview() {
-                 if (eraserPreview) eraserPreview.style.display = 'none';
-             }
+             function hideEraserPreview() { if (eraserPreview) eraserPreview.style.display = 'none'; }
 
             // --- Whiteboard Event Listeners ---
            canvas.addEventListener('mousedown', startDrawing);
-           canvas.addEventListener('mousemove', (e) => { draw(e); showEraserPreview(e); });
+           canvas.addEventListener('mousemove', (e) => { draw(e); if (currentTool === 'eraser') showEraserPreview(e); }); // Update preview only if eraser
            canvas.addEventListener('mouseup', stopDrawing);
-           canvas.addEventListener('mouseleave', () => { stopDrawing(); hideEraserPreview(); }); // Hide preview on leave
-           canvas.addEventListener('mouseenter', showEraserPreview); // Show on enter if eraser active
+           canvas.addEventListener('mouseleave', () => { stopDrawing(); hideEraserPreview(); });
+           canvas.addEventListener('mouseenter', (e) => { if (currentTool === 'eraser') showEraserPreview(e); }); // Show on enter only if eraser
 
            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); hideEraserPreview(); document.body.style.overflow = 'hidden'; }, { passive: false });
            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); }, { passive: false });
@@ -527,43 +535,36 @@
             const toolButtons = document.querySelectorAll('.tool-button');
             toolButtons.forEach(button => {
                  button.addEventListener('click', function() {
-                     toolButtons.forEach(btn => btn.classList.remove('active')); // Deactivate others
-                     this.classList.add('active'); // Activate clicked one
+                     finalizeTextInput(); // Finalize text if switching tool
+                     toolButtons.forEach(btn => btn.classList.remove('active'));
+                     this.classList.add('active');
                      currentTool = this.dataset.tool;
-                     updateCursor(); // Update cursor based on tool
-                      finalizeTextInput(); // Finalize text input if switching tool
-                      // Special handling for eraser activation
-                      if(currentTool === 'eraser') {
-                           ctx.globalCompositeOperation = 'destination-out';
-                      } else {
-                           ctx.globalCompositeOperation = 'source-over'; // Back to normal drawing
-                      }
+                     updateCursor();
                  });
              });
 
            // Control listeners
-           colorPicker.addEventListener('input', () => { if (currentTool === 'pen') ctx.strokeStyle = colorPicker.value; });
-           brushSizeSelect.addEventListener('change', () => { if (currentTool === 'pen' || currentTool === 'eraser') ctx.lineWidth = parseInt(brushSizeSelect.value, 10); });
-           fontSizeSelect.addEventListener('change', () => { /* Font size used when text is added */ });
+           colorPicker.addEventListener('input', () => { if (currentTool === 'pen' && !drawing) ctx.strokeStyle = colorPicker.value; });
+           brushSizeSelect.addEventListener('change', () => { if ((currentTool === 'pen' || currentTool === 'eraser') && !drawing) ctx.lineWidth = parseInt(brushSizeSelect.value, 10); });
+           // Font size change doesn't need immediate context update
 
            document.querySelector('.clear-button')?.addEventListener('click', () => { strokes = []; renderAll(); showNotification('Whiteboard cleared.'); });
            document.querySelector('.save-button')?.addEventListener('click', () => { try { localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); showNotification('Whiteboard saved locally!'); } catch (e) { console.error('Error saving whiteboard:', e); showNotification('Failed to save: Storage limit likely exceeded.', 5000); } });
            document.querySelector('.load-button')?.addEventListener('click', () => { const data = localStorage.getItem('whiteboardStrokes'); if (data) { try { strokes = JSON.parse(data); renderAll(); showNotification('Whiteboard loaded!'); } catch (e) { showNotification('Error parsing saved drawing.'); strokes = []; renderAll(); } } else { showNotification('No saved drawing found.'); } });
            document.querySelector('.undo-button')?.addEventListener('click', () => { if (strokes.length > 0) { strokes.pop(); renderAll(); showNotification('Undo successful.'); } else { showNotification('Nothing to undo.'); } });
            document.querySelector('.fill-button')?.addEventListener('click', () => { strokes.push({ tool: 'fill', color: colorPicker.value }); renderAll(); showNotification('Canvas background filled.'); });
-           // Eraser button now just selects the tool
            document.querySelector('.export-png-button')?.addEventListener('click', () => { const dataURL = canvas.toDataURL('image/png'); const link = document.createElement('a'); link.href = dataURL; link.download = 'morrisons-dashboard-notes.png'; document.body.appendChild(link); link.click(); document.body.removeChild(link); showNotification('Downloaded as PNG.'); });
 
            window.addEventListener('resize', debounce(resizeCanvas, 200));
            resizeCanvas();
-           updateCursor(); // Set initial cursor
+           updateCursor();
            const initialData = localStorage.getItem('whiteboardStrokes');
-            if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
+           if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
 
        } else { console.log("Whiteboard canvas not found."); }
 
         /* --- Lazy Load Iframes & Add Spinners --- */
-        function initLazyIframes() { const iframes = document.querySelectorAll('iframe[data-src]'); const observerCallback = (entries, obs) => { entries.forEach(entry => { if (entry.isIntersecting) { const iframe = entry.target; const loader = iframe.previousElementSibling; if (loader && loader.classList.contains('iframe-loading')) { loader.style.display = 'block'; } iframe.src = iframe.getAttribute('data-src'); iframe.removeAttribute('data-src'); obs.unobserve(iframe); } }); }; const observerOptions = { rootMargin: '100px 0px', threshold: 0.01 }; const observer = new IntersectionObserver(observerCallback, observerOptions); iframes.forEach(iframe => { const parentContainer = iframe.parentElement; if(parentContainer.classList.contains('iframe-loading-container')) { const loader = parentContainer.querySelector('.iframe-loading'); if(loader) loader.style.display = 'none'; iframe.addEventListener('load', () => { if (loader) loader.style.display = 'none'; }); iframe.addEventListener('error', () => { if (loader) loader.style.display = 'none'; console.error("Error loading iframe:", iframe.title || iframe.src); }); if ('IntersectionObserver' in window) { observer.observe(iframe); } else { if (loader) loader.style.display = 'block'; iframe.src = iframe.getAttribute('data-src'); iframe.removeAttribute('data-src'); } } }); }
+        function initLazyIframes() { /* ... same as before ... */ const iframes = document.querySelectorAll('iframe[data-src]'); const observerCallback = (entries, obs) => { entries.forEach(entry => { if (entry.isIntersecting) { const iframe = entry.target; const loader = iframe.previousElementSibling; if (loader && loader.classList.contains('iframe-loading')) { loader.style.display = 'block'; } iframe.src = iframe.getAttribute('data-src'); iframe.removeAttribute('data-src'); obs.unobserve(iframe); } }); }; const observerOptions = { rootMargin: '100px 0px', threshold: 0.01 }; const observer = new IntersectionObserver(observerCallback, observerOptions); iframes.forEach(iframe => { const parentContainer = iframe.parentElement; if(parentContainer.classList.contains('iframe-loading-container')) { const loader = parentContainer.querySelector('.iframe-loading'); if(loader) loader.style.display = 'none'; iframe.addEventListener('load', () => { if (loader) loader.style.display = 'none'; }); iframe.addEventListener('error', () => { if (loader) loader.style.display = 'none'; console.error("Error loading iframe:", iframe.title || iframe.src); }); if ('IntersectionObserver' in window) { observer.observe(iframe); } else { if (loader) loader.style.display = 'block'; iframe.src = iframe.getAttribute('data-src'); iframe.removeAttribute('data-src'); } } }); }
 
       /* --- DOMContentLoaded --- */
       document.addEventListener('DOMContentLoaded', () => { initLazyIframes(); });
