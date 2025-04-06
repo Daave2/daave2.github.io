@@ -1,375 +1,124 @@
+--- START OF FILE daave2.github.io-main/street.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Street Page</title>
-  <!-- Google Fonts & Font Awesome -->
+  <title>Market Street - Cleveleys Morrisons Management Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* Root Variables & Theme Settings */
+    /* Base CSS (Consistent across pages) */
     :root {
-      --primary-green: #006400;
-      --secondary-yellow: #FFD700;
-      --background-faint-green: #e6ffe6;
-      --background-white: #FFFFFF;
-      --text-color: #333333;
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.1);
-      --footer-bg: var(--primary-green);
-      --footer-text: var(--background-white);
-      /* Dark Mode Variables */
-      --dark-background: #121212;
-      --dark-card-bg: #1e1e1e;
-      --dark-text-color: #e0e0e0;
-      --dark-footer-bg: #333333;
-      --dark-footer-text: #e0e0e0;
+      --primary-green: #006400; --secondary-yellow: #FFD700; --background-faint-green: #e6ffe6; --background-white: #FFFFFF; --text-color: #333333; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.1); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
+      /* Dark Mode */
+      --dark-background: #121212; --dark-card-bg: #1e1e1e; --dark-text-color: #e0e0e0; --dark-footer-bg: #333333; --dark-footer-text: #e0e0e0;
     }
 
     /* Pink Theme Variables */
-    .pink-theme {
-      --primary-green: #FF1493;
-      --secondary-yellow: #FFB6C1;
-      --background-faint-green: #FFE4E1;
-      --background-white: #FFF0F5;
-      --text-color: #8B008B;
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.2);
-      --footer-bg: var(--primary-green);
-      --footer-text: var(--background-white);
-      /* Dark Mode Overrides for Pink Theme */
-      --dark-background: #2F0F2F;
-      --dark-card-bg: #3D1F3D;
-      --dark-text-color: #F8E0F8;
-      --dark-footer-bg: #8B008B;
-      --dark-footer-text: #F8E0F8;
+    body.pink-theme {
+        --primary-green: #D13887; /* Deeper Pink */
+        --secondary-yellow: #FFB6C1; /* Light Pink */
+        --background-faint-green: #FFF0F5; /* Lavender Blush */
+        --background-white: #FFFFFF;
+        --text-color: #701c4b; /* Dark Pink/Magenta */
+        --card-bg: var(--background-white);
+        --card-shadow: rgba(0, 0, 0, 0.15);
+        --footer-bg: var(--primary-green);
+        --footer-text: var(--background-white);
+        /* Dark Mode Overrides */
+         &.dark-mode {
+             --primary-green: #FF69B4; /* Hot Pink */
+             --secondary-yellow: #DB7093; /* Pale Violet Red */
+             --background-faint-green: var(--dark-background);
+             --dark-card-bg: #4a1933; /* Dark pink-tinted */
+             --dark-text-color: #ffebf5; /* Light pink text */
+             --dark-footer-bg: #8B008B; /* Magenta footer */
+             --dark-footer-text: #ffebf5;
+         }
     }
-
     /* Smooth Theme Transition */
-    :root, .pink-theme {
-      transition: all 2s ease;
-    }
+     body { transition: background-color 0.6s ease, color 0.6s ease; }
+     :root, body.pink-theme { transition: none; }
 
-    /* Base Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--background-faint-green);
-      color: var(--text-color);
-      line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode {
-      background-color: var(--dark-background);
-      color: var(--dark-text-color);
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    body.mobile-nav-open {
-      overflow: hidden;
-    }
+    /* Base Styles (Same as index.html) */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto', sans-serif; background-color: var(--background-faint-green); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+    body.dark-mode { background-color: var(--dark-background); color: var(--dark-text-color); --card-bg: var(--dark-card-bg); }
+    a { color: inherit; text-decoration: none; }
+    body.mobile-nav-open { overflow: hidden; }
+    header { background-color: var(--background-white); color: var(--primary-green); padding: 20px 10px; text-align: center; position: relative; box-shadow: 0 2px 4px var(--card-shadow); transition: background-color 0.3s, color 0.3s; }
+    body.dark-mode header { background-color: var(--dark-card-bg); color: var(--dark-text-color); }
+    header img { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 50px; transition: none; }
+    header h1 { font-size: 2em; margin: 0; padding-left: 80px; }
 
-    /* Header */
-    header {
-      background-color: var(--background-white);
-      color: var(--primary-green);
-      padding: 20px 10px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 2px 4px var(--card-shadow);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode header {
-      background-color: var(--dark-card-bg);
-      color: var(--dark-text-color);
-    }
-    header img {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 50px;
-    }
-    header h1 {
-      font-size: 2em;
-      margin: 0;
-      padding-left: 80px;
-    }
+    /* Navigation Styles (Same as index.html) */
+    nav.nav { position: sticky; top: 0; z-index: 1000; background-color: var(--secondary-yellow); box-shadow: 0 2px 15px rgba(0,0,0,0.1); transition: background-color 0.3s; }
+    body.dark-mode nav.nav { background-color: #333; box-shadow: 0 2px 15px rgba(0,0,0,0.6); }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 60px; }
+    .nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; transition: transform 0.3s ease; }
+    .nav-links li { position: relative; }
+    .nav-links a { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; font-weight: 500; color: var(--primary-green); border-radius: 8px; transition: background-color 0.3s, transform 0.3s, color 0.3s; }
+    body.dark-mode .nav-links a { color: var(--dark-text-color); }
+    .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); transform: translateY(-2px); }
+    .nav-links .active { background-color: var(--primary-green); color: var(--background-white); }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--primary-green); border-radius: 2px; transition: width 0.3s ease; }
+    .nav-links a:hover::after, .nav-links .active::after { width: 100%; }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; z-index: 1001; }
+    .hamburger span { display: block; width: 25px; height: 3px; background: var(--primary-green); margin: 5px 0; transition: all 0.3s ease; }
+    body.dark-mode .hamburger span { background: var(--dark-text-color); }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    .dark-mode-toggle { background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--primary-green); transition: color 0.3s; }
+    body.dark-mode .dark-mode-toggle { color: var(--dark-text-color); }
+     @media (max-width: 992px) { /* Adjusted breakpoint */
+         .hamburger { display: flex; }
+         .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; }
+         body.dark-mode .nav-links { background: #333; }
+         .nav-links.active { transform: translateX(0); }
+         .nav-links li { margin: 0; width: 100%; }
+         .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; }
+         body.dark-mode .nav-links a { color: var(--dark-text-color); }
+         .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); }
+         .nav-links .active { border-bottom: none; }
+         .nav-links a::after { display: none; }
+     }
 
-    /* Navigation */
-    nav.nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: var(--secondary-yellow);
-      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
-    }
-    body.dark-mode nav.nav {
-      background-color: #333;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
-    }
-    .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      height: 60px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      list-style: none;
-      transition: transform 0.3s ease;
-    }
-    .nav-links li {
-      position: relative;
-    }
-    .nav-links a {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-weight: 500;
-      color: var(--primary-green);
-      border-radius: 8px;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-    body.dark-mode .nav-links a {
-      color: var(--dark-text-color);
-    }
-    .nav-links a:hover {
-      background-color: var(--primary-green);
-      color: var(--background-white);
-      transform: translateY(-2px);
-    }
-    .nav-links .active {
-      background-color: var(--primary-green);
-      color: var(--background-white);
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background-color: var(--primary-green);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover::after,
-    .nav-links .active::after {
-      width: 100%;
-    }
+    /* Main Content Area & Dashboard Cards */
+    .container { padding: 20px; max-width: 1200px; margin: 20px auto; }
+    main { margin-bottom: 30px; }
+    section { background-color: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; margin-bottom: 30px; }
+    body.dark-mode section { background-color: var(--dark-card-bg); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05); }
+    section h2 { color: var(--primary-green); margin-bottom: 20px; font-size: 1.8em; border-bottom: 2px solid var(--secondary-yellow); display: inline-block; padding-bottom: 8px; transition: color 0.3s, border-bottom-color 0.3s; }
+    body.dark-mode section h2 { color: var(--secondary-yellow); border-bottom-color: var(--primary-green); }
+    section h3 { color: var(--primary-green); margin-top: 20px; margin-bottom: 10px; font-size: 1.4em; }
+     body.dark-mode section h3 { color: var(--secondary-yellow); }
+     section p { margin-bottom: 1em; }
+     section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
+     section li { margin-bottom: 0.5em; }
+     section strong { font-weight: 700; color: var(--primary-green); }
+     body.dark-mode section strong { color: var(--secondary-yellow); }
 
-    /* Hamburger for Mobile Navigation */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      z-index: 1001;
-    }
-    .hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: var(--primary-green);
-      margin: 5px 0;
-      transition: all 0.3s ease;
-    }
-    body.dark-mode .hamburger span {
-      background: var(--dark-text-color);
-    }
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .dark-mode-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.5em;
-      color: var(--primary-green);
-      transition: color 0.3s;
-    }
-    body.dark-mode .dark-mode-toggle {
-      color: var(--dark-text-color);
-    }
-
-    /* Responsive Navigation */
-    @media (max-width: 768px) {
-      .hamburger {
-        display: flex;
-      }
-      .nav-links {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--secondary-yellow);
-        flex-direction: column;
-        padding: 1rem;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        overflow-y: auto;
-      }
-      body.dark-mode .nav-links {
-        background: #333;
-      }
-      .nav-links.active {
-        transform: translateX(0);
-      }
-      .nav-links li {
-        margin: 0;
-        width: 100%;
-      }
-      .nav-links a {
-        margin: 10px 0;
-        width: 100%;
-        background-color: transparent;
-        color: var(--primary-green);
-        border-radius: 4px;
-        text-align: left;
-        font-size: 1em;
-        padding: 10px;
-      }
-      body.dark-mode .nav-links a {
-        color: var(--dark-text-color);
-      }
-      .nav-links a:hover {
-        background-color: var(--primary-green);
-        color: var(--background-white);
-      }
-    }
-
-    /* Main Content & Dashboard Cards */
-    .container {
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    main {
-      margin-bottom: 30px;
-    }
-    section {
-      background-color: var(--card-bg);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      transition: background-color 0.3s, box-shadow 0.3s;
-      margin-bottom: 30px;
-    }
-    body.dark-mode section {
-      background-color: var(--dark-card-bg);
-      box-shadow: 0 4px 12px var(--dark-card-bg);
-    }
-    section h2 {
-      color: var(--primary-green);
-      margin-bottom: 15px;
-      font-size: 1.6em;
-      border-bottom: 2px solid var(--secondary-yellow);
-      display: inline-block;
-      padding-bottom: 5px;
-      transition: color 0.3s, border-bottom-color 0.3s;
-    }
-    body.dark-mode section h2 {
-      color: var(--dark-text-color);
-      border-bottom-color: var(--secondary-yellow);
-    }
-
-    .dashboard-card {
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .dashboard-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px var(--card-shadow);
-    }
-    .dashboard-card h3 {
-      margin-bottom: 15px;
-      color: var(--primary-green);
-      font-size: 1.4em;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .dashboard-card iframe {
-      width: 100%;
-      border: none;
-      border-radius: 5px;
-      margin-bottom: 15px;
-    }
+    .dashboard-card { background-color: var(--card-bg); border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); padding: 20px; margin-bottom: 20px; transition: transform 0.3s, box-shadow 0.3s; }
+    body.dark-mode .dashboard-card { background-color: var(--dark-card-bg); }
+    .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px var(--card-shadow); }
+    .dashboard-card h3 { margin-bottom: 15px; color: var(--primary-green); font-size: 1.4em; display: flex; align-items: center; gap: 10px; }
+    body.dark-mode .dashboard-card h3 { color: var(--secondary-yellow); }
+    .dashboard-card iframe { width: 100%; border: none; border-radius: 5px; margin-bottom: 15px; }
     /* Specific Iframe Sizes */
-    #foodIframe {
-      height: 500px;
-    }
-    #lookerIframe {
-      width: 600px;
-      height: 550px;
-      max-width: 100%;
-    }
-    .dashboard-card button {
-      padding: 10px 15px;
-      background-color: var(--primary-green);
-      color: var(--background-white);
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-    .dashboard-card button:hover {
-      background-color: var(--secondary-yellow);
-      transform: translateY(-2px);
-    }
+    #foodIframe { height: 500px; }
+    #lookerIframe { width: 600px; height: 550px; max-width: 100%; }
+    .dashboard-card button, .button-link { padding: 10px 15px; background-color: var(--primary-green); color: var(--background-white); border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.3s; font-weight: 500; font-size: 0.9em; margin-top: 10px; display: inline-block; }
+     body.dark-mode .dashboard-card button, body.dark-mode .button-link { color: var(--dark-background); }
+    .dashboard-card button:hover, .button-link:hover { background-color: var(--secondary-yellow); color: var(--primary-green); transform: translateY(-2px); }
+    body.dark-mode .dashboard-card button:hover, body.dark-mode .button-link:hover { color: var(--dark-background); }
 
     /* Footer */
-    footer {
-      background-color: var(--footer-bg);
-      color: var(--footer-text);
-      text-align: center;
-      padding: 10px 5px;
-      width: 100%;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode footer {
-      background-color: var(--dark-footer-bg);
-      color: var(--dark-footer-text);
-    }
-    footer p {
-      margin: 0;
-      font-size: 0.8em;
-    }
+    footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
+    body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
+    footer p { margin: 0; font-size: 0.9em; }
   </style>
 </head>
 <body>
@@ -381,42 +130,112 @@
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-globe"></i> Home</a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
-        <li><a href="street.html" class="active"><i class="fas fa-store"></i> Street</a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
+          <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
+          <li><a href="street.html" class="active"><i class="fas fa-store"></i> Market Street</a></li>
+          <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Front End</a></li>
+           <li><a href="operations.html"><i class="fas fa-cogs"></i> Operations</a></li>
+          <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+          <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+          <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe & Legal</a></li>
       </ul>
       <div class="nav-actions">
         <button type="button" class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
       </div>
       <div class="hamburger" role="button" tabindex="0" aria-label="Toggle Navigation Menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </div>
     </div>
   </nav>
 
   <main class="container">
-    <section>
-      <h2>Street Page</h2>
-      <p>Placeholder content for the Street page. Add whatever you need here.</p>
+    <section id="market-street-overview">
+      <h2>Market Street & Cafe Operations</h2>
+      <p>Market Street is a unique strength, showcasing our foodmaker credentials. Cafe provides an extended customer experience. Delivering great service in these areas is key.</p>
+
+      <h3>Market Street Service Principles:</h3>
+      <ul>
+        <li>Ensure tastings are offered.</li>
+        <li>Colleagues always available to serve on Counters.</li>
+        <li>Acknowledge customers, say hello, and smile every time. Thank and say goodbye.</li>
+        <li>Build rapport to encourage questions.</li>
+        <li>Offer tastings for new or interesting products.</li>
+        <li>Use expert knowledge to provide advice.</li>
+        <li>Suggest suitable alternatives if a line is unavailable.</li>
+        <li>Follow correct markdown and waste procedures (see <a href="#markdown-waste">Markdown/Waste Timings</a> below).</li>
+        <li>Adhere to range guidelines for counters (e.g., Butchery 17 core lines, Fish 8 core overwrap lines).</li>
+         <li>Maintain clean counters, glass, and tidy work areas. Ensure correct POS and marketing.</li>
+      </ul>
+       <a href="https://example.com/market-street-success-video" target="_blank" rel="noopener noreferrer" class="button-link">Market Street Success Video (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+
+      <h3>Cafe Service Principles:</h3>
+       <ul>
+           <li>Focus on food quality, availability, timely service at the right temperature.</li>
+           <li>Ensure friendly, helpful colleagues greet, serve, and thank customers.</li>
+           <li>Maintain a warm, clean, and welcoming environment.</li>
+           <li>Be present during busy periods (breakfast, lunch, teatime) to understand customer experience.</li>
+           <li>Complete the Cafe Top 10 Checklist daily.</li>
+           <li>Manage queues effectively.</li>
+           <li>Provide child-friendly facilities (activity space, clean baby changing).</li>
+      </ul>
+       <a href="https://example.com/cafe-daily-checklist" target="_blank" rel="noopener noreferrer" class="button-link">Cafe Daily Checklist (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+       <a href="https://example.com/cafe-poster" target="_blank" rel="noopener noreferrer" class="button-link">Cafe Poster (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+
     </section>
+
+    <section id="fresh-food-ops">
+        <h2>Fresh Food Operations Summary</h2>
+        <p>Maintaining fresh food quality and availability requires adherence to specific routines.</p>
+        <ul>
+            <li><strong>Replenishment & Rotation:</strong> Follow 'first in, first out'. Check dates as you merchandise. Ensure correct layout and SELs. No gap filling. Keep areas clean.</li>
+            <li><strong>Stock Management:</strong> Perform daily Gaps & Counts (06:00-12:00), including pre-packed Market Street. Follow specific day rules (Monday Reset - all gaps; Tue-Sun - new/green gaps). PM Gap Scan for direct delivered milk.</li>
+            <li><strong>Waste Parade & Validation (09:00):</strong> Daily, Store Manager led. Discuss root causes, challenge missed markdowns/poor quality. Complete Waste Validation check on mobile device. Process waste correctly (Too Good To Go, Colleague Collection, Charity, Backhaul).</li>
+            <li><strong>Chiller Organisation:</strong> Maintain clean, organised chillers with designated areas (Waste, Markdowns, Critical). Stock rotated, floor clean.</li>
+            <li><strong>Code Checking:</strong> Follow the Fresh Food Code Check App guidance. Markdowns processed via Simple Markdowns App (7pm-11pm day before expiry; 5pm day of expiry clearance).</li>
+             <li><strong>Markdown & Waste Timings:</strong> Strict timings apply per department (e.g., Bakery Baguettes/Sticks - waste end of day; Doughnuts - waste end of 24hr life; Deli Meats - 50% markdown end of counter life; Oven Fresh/Pies - 50% markdown 1hr before close; Salad Bar - pot up 6pm). See guide for full details.</li>
+        </ul>
+         <p>Refer to the 'Fresh Food Operating Guidance' document for detailed operating clocks and procedures.</p>
+         <a href="https://example.com/fresh-food-op-guide" target="_blank" rel="noopener noreferrer" class="button-link">View Full Fresh Food Guide (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+    </section>
+
+    <section id="markdown-waste">
+        <h2>Market Street Markdown Timings</h2>
+        <p>Specific markdown times apply to Market Street products:</p>
+        <ul>
+            <li><strong>General Markdown Window:</strong> <strong>Monday - Saturday 5pm</strong>, <strong>Sunday 3pm</strong> (4pm Scotland). This applies unless specific exceptions below.</li>
+            <li><strong>Exceptions:</strong>
+                <ul>
+                    <li><strong>Baguettes/Sticks:</strong> No markdown, waste end of day.</li>
+                    <li><strong>Doughnuts:</strong> Waste end of 24hr shelf life (can go in TGTG bags).</li>
+                    <li><strong>Pick & Mix/Crusty Rolls:</strong> Bag up remaining at 7:30pm (4pk 'Reduced to Clear' PLU 1263). Sell next day, no further markdown. Waste remaining rolls 7:30pm day of production.</li>
+                    <li><strong>Deli Sliced Cooked Meats:</strong> 50% markdown end of counter life, move to clearance.</li>
+                    <li><strong>Oven Fresh & Pie Shop:</strong> 50% markdown 1 hour before counter close.</li>
+                    <li><strong>Salad Bar:</strong> Pot up remaining into small trays, label with GLP at 6pm.</li>
+                    <li><strong>Cafe Sandwiches:</strong> 50% markdown at 5pm.</li>
+                </ul>
+            </li>
+        </ul>
+         <p>Always follow the selected second process for loose produce markdowns <a href="https://example.com/loose-produce-markdown" target="_blank" rel="noreferrer noopener">here (Example Link)</a>.</p>
+         <p>Berries receive only one markdown at 5pm on day of expiry.</p>
+         <p>Plants: Check condition daily, apply markdown as appropriate based on shelf life (Flowering: 2 weeks; Foliage: 4 weeks from closed code).</p>
+         <p>Sandwiches (Pre-Packed): 50% markdown at 5pm on day of expiry.</p>
+    </section>
+
 
     <!-- Dashboard Card: Food to Order -->
     <div class="dashboard-card">
-      <h3><i class="fas fa-utensils"></i> Food to Order</h3>
-      <iframe id="foodIframe" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+      <h3><i class="fas fa-utensils"></i> Food to Order (Collection Info)</h3>
+      <iframe id="foodIframe" title="Food to Order Spreadsheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&single=true&widget=true&headers=false"></iframe>
       <button type="button" onclick="printIframe('foodIframe')">Print Food Order</button>
+      <p style="margin-top: 1em;">Note: Food to Order is now processed via online Click & Collect. This sheet may show collection details. Assist customers at the CSD as needed.</p>
+       <a href="https://groceries.morrisons.com/webshop/foodToOrderHomepage.do" target="_blank" rel="noopener noreferrer" class="button-link">Food To Order Website <i class="fas fa-external-link-alt fa-xs"></i></a>
     </div>
 
     <!-- Dashboard Card: Looker Studio Report -->
     <div class="dashboard-card">
-      <h3><i class="fas fa-chart-line"></i> Looker Studio Report</h3>
-      <iframe id="lookerIframe" 
-              src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld" 
+      <h3><i class="fas fa-chart-line"></i> Looker Studio Report (Example)</h3>
+      <iframe id="lookerIframe" title="Looker Studio Report"
+              src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld"
               frameborder="0" allowfullscreen
               sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
       <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
@@ -424,81 +243,98 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
   <!-- JavaScript -->
   <script>
-    // Toggle Dark Mode and Save Preference
-    const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
-    darkModeToggleButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        btn.setAttribute('aria-pressed', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    // Basic JS for Dark Mode Toggle, Mobile Nav, Theme, and Print (Combined)
+    (function() {
+      'use strict';
+      // Dark Mode Toggle
+      const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
+      function setDarkMode(isDark) {
+          document.body.classList.toggle('dark-mode', isDark);
+          darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', isDark));
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      }
+      darkModeToggleButtons.forEach(btn => {
+          btn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
       });
-    });
 
-    // Load saved theme and apply Pink Theme after page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
-      }
-      // Apply Pink Theme after a short delay for smooth transition
-      setTimeout(() => {
-        document.body.classList.add('pink-theme');
-      }, 500);
-    });
+       // Mobile Navigation Toggle
+       const hamburger = document.querySelector('.hamburger');
+       const navLinks = document.querySelector('.nav-links');
+       if (hamburger && navLinks) {
+           hamburger.addEventListener('click', (e) => {
+               e.stopPropagation();
+               const isActive = navLinks.classList.toggle('active');
+               hamburger.classList.toggle('active');
+               hamburger.setAttribute('aria-expanded', isActive);
+               document.body.classList.toggle('mobile-nav-open', isActive);
+           });
+            hamburger.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); } });
+           document.addEventListener('click', (e) => { if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) { navLinks.classList.remove('active'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('mobile-nav-open'); } });
+           navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { if (navLinks.classList.contains('active')) { navLinks.classList.remove('active'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('mobile-nav-open'); } }); });
+       }
 
-    // Hamburger Menu for Mobile Navigation
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
+       // Accordion Functionality (If needed on this page later)
+       /*
+       const accordions = document.getElementsByClassName("accordion");
+       for (let i = 0; i < accordions.length; i++) {
+         accordions[i].addEventListener("click", function() { // ... accordion logic ... });
+       }
+       */
 
-    const toggleNav = () => {
-      navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      document.body.classList.toggle('mobile-nav-open');
-      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-      hamburger.setAttribute('aria-expanded', !expanded);
-    };
+      // Initial theme and dark mode load
+      document.addEventListener('DOMContentLoaded', () => {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark') {
+              document.body.classList.add('dark-mode');
+              darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', 'true'));
+          }
+          // Apply Pink Theme After Page Load
+          setTimeout(() => {
+              document.body.classList.add('pink-theme');
+               void document.body.offsetHeight; // Force reflow
+          }, 100);
+      });
 
-    hamburger.addEventListener('click', event => {
-      event.stopPropagation();
-      toggleNav();
-    });
-
-    hamburger.addEventListener('keypress', e => {
-      if (e.key === 'Enter') toggleNav();
-    });
-
-    // Close mobile menu if clicking outside
-    window.addEventListener('click', event => {
-      if (!event.target.closest('.nav') && navLinks.classList.contains('active')) {
-        toggleNav();
-      }
-    });
-
-    // Close mobile menu when a navigation item is clicked
-    document.querySelectorAll('.nav-links a').forEach(item => {
-      item.addEventListener('click', () => {
-        if (navLinks.classList.contains('active')) {
-          toggleNav();
+        // Expose print function globally ONLY if using inline onclick
+        window.printIframe = function(iframeId) {
+            const iframe = document.getElementById(iframeId);
+            if (!iframe) {
+                console.error("Iframe not found:", iframeId);
+                return;
+            }
+            try {
+                const iframeWindow = iframe.contentWindow || iframe;
+                iframeWindow.focus();
+                iframeWindow.print();
+            } catch (e) {
+                console.error("Printing failed, possibly due to cross-origin restrictions or iframe content:", e);
+                // Fallback: Try opening in new window if direct print fails
+                const iframeSrc = iframe.src;
+                 if (iframeSrc && iframeSrc !== 'about:blank') {
+                    const printWindow = window.open(iframeSrc, '_blank');
+                     if(printWindow) {
+                        printWindow.onload = function () {
+                           setTimeout(() => { // Timeout needed for some browsers
+                                printWindow.print();
+                               // printWindow.close(); // Optional: close after printing
+                           }, 500);
+                       };
+                    } else {
+                        alert("Could not open print window. Please check popup blocker settings.");
+                    }
+                } else {
+                    alert("Cannot print this content directly.");
+                }
+            }
         }
-      });
-    });
 
-    // Reusable function to print content from an iframe
-    function printIframe(iframeId) {
-      const iframeSrc = document.getElementById(iframeId).src;
-      const printWindow = window.open(iframeSrc, '_blank');
-      printWindow.focus();
-      printWindow.onload = function () {
-        printWindow.print();
-      };
-    }
+    })();
   </script>
 </body>
 </html>
+--- END OF FILE daave2.github.io-main/street.html ---
