@@ -1,4 +1,3 @@
---- START OF FILE daave2.github.io-main/index.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,7 +131,7 @@
    </header>
 
    <nav class="nav" role="navigation" aria-label="Primary Navigation">
-     <!-- Navigation Links (Same as before) -->
+     <!-- Navigation Links -->
      <div class="nav-container">
        <ul class="nav-links">
            <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -185,6 +184,7 @@
       <div id="frame-container">
         <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
         <div class="iframe-loading-container">
+             <!-- Spinner for the main iframe -->
              <div class="iframe-loading"></div>
              <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
         </div>
@@ -197,8 +197,8 @@
       <!-- Who Is In Today Section -->
       <section id="who-is-in">
         <h2>Who Is In Today?</h2>
-         <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
+         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
+             <div class="iframe-loading"></div> <!-- Spinner -->
              <div class="iframe-container">
                  <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
              </div>
@@ -208,8 +208,8 @@
       <!-- Management Rota Section -->
       <section id="management-rota">
         <h2>Management Rota</h2>
-         <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
+         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
+             <div class="iframe-loading"></div> <!-- Spinner -->
              <div class="iframe-container">
                 <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
              </div>
@@ -220,8 +220,8 @@
       <section id="wheel">
         <h2>Retail Wheel</h2>
         <p>Access the Retail Wheel for a comprehensive overview of store performance metrics.</p>
-         <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
+         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
+             <div class="iframe-loading"></div> <!-- Spinner -->
              <div class="iframe-container">
                  <iframe data-src="https://morrisonsprd.cloud.looker.com/dashboards/32" title="Retail Wheel Dashboard" loading="lazy"></iframe>
              </div>
@@ -310,7 +310,7 @@
        const closeFrame = document.getElementById('close-frame');
        const fallbackMessage = document.getElementById('fallback-message');
        const fallbackLink = document.getElementById('fallback-link');
-       const frameSpinner = frameContainer ? frameContainer.querySelector('.iframe-loading') : null;
+       const frameSpinner = frameContainer?.querySelector('.iframe-loading'); // Spinner for the main frame
        let frameLoadTimeout;
        function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
        function loadContentInFrame(url) { if (!frameContainer || !contentFrame || !fallbackLink || !fallbackMessage || !closeFrame ) return; contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; fallbackLink.href = url; frameContainer.classList.add('active'); showFrameSpinner(true); contentFrame.src = url; clearTimeout(frameLoadTimeout); frameLoadTimeout = setTimeout(() => { showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Content took too long to load.", 4000); }, 15000); frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
@@ -324,247 +324,51 @@
       const eraserPreview = document.getElementById('eraser-preview');
 
       if (canvas) {
-           ctx = canvas.getContext('2d'); // Standard context
+           ctx = canvas.getContext('2d');
            colorPicker = document.getElementById('colorPicker');
            brushSizeSelect = document.getElementById('brushSize');
-           fontSizeSelect = document.getElementById('fontSize'); // Get font size select
+           fontSizeSelect = document.getElementById('fontSize');
 
-           const getThemeBgColor = () => {
-                const styles = getComputedStyle(document.documentElement);
-                return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim();
-           }
-            const getEffectiveBackgroundColor = () => {
-                const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill');
-                return lastFill ? lastFill.color : getThemeBgColor();
-            };
+           const getThemeBgColor = () => { const styles = getComputedStyle(document.documentElement); return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim(); }
+           const getEffectiveBackgroundColor = () => { const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill'); return lastFill ? lastFill.color : getThemeBgColor(); };
 
-            const renderAll = () => {
-                if (!ctx) return;
-                const ratio = window.devicePixelRatio || 1;
-                const width = canvas.width / ratio;
-                const height = canvas.height / ratio;
-
-                ctx.save(); // Save context state
-
-                // Clear with effective background
-                ctx.globalCompositeOperation = 'source-over'; // Ensure clear works correctly
-                ctx.fillStyle = getEffectiveBackgroundColor();
-                ctx.fillRect(0, 0, width, height);
-
-                // Draw strokes
-                strokes.forEach(stroke => {
-                    if (!stroke) return;
-                    ctx.globalCompositeOperation = 'source-over'; // Default draw mode
-
-                    if (stroke.tool === 'pen' || stroke.tool === 'eraser') {
-                        if (!stroke.points || stroke.points.length < 1) return;
-                        ctx.lineJoin = 'round';
-                        ctx.lineCap = 'round';
-                        ctx.lineWidth = stroke.lineWidth;
-
-                        if (stroke.tool === 'eraser') {
-                             ctx.globalCompositeOperation = 'destination-out';
-                             ctx.strokeStyle = 'rgba(0,0,0,1)'; // Fully opaque black for effective erase
-                         } else {
-                             ctx.strokeStyle = stroke.color;
-                         }
-
-                        ctx.beginPath();
-                        ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-                        for (let i = 1; i < stroke.points.length; i++) {
-                            if (stroke.points[i]) ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
-                        }
-                        ctx.stroke();
-
-                    } else if (stroke.tool === 'text') {
-                        ctx.fillStyle = stroke.color;
-                        ctx.font = `${stroke.fontSize}px Roboto, sans-serif`;
-                        ctx.textAlign = 'left';
-                        ctx.textBaseline = 'top';
-                        const lines = stroke.text.split('\n');
-                        lines.forEach((line, index) => {
-                             // Add small offset to prevent text clipping at the very top
-                             const yPos = stroke.y + index * (stroke.fontSize * 1.2);
-                             ctx.fillText(line, stroke.x, yPos);
-                        });
-                    }
-                });
-                ctx.restore(); // Restore original context state
-           };
-
+           const renderAll = () => { if (!ctx) return; const ratio = window.devicePixelRatio || 1; const width = canvas.width / ratio; const height = canvas.height / ratio; ctx.save(); ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = getEffectiveBackgroundColor(); ctx.fillRect(0, 0, width, height); strokes.forEach(stroke => { if (!stroke) return; ctx.globalCompositeOperation = 'source-over'; if (stroke.tool === 'pen' || stroke.tool === 'eraser') { if (!stroke.points || stroke.points.length < 1) return; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = stroke.lineWidth; if (stroke.tool === 'eraser') { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; } else { ctx.strokeStyle = stroke.color; } ctx.beginPath(); ctx.moveTo(stroke.points[0].x, stroke.points[0].y); for (let i = 1; i < stroke.points.length; i++) { if (stroke.points[i]) ctx.lineTo(stroke.points[i].x, stroke.points[i].y); } ctx.stroke(); } else if (stroke.tool === 'text') { ctx.fillStyle = stroke.color; ctx.font = `${stroke.fontSize}px Roboto, sans-serif`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; const lines = stroke.text.split('\n'); lines.forEach((line, index) => { const yPos = stroke.y + index * (stroke.fontSize * 1.2); ctx.fillText(line, stroke.x, yPos); }); } }); ctx.restore(); };
            const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.save(); ctx.scale(ratio, ratio); renderAll(); ctx.restore(); };
 
-
             // --- Whiteboard Drawing/Text Functions ---
-            const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
+           const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
 
-           const handleInteractionStart = (e) => {
-                if (e.type === 'touchstart') e.preventDefault();
-                const eventRef = e.type === 'touchstart' ? e.touches[0] : e;
-                const pos = getXY(eventRef);
-                if (!pos) return;
+           const handleInteractionStart = (e) => { if (e.type === 'touchstart') e.preventDefault(); const eventRef = e.type === 'touchstart' ? e.touches[0] : e; const pos = getXY(eventRef); if (!pos) return; finalizeTextInput(); if (currentTool === 'text') { createTextInput(pos, eventRef); } else { startDrawing(pos); } };
+           const startDrawing = (pos) => { drawing = true; const currentLineWidth = parseInt(brushSizeSelect.value, 10); if (currentTool === 'eraser') { currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] }; } else { currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] }; } ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
+           const handleInteractionMove = (e) => { if (e.type === 'touchmove') e.preventDefault(); const eventRef = e.type === 'touchmove' ? e.touches[0] : e; showEraserPreview(eventRef); if (!drawing || currentTool === 'text') return; draw(eventRef); };
+           const draw = (e) => { const pos = getXY(e); if (!pos || !currentStroke) return; ctx.lineWidth = currentStroke.lineWidth; ctx.strokeStyle = currentStroke.color; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; if(currentTool === 'eraser') { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; } else { ctx.globalCompositeOperation = 'source-over'; } ctx.lineTo(pos.x, pos.y); ctx.stroke(); currentStroke.points.push(pos); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
+           const handleInteractionEnd = (e) => { if (e.type === 'touchend' || e.type === 'touchcancel') { document.body.style.overflow = ''; } if (drawing && currentTool !== 'text') { stopDrawing(); } hideEraserPreview(); };
+           const stopDrawing = () => { if (!drawing) return; drawing = false; if (currentStroke && currentStroke.points.length > 1) { ctx.globalCompositeOperation = 'source-over'; strokes.push(currentStroke); } currentStroke = null; ctx.closePath(); ctx.globalCompositeOperation = 'source-over'; };
 
-                finalizeTextInput();
+           function createTextInput(pos, originalEvent) { if (textInputOverlay) { return; } textInputOverlay = document.createElement('textarea'); textInputOverlay.id = 'text-input-overlay'; textInputOverlay.style.left = `${pos.x + canvas.offsetLeft}px`; textInputOverlay.style.top = `${pos.y + canvas.offsetTop}px`; textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`; textInputOverlay.style.color = colorPicker.value; textInputOverlay.style.fontFamily = 'Roboto, sans-serif'; textInputOverlay.wrap = 'soft'; textInputOverlay.style.border = '1px dashed #888'; textInputOverlay.style.padding = '4px'; textInputOverlay.style.lineHeight = '1.2'; textInputOverlay.addEventListener('blur', finalizeTextInput); textInputOverlay.addEventListener('keypress', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); finalizeTextInput(); } }); document.body.appendChild(textInputOverlay); textInputOverlay.focus(); if(originalEvent) { originalEvent.stopPropagation(); } }
+           function finalizeTextInput() { if (!textInputOverlay) return; const text = textInputOverlay.value; const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft; const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop; const fontSize = parseInt(fontSizeSelect.value, 10); const color = colorPicker.value; const overlayRef = textInputOverlay; textInputOverlay = null; if (overlayRef.parentNode === document.body) { document.body.removeChild(overlayRef); } if (text.trim()) { strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color }); renderAll(); } }
 
-                if (currentTool === 'text') {
-                    createTextInput(pos, eventRef); // Pass original event for stopPropagation if needed
-                } else {
-                    startDrawing(pos);
-                }
-            };
+           function updateCursor() { canvas.className = ''; if (currentTool === 'pen') canvas.classList.add('pen-cursor'); else if (currentTool === 'text') canvas.classList.add('text-cursor'); else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor'); }
+           function showEraserPreview(e) { if (currentTool !== 'eraser' || !eraserPreview) return; const pos = getXY(e); if(!pos) return; const size = parseInt(brushSizeSelect.value, 10); eraserPreview.style.width = `${size}px`; eraserPreview.style.height = `${size}px`; eraserPreview.style.left = `${pos.x + canvas.offsetLeft - size / 2}px`; eraserPreview.style.top = `${pos.y + canvas.offsetTop - size / 2}px`; eraserPreview.style.display = 'block'; }
+           function hideEraserPreview() { if (eraserPreview) eraserPreview.style.display = 'none'; }
 
-           const startDrawing = (pos) => {
-               drawing = true;
-               const currentLineWidth = parseInt(brushSizeSelect.value, 10);
-               if (currentTool === 'eraser') {
-                    currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] };
-                } else {
-                    currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] };
-                }
-                // No need to set ctx properties here, set them in draw for each segment
-                ctx.beginPath(); // Still needed to start the path
-                ctx.moveTo(pos.x, pos.y);
-           };
-
-            const handleInteractionMove = (e) => {
-                if (e.type === 'touchmove') e.preventDefault();
-                const eventRef = e.type === 'touchmove' ? e.touches[0] : e;
-                showEraserPreview(eventRef); // Update eraser preview
-                if (!drawing || currentTool === 'text') return;
-                draw(eventRef);
-            };
-
-           const draw = (e) => {
-               const pos = getXY(e);
-               if (!pos || !currentStroke) return;
-
-                // Set context properties for this segment
-                ctx.lineWidth = currentStroke.lineWidth;
-                ctx.strokeStyle = currentStroke.color; // Use stroke's color for pen
-                ctx.lineJoin = 'round';
-                ctx.lineCap = 'round';
-
-                if(currentTool === 'eraser') {
-                    ctx.globalCompositeOperation = 'destination-out';
-                    ctx.strokeStyle = 'rgba(0,0,0,1)'; // Must be opaque for destination-out
-                } else {
-                    ctx.globalCompositeOperation = 'source-over';
-                }
-
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke(); // Draw the segment immediately
-                currentStroke.points.push(pos);
-
-                // Begin a new sub-path for the next segment to avoid sharp corners issue with context reuse
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            };
-
-            const handleInteractionEnd = (e) => {
-                 if (e.type === 'touchend' || e.type === 'touchcancel') { document.body.style.overflow = ''; }
-                 if (drawing && currentTool !== 'text') { stopDrawing(); }
-                 hideEraserPreview();
-             };
-
-           const stopDrawing = () => {
-               if (!drawing) return;
-               drawing = false;
-               if (currentStroke && currentStroke.points.length > 1) {
-                   // Before pushing, ensure context is back to normal
-                   ctx.globalCompositeOperation = 'source-over';
-                   strokes.push(currentStroke);
-                   // OPTIONAL: Could redraw just the last stroke for immediate visual feedback
-                   // without full renderAll, but renderAll ensures correctness with fills/overlaps.
-                   // renderAll(); // Uncomment if full redraw needed immediately
-               }
-               currentStroke = null;
-               ctx.closePath(); // Close the path after finishing stroke
-               ctx.globalCompositeOperation = 'source-over'; // Ensure reset
-           };
-
-           // --- Text Input Handling ---
-           function createTextInput(pos, originalEvent) {
-               if (textInputOverlay) { return; } // Prevent multiple
-
-               textInputOverlay = document.createElement('textarea');
-               textInputOverlay.id = 'text-input-overlay';
-               textInputOverlay.style.left = `${pos.x + canvas.offsetLeft}px`;
-               textInputOverlay.style.top = `${pos.y + canvas.offsetTop}px`;
-               textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`;
-               textInputOverlay.style.color = colorPicker.value;
-               textInputOverlay.style.fontFamily = 'Roboto, sans-serif';
-               textInputOverlay.wrap = 'soft';
-               textInputOverlay.style.border = '1px dashed #888';
-               textInputOverlay.style.padding = '4px';
-               textInputOverlay.style.lineHeight = '1.2'; // Ensure consistent line height
-
-               textInputOverlay.addEventListener('blur', finalizeTextInput);
-               textInputOverlay.addEventListener('keypress', (event) => {
-                   if (event.key === 'Enter' && !event.shiftKey) {
-                       event.preventDefault();
-                       finalizeTextInput();
-                   }
-               });
-
-                // Add to body and focus
-               document.body.appendChild(textInputOverlay);
-               textInputOverlay.focus();
-
-               // Prevent the triggering event from immediately blurring the new input
-                if(originalEvent) {
-                    originalEvent.stopPropagation();
-               }
-           }
-
-           function finalizeTextInput() {
-                if (!textInputOverlay) return;
-                const text = textInputOverlay.value;
-                const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft;
-                const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop;
-                const fontSize = parseInt(fontSizeSelect.value, 10);
-                const color = colorPicker.value; // Get color at time of finalization
-
-                const overlayRef = textInputOverlay; // Keep reference
-                textInputOverlay = null; // Clear global reference *before* potentially slow redraw
-
-                // Remove textarea from DOM
-                if (overlayRef.parentNode === document.body) {
-                    document.body.removeChild(overlayRef);
-                }
-
-                if (text.trim()) {
-                    strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color });
-                    renderAll(); // Redraw canvas only if text was added
-                }
-            }
-
-             // --- Set Cursor & Eraser Preview ---
-            function updateCursor() { canvas.className = ''; if (currentTool === 'pen') canvas.classList.add('pen-cursor'); else if (currentTool === 'text') canvas.classList.add('text-cursor'); else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor'); }
-            function showEraserPreview(e) { if (currentTool !== 'eraser' || !eraserPreview) return; const pos = getXY(e); if(!pos) return; const size = parseInt(brushSizeSelect.value, 10); eraserPreview.style.width = `${size}px`; eraserPreview.style.height = `${size}px`; eraserPreview.style.left = `${pos.x + canvas.offsetLeft - size / 2}px`; eraserPreview.style.top = `${pos.y + canvas.offsetTop - size / 2}px`; eraserPreview.style.display = 'block'; }
-            function hideEraserPreview() { if (eraserPreview) eraserPreview.style.display = 'none'; }
-
-            // --- Whiteboard Event Listeners ---
            canvas.addEventListener('mousedown', handleInteractionStart);
            canvas.addEventListener('mousemove', handleInteractionMove);
            canvas.addEventListener('mouseup', handleInteractionEnd);
            canvas.addEventListener('mouseleave', handleInteractionEnd);
            canvas.addEventListener('mouseenter', (e) => { if (currentTool === 'eraser') showEraserPreview(e); });
-
            canvas.addEventListener('touchstart', handleInteractionStart, { passive: false });
            canvas.addEventListener('touchmove', handleInteractionMove, { passive: false });
            canvas.addEventListener('touchend', handleInteractionEnd);
            canvas.addEventListener('touchcancel', handleInteractionEnd);
 
-           // Tool Selection
            const toolButtons = document.querySelectorAll('.tool-button');
            toolButtons.forEach(button => { button.addEventListener('click', function() { toolButtons.forEach(btn => btn.classList.remove('active')); this.classList.add('active'); currentTool = this.dataset.tool; updateCursor(); finalizeTextInput(); }); });
 
-           // Control listeners
            colorPicker.addEventListener('input', () => { if (!drawing && currentTool === 'pen') { ctx.strokeStyle = colorPicker.value; } });
            brushSizeSelect.addEventListener('change', () => { if (!drawing && (currentTool === 'pen' || currentTool === 'eraser')) { ctx.lineWidth = parseInt(brushSizeSelect.value, 10); } });
            fontSizeSelect.addEventListener('change', () => {});
 
-           // Button Group Listeners
            document.querySelector('.clear-button')?.addEventListener('click', () => { strokes = []; renderAll(); showNotification('Whiteboard cleared.'); });
            document.querySelector('.save-button')?.addEventListener('click', () => { try { localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); showNotification('Whiteboard saved locally!'); } catch (e) { console.error('Error saving whiteboard:', e); showNotification('Failed to save: Storage limit likely exceeded.', 5000); } });
            document.querySelector('.load-button')?.addEventListener('click', () => { const data = localStorage.getItem('whiteboardStrokes'); if (data) { try { strokes = JSON.parse(data); renderAll(); showNotification('Whiteboard loaded!'); } catch (e) { showNotification('Error parsing saved drawing.'); strokes = []; renderAll(); } } else { showNotification('No saved drawing found.'); } });
@@ -576,12 +380,74 @@
            resizeCanvas();
            updateCursor();
            const initialData = localStorage.getItem('whiteboardStrokes');
-            if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
+           if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
 
        } else { console.log("Whiteboard canvas not found."); }
 
-        /* --- Lazy Load Iframes & Add Spinners --- */
-        function initLazyIframes() { const iframes = document.querySelectorAll('iframe[data-src]'); const observerCallback = (entries, obs) => { entries.forEach(entry => { if (entry.isIntersecting) { const iframe = entry.target; const loader = iframe.previousElementSibling; if (loader && loader.classList.contains('iframe-loading')) { loader.style.display = 'block'; } iframe.src = iframe.getAttribute('data-src'); iframe.removeAttribute('data-src'); obs.unobserve(iframe); } }); }; const observerOptions = { rootMargin: '100px 0px', threshold: 0.01 }; const observer = new IntersectionObserver(observerCallback, observerOptions); iframes.forEach(iframe => { const parentContainer = iframe.parentElement; if(parentContainer.classList.contains('iframe-loading-container')) { const loader = parentContainer.querySelector('.iframe-loading'); if(loader) loader.style.display = 'none'; iframe.addEventListener('load', () => { if (loader) loader.style.display = 'none'; }); iframe.addEventListener('error', () => { if (loader) loader.style.display = 'none'; console.error("Error loading iframe:", iframe.title || iframe.src); }); if ('IntersectionObserver' in window) { observer.observe(iframe); } else { if (loader) loader.style.display = 'block'; iframe.src = iframe.getAttribute('data-src'); iframe.removeAttribute('data-src'); } } }); }
+      /* --- Lazy Load Iframes & Add Spinners --- CORRECTED --- */
+        function initLazyIframes() {
+            const iframes = document.querySelectorAll('iframe[data-src]');
+
+            const observerCallback = (entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const iframe = entry.target;
+                        const iframeWrapper = iframe.closest('.iframe-container');
+                        const loadingContainer = iframeWrapper?.parentElement;
+                        const loader = loadingContainer?.querySelector('.iframe-loading');
+
+                        if (loader) {
+                             loader.style.display = 'block';
+                         }
+                        iframe.src = iframe.getAttribute('data-src');
+                        iframe.removeAttribute('data-src');
+                        obs.unobserve(iframe);
+                    }
+                });
+            };
+
+             const observerOptions = {
+               rootMargin: '100px 0px',
+               threshold: 0.01
+           };
+
+           const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+           iframes.forEach(iframe => {
+               const iframeWrapper = iframe.closest('.iframe-container');
+               const loadingContainer = iframeWrapper?.parentElement;
+               const loader = loadingContainer?.querySelector('.iframe-loading');
+
+               if(loader) {
+                   loader.style.display = 'none';
+
+                   iframe.addEventListener('load', () => {
+                       loader.style.display = 'none';
+                   });
+                   iframe.addEventListener('error', (err) => {
+                        loader.style.display = 'none';
+                        console.error("Error loading iframe:", iframe.title || iframe.src, err);
+                        const errorMsg = document.createElement('p');
+                        errorMsg.textContent = 'Error loading content.';
+                        errorMsg.style.textAlign = 'center';
+                        errorMsg.style.padding = '20px';
+                        errorMsg.style.color = 'red';
+                        if(iframeWrapper && !iframeWrapper.querySelector('.error-message')) {
+                            errorMsg.classList.add('error-message');
+                            iframeWrapper.appendChild(errorMsg);
+                        }
+                    });
+               }
+
+               if ('IntersectionObserver' in window) {
+                   observer.observe(iframe);
+               } else {
+                   if (loader) loader.style.display = 'block';
+                   iframe.src = iframe.getAttribute('data-src');
+                    iframe.removeAttribute('data-src');
+               }
+           });
+       }
 
       /* --- DOMContentLoaded --- */
       document.addEventListener('DOMContentLoaded', () => { initLazyIframes(); });
@@ -593,4 +459,3 @@
   <!-- ******************************************** -->
 </body>
 </html>
---- END OF FILE daave2.github.io-main/index.html ---
