@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations Guidance - Cleveleys Morrisons Management Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Base CSS (Consistent across pages - Copied from index.html) */
+        :root {
+            --primary-green: #006400; --secondary-yellow: #FFD700; --background-faint-green: #e6ffe6; --background-white: #FFFFFF; --text-color: #333333; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.1); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
+            /* Dark Mode Variables */
+            --dark-background: #121212; --dark-card-bg: #1e1e1e; --dark-text-color: #e0e0e0; --dark-footer-bg: #333333; --dark-footer-text: #e0e0e0;
+        }
+        /* Base Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--background-faint-green); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode { background-color: var(--dark-background); color: var(--dark-text-color); --card-bg: var(--dark-card-bg); }
+        a { color: inherit; text-decoration: none; }
+        body.mobile-nav-open { overflow: hidden; }
+        /* Header Styles */
+        header { background-color: var(--background-white); color: var(--primary-green); padding: 20px 10px; text-align: center; position: relative; box-shadow: 0 2px 4px var(--card-shadow); transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode header { background-color: var(--dark-card-bg); color: var(--dark-text-color); box-shadow: 0 2px 4px var(--dark-card-bg); }
+        header img { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 50px; transition: none; }
+        header h1 { font-size: 2em; margin: 0; padding-left: 80px; }
+        /* Navigation */
+        nav.nav { position: sticky; top: 0; z-index: 1000; background-color: var(--secondary-yellow); box-shadow: 0 2px 15px rgba(0,0,0,0.1); transition: background-color 0.3s; }
+        body.dark-mode nav.nav { background-color: #333; box-shadow: 0 2px 15px rgba(0,0,0,0.6); }
+        .nav-container { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 60px; }
+        .nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; transition: transform 0.3s ease; }
+        .nav-links li { position: relative; }
+        .nav-links a { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; font-weight: 500; color: var(--primary-green); border-radius: 8px; transition: background-color 0.3s, transform 0.3s, color 0.3s; }
+        body.dark-mode .nav-links a { color: var(--dark-text-color); }
+        .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); transform: translateY(-2px); }
+        .nav-links .active { background-color: var(--primary-green); color: var(--background-white); }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--primary-green); border-radius: 2px; transition: width 0.3s ease; }
+        .nav-links a:hover::after, .nav-links .active::after { width: 100%; }
+        .hamburger { display: none; flex-direction: column; cursor: pointer; z-index: 1001; }
+        .hamburger span { display: block; width: 25px; height: 3px; background: var(--primary-green); margin: 5px 0; transition: all 0.3s ease; }
+        body.dark-mode .hamburger span { background: var(--dark-text-color); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .dark-mode-toggle { background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--primary-green); transition: color 0.3s; }
+        body.dark-mode .dark-mode-toggle { color: var(--dark-text-color); }
+        @media (max-width: 992px) { /* Adjusted breakpoint */
+             .hamburger { display: flex; }
+             .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; }
+             body.dark-mode .nav-links { background: #333; }
+             .nav-links.active { transform: translateX(0); }
+             .nav-links li { margin: 0; width: 100%; }
+             .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; }
+             body.dark-mode .nav-links a { color: var(--dark-text-color); }
+             .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); }
+             .nav-links .active { border-bottom: none; }
+             .nav-links a::after { display: none; }
+        }
+        /* Main Content Area */
+        .container { padding: 20px; max-width: 1200px; margin: 20px auto; }
+        section { margin-bottom: 30px; background-color: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; }
+        body.dark-mode section { background-color: var(--dark-card-bg); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05); }
+        section h2 { color: var(--primary-green); margin-bottom: 20px; font-size: 1.8em; border-bottom: 2px solid var(--secondary-yellow); display: inline-block; padding-bottom: 8px; transition: color 0.3s, border-bottom-color 0.3s; }
+        body.dark-mode section h2 { color: var(--secondary-yellow); border-bottom-color: var(--primary-green); }
+         section h3 { color: var(--primary-green); margin-top: 20px; margin-bottom: 10px; font-size: 1.4em; }
+         body.dark-mode section h3 { color: var(--secondary-yellow); }
+         section p { margin-bottom: 1em; }
+         section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
+         section ol { list-style: decimal; margin-left: 25px; margin-bottom: 1em; }
+         section li { margin-bottom: 0.5em; }
+         section strong { font-weight: 700; color: var(--primary-green); }
+         body.dark-mode section strong { color: var(--secondary-yellow); }
+         table { width: 100%; border-collapse: collapse; margin-bottom: 1em; }
+         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+         th { background-color: var(--background-faint-green); color: var(--primary-green); }
+         body.dark-mode th { background-color: #333; color: var(--secondary-yellow); border-color: #444; }
+         body.dark-mode td { border-color: #444; }
+         pre { background-color: #f4f4f4; border: 1px solid #ddd; padding: 10px; border-radius: 4px; overflow-x: auto; }
+         body.dark-mode pre { background-color: #222; border-color: #444; color: #ccc; }
+         code { font-family: monospace; }
+        /* Footer */
+        footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
+        body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
+        footer p { margin: 0; font-size: 0.9em; }
+        /* Link button style */
+        .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-green); color: var(--background-white); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; }
+        .button-link:hover { background-color: var(--secondary-yellow); color: var(--primary-green); transform: translateY(-2px); }
+        body.dark-mode .button-link { color: var(--dark-background); }
+        body.dark-mode .button-link:hover { color: var(--dark-background); }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
+        <h1>Cleveleys Morrisons Management Dashboard</h1>
+    </header>
+
+    <nav class="nav" role="navigation" aria-label="Primary Navigation">
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
+                <li><a href="street.html"><i class="fas fa-store"></i> Market Street</a></li>
+                <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Front End</a></li>
+                <li><a href="operations.html" class="active"><i class="fas fa-cogs"></i> Operations</a></li>
+                <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+                <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+                <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe & Legal</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
+            </div>
+            <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="operations-overview">
+            <h2>Operations Overview</h2>
+            <p>This section consolidates key operational guidance covering replenishment, scanning team activities, customer first principles, and manager routines.</p>
+        </section>
+
+        <section id="replenishment">
+            <h2>Ambient Replenishment Guidance</h2>
+            <p>Ensuring excellent availability requires efficient replenishment processes. Key aspects include:</p>
+            <ul>
+                <li><strong>Operating Model:</strong> Follow the Twilight or Night Fill models as appropriate.</li>
+                <li><strong>Reporting:</strong> Use the inbound deliveries dashboard (link on homepage) for planning.</li>
+                <li><strong>Pre-Sort:</strong> Pallets with >3 commodities should be pre-sorted. Improves efficiency.</li>
+                <li><strong>Targeted Replenishment:</strong> Focus on high-traffic areas (Milk, Bread, Eggs, Food To Go) during peak times (12pm-4pm). Work backstock first.</li>
+                <li><strong>Drop And Fill:</strong> From 12pm, focus on filling gaps from capping shelves. Teamwork is key. Follow Capping Shelf Principles (one case high/deep, max 5 cases, unopened only, correct bay).</li>
+                <li><strong>Rumble (4pm-5pm):</strong> Manager-led teamwork activity to pull stock forward, remove cardboard, and identify replenishment needs for the evening.</li>
+                <li><strong>Fit For 5 (5pm):</strong> Handover process including visual checks, planning break cover, and capturing actions for evening/night teams.</li>
+                <li><strong>Priority Fill:</strong> Guidance on which product categories to prioritise when resources are limited (details in full guide).</li>
+                <li><strong>Simple Warehousing:</strong> Maintain a clean, organised warehouse adhering to 'One Product, One Place', clear zones (Delivery, Back Stock, Promo, Waste, Anomaly), and safety standards.</li>
+                <li><strong>Presentation Standards:</strong> Follow guidelines for flat layers, removing cardboard, pulling stock forward, and leaving gaps clean.</li>
+            </ul>
+            <p>Full Ambient Replenishment Guide PDF available internally (Link not available externally).</p> <!-- Placeholder for actual link -->
+             <a href="https://docs.google.com/document/d/1.../edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link">View Full Ambient Replenishment Guide (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+        </section>
+
+        <section id="scanning-team">
+            <h2>'Scanning' Team Guidance</h2>
+            <p>The Scanning Team handles all activities related to space, range, stock record, and price. This team works as one unit, following a priority order to ensure legal tasks are completed first.</p>
+            <h3>Scanning Team Priority Order:</h3>
+            <ol>
+                <li>Code Checking Activity</li>
+                <li>Price Change Labels</li>
+                <li>Promotional Changes and Media/Marketing</li>
+                <li>Stock Management and Focal Tasks (inc. Space and Range Updates)</li>
+                <li>Overstock & Investigation</li>
+            </ol>
+            <h3>Key Task Timings & Details:</h3>
+            <ul>
+                <li><strong>Code Checking:</strong> Completed by Scanning Team for all pre-packed Fresh, Market Street, Fruit & Veg. Follow existing hours guidance.</li>
+                <li><strong>Price Integrity:</strong> Legal work (offer takedown, price increases) before store close. Remainder from 5am next day. SELs batch/print as normal (Sat for Mon, Mon for Wed).</li>
+                <li><strong>Promotional/Seasonal Changes:</strong> Completed by Scanning Team according to Execution Planner.</li>
+                <li><strong>Stock Management/Focal Tasks:</strong> Scanning Team handles Sunday counts & Scheduled Counts. Market Street team handles Market Street counts/gaps (Ops Mgr accountable).</li>
+                <li><strong>Overstock Investigation:</strong> Managed between 7am-9am daily after replenishment phase.</li>
+                <li><strong>Planogram Changes:</strong> Completed Sunday evening by Scanning Team.</li>
+            </ul>
+             <p>Full Scanning Team Guide PDF available internally (Link not available externally).</p>
+             <a href="https://docs.google.com/document/d/1.../edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link">View Full Scanning Team Guide (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+        </section>
+
+        <section id="customer-first">
+            <h2>Customer First Principles</h2>
+            <p>Customer First is about delivering what matters most. Key elements include:</p>
+            <ul>
+                <li><strong>Understanding Priorities:</strong> Knowing the top factors for store (Availability, Value, Range, Cleanliness, Fresh Quality, Promos, Helpfulness, Friendliness, Queues, Relevant Promos, Dates) and online experiences.</li>
+                <li><strong>Customer Promises ('555'):</strong> Our commitments covering Quality, Service, and Price.</li>
+                <li><strong>Key Service Asks:</strong> <strong>Greet</strong> customers, <strong>Offer a basket</strong>, <strong>Answer their questions</strong> (and say "Yes").</li>
+                <li><strong>Behavioural Pillars (15 Point Plan):</strong> Actions focused on Assistance (baskets, chairs, announcements, carry shopping), Experience (greet, thank you, tastings, quiet hour, offer ice), and Families (accompany parents, kids activities/checkout/trolleys, child-friendly facilities).</li>
+                <li><strong>Listening to Customers:</strong> Utilise Customer Roundtables, Accompanied Shops, and Intercepts. Feedback via Retail Wheel and Satisfaction Surveys.</li>
+                <li><strong>Observations:</strong> Regularly observe colleagues using the updated template, provide feedback and coaching.</li>
+            </ul>
+             <p>Full Customer First Toolkit PDF available internally (Link not available externally).</p>
+             <a href="https://docs.google.com/document/d/1.../edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link">View Full Customer First Toolkit (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+        </section>
+
+        <section id="mic-routines">
+            <h2>Manager In Charge (MIC) Routines</h2>
+            <p>The MIC booklet is a key tool for daily management and handovers.</p>
+            <h3>Daily Structure:</h3>
+            <ul>
+                <li><strong>7am-9am:</strong> Store Walk & SRP Update</li>
+                <li><strong>9am-10:30am:</strong> Waste Validation</li>
+                <li><strong>11am-5pm:</strong> Optic Tasks</li>
+                <li><strong>Before 2pm:</strong> Natasha's Law Checks</li>
+                <li><strong>4pm:</strong> Rumble (Store Manager led)</li>
+                <li><strong>5pm:</strong> Fit for 5 Handover</li>
+                <li><strong>Evening:</strong> Closedown preparation and execution</li>
+            </ul>
+            <h3>Key Processes:</h3>
+            <ul>
+                <li><strong>Fit for Trade Meeting (9am):</strong> Review actions from store walk, sales, customer feedback, availability, quality.</li>
+                <li><strong>Fit for 5 Handover (5pm):</strong> Walk store, capture key colleague info, review service opportunities, plan breaks, share absences, capture actions for SRP/Night teams, sign off in MIC book.</li>
+                <li><strong>Fit For Close Checklist:</strong> Review checklist prior to closing (Front of Store, Market Street, Shop Floor, Cash Controls, Warehouse, Store Closure checks).</li>
+            </ul>
+             <p>Full MIC Booklet PDF available internally (Link not available externally).</p>
+              <a href="https://docs.google.com/document/d/1.../edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link">View Full MIC Booklet (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
+        </section>
+
+        <section id="tech-support">
+            <h2>Technology Support Contacts</h2>
+            <p>For issues with specific systems, use the relevant contacts:</p>
+            <ul>
+                <li><strong>NCR Helpdesk (0845 611 6500, Opt 1, Opt 1):</strong> Tills (Cafe, Kiosk, Main, SCO, Mobile), Price Integrity, Software, ICH, Printers (Catalina, Lexmark, Mobile), HHTs, Lane Scheduler, Cafe Systems, Vocovo, Verifone PDQs, Digital Logbooks, SCO Screens.</li>
+                 <li><strong>Technology Helpdesk (0845 611 6500, Opt 1, Opt 2):</strong> Gap Scanning, Back Office PCs/Printers, Chromebooks, Phone Lines, ASCOM Faults/Diverts.</li>
+                 <li><strong>PFS Helpdesk (0845 611 6500, Opt 2):</strong> All Petrol related issues (except Power - contact Maintenance, or physical pump issues/leaks - contact Wayne FM / Property Maintenance).</li>
+                 <li><strong>Replacement Mobile Devices/ASCOM/Peripherals:</strong> Use the Google Form (link in guide) for HHTs, ASCOM phones, PFS phones, Tablets, SIMs.</li>
+                 <li><strong>City FM (Internal 6711):</strong> Till Belts, Furniture, ICH Enclosures.</li>
+                 <li><strong>Bizerba Scales:</strong> Hardware (0844 8265201), Data/PLU Issues (0345 611 6500, Opt 3).</li>
+                 <li><strong>MyTech Portal (on MyMorri):</strong> PC Movements, Ordering Large Equipment (Projectors, PCs, Screens), Replacement Chromebooks/Tablet Docks, VPN Tokens, ASCOM Clips.</li>
+                 <li><strong>People Manager:</strong> Systems Access/Privilege Levels.</li>
+            </ul>
+             <p>See the <a href="contacts.html">Contacts page</a> for more details.</p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Basic JS for Dark Mode Toggle and Mobile Nav (Identical to index.html)
+       (function() {
+         'use strict';
+         // Dark Mode Toggle
+         const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
+         function toggleDarkMode() {
+           const isDark = document.body.classList.toggle('dark-mode');
+           darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', isDark));
+           localStorage.setItem('theme', isDark ? 'dark' : 'light');
+         }
+         darkModeToggleButtons.forEach(btn => {
+           btn.addEventListener('click', toggleDarkMode);
+         });
+         if (localStorage.getItem('theme') === 'dark') {
+           document.body.classList.add('dark-mode');
+           darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', 'true'));
+         }
+
+         // Mobile Navigation Toggle
+         const hamburger = document.querySelector('.hamburger');
+         const navLinks = document.querySelector('.nav-links');
+         if (hamburger && navLinks) {
+             hamburger.addEventListener('click', (e) => {
+               e.stopPropagation();
+               const isActive = navLinks.classList.toggle('active');
+               hamburger.classList.toggle('active');
+               hamburger.setAttribute('aria-expanded', isActive);
+               document.body.classList.toggle('mobile-nav-open', isActive);
+             });
+              hamburger.addEventListener('keypress', (e) => {
+                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); }
+             });
+             document.addEventListener('click', (e) => {
+                 if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                     navLinks.classList.remove('active');
+                     hamburger.classList.remove('active');
+                     hamburger.setAttribute('aria-expanded', 'false');
+                     document.body.classList.remove('mobile-nav-open');
+                 }
+             });
+             navLinks.querySelectorAll('a').forEach(link => {
+                 link.addEventListener('click', () => {
+                     if (navLinks.classList.contains('active')) {
+                         navLinks.classList.remove('active');
+                         hamburger.classList.remove('active');
+                         hamburger.setAttribute('aria-expanded', 'false');
+                         document.body.classList.remove('mobile-nav-open');
+                     }
+                 });
+             });
+         }
+       })();
+    </script>
+</body>
+</html>
