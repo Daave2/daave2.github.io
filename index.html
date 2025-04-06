@@ -1,3 +1,4 @@
+--- START OF FILE daave2.github.io-main/index.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,7 +132,7 @@
    </header>
 
    <nav class="nav" role="navigation" aria-label="Primary Navigation">
-     <!-- Navigation Links -->
+     <!-- Navigation Links (Same as before) -->
      <div class="nav-container">
        <ul class="nav-links">
            <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
@@ -323,28 +324,27 @@
       const eraserPreview = document.getElementById('eraser-preview');
 
       if (canvas) {
-           ctx = canvas.getContext('2d');
+           ctx = canvas.getContext('2d'); // Standard context
            colorPicker = document.getElementById('colorPicker');
            brushSizeSelect = document.getElementById('brushSize');
-           fontSizeSelect = document.getElementById('fontSize');
+           fontSizeSelect = document.getElementById('fontSize'); // Get font size select
 
            const getThemeBgColor = () => {
                 const styles = getComputedStyle(document.documentElement);
                 return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim();
            }
-           const getEffectiveBackgroundColor = () => {
+            const getEffectiveBackgroundColor = () => {
                 const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill');
                 return lastFill ? lastFill.color : getThemeBgColor();
             };
 
-           const renderAll = () => {
+            const renderAll = () => {
                 if (!ctx) return;
                 const ratio = window.devicePixelRatio || 1;
                 const width = canvas.width / ratio;
                 const height = canvas.height / ratio;
 
-                // Save context state
-                ctx.save();
+                ctx.save(); // Save context state
 
                 // Clear with effective background
                 ctx.globalCompositeOperation = 'source-over'; // Ensure clear works correctly
@@ -383,31 +383,33 @@
                         ctx.textBaseline = 'top';
                         const lines = stroke.text.split('\n');
                         lines.forEach((line, index) => {
-                             ctx.fillText(line, stroke.x, stroke.y + index * (stroke.fontSize * 1.2));
+                             // Add small offset to prevent text clipping at the very top
+                             const yPos = stroke.y + index * (stroke.fontSize * 1.2);
+                             ctx.fillText(line, stroke.x, yPos);
                         });
                     }
-                    // 'fill' tool implicitly handled by background clear
                 });
-                 // Restore context state
-                ctx.restore();
+                ctx.restore(); // Restore original context state
            };
 
-           const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.scale(ratio, ratio); renderAll(); };
+           const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.save(); ctx.scale(ratio, ratio); renderAll(); ctx.restore(); };
+
 
             // --- Whiteboard Drawing/Text Functions ---
-           const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
+            const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
 
            const handleInteractionStart = (e) => {
-               if (e.type === 'touchstart') e.preventDefault();
-               const pos = getXY(e.type === 'touchstart' ? e.touches[0] : e);
-               if (!pos) return;
+                if (e.type === 'touchstart') e.preventDefault();
+                const eventRef = e.type === 'touchstart' ? e.touches[0] : e;
+                const pos = getXY(eventRef);
+                if (!pos) return;
 
-                finalizeTextInput(); // Finalize any existing text input
+                finalizeTextInput();
 
                 if (currentTool === 'text') {
-                    createTextInput(pos); // Pass position directly
+                    createTextInput(pos, eventRef); // Pass original event for stopPropagation if needed
                 } else {
-                    startDrawing(pos); // Pass position directly
+                    startDrawing(pos);
                 }
             };
 
@@ -416,16 +418,11 @@
                const currentLineWidth = parseInt(brushSizeSelect.value, 10);
                if (currentTool === 'eraser') {
                     currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] };
-                    ctx.globalCompositeOperation = 'destination-out';
                 } else {
                     currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] };
-                    ctx.globalCompositeOperation = 'source-over';
                 }
-                ctx.strokeStyle = currentStroke.color; // Set for path definition
-                ctx.lineWidth = currentLineWidth;
-                ctx.lineJoin = 'round';
-                ctx.lineCap = 'round';
-                ctx.beginPath();
+                // No need to set ctx properties here, set them in draw for each segment
+                ctx.beginPath(); // Still needed to start the path
                 ctx.moveTo(pos.x, pos.y);
            };
 
@@ -440,30 +437,54 @@
            const draw = (e) => {
                const pos = getXY(e);
                if (!pos || !currentStroke) return;
-                // Set correct mode for this segment
-                ctx.globalCompositeOperation = currentTool === 'eraser' ? 'destination-out' : 'source-over';
+
+                // Set context properties for this segment
+                ctx.lineWidth = currentStroke.lineWidth;
+                ctx.strokeStyle = currentStroke.color; // Use stroke's color for pen
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+
+                if(currentTool === 'eraser') {
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.strokeStyle = 'rgba(0,0,0,1)'; // Must be opaque for destination-out
+                } else {
+                    ctx.globalCompositeOperation = 'source-over';
+                }
+
                 ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
+                ctx.stroke(); // Draw the segment immediately
                 currentStroke.points.push(pos);
+
+                // Begin a new sub-path for the next segment to avoid sharp corners issue with context reuse
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
             };
 
-           const handleInteractionEnd = (e) => {
-               if (e.type === 'touchend' || e.type === 'touchcancel') { document.body.style.overflow = ''; }
-               if (drawing && currentTool !== 'text') { stopDrawing(); }
-               hideEraserPreview();
-           };
+            const handleInteractionEnd = (e) => {
+                 if (e.type === 'touchend' || e.type === 'touchcancel') { document.body.style.overflow = ''; }
+                 if (drawing && currentTool !== 'text') { stopDrawing(); }
+                 hideEraserPreview();
+             };
 
            const stopDrawing = () => {
                if (!drawing) return;
                drawing = false;
-               if (currentStroke && currentStroke.points.length > 1) { strokes.push(currentStroke); }
+               if (currentStroke && currentStroke.points.length > 1) {
+                   // Before pushing, ensure context is back to normal
+                   ctx.globalCompositeOperation = 'source-over';
+                   strokes.push(currentStroke);
+                   // OPTIONAL: Could redraw just the last stroke for immediate visual feedback
+                   // without full renderAll, but renderAll ensures correctness with fills/overlaps.
+                   // renderAll(); // Uncomment if full redraw needed immediately
+               }
                currentStroke = null;
-               ctx.globalCompositeOperation = 'source-over'; // Reset mode
+               ctx.closePath(); // Close the path after finishing stroke
+               ctx.globalCompositeOperation = 'source-over'; // Ensure reset
            };
 
            // --- Text Input Handling ---
-           function createTextInput(pos) {
-               if (textInputOverlay) { return; } // Prevent creating multiple text boxes
+           function createTextInput(pos, originalEvent) {
+               if (textInputOverlay) { return; } // Prevent multiple
 
                textInputOverlay = document.createElement('textarea');
                textInputOverlay.id = 'text-input-overlay';
@@ -473,40 +494,51 @@
                textInputOverlay.style.color = colorPicker.value;
                textInputOverlay.style.fontFamily = 'Roboto, sans-serif';
                textInputOverlay.wrap = 'soft';
-               textInputOverlay.style.border = '1px dashed #888'; // Make it more visible
+               textInputOverlay.style.border = '1px dashed #888';
                textInputOverlay.style.padding = '4px';
+               textInputOverlay.style.lineHeight = '1.2'; // Ensure consistent line height
 
+               textInputOverlay.addEventListener('blur', finalizeTextInput);
                textInputOverlay.addEventListener('keypress', (event) => {
                    if (event.key === 'Enter' && !event.shiftKey) {
                        event.preventDefault();
                        finalizeTextInput();
                    }
                });
-               textInputOverlay.addEventListener('blur', finalizeTextInput); // Finalize on blur
 
+                // Add to body and focus
                document.body.appendChild(textInputOverlay);
                textInputOverlay.focus();
+
+               // Prevent the triggering event from immediately blurring the new input
+                if(originalEvent) {
+                    originalEvent.stopPropagation();
+               }
            }
 
            function finalizeTextInput() {
-               if (!textInputOverlay) return;
-               const text = textInputOverlay.value; // Get value before removing
-               const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft;
-               const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop;
-               const fontSize = parseInt(fontSizeSelect.value, 10);
-               const color = colorPicker.value;
+                if (!textInputOverlay) return;
+                const text = textInputOverlay.value;
+                const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft;
+                const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop;
+                const fontSize = parseInt(fontSizeSelect.value, 10);
+                const color = colorPicker.value; // Get color at time of finalization
 
-               // Remove the textarea from the DOM *before* potentially adding stroke
-               try { document.body.removeChild(textInputOverlay); } catch(e) {}
-               textInputOverlay = null; // Nullify the reference
+                const overlayRef = textInputOverlay; // Keep reference
+                textInputOverlay = null; // Clear global reference *before* potentially slow redraw
 
-               if (text.trim()) { // Only add if there's actual text
-                   strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color });
-                   renderAll(); // Redraw canvas with the new text
-               }
+                // Remove textarea from DOM
+                if (overlayRef.parentNode === document.body) {
+                    document.body.removeChild(overlayRef);
+                }
+
+                if (text.trim()) {
+                    strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color });
+                    renderAll(); // Redraw canvas only if text was added
+                }
             }
 
-           // --- Set Cursor & Eraser Preview ---
+             // --- Set Cursor & Eraser Preview ---
             function updateCursor() { canvas.className = ''; if (currentTool === 'pen') canvas.classList.add('pen-cursor'); else if (currentTool === 'text') canvas.classList.add('text-cursor'); else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor'); }
             function showEraserPreview(e) { if (currentTool !== 'eraser' || !eraserPreview) return; const pos = getXY(e); if(!pos) return; const size = parseInt(brushSizeSelect.value, 10); eraserPreview.style.width = `${size}px`; eraserPreview.style.height = `${size}px`; eraserPreview.style.left = `${pos.x + canvas.offsetLeft - size / 2}px`; eraserPreview.style.top = `${pos.y + canvas.offsetTop - size / 2}px`; eraserPreview.style.display = 'block'; }
             function hideEraserPreview() { if (eraserPreview) eraserPreview.style.display = 'none'; }
@@ -537,7 +569,7 @@
            document.querySelector('.save-button')?.addEventListener('click', () => { try { localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); showNotification('Whiteboard saved locally!'); } catch (e) { console.error('Error saving whiteboard:', e); showNotification('Failed to save: Storage limit likely exceeded.', 5000); } });
            document.querySelector('.load-button')?.addEventListener('click', () => { const data = localStorage.getItem('whiteboardStrokes'); if (data) { try { strokes = JSON.parse(data); renderAll(); showNotification('Whiteboard loaded!'); } catch (e) { showNotification('Error parsing saved drawing.'); strokes = []; renderAll(); } } else { showNotification('No saved drawing found.'); } });
            document.querySelector('.undo-button')?.addEventListener('click', () => { if (strokes.length > 0) { strokes.pop(); renderAll(); showNotification('Undo successful.'); } else { showNotification('Nothing to undo.'); } });
-           document.querySelector('.fill-button')?.addEventListener('click', () => { strokes = [{ tool: 'fill', color: colorPicker.value }]; renderAll(); showNotification('Canvas background filled.'); }); // Fill clears history
+           document.querySelector('.fill-button')?.addEventListener('click', () => { strokes = [{ tool: 'fill', color: colorPicker.value }]; renderAll(); showNotification('Canvas background filled.'); });
            document.querySelector('.export-png-button')?.addEventListener('click', () => { const dataURL = canvas.toDataURL('image/png'); const link = document.createElement('a'); link.href = dataURL; link.download = 'morrisons-dashboard-notes.png'; document.body.appendChild(link); link.click(); document.body.removeChild(link); showNotification('Downloaded as PNG.'); });
 
            window.addEventListener('resize', debounce(resizeCanvas, 200));
@@ -561,3 +593,4 @@
   <!-- ******************************************** -->
 </body>
 </html>
+--- END OF FILE daave2.github.io-main/index.html ---
