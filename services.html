@@ -1,425 +1,134 @@
+--- START OF FILE daave2.github.io-main/services.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cleveleys Morrisons Management Dashboard - Services</title>
-  <!-- Google Fonts & Font Awesome -->
+  <title>Front End Services - Cleveleys Morrisons Management Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* ------------------------------
-       CSS Styles for Cleveleys Morrisons Management Dashboard
-       ------------------------------ */
+    /* Base CSS (Consistent across pages) */
     :root {
-      --primary-green: #006400;
-      --secondary-yellow: #FFD700;
-      --background-faint-green: #e6ffe6;
-      --background-white: #FFFFFF;
-      --text-color: #333333;
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.1);
-      --footer-bg: var(--primary-green);
-      --footer-text: var(--background-white);
-
-      /* Dark Mode Variables */
-      --dark-background: #121212;
-      --dark-card-bg: #1e1e1e;
-      --dark-text-color: #e0e0e0;
-      --dark-footer-bg: #333333;
-      --dark-footer-text: #e0e0e0;
+      --primary-green: #006400; --secondary-yellow: #FFD700; --background-faint-green: #e6ffe6; --background-white: #FFFFFF; --text-color: #333333; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.1); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
+      /* Dark Mode */
+      --dark-background: #121212; --dark-card-bg: #1e1e1e; --dark-text-color: #e0e0e0; --dark-footer-bg: #333333; --dark-footer-text: #e0e0e0;
     }
 
     /* Purple Theme Variables */
-    .purple-theme {
-      --primary-green: #6A0DAD; /* Purple */
-      --secondary-yellow: #9370DB; /* Medium Purple */
-      --background-faint-green: #f0e6ff; /* Faint Purple */
-      --background-white: #F8F0FF; /* Soft White with Purple Tint */
-      --text-color: #2E0854; /* Darker Text for Purple Theme */
-      --card-bg: var(--background-white);
-      --card-shadow: rgba(0, 0, 0, 0.2);
-      --footer-bg: var(--primary-green);
-      --footer-text: var(--background-white);
-
-      /* Dark Mode Overrides for Purple Theme */
-      --dark-background: #1a0a33;
-      --dark-card-bg: #2e0e4d;
-      --dark-text-color: #f0e0ff;
-      --dark-footer-bg: #4d0080;
-      --dark-footer-text: #f0e0ff;
+    body.purple-theme {
+      --primary-green: #6A0DAD; --secondary-yellow: #9370DB; --background-faint-green: #f0e6ff; --background-white: #F8F0FF; --text-color: #2E0854; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.15); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
+      /* Dark Mode Overrides */
+       &.dark-mode {
+           --primary-green: #9370DB; --secondary-yellow: #B19CD9; --background-faint-green: var(--dark-background); --dark-card-bg: #2e0e4d; --dark-text-color: #f0e0ff; --dark-footer-bg: #4d0080; --dark-footer-text: #f0e0ff;
+       }
     }
 
-    /* Transition for Smooth Theme Change */
-    :root, .purple-theme {
-      transition: all 2s ease;
-    }
+    /* Smooth Theme Transition */
+     body { transition: background-color 0.6s ease, color 0.6s ease; }
+     :root, body.purple-theme { transition: none; }
 
-    /* Existing CSS Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--background-faint-green);
-      color: var(--text-color);
-      line-height: 1.6;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode {
-      background-color: var(--dark-background);
-      color: var(--dark-text-color);
-    }
+    /* Base Styles (Same as index.html) */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto', sans-serif; background-color: var(--background-faint-green); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+    body.dark-mode { background-color: var(--dark-background); color: var(--dark-text-color); --card-bg: var(--dark-card-bg); }
     a { color: inherit; text-decoration: none; }
     body.mobile-nav-open { overflow: hidden; }
+    header { background-color: var(--background-white); color: var(--primary-green); padding: 20px 10px; text-align: center; position: relative; box-shadow: 0 2px 4px var(--card-shadow); transition: background-color 0.3s, color 0.3s; }
+    body.dark-mode header { background-color: var(--dark-card-bg); color: var(--dark-text-color); }
+    header img { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 50px; transition: none; }
+    header h1 { font-size: 2em; margin: 0; padding-left: 80px; }
 
-    header {
-      background-color: var(--background-white);
-      color: var(--primary-green);
-      padding: 20px 10px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 2px 4px var(--card-shadow);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode header {
-      background-color: var(--dark-card-bg);
-      color: var(--dark-text-color);
-    }
-    header img {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 50px;
-      /* Ensure the logo is not affected by theme changes */
-      transition: none;
-    }
-    header h1 { 
-      font-size: 2em; 
-      margin: 0; 
-      padding-left: 80px; 
-    }
-
-    /* Navigation Styles */
-    nav.nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: var(--secondary-yellow);
-      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
-    }
-    body.dark-mode nav.nav {
-      background-color: #333;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.6);
-    }
-    .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      height: 60px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      list-style: none;
-      transition: transform 0.3s ease;
-    }
+    /* Navigation Styles (Same as index.html) */
+    nav.nav { position: sticky; top: 0; z-index: 1000; background-color: var(--secondary-yellow); box-shadow: 0 2px 15px rgba(0,0,0,0.1); transition: background-color 0.3s; }
+    body.dark-mode nav.nav { background-color: #333; box-shadow: 0 2px 15px rgba(0,0,0,0.6); }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 60px; }
+    .nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; transition: transform 0.3s ease; }
     .nav-links li { position: relative; }
-    .nav-links a {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-weight: 500;
-      color: var(--primary-green);
-      border-radius: 8px;
-      transition: background-color 0.3s, transform 0.3s;
-    }
+    .nav-links a { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; font-weight: 500; color: var(--primary-green); border-radius: 8px; transition: background-color 0.3s, transform 0.3s, color 0.3s; }
     body.dark-mode .nav-links a { color: var(--dark-text-color); }
-    .nav-links a:hover {
-      background-color: var(--primary-green);
-      color: var(--background-white);
-      transform: translateY(-2px);
-    }
-    .nav-links .active {
-      background-color: var(--primary-green);
-      color: var(--background-white);
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background-color: var(--primary-green);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover::after,
-    .nav-links .active::after { width: 100%; }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      z-index: 1001;
-    }
-    .hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: var(--primary-green);
-      margin: 5px 0;
-      transition: all 0.3s ease;
-    }
+    .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); transform: translateY(-2px); }
+    .nav-links .active { background-color: var(--primary-green); color: var(--background-white); }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--primary-green); border-radius: 2px; transition: width 0.3s ease; }
+    .nav-links a:hover::after, .nav-links .active::after { width: 100%; }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; z-index: 1001; }
+    .hamburger span { display: block; width: 25px; height: 3px; background: var(--primary-green); margin: 5px 0; transition: all 0.3s ease; }
     body.dark-mode .hamburger span { background: var(--dark-text-color); }
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px,5px);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px,-6px);
-    }
-
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
     .nav-actions { display: flex; align-items: center; gap: 1rem; }
-    .dark-mode-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.5em;
-      color: var(--primary-green);
-      transition: color 0.3s;
-    }
-    body.dark-mode .dark-mode-toggle {
-      color: var(--dark-text-color);
-    }
+    .dark-mode-toggle { background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--primary-green); transition: color 0.3s; }
+    body.dark-mode .dark-mode-toggle { color: var(--dark-text-color); }
+     @media (max-width: 992px) { /* Adjusted breakpoint */
+         .hamburger { display: flex; }
+         .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; }
+         body.dark-mode .nav-links { background: #333; }
+         .nav-links.active { transform: translateX(0); }
+         .nav-links li { margin: 0; width: 100%; }
+         .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; }
+         body.dark-mode .nav-links a { color: var(--dark-text-color); }
+         .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); }
+         .nav-links .active { border-bottom: none; }
+         .nav-links a::after { display: none; }
+     }
 
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: var(--secondary-yellow);
-        flex-direction: column;
-        padding: 1rem;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        overflow-y: auto;
-      }
-      body.dark-mode .nav-links { background: #333; }
-      .nav-links.active { transform: translateX(0); }
-      .nav-links li { margin: 0; width: 100%; }
-      .nav-links a {
-        margin: 10px 0;
-        width: 100%;
-        background-color: transparent;
-        color: var(--primary-green);
-        border-radius: 4px;
-        text-align: left;
-        font-size: 1em;
-        padding: 10px;
-      }
-      body.dark-mode .nav-links a { color: var(--dark-text-color); }
-      .nav-links a:hover {
-        background-color: var(--primary-green);
-        color: var(--background-white);
-      }
-    }
+    /* Main Content Area */
+     .container { padding: 20px; max-width: 1200px; margin: 20px auto; }
+     section { margin-bottom: 30px; background-color: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; }
+     body.dark-mode section { background-color: var(--dark-card-bg); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05); }
+     section h2 { color: var(--primary-green); margin-bottom: 20px; font-size: 1.8em; border-bottom: 2px solid var(--secondary-yellow); display: inline-block; padding-bottom: 8px; transition: color 0.3s, border-bottom-color 0.3s; }
+     body.dark-mode section h2 { color: var(--secondary-yellow); border-bottom-color: var(--primary-green); }
+     section h3 { color: var(--primary-green); margin-top: 20px; margin-bottom: 10px; font-size: 1.4em; }
+     body.dark-mode section h3 { color: var(--secondary-yellow); }
+     section p { margin-bottom: 1em; }
+     section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
+     section li { margin-bottom: 0.5em; }
+     section strong { font-weight: 700; color: var(--primary-green); }
+     body.dark-mode section strong { color: var(--secondary-yellow); }
+     .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+     .wgl-item { margin-bottom: 15px; } /* What Good Looks Like item */
+     .wgl-item strong { display: block; margin-bottom: 5px; }
 
-    /* Main Container Styles */
-    .container { 
-      padding: 20px; 
-      max-width: 1200px; 
-      margin: 0 auto; 
-    }
-    main {
-      role: main;
-    }
 
-    /* Dashboard Styles */
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px 0;
-    }
-    .dashboard-card {
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .dashboard-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px var(--card-shadow);
-    }
-    .dashboard-card h3 {
-      margin-bottom: 15px;
-      color: var(--primary-green);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.4em;
-    }
-    .dashboard-card p {
-      flex-grow: 1;
-      margin-bottom: 15px;
-    }
-    .dashboard-card iframe {
-      width: 100%;
-      height: 400px;
-      border: none;
-      border-radius: 5px;
-      margin-bottom: 15px;
-    }
-    .dashboard-card a {
-      display: inline-block;
-      padding: 10px 15px;
-      background-color: var(--primary-green);
-      color: var(--background-white);
-      border-radius: 5px;
-      text-align: center;
-      font-weight: 500;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-    .dashboard-card a:hover {
-      background-color: var(--secondary-yellow);
-      color: var(--background-white);
-      transform: translateY(-2px);
-    }
-
-    /* Full-Width Card Modifier */
-    .full-width {
-      grid-column: 1 / -1;
-    }
+    /* Footer Styles (Same as index.html) */
+    footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
+    body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
+    footer p { margin: 0; font-size: 0.9em; }
 
     /* Accordion Styles */
-    .accordion {
-      background-color: var(--card-bg);
-      color: var(--text-color);
-      cursor: pointer;
-      padding: 15px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      outline: none;
-      font-size: 1.2em;
-      transition: background-color 0.3s;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      margin-bottom: 10px;
-    }
-    .accordion:hover,
-    .accordion.active {
-      background-color: var(--primary-green);
-      color: var(--background-white);
-    }
-    .accordion::after {
-      content: '\002B'; /* Plus sign */
-      font-size: 1.2em;
-      float: right;
-    }
-    .accordion.active::after {
-      content: '\2212'; /* Minus sign */
-    }
-    .panel {
-      padding: 0 15px;
-      background-color: var(--card-bg);
-      display: none;
-      overflow: hidden;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 4px 12px var(--card-shadow);
-      margin-bottom: 20px;
-    }
-    body.dark-mode .panel {
-      background-color: var(--dark-card-bg);
-      color: var(--dark-text-color);
-    }
-    .panel p, .panel ul {
-      padding: 15px 0;
-      line-height: 1.6;
-    }
-    .panel ul {
-      list-style: disc inside;
-    }
+    .accordion { background-color: var(--card-bg); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; box-shadow: 0 2px 6px var(--card-shadow); margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+    body.dark-mode .accordion { background-color: var(--dark-card-bg); color: var(--dark-text-color); }
+    .accordion:hover, .accordion.active { background-color: var(--primary-green); color: var(--background-white); }
+    body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-yellow); color: var(--dark-background); }
+    .accordion::after { content: '\f078'; /* Chevron Down */ font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
+    .accordion.active::after { transform: rotate(-180deg); }
+    .panel { padding: 0 18px; background-color: var(--card-bg); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--background-faint-green); border-top: none; margin-bottom: 10px; margin-top: -10px; /* Overlap slightly */ }
+    body.dark-mode .panel { background-color: var(--dark-card-bg); border-color: #333; }
+    .panel div { padding: 15px 0; } /* Inner div for padding transition */
 
-    /* Footer Styles */
-    footer {
-      background-color: var(--footer-bg);
-      color: var(--footer-text);
-      text-align: center;
-      padding: 10px 5px;
-      bottom: 0;
-      width: 100%;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark-mode footer {
-      background-color: var(--dark-footer-bg);
-      color: var(--dark-footer-text);
-    }
-    footer p { 
-      margin: 0; 
-      font-size: 0.8em; 
-    }
-
-    /* Media Queries for Responsive Iframe */
-    @media (max-width: 768px) {
-      .dashboard-card iframe {
-        height: 300px;
-      }
-    }
-    @media (max-width: 480px) {
-      .dashboard-card iframe {
-        height: 250px;
-      }
-    }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
-         alt="Morrisons Logo">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
     <h1>Cleveleys Morrisons Management Dashboard</h1>
   </header>
 
-  <!-- Navigation -->
   <nav class="nav" role="navigation" aria-label="Primary Navigation">
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i> Street</a></li>
-        <li><a href="services.html" class="active"><i class="fas fa-concierge-bell"></i> Services</a></li>        
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe and Legal</a></li>
+         <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+         <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
+         <li><a href="street.html"><i class="fas fa-store"></i> Market Street</a></li>
+         <li><a href="services.html" class="active"><i class="fas fa-concierge-bell"></i> Front End</a></li>
+         <li><a href="operations.html"><i class="fas fa-cogs"></i> Operations</a></li>
+         <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
+         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
+         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe & Legal</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
-          🌓
-        </button>
+        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
       </div>
       <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
         <span></span><span></span><span></span>
@@ -428,144 +137,233 @@
   </nav>
 
   <main class="container">
-    <section class="dashboard">
-      <!-- Example Dashboard Card for Services -->
-      <div class="dashboard-card">
-        <h3><i class="fas fa-concierge-bell"></i> Service Overview</h3>
-        <p>Access the Services dashboard to monitor and manage various service-related metrics across departments.</p>
-        <a href="https://example.com/services-dashboard" target="_blank" rel="noopener noreferrer">
-          View Services
-        </a>
-      </div>
-
-      <!-- Additional Dashboard Cards Relevant to Services -->
-      <!-- Add or modify cards as needed -->
-
-      <!-- Full-Width Cards -->
-      <!-- Example Full-Width Card -->
-      <div class="dashboard-card full-width">
-        <h3><i class="fas fa-file-alt"></i> Service Guide</h3>
-        <p>Understand the service processes and key focus areas for improving customer satisfaction and operational efficiency.</p>
-        <button class="accordion"><i class="fas fa-chevron-down"></i> View Service Guide</button>
-        <div class="panel">
-          <p><strong>Service Improvement Plan – Q1/Q2</strong></p>
-          <h4>1. Introduction</h4>
-          <p>This document outlines the key strategies, focus areas, and requirements for enhancing our service delivery in Q1 and Q2. The primary objective is to elevate customer satisfaction and streamline operational processes.</p>
-          
-          <h4>2. Key Strategies and Focus Areas</h4>
-          <ul>
-            <li><strong>Customer Feedback:</strong> Implement regular surveys to gather customer insights.</li>
-            <li><strong>Staff Training:</strong> Enhance training programs to improve service quality.</li>
-            <li><strong>Process Optimization:</strong> Identify and eliminate bottlenecks in service delivery.</li>
-          </ul>
-          
-          <h4>3. Implementation Plan</h4>
-          <ul>
-            <li><strong>Timeline:</strong> Outline of key milestones and deadlines.</li>
-            <li><strong>Resources:</strong> Allocation of necessary resources for implementation.</li>
-            <li><strong>Monitoring:</strong> Establish metrics to track progress and effectiveness.</li>
-          </ul>
-          
-          <h4>4. Roles and Responsibilities</h4>
-          <p>Define the roles of team members in executing the service improvement plan.</p>
-          
-          <h4>5. Evaluation and Feedback</h4>
-          <ul>
-            <li><strong>Regular Reviews:</strong> Schedule periodic reviews to assess progress.</li>
-            <li><strong>Adjustments:</strong> Make necessary adjustments based on feedback and performance data.</li>
-          </ul>
-          
-          <h4>6. Key Resources and Contacts</h4>
-          <ul>
-            <li><strong>Service Dashboard:</strong> Link to the service metrics dashboard.</li>
-            <li><strong>Training Materials:</strong> Access to updated training resources.</li>
-            <li><strong>Contacts:</strong> Jane Doe, John Smith, Emily Johnson.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Add more full-width or regular dashboard cards as needed -->
+    <section id="front-end-overview">
+      <h2>Front End Services Overview</h2>
+      <p>The Front End is a critical customer interaction point, encompassing checkouts, Customer Service Desk (CSD), Kiosk, Self Checkouts, and the Car Park. Our goal is to provide friendly, helpful, and efficient service at all times.</p>
+      <p>Key principles include adhering to the <strong>Customer First</strong> behaviours, managing queues effectively (1+1 rule), maintaining clean and organised service areas, and ensuring all equipment is operational.</p>
     </section>
+
+    <section id="key-service-behaviours">
+        <h2>Key Service Behaviours & Principles</h2>
+        <p>All Front End colleagues must consistently demonstrate our key service behaviours:</p>
+        <ul>
+            <li><strong>Greet Customers:</strong> Acknowledge every customer with a friendly greeting.</li>
+            <li><strong>Offer a Basket:</strong> Be proactive if a customer looks like they need one.</li>
+            <li><strong>Answer Questions:</strong> Always aim to help and say "Yes".</li>
+        </ul>
+        <p>Refer to the <a href="operations.html#customer-first">Operations page</a> for the full Customer First 15-point plan covering Assistance, Experience, and Families pillars.</p>
+        <p>Regular colleague observations focusing on these behaviours are crucial for coaching and maintaining standards.</p>
+    </section>
+
+    <section id="operating-clocks">
+        <h2>Operating Clocks & Routines</h2>
+        <p>Following structured routines ensures consistent service and operational efficiency.</p>
+        <button class="accordion">Front End Operating Clock</button>
+        <div class="panel"><div>
+            <ul>
+                <li><strong>Pre-opening:</strong> Morning set up, equipment checks, security checks, disable alarm check.</li>
+                <li><strong>07:00-08:00:</strong> Review scheduler overs/unders, discuss support needs, complete exceptions.</li>
+                <li><strong>09:00-10:15:</strong> Complete logbook legal checks, check standards across areas.</li>
+                <li><strong>10:15-10:30:</strong> Random till checks (min 1 Cafe, 1 Petrol, 1 Main Store), ensure put backs actioned.</li>
+                <li><strong>10:45-11:00:</strong> Review till overs/shorts, plan rechecks/investigations.</li>
+                <li><strong>13:00-13:45:</strong> Review evening scheduler, complete amends, £11 refund check.</li>
+                <li><strong>13:45-14:15:</strong> Repeat random till checks.</li>
+                <li><strong>14:00-14:30:</strong> Disabled Alarm Check, ensure put backs actioned.</li>
+                <li><strong>16:00-17:00:</strong> Fit for 5 standards check.</li>
+                <li><strong>19:00-19:45:</strong> £11 refund check, repeat random till checks.</li>
+                 <li><strong>21:00-22:00:</strong> Ensure put backs/hangers/tags returned, consumables available, tills tidy/cleaned.</li>
+                 <li><strong>After close:</strong> Coordinated close down routines (Empty ICH, count tills, suspend/retrieve checks, collect coupons, lottery instants, detachers).</li>
+                 <li><strong>Throughout the day:</strong> Serve Customers, Manage Queues (minimum 1 Main Bank Open), Toilet checks, Floor checks.</li>
+            </ul>
+        </div></div>
+        <button class="accordion">Combined CSD & Kiosk Operating Clock</button>
+        <div class="panel"><div>
+            <ul>
+                <li><strong>Pre-opening:</strong> Morning set up, unlock bunker/lottery, print Food Orders.</li>
+                 <li><strong>07:00-07:30:</strong> Review comms book.</li>
+                 <li><strong>08:00-08:30:</strong> Complete legal checks (Logbook).</li>
+                 <li><strong>08:30-10:30:</strong> Check cigarette delivery/stock, Tobacco/Vape Gap Scan (Sun/Trial), pick petrol station order (twice/week).</li>
+                 <li><strong>10:30-10:45:</strong> Review Lost & Found log.</li>
+                 <li><strong>19:45-21:00:</strong> Replenish tobacco stock.</li>
+                 <li><strong>21:00-22:00:</strong> Kiosk tidy/cleaned, place Mart Cart on charge, check wheelchairs.</li>
+                 <li><strong>Close:</strong> Lock bunker/scratch cards, sign off terminal/tills, return keys.</li>
+                 <li><strong>Throughout the day:</strong> Serve customers, sell/redeem lottery/scratch cards, fill balloons, handle queries, log issues (Salesforce), process returns/refunds/food orders, check More Card points, sign for post, accept Deliveroo, call Help Desk/taxi if needed, sign in visitors.</li>
+            </ul>
+        </div></div>
+    </section>
+
+     <section id="queue-management">
+        <h2>Queue Management</h2>
+        <p>Efficient queue management is vital for customer satisfaction. Our standard is **1 customer being served + 1 customer waiting (1+1)**.</p>
+        <h3>Principles:</h3>
+        <ul>
+            <li><strong>Main Bank:</strong> At least one main bank till must be open during all trading hours. Schedule additional tills based on planners and customer demand.</li>
+            <li><strong>Self Scan (SCO):</strong> Manned by a dedicated colleague during full store opening hours (may vary based on store format/hours). SCO colleagues should wear high-vis, manage cash/card settings, replenish consumables, assist customers proactively (especially red lights), and focus on Service & Protect (vigilance against shrink). Dual corrals should be managed appropriately (open/close based on demand).</li>
+            <li><strong>Kiosk/CSD:</strong> Minimum 1 colleague available during trading hours (9am-5pm minimum for standalone CSDs). Use headset to call for support if queues build.</li>
+            <li><strong>Monitoring:</strong> Service Team Leaders should visually monitor queues across all checkout types and use headsets/baton to direct customers and call for relief/additional checkouts. The new Efficiency Measure Dashboard (on Looker) replaces the old 'Customers Don't Queue' system.</li>
+             <li><strong>Colleague Guidance:</strong> Main bank colleagues focus on efficient scanning and friendly interaction. SCO colleagues focus on assistance, Service & Protect, and maintaining the area. All colleagues should adhere to the 3 Key Service Asks.</li>
+        </ul>
+        <p>Refer to the 'Managing Queues at the Front End' guide for full details on manning, tools (Headsets, Baton, Checkout Arrow), efficiency measures, and colleague responsibilities.</p>
+    </section>
+
+    <section id="csd-kiosk-operations">
+        <h2>CSD & Kiosk Specifics</h2>
+        <h3>Layout & Equipment:</h3>
+        <ul>
+            <li>Desks/Kiosks kept clean, tidy, and clutter-free.</li>
+            <li>All required signage displayed correctly and visibly (Refund Policy, Privacy Policy, Licensing Notices, Challenge 25, promotional/variable notices as needed).</li>
+            <li>Equipment (Lottery terminal, Vocovo headsets, Mart Cart keys, Till rolls, Bunzl supplies) stored correctly and available.</li>
+            <li>Lost property stored securely (valuables in Cash Office, non-valuables in designated cupboard/area) and logged via Salesforce. Follow retention and disposal procedures (4 weeks).</li>
+            <li>Kiosk Bunker (if applicable) organised as a mirror image of cabinets, shelves tidy, stock rotated.</li>
+        </ul>
+        <h3>Key Tasks:</h3>
+         <ul>
+             <li>Handle refunds, exchanges, and complaints according to policy (see <a href="#refunds-goodwill">Refunds & Goodwill</a> section).</li>
+             <li>Process lottery sales/payouts, manage scratch cards.</li>
+             <li>Manage Food to Order collections (now processed online, assist customers as needed).</li>
+             <li>Handle Lost & Found logging and reclaiming (using Salesforce).</li>
+             <li>Manage Mart Cart bookings and daily checks (using Salesforce).</li>
+             <li>Sign in visitors and explain fire safety information.</li>
+             <li>Assist with general customer enquiries and More Card issues.</li>
+         </ul>
+    </section>
+
+     <section id="checkouts-sco">
+        <h2>Checkouts & Self-Checkout (SCO) Standards</h2>
+        <h3>What Good Looks Like (Checkouts):</h3>
+        <ul>
+             <li>Cleanliness: Belts, bagging areas, desk, drawers, floors clean and clutter-free.</li>
+             <li>Equipment: Security tags stored correctly, rubbish bins emptied, bags/till rolls replenished, Vocovo available, emergency stop accessible.</li>
+             <li>Merchandising: Queue line signage correct, impulse items tidy and planogram compliant.</li>
+             <li>Service: Helpful, friendly, efficient service. Adhere to Key Service Behaviours. Use tools (headset, arrow) effectively.</li>
+        </ul>
+         <h3>What Good Looks Like (Self-Checkouts):</h3>
+        <ul>
+             <li>Signage: Correct Cash/Card signage displayed, contactless visible, Challenge 25 present.</li>
+             <li>Cleanliness: Surfaces clean, residue-free. Scanner glass clean.</li>
+             <li>Equipment: Bags replenished, headset available, de-tagger locked, security tag bin available/emptied, SCO cabinet stocked (sprays, blue roll, till rolls, dustpan/brush).</li>
+             <li>Colleague Presence: High-vis vest worn, proactive assistance, vigilant for shrink (Service & Protect).</li>
+             <li>Cash Handling (if applicable): Correct float levels maintained, secure emptying procedures followed.</li>
+        </ul>
+    </section>
+
+     <section id="car-park">
+        <h2>Car Park Standards</h2>
+         <h3>What Good Looks Like:</h3>
+         <ul>
+             <li>Trolleys & Baskets: Returned regularly to bays, clean, undamaged. Secured end of day if required.</li>
+             <li>Trolley Bays: Clean, litter-free, posters displayed correctly in frames (order via Bunzl). Report damaged bays to Maintenance.</li>
+             <li>General Area: Clean, litter-free, recycling areas clear, external signage/A-frames in good condition.</li>
+             <li>Safety: Winter grit stored correctly, no obstructions, adequate lighting.</li>
+         </ul>
+    </section>
+
+    <section id="refunds-goodwill">
+        <h2>Refunds, Exchanges & Goodwill</h2>
+        <p>Handle refunds and exchanges efficiently and according to policy, always aiming for customer satisfaction.</p>
+         <button class="accordion">Refund & Exchange Policy Summary</button>
+        <div class="panel"><div>
+            <ul>
+                <li><strong>30-Day Change of Mind:</strong> Customers can return items within 30 days with proof of purchase (receipt) in original, re-saleable condition for a full refund/exchange. Exclusions apply (see policy poster/guide). Use discretion where appropriate.</li>
+                 <li><strong>Faulty Goods:</strong> Legal statutory rights apply. Faulty goods can always be returned, even if excluded from the change-of-mind policy.</li>
+                 <li><strong>Accepted 'Change of Mind' Returns (Update):</strong> Includes sealed Alcohol, sealed shop floor Medicines, sealed Cosmetics, sealed Baby Formula/Milk, full Postage Stamp books, Tobacco/Cigarettes (sealed), Swimwear (if hygiene strip intact).</li>
+                 <li><strong>Exclusions (Check Full Policy):</strong> Typically includes Pharmacy meds, unsealed items (where applicable), pierced jewellery, CDs/DVDs (unless faulty), gift cards, lottery, top-ups etc.</li>
+                 <li><strong>Process:</strong> Refunds processed at CSD/Kiosk. Use correct Till Refund Codes. Refunds over £11 require additional slip and Manager check.</li>
+                 <li><strong>Exchanges:</strong> Use Exchange function on till. Weighted items processed same as refunds. Customer pays difference if new item costs more; refunded difference if less.</li>
+            </ul>
+        </div></div>
+         <button class="accordion">Goodwill Guidelines</button>
+        <div class="panel"><div>
+            <ul>
+                <li>Listen to the customer's complaint fully to understand the issue.</li>
+                <li>Apologise and aim to resolve the issue at first point of contact.</li>
+                <li>A gesture of goodwill may support resolution. Follow the Goodwill Matrix for consistency (£5-£10 typical value via Flowers, Chocolates, Wine, Cafe Meal, Gift Card/Refund Card).</li>
+                 <li>Store Manager authorisation required for higher value goodwill (up to £30 on refund card).</li>
+                 <li>Use the 'Goodwill' tender button on tills for processing product-based goodwill (e.g., giving flowers). This tracks goodwill but doesn't require cash balancing.</li>
+                 <li>Refund cards can be used if paper vouchers are unavailable (must be authorised).</li>
+            </ul>
+        </div></div>
+        <p>Refer to the 'Operational Guidance - Customer Service Desk & Kiosk, Salesforce, Refunds and Complaints' document for full details, including handling specific complaint types (Foreign Body, Illness, Allergens etc.) and using Salesforce for logging.</p>
+    </section>
+
   </main>
 
   <footer>
-    <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
-  <!-- Core JavaScript for Dark Mode, Mobile Nav & Accordion -->
   <script>
-    /* Dark mode toggle */
-    const toggleButtons = document.querySelectorAll('.dark-mode-toggle');
-    toggleButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        btn.setAttribute('aria-pressed', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    // Basic JS for Dark Mode Toggle, Mobile Nav, Accordion, and Theme (Combined)
+    (function() {
+      'use strict';
+      // Dark Mode Toggle
+      const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
+      function setDarkMode(isDark) {
+          document.body.classList.toggle('dark-mode', isDark);
+          darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', isDark));
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      }
+      darkModeToggleButtons.forEach(btn => {
+          btn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode')));
       });
-    });
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        toggleButtons.forEach(btn => btn.setAttribute('aria-pressed', true));
+
+      // Mobile Navigation Toggle
+       const hamburger = document.querySelector('.hamburger');
+       const navLinks = document.querySelector('.nav-links');
+       if (hamburger && navLinks) {
+           hamburger.addEventListener('click', (e) => {
+               e.stopPropagation();
+               const isActive = navLinks.classList.toggle('active');
+               hamburger.classList.toggle('active');
+               hamburger.setAttribute('aria-expanded', isActive);
+               document.body.classList.toggle('mobile-nav-open', isActive);
+           });
+            hamburger.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); } });
+           document.addEventListener('click', (e) => { if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) { navLinks.classList.remove('active'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('mobile-nav-open'); } });
+           navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { if (navLinks.classList.contains('active')) { navLinks.classList.remove('active'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('mobile-nav-open'); } }); });
+       }
+
+      // Accordion Functionality
+      const accordions = document.getElementsByClassName("accordion");
+      for (let i = 0; i < accordions.length; i++) {
+        accordions[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          const panel = this.nextElementSibling;
+           if (panel.style.maxHeight) {
+             panel.style.padding = "0 18px"; // Collapse padding first
+             panel.style.maxHeight = null;
+             panel.setAttribute('aria-hidden', 'true');
+           } else {
+             panel.style.maxHeight = panel.scrollHeight + "px";
+             panel.style.padding = "0 18px"; // Apply padding as it opens
+             // Add inner padding after transition
+             setTimeout(() => {
+                  if (panel.style.maxHeight){ // Check if still open
+                       const innerDiv = panel.querySelector('div');
+                       if(innerDiv) innerDiv.style.padding = "15px 0";
+                  }
+             }, 300); // Match transition time
+             panel.setAttribute('aria-hidden', 'false');
+           }
+        });
       }
 
-      /* Apply Purple Theme After Page Load */
-      setTimeout(() => {
-        document.body.classList.add('purple-theme');
-      }, 500); // Adjust the delay as needed (in milliseconds)
-    });
-
-    /* Hamburger (mobile nav) */
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      navLinks.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      document.body.classList.toggle('mobile-nav-open');
-      const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-      hamburger.setAttribute('aria-expanded', !expanded);
-    });
-    window.addEventListener('click', (event) => {
-      if (!event.target.closest('.nav') && !event.target.closest('.hamburger')) {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-          hamburger.classList.remove('active');
-          document.body.classList.remove('mobile-nav-open');
-          hamburger.setAttribute('aria-expanded', false);
-        }
-      }
-    });
-    const navItems = document.querySelectorAll('.nav-links a');
-    navItems.forEach(item => {
-      item.addEventListener('click', () => {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
-          hamburger.classList.remove('active');
-          document.body.classList.remove('mobile-nav-open');
-          hamburger.setAttribute('aria-expanded', false);
-        }
+      // Initial theme and dark mode load
+      document.addEventListener('DOMContentLoaded', () => {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark') {
+              document.body.classList.add('dark-mode');
+              darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', 'true'));
+          }
+          // Apply Purple Theme After Page Load
+          setTimeout(() => {
+              document.body.classList.add('purple-theme');
+              void document.body.offsetHeight; // Force reflow
+          }, 100);
       });
-    });
-    hamburger.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') hamburger.click();
-    });
 
-    /* Accordion for Service Guide and Other Panels */
-    const acc = document.getElementsByClassName("accordion");
-    for (let i = 0; i < acc.length; i++) {
-      acc[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        const panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-          panel.style.display = "none";
-        } else {
-          panel.style.display = "block";
-        }
-      });
-    }
+    })();
   </script>
 </body>
 </html>
+--- END OF FILE daave2.github.io-main/services.html ---
