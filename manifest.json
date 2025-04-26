@@ -1,0 +1,27 @@
+// manifest.json
+{
+  "name": "Cleveleys Morrisons Dashboard",
+  "short_name": "CleveleysDash",
+  "description": "Management dashboard for Cleveleys Morrisons.",
+  "start_url": "/index.html", // Or just "/" if you configure GitHub Pages appropriately
+  "display": "standalone", // Makes it look like a native app (hides browser UI)
+  "background_color": "#e6ffe6", // Matches --background-faint-green
+  "theme_color": "#006400",    // Matches --primary-green (influences status bar, etc.)
+  "orientation": "any",
+  "scope": "/", // Defines the navigation scope
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png", // You'll need to create this icon
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable" // "maskable" helps with adaptive icons on Android
+    },
+    {
+      "src": "icons/icon-512x512.png", // You'll need to create this icon
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+    // Add other sizes if desired (e.g., 144x144, 256x256)
+  ]
+}
