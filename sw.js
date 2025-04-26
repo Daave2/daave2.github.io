@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = 'cleveleys-dash-cache-v1'; // Increment version to force update
+const CACHE_NAME = 'cleveleys-dash-cache-v2'; // <<< Cache name incremented
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [
@@ -21,8 +21,9 @@ const APP_SHELL_URLS = [
     // Add external resources you want to cache for offline use (be careful with versioning)
     'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css',
-    'https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png',
-    'https://cdn.jsdelivr.net/npm/otplib-browser@12.0.1/dist/otplib-browser.umd.min.js' // Cache OTP library
+    'https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png'
+    // REMOVED: 'https://cdn.jsdelivr.net/npm/otplib-browser@12.0.1/dist/otplib-browser.umd.min.js' // Cache OTP library
+    // REMOVED or COMMENTED OUT: '/js/vendor/otplib-browser.umd.min.js' // Also remove if you added the local version
     // Add any other critical JS/CSS CDNs or Fonts used across pages
 ];
 
@@ -39,12 +40,14 @@ self.addEventListener('install', (event) => {
                 const promises = APP_SHELL_URLS.map(url => {
                     return cache.add(url).catch(err => {
                         console.warn(`[Service Worker] Failed to cache: ${url}`, err);
+                        // We are now ignoring failures here, as OTP was the main issue
                     });
                 });
+                // Wait for all adds, even if some failed (like font awesome etc if offline)
                 return Promise.all(promises);
             })
             .then(() => {
-                console.log('[Service Worker] App Shell Cached.');
+                console.log('[Service Worker] App Shell Caching initiated (some files might have failed).');
                 // Force the waiting service worker to become the active service worker
                 return self.skipWaiting();
             })
