@@ -1,271 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="/manifest.json">
-  <!-- Add a theme-color meta tag as a fallback -->
-  <meta name="theme-color" content="#006400"/>
-  <!-- Favicon Links -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-  <link rel="apple-touch-icon" href="/icons/icon-192x192.png"> <!-- For iOS home screen icon -->
+  <!-- PWA & meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#006400" />
+  <title>Cleveleys Morrisons – Management Dashboard</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling and operational guides." />
 
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling, and operational guides.">
-  <title>Cleveleys Morrisons Management Dashboard - Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Styles – mobile-first -->
   <style>
-    /* --- Base CSS Variables --- */
-    :root {
-      --primary-green: #006400; --secondary-yellow: #FFD700; --background-faint-green: #e6ffe6; --background-white: #FFFFFF; --text-color: #333333; --card-bg: var(--background-white); --card-shadow: rgba(0, 0, 0, 0.1); --footer-bg: var(--primary-green); --footer-text: var(--background-white);
-      /* Dark Mode */
-      --dark-background: #121212; --dark-card-bg: #1e1e1e; --dark-text-color: #e0e0e0; --dark-footer-bg: #333333; --dark-footer-text: #e0e0e0;
-       /* Whiteboard backgrounds for JS */
-       --light-bg-color: #ffffff;
-       --dark-bg-color: #2e2e2e;
-    }
-    /* --- Base Styles (Same as before) --- */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Roboto', sans-serif; background-color: var(--background-faint-green); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
-    body.dark-mode { background-color: var(--dark-background); color: var(--dark-text-color); --card-bg: var(--dark-card-bg); }
-    a { color: inherit; text-decoration: none; }
-    body.mobile-nav-open { overflow: hidden; }
-    header { background-color: var(--background-white); color: var(--primary-green); padding: 20px 10px; text-align: center; position: relative; box-shadow: 0 2px 4px var(--card-shadow); transition: background-color 0.3s, color 0.3s; }
-    body.dark-mode header { background-color: var(--dark-card-bg); color: var(--dark-text-color); box-shadow: 0 2px 4px var(--dark-card-bg); }
-    header img { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); height: 50px; transition: none; }
-    header h1 { font-size: 2em; margin: 0; padding-left: 80px; }
-    nav.nav { position: sticky; top: 0; z-index: 1000; background-color: var(--secondary-yellow); box-shadow: 0 2px 15px rgba(0,0,0,0.1); transition: background-color 0.3s; }
-    body.dark-mode nav.nav { background-color: #333; box-shadow: 0 2px 15px rgba(0,0,0,0.6); }
-    .nav-container { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 60px; }
-    .nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; transition: transform 0.3s ease; }
-    .nav-links li { position: relative; }
-    .nav-links a { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; font-weight: 500; color: var(--primary-green); border-radius: 8px; transition: background-color 0.3s, transform 0.3s, color 0.3s; }
-    body.dark-mode .nav-links a { color: var(--dark-text-color); }
-    .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); transform: translateY(-2px); }
-    .nav-links .active { background-color: var(--primary-green); color: var(--background-white); }
-    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-color: var(--primary-green); border-radius: 2px; transition: width 0.3s ease; }
-    .nav-links a:hover::after, .nav-links .active::after { width: 100%; }
-    .hamburger { display: none; flex-direction: column; cursor: pointer; z-index: 1001; }
-    .hamburger span { display: block; width: 25px; height: 3px; background: var(--primary-green); margin: 5px 0; transition: all 0.3s ease; }
-    body.dark-mode .hamburger span { background: var(--dark-text-color); }
-    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-    .hamburger.active span:nth-child(2) { opacity: 0; }
-    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
-    .nav-actions { display: flex; align-items: center; gap: 1rem; }
-    .dark-mode-toggle { background: none; border: none; cursor: pointer; font-size: 1.5em; color: var(--primary-green); transition: color 0.3s; }
-    body.dark-mode .dark-mode-toggle { color: var(--dark-text-color); }
-     @media (max-width: 992px) { /* Adjusted breakpoint */ .hamburger { display: flex; } .nav-links { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; background: var(--secondary-yellow); flex-direction: column; padding: 2rem 1rem; transform: translateX(-100%); transition: transform 0.3s ease-in-out; overflow-y: auto; z-index: 999; } body.dark-mode .nav-links { background: #333; } .nav-links.active { transform: translateX(0); } .nav-links li { margin: 0; width: 100%; } .nav-links a { margin: 0.5rem 0; width: 100%; justify-content: flex-start; padding: 1rem; font-size: 1.1em; border: 1px solid transparent; } body.dark-mode .nav-links a { color: var(--dark-text-color); } .nav-links a:hover { background-color: var(--primary-green); color: var(--background-white); border-color: var(--primary-green); } .nav-links .active { border-bottom: none; } .nav-links a::after { display: none; } }
-    #dashboard { margin-bottom: 30px; background-color: var(--card-bg); padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; }
-    #dashboard h2 { color: var(--primary-green); margin-bottom: 15px; font-size: 1.6em; border-bottom: 2px solid var(--secondary-yellow); display: inline-block; padding-bottom: 5px; transition: color 0.3s, border-bottom-color 0.3s; }
-    body.dark-mode #dashboard h2 { color: var(--secondary-yellow); border-bottom-color: var(--primary-green); }
-    #dashboard .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; }
-    #dashboard .dashboard-item { background-color: var(--primary-green); color: var(--background-white); border-radius: 10px; text-align: center; padding: 20px 10px; text-decoration: none; transition: background-color 0.3s, transform 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; min-height: 100px; }
-    #dashboard .dashboard-item:hover { background-color: #004d00; transform: translateY(-2px); }
-    #dashboard .dashboard-item i { font-size: 2em; margin-bottom: 10px; }
-    #dashboard .dashboard-item span { font-weight: bold; font-size: 0.9em; }
-    #frame-container { display: none; max-width: 1200px; margin: 20px auto; position: relative; }
-    #frame-container.active { display: block; }
-    #content-frame { width: 100%; height: 600px; border: none; box-shadow: 0 4px 12px var(--card-shadow); border-radius: 10px; background-color: var(--background-white); }
-    #close-frame { position: absolute; top: -40px; right: 0; background-color: var(--primary-green); color: var(--background-white); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; font-size: 0.9em; }
-    #close-frame:hover { background-color: #004d00; }
-    #fallback-message { display: none; text-align: center; margin-top: 10px; padding: 15px; background-color: var(--secondary-yellow); color: var(--primary-green); border-radius: 5px; }
-    #fallback-message a { color: var(--primary-green); text-decoration: underline; font-weight: bold; }
-    .container { padding: 20px; max-width: 1200px; margin: 20px auto; }
-    main { margin-bottom: 30px; }
-    section { margin-bottom: 30px; background-color: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px var(--card-shadow); transition: background-color 0.3s, box-shadow 0.3s; }
-    body.dark-mode section { background-color: var(--dark-card-bg); box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05); }
-    section h2 { color: var(--primary-green); margin-bottom: 20px; font-size: 1.8em; border-bottom: 2px solid var(--secondary-yellow); display: inline-block; padding-bottom: 8px; transition: color 0.3s, border-bottom-color 0.3s; }
-    body.dark-mode section h2 { color: var(--secondary-yellow); border-bottom-color: var(--primary-green); }
-    section p { margin-bottom: 1em; }
-    section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
-    .iframe-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; box-shadow: 0 2px 8px var(--card-shadow); transition: box-shadow 0.3s, background-color 0.3s; margin-top: 15px; background-color: var(--background-white); }
-    body.dark-mode .iframe-container { background-color: var(--dark-card-bg); box-shadow: 0 2px 8px rgba(255,255,255,0.1); }
-    .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    @media (max-width: 768px) { .iframe-container { padding-bottom: 75%; } }
-    /* --- Whiteboard Styles --- */
-    .whiteboard-container { position: relative; width: 100%; height: 600px; border: 1px solid var(--primary-green); border-radius: 8px; background-color: var(--light-bg-color); overflow: hidden; transition: background-color 0.3s, border-color 0.3s; }
-    body.dark-mode .whiteboard-container { background-color: var(--dark-bg-color); border-color: var(--dark-text-color); }
-    #whiteboard { display: block; width: 100%; height: 100%; background-color: transparent; /* Cursor is set dynamically via JS */ }
-    /* Dynamic Cursor Styles */
-    #whiteboard.pen-cursor { cursor: crosshair; }
-    #whiteboard.text-cursor { cursor: text; }
-    #whiteboard.eraser-cursor { cursor: none; /* Hide default cursor */ }
-     #eraser-preview { position: absolute; border-radius: 50%; border: 1px dashed grey; pointer-events: none; /* Don't interfere with clicks */ display: none; /* Hidden by default */ background-color: rgba(128, 128, 128, 0.3); /* Optional preview fill */ }
+  /* ---------- Variables ---------- */
+  :root{
+    --green:#006400;
+    --green-dark:#004d00;
+    --yellow:#FFD700;
+    --bg-light:#e6ffe6;
+    --bg-card:#fff;
+    --text:#333;
+    --shadow:0 2px 6px rgba(0,0,0,.08);
+    /* whiteboard bg */
+    --light-bg-color: #ffffff;
+    /* dark */
+    --bg-dark:#121212;
+    --card-dark:#1e1e1e;
+    --text-dark:#e0e0e0;
+    --footer-dark: #333; /* Added for footer dark mode */
+    --dark-bg-color: #2e2e2e; /* Added for whiteboard dark mode */
+  }
 
-    .button-group { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
-    .button-group button { background-color: var(--primary-green); color: #fff; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85em; transition: background-color 0.3s; display: flex; align-items: center; gap: 5px; }
-    .button-group button:hover { background-color: #004d00; }
-    body.dark-mode .button-group button { background-color: #444; color: var(--dark-footer-text); }
-    body.dark-mode .button-group button:hover { background-color: #222; }
-    .button-group button.active { outline: 2px solid var(--secondary-yellow); box-shadow: 0 0 5px var(--secondary-yellow); background-color: #004d00; } /* More distinct active style */
-    body.dark-mode .button-group button.active { background-color: #222; }
+  /* ---------- Reset / base ---------- */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;font-size:100%}
+  body{font-family:Roboto,system-ui,sans-serif;background:var(--bg-light);color:var(--text);line-height:1.55;min-block-size:100dvh;transition:background .3s,color .3s}
+  body.dark-mode{background:var(--bg-dark);color:var(--text-dark)}
+  a{color:inherit;text-decoration:none}
+  img{max-inline-size:100%;block-size:auto}
+  /* Ensure focus states are visible */
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .hamburger:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 2px; }
+  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .hamburger:focus-visible { outline-color: var(--yellow); }
 
-    .whiteboard-tools { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; /* Allow wrapping */ gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 15; }
-    body.dark-mode .whiteboard-tools { background: rgba(30, 30, 30, 0.9); }
-    .tool-button { background: none; border: 1px solid #ccc; padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; font-size: 1.1em; } /* Button style for tools */
-    .tool-button:hover { background-color: #eee; }
-    .tool-button.active { background-color: var(--primary-green); color: white; border-color: var(--primary-green); }
-    body.dark-mode .tool-button { border-color: #555; color: var(--dark-text-color); }
-    body.dark-mode .tool-button:hover { background-color: #444; }
-    body.dark-mode .tool-button.active { background-color: var(--secondary-yellow); color: var(--dark-background); border-color: var(--secondary-yellow); }
-    .color-picker, .brush-size, .font-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--card-bg); cursor: pointer; padding: 0 5px; vertical-align: middle; } /* Align tools */
-    body.dark-mode .color-picker, body.dark-mode .brush-size, body.dark-mode .font-size { background: var(--dark-card-bg); color: var(--dark-text-color); border-color: #555; }
-    .whiteboard-tools label { font-size: 0.8em; margin-right: 2px; vertical-align: middle;} /* Labels for selects */
 
-     /* Style for the temporary text input */
-     #text-input-overlay { position: absolute; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; padding: 5px; font-family: 'Roboto', sans-serif; z-index: 20; resize: none; /* Prevent manual resize */ box-shadow: 0 2px 5px rgba(0,0,0,0.2); outline: none; min-width: 100px; min-height: 40px; line-height: 1.4; }
-     body.dark-mode #text-input-overlay { background: rgba(40, 40, 40, 0.9); border-color: #555; color: var(--dark-text-color); }
+  /* ---------- Header ---------- */
+  header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--bg-card);color:var(--green);box-shadow:var(--shadow);position:sticky;top:0;z-index:99}
+  header img{inline-size:48px; /* Adjusted from 50px */}
+  header h1{font-weight:700;font-size:clamp(1.2rem,4vw+.4rem,1.8rem); /* Adjusted font size */}
+  body.dark-mode header{background:var(--card-dark);color:var(--text-dark)}
 
-    footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
-    body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
-    footer p { margin: 0; font-size: 0.9em; }
-    html { scroll-behavior: smooth; }
-    a:focus, button:focus, select:focus, input:focus, .hamburger:focus, [tabindex="0"]:focus { outline: 2px solid var(--primary-green); outline-offset: 2px; border-radius: 2px; }
-    body.dark-mode a:focus, body.dark-mode button:focus, body.dark-mode select:focus, body.dark-mode input:focus, body.dark-mode .hamburger:focus, body.dark-mode [tabindex="0"]:focus { outline-color: var(--secondary-yellow); }
-    .iframe-loading-container { position: relative; }
-    .iframe-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-green); border-radius: 50%; animation: spin 1s linear infinite; z-index: 5; }
-    body.dark-mode .iframe-loading { border-color: #555; border-top-color: var(--secondary-yellow); }
-    @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-    .notification { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-green); color: white; padding: 10px 20px; border-radius: 5px; z-index: 2000; font-size: 0.9em; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-    body.dark-mode .notification { background-color: var(--secondary-yellow); color: var(--dark-background); }
-    /* Added link button style */
-    .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-green); color: var(--background-white); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; }
-    .button-link:hover { background-color: var(--secondary-yellow); color: var(--primary-green); transform: translateY(-2px); }
-    body.dark-mode .button-link { color: var(--dark-background); }
-    body.dark-mode .button-link:hover { color: var(--dark-background); }
+  /* ---------- Navigation ---------- */
+  nav{background:var(--yellow);box-shadow:var(--shadow)}
+  .nav-wrap{display:flex;justify-content:space-around;align-items:center;max-inline-size:1200px;margin-inline:auto;block-size:56px}
+  .nav-links{display:flex;flex:1;justify-content:space-around;list-style:none}
+  .nav-links a{display:flex;flex-direction:column;align-items:center;gap:.25rem;font-size:.72rem;font-weight:500;padding:.25rem .5rem;border-radius:6px;transition:background .2s,transform .2s, color .2s; color: var(--green); /* Ensure default nav link color */}
+  .nav-links i{font-size:1.15rem}
+  .nav-links a.active,
+  .nav-links a:focus-visible,
+  .nav-links a:hover{background:var(--green);color:#fff}
+  /* bottom-bar on phones */
+  @media(max-width:600px){
+    nav{position:fixed;inset-block-end:0;inset-inline:0; z-index: 99; /* Ensure nav is above content */}
+    body{padding-block-end:56px}   /* keep content above nav */
+  }
+  /* tablet / desktop extras */
+  @media(min-width:601px){
+    nav{position:sticky;top:calc(48px + 1.5rem); /* Height of header roughly */} /* Make it sticky below header on larger screens */
+    .nav-wrap{block-size:64px}
+    .nav-links a{font-size:.8rem}
+  }
+  body.dark-mode nav{background:#333}
+  body.dark-mode .nav-links a{color:var(--text-dark)} /* Dark mode nav link color */
+  body.dark-mode .nav-links a.active,
+  body.dark-mode .nav-links a:focus-visible,
+  body.dark-mode .nav-links a:hover{background:var(--yellow);color:var(--bg-dark)} /* Dark mode hover/active */
+
+
+  /* ---------- Containers & sections ---------- */
+  .container{inline-size:clamp(90%,1200px,95%);margin-inline:auto;padding-block:1.25rem 2rem} /* Max width increased */
+  section{background:var(--bg-card);padding:1.25rem 1rem;border-radius:12px;box-shadow:var(--shadow);margin-block-end:1.5rem}
+  body.dark-mode section{background:var(--card-dark)}
+  section h2{font-size:clamp(1.1rem,2.2vw+.7rem,1.6rem);margin-block-end:.75rem;color:var(--green);border-block-end:2px solid var(--yellow);display:inline-block;padding-block-end:.25rem}
+  body.dark-mode section h2{color:var(--yellow);border-color:var(--green)}
+  section p { margin-bottom: 1em; } /* Add paragraph margin back */
+  section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; } /* Add list styles back */
+
+
+  /* ---------- Dashboard grid ---------- */
+  #dashboard .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.9rem}
+  .tile{background:var(--green);color:#fff;text-align:center;padding:1.1rem .5rem;border-radius:10px;display:flex;flex-direction:column;gap:.5rem;align-items:center;justify-content: center; /* Added justify-content */ min-block-size:clamp(96px,18dvh,140px);transition:background .25s,transform .25s}
+  .tile i{font-size:1.6rem}
+  .tile:hover{background:var(--green-dark);transform:translateY(-4px)}
+  .tile span{font-weight:700;font-size:.78rem}
+  body.dark-mode .tile { background: var(--card-dark); color: var(--text-dark); } /* Style tiles for dark mode */
+  body.dark-mode .tile:hover { background: #333; }
+
+
+  /* ---------- Content Frame (for tiles) ---------- */
+  #frame-container { display: none; margin-block-start: 1.5rem; position: relative; }
+  #frame-container.active { display: block; }
+  #content-frame { width: 100%; height: 600px; border: none; box-shadow: var(--shadow); border-radius: 12px; background-color: var(--bg-card); }
+  body.dark-mode #content-frame { background-color: var(--card-dark); }
+  #close-frame { position: absolute; top: -40px; right: 0; background-color: var(--green); color: #fff; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; transition: background-color 0.3s; font-size: 0.9em; }
+  #close-frame:hover { background-color: var(--green-dark); }
+  #fallback-message { display: none; text-align: center; margin-top: 10px; padding: 15px; background-color: var(--yellow); color: var(--green); border-radius: 6px; }
+  #fallback-message a { color: var(--green); text-decoration: underline; font-weight: bold; }
+  body.dark-mode #fallback-message { background-color: var(--green); color: var(--yellow); }
+  body.dark-mode #fallback-message a { color: var(--yellow); }
+
+  /* ---------- Common iframe wrapper ---------- */
+  .iframe-wrap{position:relative;/* aspect-ratio:16/9; Remove fixed aspect ratio, let content define height */ padding-bottom: 56.25%; /* Re-add padding for aspect ratio */ height: 0; border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow); margin-top: 1rem; /* Add space above iframe */}
+  body.dark-mode .iframe-wrap{background:var(--card-dark)}
+  .iframe-wrap iframe{position: absolute; top: 0; left: 0; inline-size:100%;block-size:100%;border:0}
+
+  /* iframe loading spinner */
+  .iframe-loading-container { position: relative; }
+  .iframe-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--green); border-radius: 50%; animation: spin 1s linear infinite; z-index: 5; }
+  body.dark-mode .iframe-loading { border-color: #555; border-top-color: var(--yellow); }
+  @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+
+  /* ---------- Whiteboard container ---------- */
+  .whiteboard-container{position:relative;inline-size:100%;block-size:600px;border:1px solid var(--green);border-radius:8px;background:var(--light-bg-color);overflow:hidden; transition: background-color 0.3s, border-color 0.3s; /* Added transitions */}
+  body.dark-mode .whiteboard-container{background:var(--dark-bg-color);border-color:var(--text-dark)}
+  #whiteboard{display: block; inline-size:100%;block-size:100%; background-color: transparent;}
+  /* Dynamic Cursor Styles */
+  #whiteboard.pen-cursor { cursor: crosshair; }
+  #whiteboard.text-cursor { cursor: text; }
+  #whiteboard.eraser-cursor { cursor: none; }
+  #eraser-preview { position: absolute; border-radius: 50%; border: 1px dashed grey; pointer-events: none; display: none; background-color: rgba(128, 128, 128, 0.3); }
+
+  /* Whiteboard Tools & Buttons (Adapted from previous version) */
+  .button-group { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 10; }
+  .button-group button { background-color: var(--green); color: #fff; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85em; transition: background-color 0.3s; display: flex; align-items: center; gap: 5px; }
+  .button-group button:hover { background-color: var(--green-dark); }
+  body.dark-mode .button-group button { background-color: #444; color: var(--text-dark); }
+  body.dark-mode .button-group button:hover { background-color: #222; }
+  .button-group button.active { outline: 2px solid var(--yellow); box-shadow: 0 0 5px var(--yellow); background-color: var(--green-dark); }
+  body.dark-mode .button-group button.active { background-color: #222; }
+
+  .whiteboard-tools { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 15; }
+  body.dark-mode .whiteboard-tools { background: rgba(30, 30, 30, 0.9); }
+  .tool-button { background: none; border: 1px solid #ccc; padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; font-size: 1.1em; }
+  .tool-button:hover { background-color: #eee; }
+  .tool-button.active { background-color: var(--green); color: white; border-color: var(--green); }
+  body.dark-mode .tool-button { border-color: #555; color: var(--text-dark); }
+  body.dark-mode .tool-button:hover { background-color: #444; }
+  body.dark-mode .tool-button.active { background-color: var(--yellow); color: var(--bg-dark); border-color: var(--yellow); }
+  .color-picker, .brush-size, .font-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--bg-card); cursor: pointer; padding: 0 5px; vertical-align: middle; }
+  body.dark-mode .color-picker, body.dark-mode .brush-size, body.dark-mode .font-size { background: var(--card-dark); color: var(--text-dark); border-color: #555; }
+  .whiteboard-tools label { font-size: 0.8em; margin-right: 2px; vertical-align: middle;}
+
+  #text-input-overlay { position: absolute; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; padding: 5px; font-family: 'Roboto', sans-serif; z-index: 20; resize: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); outline: none; min-width: 100px; min-height: 40px; line-height: 1.4; }
+  body.dark-mode #text-input-overlay { background: rgba(40, 40, 40, 0.9); border-color: #555; color: var(--text-dark); }
+
+
+  /* ---------- Buttons & utilities ---------- */
+  .button-link{display:inline-block;margin-block-start:1rem;padding:.6rem .9rem;background:var(--green);color:#fff;border-radius:6px;font-weight:500;transition:background .25s,transform .25s}
+  .button-link i{margin-inline-start:.3rem}
+  .button-link:hover{background:var(--yellow);color:var(--green);transform:translateY(-2px)}
+  body.dark-mode .button-link{color:var(--bg-dark)}
+  body.dark-mode .button-link:hover{color:var(--bg-dark)}
+
+  /* ---------- Footer ---------- */
+  footer{margin-block-start:3rem;padding:1rem;text-align:center;background:var(--green);color:#fff;font-size:.8rem}
+  body.dark-mode footer{background:var(--footer-dark)} /* Use footer-dark variable */
+
+  /* ---------- Dark-mode toggle button ---------- */
+  .theme-toggle{background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--green);padding:.25rem}
+  body.dark-mode .theme-toggle{color:var(--text-dark)}
+
+  /* ---------- Notification ---------- */
+  .notification{display:none;position:fixed;inset-block-end:1.25rem;inset-inline:50%;translate:-50% 0;background:var(--green);color:#fff;padding:.6rem 1rem;border-radius:6px;font-size:.82rem;box-shadow:var(--shadow);z-index:1000;opacity:0;transition:opacity .3s}
+  body.dark-mode .notification{background:var(--yellow);color:var(--bg-dark)}
+
+  /* Mobile nav open state */
+  body.mobile-nav-open { overflow: hidden; } /* Re-add overflow hidden for mobile nav */
 
   </style>
 </head>
+
 <body>
+  <!----- header & theme toggle ----->
   <header>
-     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons Logo">
-     <h1>Cleveleys Morrisons Management Dashboard</h1>
-   </header>
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
+    <h1>Cleveleys Morrisons Dashboard</h1>
+    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
+  </header>
 
-   <nav class="nav" role="navigation" aria-label="Primary Navigation">
-     <!-- Navigation Links -->
-     <div class="nav-container">
-       <ul class="nav-links">
-           <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-           <li><a href="online.html"><i class="fas fa-globe"></i> Online</a></li>
-           <li><a href="street.html"><i class="fas fa-store"></i> Market Street</a></li>
-           <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Front End</a></li>
-           <li><a href="operations.html"><i class="fas fa-cogs"></i> Operations</a></li>
-           <li><a href="contacts.html"><i class="fas fa-address-book"></i> Contacts</a></li>
-           <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i> Shrink</a></li>
-           <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i> Safe & Legal</a></li>
-       </ul>
-       <div class="nav-actions">
-         <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">🌓</button>
-       </div>
-       <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
-         <span></span><span></span><span></span>
-       </div>
-     </div>
-   </nav>
+  <!----- nav (bottom bar on phones) ----->
+  <nav>
+    <div class="nav-wrap">
+      <ul class="nav-links">
+        <!-- Active class will be managed by JS if needed, or manually set -->
+        <li><a href="index.html" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
+        <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
+        <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
+        <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
+        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
+      </ul>
+      <!-- Removed old .nav-actions and .hamburger divs as they are not in the new structure -->
+    </div>
+  </nav>
 
-  <div class="container">
-    <main>
-       <!-- Intro Section - Shortened -->
-       <section id="welcome">
-        <h2>Welcome to the Dashboard</h2>
-        <p>Quick access to essential tools, reports, and operational guides. Use the navigation or quick links below.</p>
-       </section>
+  <!----- main content ----->
+  <main class="container">
+    <!-- welcome -->
+    <section id="welcome">
+      <h2>Welcome</h2>
+      <p>Quick access to essential tools, reports and operational guides.</p>
+    </section>
 
-      <!-- Dashboard Quick Links Section -->
-       <section id="dashboard">
-        <h2>Quick Links Dashboard</h2>
-        <div class="dashboard-grid">
-           <!-- Tiles -->
-           <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="dashboard-item" data-open="frame" title="Morrisons Store Mobile App"> <i class="fas fa-mobile-alt"></i> <span>Store App</span> </a>
-           <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame" title="Dymension Staff Checks"> <i class="fas fa-user-check"></i> <span>Staff Checks</span> </a>
-           <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external" title="Price Integrity Logbook"> <i class="fas fa-book"></i> <span>Logbook</span> </a>
-           <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external" title="Looker Delivery Volume Report"> <i class="fas fa-chart-line"></i> <span>Delivery Volume</span> </a>
-           <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="dashboard-item" data-open="external" title="Retail Wheel Dashboard"> <i class="fas fa-tachometer-alt"></i> <span>Retail Wheel</span> </a>
-           <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="dashboard-item" data-open="external" title="Looker Studio NPS Report"> <i class="fas fa-smile"></i> <span>NPS</span> </a>
-           <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external" title="Looker Studio Transfers Report"> <i class="fas fa-exchange-alt"></i> <span>Transfers</span> </a>
-           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints"> <i class="fas fa-comments"></i> <span>Complaints</span> </a>
-           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external" title="Google Script - Complaints Reply"> <i class="fas fa-reply"></i> <span>Complaints Reply</span> </a>
-           <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="dashboard-item" data-open="external" title="Google Script - Reminders"> <i class="fas fa-calendar-check"></i> <span>Reminders</span> </a>
-           <a href="operations.html" class="dashboard-item" data-open="self" title="Operational Guides"> <i class="fas fa-cogs"></i> <span>Operations Guide</span> </a>
-           <a href="shrink.html" class="dashboard-item" data-open="self" title="Shrink Management Guides"> <i class="fas fa-compress-arrows-alt"></i> <span>Shrink Guide</span> </a>
-           <a href="https://marketstreet.retail.apps.mymorri.com/" class="dashboard-item" data-open="self" title="Production Plans"> <i class="fas fa-mobile-alt"></i> <span>Production Plans</span> </a>
-
-        </div>
-       </section>
-
-       <!-- Content Frame Container -->
-      <div id="frame-container">
-        <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
-        <div class="iframe-loading-container">
-             <!-- Spinner for the main iframe -->
-             <div class="iframe-loading"></div>
-             <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
-        </div>
-        <div id="fallback-message" role="alert">
-          <p>Unable to load this page within the frame.<br>
-          <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
-        </div>
+    <!-- dashboard -->
+    <section id="dashboard">
+      <h2>Quick Links</h2>
+      <div class="grid"> <!-- Use class="grid" -->
+        <!-- Use class="tile" -->
+        <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="tile" data-open="frame" title="Store Mobile App"><i class="fas fa-mobile-alt"></i><span>Store App</span></a>
+        <a href="https://www.dymension.co.uk/#/account/login" class="tile" data-open="frame" title="Staff Checks"><i class="fas fa-user-check"></i><span>Staff Checks</span></a>
+        <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="tile" data-open="external" title="Price Integrity Logbook"><i class="fas fa-book"></i><span>Logbook</span></a>
+        <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile" data-open="external" title="Looker Delivery Volume Report"><i class="fas fa-chart-line"></i><span>Delivery</span></a>
+        <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="tile" data-open="external" title="Retail Wheel Dashboard"><i class="fas fa-tachometer-alt"></i><span>Retail Wheel</span></a>
+        <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="tile" data-open="external" title="Looker Studio NPS Report"><i class="fas fa-smile"></i><span>NPS</span></a>
+        <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="tile" data-open="external" title="Looker Studio Transfers Report"><i class="fas fa-exchange-alt"></i><span>Transfers</span></a>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="tile" data-open="external" title="Google Script - Complaints"><i class="fas fa-comments"></i><span>Complaints</span></a>
+        <!-- Removed Complaints Reply & Reminders tiles as they weren't in the provided new HTML -->
+        <a href="operations.html" class="tile" data-open="self" title="Operational Guides"><i class="fas fa-cogs"></i><span>Operations</span></a>
+        <a href="shrink.html" class="tile" data-open="self" title="Shrink Management Guides"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a>
+        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="self" title="Production Plans"><i class="fas fa-mobile-alt"></i><span>Production</span></a>
       </div>
+    </section>
 
-      <!-- Who Is In Today Section -->
-      <section id="who-is-in">
+    <!-- Content Frame Container -->
+    <div id="frame-container"> <!-- Keep the ID for JS targeting -->
+      <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
+      <div class="iframe-loading-container"> <!-- Keep wrapper for spinner -->
+           <div class="iframe-loading"></div>
+           <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
+      </div>
+      <div id="fallback-message" role="alert">
+        <p>Unable to load this page within the frame.<br>
+        <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
+      </div>
+    </div>
+
+    <!-- Who Is In Today Section -->
+     <section id="who-is-in">
         <h2>Who Is In Today?</h2>
-         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
-             <div class="iframe-loading"></div> <!-- Spinner -->
-             <div class="iframe-container">
+         <div class="iframe-loading-container">
+             <div class="iframe-loading"></div>
+             <div class="iframe-wrap"> <!-- Use class="iframe-wrap" -->
                  <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
              </div>
          </div>
-      </section>
+     </section>
 
-      <!-- *** NEW SECTION START *** -->
-      <!-- Reminders App Section -->
-      <section id="reminders-app">
-        <h2>Reminders</h2>
-        <p>Access the reminders application below.</p>
-         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
-             <div class="iframe-loading"></div> <!-- Spinner -->
-             <div class="iframe-container">
-                <iframe data-src="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" title="Reminders Google App" loading="lazy"></iframe>
-             </div>
-         </div>
-         <!-- Optional: Add a button to open in new tab -->
-         <p style="margin-top: 1em;"><a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" target="_blank" rel="noopener noreferrer" class="button-link">Open Reminders App in New Tab <i class="fas fa-external-link-alt fa-xs"></i></a></p>
-      </section>
-      <!-- *** NEW SECTION END *** -->
+     <!-- Reminders App Section -->
+     <section id="reminders-app">
+       <h2>Reminders</h2>
+       <p>Access the reminders application below.</p>
+        <div class="iframe-loading-container">
+            <div class="iframe-loading"></div>
+            <div class="iframe-wrap"> <!-- Use class="iframe-wrap" -->
+               <iframe data-src="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" title="Reminders Google App" loading="lazy"></iframe>
+            </div>
+        </div>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" target="_blank" rel="noopener noreferrer" class="button-link">Open Reminders App in New Tab <i class="fas fa-external-link-alt fa-xs"></i></a>
+     </section>
 
-      <!-- Management Rota Section -->
-      <section id="management-rota">
-        <h2>Management Rota</h2>
-         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
-             <div class="iframe-loading"></div> <!-- Spinner -->
-             <div class="iframe-container">
-                <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
-             </div>
-         </div>
-      </section>
+     <!-- Management Rota Section -->
+     <section id="management-rota">
+       <h2>Management Rota</h2>
+        <div class="iframe-loading-container">
+            <div class="iframe-loading"></div>
+            <div class="iframe-wrap"> <!-- Use class="iframe-wrap" -->
+               <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
+            </div>
+        </div>
+     </section>
 
-       <!-- Wheel Section -->
-      <section id="wheel">
-        <h2>Retail Wheel</h2>
-        <p>Access the Retail Wheel for a comprehensive overview of store performance metrics.</p>
-         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
-             <div class="iframe-loading"></div> <!-- Spinner -->
-             <div class="iframe-container">
-                 <iframe data-src="https://morrisonsprd.cloud.looker.com/dashboards/32" title="Retail Wheel Dashboard" loading="lazy"></iframe>
-             </div>
-         </div>
-         <p style="margin-top: 1em;"><a href="https://morrisonsprd.cloud.looker.com/dashboards/32" target="_blank" rel="noopener noreferrer" class="button-link">Open Retail Wheel in New Tab <i class="fas fa-external-link-alt"></i></a></p>
-      </section>
+    <!-- sample iframe section -->
+    <section id="wheel"> <!-- Keep existing ID -->
+      <h2>Retail Wheel</h2>
+      <p>Comprehensive overview of store performance metrics.</p>
+      <div class="iframe-loading-container">
+          <div class="iframe-loading"></div>
+          <div class="iframe-wrap"> <!-- Use class="iframe-wrap" -->
+              <iframe data-src="https://morrisonsprd.cloud.looker.com/dashboards/32" title="Retail Wheel Dashboard" loading="lazy"></iframe>
+          </div>
+      </div>
+      <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> Open in new tab</a> <!-- Updated class & icon -->
+    </section>
 
-      <!-- Notes Section (Interactive Whiteboard) -->
-      <section id="notes">
-        <h2>Notes Whiteboard</h2>
-        <p>Use the whiteboard below for quick notes or brainstorming. Drawings and text can be saved and loaded locally in your browser.</p>
-        <div class="whiteboard-container">
-          <div class="whiteboard-tools">
+    <!-- whiteboard -->
+    <section id="notes"> <!-- Keep existing ID -->
+      <h2>Notes Whiteboard</h2>
+      <p>Sketch, annotate or leave reminders – they stay in your browser storage.</p>
+      <div class="whiteboard-container">
+        <!-- Re-add whiteboard tools and buttons from previous version -->
+        <div class="whiteboard-tools">
              <button class="tool-button active" data-tool="pen" title="Pen Tool"><i class="fas fa-pencil-alt"></i></button>
              <button class="tool-button" data-tool="text" title="Text Tool"><i class="fas fa-font"></i></button>
              <button class="tool-button eraser-tool-btn" data-tool="eraser" title="Eraser Tool"><i class="fas fa-eraser"></i></button>
@@ -287,9 +329,9 @@
                 <option value="32">32px</option>
               </select>
           </div>
-          <canvas id="whiteboard" aria-label="Interactive whiteboard for notes"></canvas>
-           <div id="eraser-preview"></div> <!-- Eraser cursor preview -->
-          <div class="button-group">
+        <canvas id="whiteboard" aria-label="Interactive whiteboard"></canvas>
+        <div id="eraser-preview"></div>
+        <div class="button-group">
             <button class="save-button" title="Save drawing to local storage"><i class="fas fa-save"></i> Save</button>
             <button class="load-button" title="Load drawing from local storage"><i class="fas fa-upload"></i> Load</button>
             <button class="undo-button" title="Undo last action"><i class="fas fa-undo"></i> Undo</button>
@@ -297,231 +339,210 @@
             <button class="clear-button" title="Clear whiteboard"><i class="fas fa-trash"></i> Clear</button>
             <button class="export-png-button" title="Download drawing as PNG image"><i class="fas fa-download"></i> Download</button>
           </div>
-        </div>
-      </section>
-    </main>
-  </div>
+      </div>
+    </section>
+  </main>
 
-  <footer>
-    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
-  </footer>
+  <!----- footer ----->
+  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
 
-  <!-- Notification Element -->
+  <!----- notification placeholder ----->
   <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
 
-  <!-- ******************************************** -->
-  <!-- ************* JAVASCRIPT START ************* -->
-  <!-- ******************************************** -->
+  <!----- scripts ----->
   <script>
-    (function() {
-      'use strict';
-      /* --- Helper: Debounce --- */
-      function debounce(func, wait) { let timeout; return function executedFunction(...args) { const later = () => { clearTimeout(timeout); func.apply(this, args); }; clearTimeout(timeout); timeout = setTimeout(later, wait); }; }
+  (()=>{ // Start new IIFE
+    'use strict';
 
-      /* --- Dark Mode Toggle --- */
-      const darkModeToggleButtons = document.querySelectorAll('.dark-mode-toggle');
-      function setDarkMode(isDark) { document.body.classList.toggle('dark-mode', isDark); darkModeToggleButtons.forEach(btn => btn.setAttribute('aria-pressed', isDark)); localStorage.setItem('theme', isDark ? 'dark' : 'light'); if (typeof resizeCanvas === 'function') { setTimeout(resizeCanvas, 50); } }
-      darkModeToggleButtons.forEach(btn => { btn.addEventListener('click', () => setDarkMode(!document.body.classList.contains('dark-mode'))); });
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) { setDarkMode(savedTheme === 'dark'); } else { const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; setDarkMode(prefersDark); }
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { if (!localStorage.getItem('theme')) { setDarkMode(event.matches); } });
-
-      /* --- Mobile Navigation Toggle --- */
-       const hamburger = document.querySelector('.hamburger');
-       const navLinks = document.querySelector('.nav-links');
-       if (hamburger && navLinks) { const toggleNav = () => { const isActive = navLinks.classList.toggle('active'); hamburger.classList.toggle('active'); hamburger.setAttribute('aria-expanded', isActive); document.body.classList.toggle('mobile-nav-open', isActive); }; hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleNav(); }); hamburger.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); } }); document.addEventListener('click', (e) => { if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) { toggleNav(); } }); navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { if (navLinks.classList.contains('active')) { toggleNav(); } }); }); }
-
-      /* --- Notification System --- */
-      function showNotification(message, duration = 3000) { const notification = document.getElementById('notification'); if (!notification) return; notification.textContent = message; notification.style.display = 'block'; notification.style.opacity = 1; setTimeout(() => { notification.style.opacity = 0; setTimeout(() => { notification.style.display = 'none'; }, 300); }, duration); }
-
-       /* --- Dashboard Item Click Handler & Iframe --- */
-       const dashboardItems = document.querySelectorAll('#dashboard .dashboard-item');
-       const frameContainer = document.getElementById('frame-container');
-       const contentFrame = document.getElementById('content-frame');
-       const closeFrame = document.getElementById('close-frame');
-       const fallbackMessage = document.getElementById('fallback-message');
-       const fallbackLink = document.getElementById('fallback-link');
-       const frameSpinner = frameContainer?.querySelector('.iframe-loading'); // Spinner for the main frame
-       let frameLoadTimeout;
-       function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
-       function loadContentInFrame(url) { if (!frameContainer || !contentFrame || !fallbackLink || !fallbackMessage || !closeFrame ) return; contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; fallbackLink.href = url; frameContainer.classList.add('active'); showFrameSpinner(true); contentFrame.src = url; clearTimeout(frameLoadTimeout); frameLoadTimeout = setTimeout(() => { showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Content took too long to load.", 4000); }, 15000); frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-       if (contentFrame) { contentFrame.onload = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); let accessible = false; try { const doc = contentFrame.contentDocument || contentFrame.contentWindow?.document; if (doc && doc.body && doc.body.childNodes.length > 0) { accessible = true; } else if (doc) { accessible = true; } } catch (e) { accessible = true; console.warn("Cross-origin frame loaded.", e); } fallbackMessage.style.display = accessible ? "none" : "block"; }; contentFrame.onerror = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Error loading content in frame.", 4000); }; }
-       dashboardItems.forEach(item => { item.addEventListener('click', function(e) { const url = this.getAttribute('href'); const openType = this.dataset.open; if (openType === "external") { e.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); } else if (openType === "frame") { e.preventDefault(); loadContentInFrame(url); } }); });
-       if (closeFrame) { closeFrame.addEventListener('click', function() { if (!frameContainer || !contentFrame) return; frameContainer.classList.remove('active'); contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; showFrameSpinner(false); clearTimeout(frameLoadTimeout); }); }
-
-      /* --- Whiteboard Setup --- */
-      const canvas = document.getElementById('whiteboard');
-      let ctx, colorPicker, brushSizeSelect, fontSizeSelect, currentTool = 'pen', strokes = [], currentStroke = null, drawing = false, textInputOverlay = null;
-      const eraserPreview = document.getElementById('eraser-preview');
-
-      if (canvas) {
-           ctx = canvas.getContext('2d');
-           colorPicker = document.getElementById('colorPicker');
-           brushSizeSelect = document.getElementById('brushSize');
-           fontSizeSelect = document.getElementById('fontSize');
-
-           const getThemeBgColor = () => { const styles = getComputedStyle(document.documentElement); return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim(); }
-           const getEffectiveBackgroundColor = () => { const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill'); return lastFill ? lastFill.color : getThemeBgColor(); };
-
-           const renderAll = () => { if (!ctx) return; const ratio = window.devicePixelRatio || 1; const width = canvas.width / ratio; const height = canvas.height / ratio; ctx.save(); ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = getEffectiveBackgroundColor(); ctx.fillRect(0, 0, width, height); strokes.forEach(stroke => { if (!stroke) return; ctx.globalCompositeOperation = 'source-over'; if (stroke.tool === 'pen' || stroke.tool === 'eraser') { if (!stroke.points || stroke.points.length < 1) return; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = stroke.lineWidth; if (stroke.tool === 'eraser') { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; } else { ctx.strokeStyle = stroke.color; } ctx.beginPath(); ctx.moveTo(stroke.points[0].x, stroke.points[0].y); for (let i = 1; i < stroke.points.length; i++) { if (stroke.points[i]) ctx.lineTo(stroke.points[i].x, stroke.points[i].y); } ctx.stroke(); } else if (stroke.tool === 'text') { ctx.fillStyle = stroke.color; ctx.font = `${stroke.fontSize}px Roboto, sans-serif`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; const lines = stroke.text.split('\n'); lines.forEach((line, index) => { const yPos = stroke.y + index * (stroke.fontSize * 1.2); ctx.fillText(line, stroke.x, yPos); }); } }); ctx.restore(); };
-           const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.save(); ctx.scale(ratio, ratio); renderAll(); ctx.restore(); };
-
-            // --- Whiteboard Drawing/Text Functions ---
-           const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
-
-           const handleInteractionStart = (e) => { if (e.type === 'touchstart') e.preventDefault(); const eventRef = e.type === 'touchstart' ? e.touches[0] : e; const pos = getXY(eventRef); if (!pos) return; finalizeTextInput(); if (currentTool === 'text') { createTextInput(pos, eventRef); } else { startDrawing(pos); } };
-           const startDrawing = (pos) => { drawing = true; const currentLineWidth = parseInt(brushSizeSelect.value, 10); if (currentTool === 'eraser') { currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] }; } else { currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] }; } ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
-           const handleInteractionMove = (e) => { if (e.type === 'touchmove') e.preventDefault(); const eventRef = e.type === 'touchmove' ? e.touches[0] : e; showEraserPreview(eventRef); if (!drawing || currentTool === 'text') return; draw(eventRef); };
-           const draw = (e) => { const pos = getXY(e); if (!pos || !currentStroke) return; ctx.lineWidth = currentStroke.lineWidth; ctx.strokeStyle = currentStroke.color; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; if(currentTool === 'eraser') { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; } else { ctx.globalCompositeOperation = 'source-over'; } ctx.lineTo(pos.x, pos.y); ctx.stroke(); currentStroke.points.push(pos); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
-           const handleInteractionEnd = (e) => { if (e.type === 'touchend' || e.type === 'touchcancel') { document.body.style.overflow = ''; } if (drawing && currentTool !== 'text') { stopDrawing(); } hideEraserPreview(); };
-           const stopDrawing = () => { if (!drawing) return; drawing = false; if (currentStroke && currentStroke.points.length > 1) { ctx.globalCompositeOperation = 'source-over'; strokes.push(currentStroke); } currentStroke = null; ctx.closePath(); ctx.globalCompositeOperation = 'source-over'; };
-
-           function createTextInput(pos, originalEvent) { if (textInputOverlay) { return; } textInputOverlay = document.createElement('textarea'); textInputOverlay.id = 'text-input-overlay'; textInputOverlay.style.left = `${pos.x + canvas.offsetLeft}px`; textInputOverlay.style.top = `${pos.y + canvas.offsetTop}px`; textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`; textInputOverlay.style.color = colorPicker.value; textInputOverlay.style.fontFamily = 'Roboto, sans-serif'; textInputOverlay.wrap = 'soft'; textInputOverlay.style.border = '1px dashed #888'; textInputOverlay.style.padding = '4px'; textInputOverlay.style.lineHeight = '1.2'; textInputOverlay.addEventListener('blur', finalizeTextInput); textInputOverlay.addEventListener('keypress', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); finalizeTextInput(); } }); document.body.appendChild(textInputOverlay); textInputOverlay.focus(); if(originalEvent) { originalEvent.stopPropagation(); } }
-           function finalizeTextInput() { if (!textInputOverlay) return; const text = textInputOverlay.value; const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft; const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop; const fontSize = parseInt(fontSizeSelect.value, 10); const color = colorPicker.value; const overlayRef = textInputOverlay; textInputOverlay = null; if (overlayRef.parentNode === document.body) { document.body.removeChild(overlayRef); } if (text.trim()) { strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color }); renderAll(); } }
-
-           function updateCursor() { canvas.className = ''; if (currentTool === 'pen') canvas.classList.add('pen-cursor'); else if (currentTool === 'text') canvas.classList.add('text-cursor'); else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor'); }
-           function showEraserPreview(e) { if (currentTool !== 'eraser' || !eraserPreview) return; const pos = getXY(e); if(!pos) return; const size = parseInt(brushSizeSelect.value, 10); eraserPreview.style.width = `${size}px`; eraserPreview.style.height = `${size}px`; eraserPreview.style.left = `${pos.x + canvas.offsetLeft - size / 2}px`; eraserPreview.style.top = `${pos.y + canvas.offsetTop - size / 2}px`; eraserPreview.style.display = 'block'; }
-           function hideEraserPreview() { if (eraserPreview) eraserPreview.style.display = 'none'; }
-
-           canvas.addEventListener('mousedown', handleInteractionStart);
-           canvas.addEventListener('mousemove', handleInteractionMove);
-           canvas.addEventListener('mouseup', handleInteractionEnd);
-           canvas.addEventListener('mouseleave', handleInteractionEnd);
-           canvas.addEventListener('mouseenter', (e) => { if (currentTool === 'eraser') showEraserPreview(e); });
-           canvas.addEventListener('touchstart', handleInteractionStart, { passive: false });
-           canvas.addEventListener('touchmove', handleInteractionMove, { passive: false });
-           canvas.addEventListener('touchend', handleInteractionEnd);
-           canvas.addEventListener('touchcancel', handleInteractionEnd);
-
-           const toolButtons = document.querySelectorAll('.tool-button');
-           toolButtons.forEach(button => { button.addEventListener('click', function() { toolButtons.forEach(btn => btn.classList.remove('active')); this.classList.add('active'); currentTool = this.dataset.tool; updateCursor(); finalizeTextInput(); }); });
-
-           colorPicker.addEventListener('input', () => { if (!drawing && currentTool === 'pen') { ctx.strokeStyle = colorPicker.value; } });
-           brushSizeSelect.addEventListener('change', () => { if (!drawing && (currentTool === 'pen' || currentTool === 'eraser')) { ctx.lineWidth = parseInt(brushSizeSelect.value, 10); } });
-           fontSizeSelect.addEventListener('change', () => {});
-
-           document.querySelector('.clear-button')?.addEventListener('click', () => { strokes = []; renderAll(); showNotification('Whiteboard cleared.'); });
-           document.querySelector('.save-button')?.addEventListener('click', () => { try { localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); showNotification('Whiteboard saved locally!'); } catch (e) { console.error('Error saving whiteboard:', e); showNotification('Failed to save: Storage limit likely exceeded.', 5000); } });
-           document.querySelector('.load-button')?.addEventListener('click', () => { const data = localStorage.getItem('whiteboardStrokes'); if (data) { try { strokes = JSON.parse(data); renderAll(); showNotification('Whiteboard loaded!'); } catch (e) { showNotification('Error parsing saved drawing.'); strokes = []; renderAll(); } } else { showNotification('No saved drawing found.'); } });
-           document.querySelector('.undo-button')?.addEventListener('click', () => { if (strokes.length > 0) { strokes.pop(); renderAll(); showNotification('Undo successful.'); } else { showNotification('Nothing to undo.'); } });
-           document.querySelector('.fill-button')?.addEventListener('click', () => { strokes = [{ tool: 'fill', color: colorPicker.value }]; renderAll(); showNotification('Canvas background filled.'); });
-           document.querySelector('.export-png-button')?.addEventListener('click', () => { const dataURL = canvas.toDataURL('image/png'); const link = document.createElement('a'); link.href = dataURL; link.download = 'morrisons-dashboard-notes.png'; document.body.appendChild(link); link.click(); document.body.removeChild(link); showNotification('Downloaded as PNG.'); });
-
-           window.addEventListener('resize', debounce(resizeCanvas, 200));
-           resizeCanvas();
-           updateCursor();
-           const initialData = localStorage.getItem('whiteboardStrokes');
-           if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
-
-       } else { console.log("Whiteboard canvas not found."); }
-
-      /* --- Lazy Load Iframes & Add Spinners --- CORRECTED --- */
-        function initLazyIframes() {
-            const iframes = document.querySelectorAll('iframe[data-src]');
-
-            const observerCallback = (entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const iframe = entry.target;
-                        const iframeWrapper = iframe.closest('.iframe-container');
-                        const loadingContainer = iframeWrapper?.parentElement;
-                        const loader = loadingContainer?.querySelector('.iframe-loading');
-
-                        if (loader) {
-                             loader.style.display = 'block';
-                         }
-                        iframe.src = iframe.getAttribute('data-src');
-                        iframe.removeAttribute('data-src');
-                        obs.unobserve(iframe);
-
-                        // --- Special handling for Reminders App iframe ---
-                        if (iframe.title === "Reminders Google App") {
-                           iframe.addEventListener('load', () => {
-                               if(loader) loader.style.display = 'none';
-                           });
-                           iframe.addEventListener('error', (err) => {
-                               if(loader) loader.style.display = 'none';
-                               console.error("Error loading Reminders App iframe:", err);
-                               // Optional: display an error message within its container
-                           });
-                        }
-                        // --- End Special handling ---
-
-                    }
-                });
-            };
-
-             const observerOptions = {
-               rootMargin: '100px 0px',
-               threshold: 0.01
-           };
-
-           const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-           iframes.forEach(iframe => {
-               const iframeWrapper = iframe.closest('.iframe-container');
-               const loadingContainer = iframeWrapper?.parentElement;
-               const loader = loadingContainer?.querySelector('.iframe-loading');
-
-               if(loader && iframe.title !== "Reminders Google App") { // Don't hide spinner initially for non-reminder iframes
-                   loader.style.display = 'none'; // Hide initially
-
-                   iframe.addEventListener('load', () => {
-                       if(loader) loader.style.display = 'none'; // Hide on load
-                   });
-                   iframe.addEventListener('error', (err) => {
-                        if(loader) loader.style.display = 'none'; // Hide on error
-                        console.error("Error loading iframe:", iframe.title || iframe.src, err);
-                        const errorMsg = document.createElement('p');
-                        errorMsg.textContent = 'Error loading content.';
-                        errorMsg.style.textAlign = 'center';
-                        errorMsg.style.padding = '20px';
-                        errorMsg.style.color = 'red';
-                        if(iframeWrapper && !iframeWrapper.querySelector('.error-message')) {
-                            errorMsg.classList.add('error-message');
-                            iframeWrapper.appendChild(errorMsg);
-                        }
-                    });
-               } else if (loader && iframe.title === "Reminders Google App") {
-                   // Keep spinner visible initially for reminder app until observed
-                   loader.style.display = 'block';
-               }
+    /* dark-mode toggle */
+    const themeBtn=document.querySelector('.theme-toggle'); // Use new class
+    const setMode=isDark=>{document.body.classList.toggle('dark-mode',isDark);themeBtn.setAttribute('aria-pressed',isDark);localStorage.setItem('theme',isDark?'dark':'light');if(typeof resizeCanvas==='function'){setTimeout(resizeCanvas,50)}}; // Added whiteboard resize
+    themeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('dark-mode')));
+    const saved=localStorage.getItem('theme');setMode(saved?saved==='dark':matchMedia('(prefers-color-scheme:dark)').matches);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { if (!localStorage.getItem('theme')) { setMode(event.matches); } }); // Add listener for OS preference change
 
 
-               if ('IntersectionObserver' in window) {
-                   observer.observe(iframe);
-               } else {
-                   // Fallback for browsers without IntersectionObserver
-                   if (loader) loader.style.display = 'block'; // Show spinner
-                   iframe.src = iframe.getAttribute('data-src');
-                   iframe.removeAttribute('data-src');
-                   iframe.addEventListener('load', () => { if(loader) loader.style.display = 'none'; }); // Hide on load
-                   iframe.addEventListener('error', () => { if(loader) loader.style.display = 'none'; }); // Hide on error
-               }
-           });
-       }
+    // --- START: Re-integrated JS from previous version ---
+
+    /* --- Helper: Debounce --- */
+    function debounce(func, wait) { let timeout; return function executedFunction(...args) { const later = () => { clearTimeout(timeout); func.apply(this, args); }; clearTimeout(timeout); timeout = setTimeout(later, wait); }; }
+
+    /* --- Mobile Navigation (No JS needed for new bottom bar, only CSS) --- */
+    // Removed old hamburger/navLinks JS as the new nav is CSS-driven
+
+    /* --- Notification System --- */
+    function showNotification(message, duration = 3000) { const notification = document.getElementById('notification'); if (!notification) return; notification.textContent = message; notification.style.display = 'block'; notification.style.opacity = 1; setTimeout(() => { notification.style.opacity = 0; setTimeout(() => { notification.style.display = 'none'; }, 300); }, duration); }
+
+    /* --- Dashboard Tile Click Handler & Iframe --- */
+    const dashboardTiles = document.querySelectorAll('#dashboard .tile'); // Use new class .tile
+    const frameContainer = document.getElementById('frame-container');
+    const contentFrame = document.getElementById('content-frame');
+    const closeFrame = document.getElementById('close-frame');
+    const fallbackMessage = document.getElementById('fallback-message');
+    const fallbackLink = document.getElementById('fallback-link');
+    const frameSpinner = frameContainer?.querySelector('.iframe-loading'); // Spinner for the main frame
+    let frameLoadTimeout;
+    function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
+    function loadContentInFrame(url) { if (!frameContainer || !contentFrame || !fallbackLink || !fallbackMessage || !closeFrame ) return; contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; fallbackLink.href = url; frameContainer.classList.add('active'); showFrameSpinner(true); contentFrame.src = url; clearTimeout(frameLoadTimeout); frameLoadTimeout = setTimeout(() => { showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Content took too long to load.", 4000); }, 15000); frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (contentFrame) { contentFrame.onload = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); let accessible = false; try { const doc = contentFrame.contentDocument || contentFrame.contentWindow?.document; if (doc && doc.body && doc.body.childNodes.length > 0) { accessible = true; } else if (doc) { accessible = true; } } catch (e) { /* Cross-origin errors expected here, assume loaded */ accessible = true; console.warn("Cross-origin frame loaded or blocked, cannot verify content.", e); } fallbackMessage.style.display = accessible ? "none" : "block"; }; contentFrame.onerror = function() { clearTimeout(frameLoadTimeout); showFrameSpinner(false); fallbackMessage.style.display = "block"; showNotification("Error loading content in frame.", 4000); }; }
+    dashboardTiles.forEach(item => { item.addEventListener('click', function(e) { const url = this.getAttribute('href'); const openType = this.dataset.open; if (openType === "external") { e.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); } else if (openType === "frame") { e.preventDefault(); loadContentInFrame(url); } /* 'self' links navigate normally */ }); });
+    if (closeFrame) { closeFrame.addEventListener('click', function() { if (!frameContainer || !contentFrame) return; frameContainer.classList.remove('active'); contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; showFrameSpinner(false); clearTimeout(frameLoadTimeout); }); }
 
 
-      /* --- DOMContentLoaded --- */
-      document.addEventListener('DOMContentLoaded', () => { initLazyIframes(); });
+    /* --- Whiteboard Setup --- */
+    const canvas = document.getElementById('whiteboard');
+    let ctx, colorPicker, brushSizeSelect, fontSizeSelect, currentTool = 'pen', strokes = [], currentStroke = null, drawing = false, textInputOverlay = null;
+    const eraserPreview = document.getElementById('eraser-preview');
 
-       // PWA Service Worker Registration
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-              console.log('Service Worker registered successfully with scope: ', registration.scope);
-            })
-            .catch(err => {
-              console.error('Service Worker registration failed: ', err);
-            });
-        });
-      }
+    if (canvas) {
+         ctx = canvas.getContext('2d');
+         colorPicker = document.getElementById('colorPicker');
+         brushSizeSelect = document.getElementById('brushSize');
+         fontSizeSelect = document.getElementById('fontSize');
 
-    })();
+         const getThemeBgColor = () => { const styles = getComputedStyle(document.documentElement); return document.body.classList.contains('dark-mode') ? styles.getPropertyValue('--dark-bg-color').trim() : styles.getPropertyValue('--light-bg-color').trim(); }
+         const getEffectiveBackgroundColor = () => { const lastFill = strokes.slice().reverse().find(stroke => stroke.tool === 'fill'); return lastFill ? lastFill.color : getThemeBgColor(); };
+
+         const renderAll = () => { if (!ctx) return; const ratio = window.devicePixelRatio || 1; const width = canvas.width / ratio; const height = canvas.height / ratio; ctx.save(); ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = getEffectiveBackgroundColor(); ctx.fillRect(0, 0, width, height); strokes.forEach(stroke => { if (!stroke) return; ctx.globalCompositeOperation = 'source-over'; if (stroke.tool === 'pen' || stroke.tool === 'eraser') { if (!stroke.points || stroke.points.length < 1) return; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = stroke.lineWidth; if (stroke.tool === 'eraser') { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; } else { ctx.strokeStyle = stroke.color; } ctx.beginPath(); ctx.moveTo(stroke.points[0].x, stroke.points[0].y); for (let i = 1; i < stroke.points.length; i++) { if (stroke.points[i]) ctx.lineTo(stroke.points[i].x, stroke.points[i].y); } ctx.stroke(); } else if (stroke.tool === 'text') { ctx.fillStyle = stroke.color; ctx.font = `${stroke.fontSize}px Roboto, sans-serif`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; const lines = stroke.text.split('\n'); lines.forEach((line, index) => { const yPos = stroke.y + index * (stroke.fontSize * 1.2); ctx.fillText(line, stroke.x, yPos); }); } }); ctx.restore(); };
+         const resizeCanvas = () => { if (!canvas || !canvas.parentElement) return; const parent = canvas.parentElement; const ratio = window.devicePixelRatio || 1; canvas.width = parent.clientWidth * ratio; canvas.height = parent.clientHeight * ratio; canvas.style.width = parent.clientWidth + 'px'; canvas.style.height = parent.clientHeight + 'px'; ctx.save(); ctx.scale(ratio, ratio); renderAll(); ctx.restore(); };
+
+          // --- Whiteboard Drawing/Text Functions ---
+         const getXY = (e) => { const rect = canvas.getBoundingClientRect(); const clientX = e.clientX ?? e.touches?.[0]?.clientX; const clientY = e.clientY ?? e.touches?.[0]?.clientY; if (clientX === undefined || clientY === undefined) { return null; } return { x: clientX - rect.left, y: clientY - rect.top }; };
+
+         const handleInteractionStart = (e) => { if (e.type === 'touchstart') e.preventDefault(); const eventRef = e.type === 'touchstart' ? e.touches[0] : e; const pos = getXY(eventRef); if (!pos) return; finalizeTextInput(); if (currentTool === 'text') { createTextInput(pos, eventRef); } else { startDrawing(pos); } };
+         const startDrawing = (pos) => { drawing = true; const currentLineWidth = parseInt(brushSizeSelect.value, 10); if (currentTool === 'eraser') { currentStroke = { tool: 'eraser', color: '#000000', lineWidth: currentLineWidth, points: [pos] }; } else { currentStroke = { tool: 'pen', color: colorPicker.value, lineWidth: currentLineWidth, points: [pos] }; } ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
+         const handleInteractionMove = (e) => { if (e.type === 'touchmove') e.preventDefault(); const eventRef = e.type === 'touchmove' ? e.touches[0] : e; showEraserPreview(eventRef); if (!drawing || currentTool === 'text') return; draw(eventRef); };
+         const draw = (e) => { const pos = getXY(e); if (!pos || !currentStroke) return; ctx.lineWidth = currentStroke.lineWidth; ctx.strokeStyle = currentStroke.color; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; if(currentTool === 'eraser') { ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; } else { ctx.globalCompositeOperation = 'source-over'; } ctx.lineTo(pos.x, pos.y); ctx.stroke(); currentStroke.points.push(pos); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
+         const handleInteractionEnd = (e) => { if (e.type === 'touchend' || e.type === 'touchcancel') { document.body.style.overflow = ''; } if (drawing && currentTool !== 'text') { stopDrawing(); } hideEraserPreview(); };
+         const stopDrawing = () => { if (!drawing) return; drawing = false; if (currentStroke && currentStroke.points.length > 1) { ctx.globalCompositeOperation = 'source-over'; strokes.push(currentStroke); } currentStroke = null; ctx.closePath(); ctx.globalCompositeOperation = 'source-over'; };
+
+         function createTextInput(pos, originalEvent) { if (textInputOverlay) { return; } textInputOverlay = document.createElement('textarea'); textInputOverlay.id = 'text-input-overlay'; textInputOverlay.style.left = `${pos.x + canvas.offsetLeft}px`; textInputOverlay.style.top = `${pos.y + canvas.offsetTop}px`; textInputOverlay.style.fontSize = `${fontSizeSelect.value}px`; textInputOverlay.style.color = colorPicker.value; textInputOverlay.style.fontFamily = 'Roboto, sans-serif'; textInputOverlay.wrap = 'soft'; textInputOverlay.style.border = '1px dashed #888'; textInputOverlay.style.padding = '4px'; textInputOverlay.style.lineHeight = '1.2'; textInputOverlay.addEventListener('blur', finalizeTextInput); textInputOverlay.addEventListener('keypress', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); finalizeTextInput(); } }); document.body.appendChild(textInputOverlay); textInputOverlay.focus(); if(originalEvent) { originalEvent.stopPropagation(); } }
+         function finalizeTextInput() { if (!textInputOverlay) return; const text = textInputOverlay.value; const x = parseFloat(textInputOverlay.style.left) - canvas.offsetLeft; const y = parseFloat(textInputOverlay.style.top) - canvas.offsetTop; const fontSize = parseInt(fontSizeSelect.value, 10); const color = colorPicker.value; const overlayRef = textInputOverlay; textInputOverlay = null; if (overlayRef.parentNode === document.body) { document.body.removeChild(overlayRef); } if (text.trim()) { strokes.push({ tool: 'text', text: text, x: x, y: y, fontSize: fontSize, color: color }); renderAll(); } }
+
+         function updateCursor() { canvas.className = ''; if (currentTool === 'pen') canvas.classList.add('pen-cursor'); else if (currentTool === 'text') canvas.classList.add('text-cursor'); else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor'); }
+         function showEraserPreview(e) { if (currentTool !== 'eraser' || !eraserPreview) return; const pos = getXY(e); if(!pos) return; const size = parseInt(brushSizeSelect.value, 10); eraserPreview.style.width = `${size}px`; eraserPreview.style.height = `${size}px`; eraserPreview.style.left = `${pos.x + canvas.offsetLeft - size / 2}px`; eraserPreview.style.top = `${pos.y + canvas.offsetTop - size / 2}px`; eraserPreview.style.display = 'block'; }
+         function hideEraserPreview() { if (eraserPreview) eraserPreview.style.display = 'none'; }
+
+         canvas.addEventListener('mousedown', handleInteractionStart);
+         canvas.addEventListener('mousemove', handleInteractionMove);
+         canvas.addEventListener('mouseup', handleInteractionEnd);
+         canvas.addEventListener('mouseleave', handleInteractionEnd);
+         canvas.addEventListener('mouseenter', (e) => { if (currentTool === 'eraser') showEraserPreview(e); });
+         canvas.addEventListener('touchstart', handleInteractionStart, { passive: false });
+         canvas.addEventListener('touchmove', handleInteractionMove, { passive: false });
+         canvas.addEventListener('touchend', handleInteractionEnd);
+         canvas.addEventListener('touchcancel', handleInteractionEnd);
+
+         const toolButtons = document.querySelectorAll('.tool-button');
+         toolButtons.forEach(button => { button.addEventListener('click', function() { toolButtons.forEach(btn => btn.classList.remove('active')); this.classList.add('active'); currentTool = this.dataset.tool; updateCursor(); finalizeTextInput(); }); });
+
+         if(colorPicker) colorPicker.addEventListener('input', () => { if (!drawing && currentTool === 'pen') { ctx.strokeStyle = colorPicker.value; } });
+         if(brushSizeSelect) brushSizeSelect.addEventListener('change', () => { if (!drawing && (currentTool === 'pen' || currentTool === 'eraser')) { ctx.lineWidth = parseInt(brushSizeSelect.value, 10); } });
+         if(fontSizeSelect) fontSizeSelect.addEventListener('change', () => {});
+
+         document.querySelector('.clear-button')?.addEventListener('click', () => { strokes = []; renderAll(); showNotification('Whiteboard cleared.'); });
+         document.querySelector('.save-button')?.addEventListener('click', () => { try { localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); showNotification('Whiteboard saved locally!'); } catch (e) { console.error('Error saving whiteboard:', e); showNotification('Failed to save: Storage limit likely exceeded.', 5000); } });
+         document.querySelector('.load-button')?.addEventListener('click', () => { const data = localStorage.getItem('whiteboardStrokes'); if (data) { try { strokes = JSON.parse(data); renderAll(); showNotification('Whiteboard loaded!'); } catch (e) { showNotification('Error parsing saved drawing.'); strokes = []; renderAll(); } } else { showNotification('No saved drawing found.'); } });
+         document.querySelector('.undo-button')?.addEventListener('click', () => { if (strokes.length > 0) { strokes.pop(); renderAll(); showNotification('Undo successful.'); } else { showNotification('Nothing to undo.'); } });
+         document.querySelector('.fill-button')?.addEventListener('click', () => { strokes = [{ tool: 'fill', color: colorPicker.value }]; renderAll(); showNotification('Canvas background filled.'); });
+         document.querySelector('.export-png-button')?.addEventListener('click', () => { const dataURL = canvas.toDataURL('image/png'); const link = document.createElement('a'); link.href = dataURL; link.download = 'morrisons-dashboard-notes.png'; document.body.appendChild(link); link.click(); document.body.removeChild(link); showNotification('Downloaded as PNG.'); });
+
+         window.addEventListener('resize', debounce(resizeCanvas, 200));
+         resizeCanvas();
+         updateCursor();
+         const initialData = localStorage.getItem('whiteboardStrokes');
+         if (initialData) { try { strokes = JSON.parse(initialData); renderAll(); } catch (e) { console.error("Could not load initial whiteboard data."); localStorage.removeItem('whiteboardStrokes'); } }
+
+     } else { console.log("Whiteboard canvas not found."); }
+
+
+     /* --- Lazy Load Iframes & Add Spinners --- */
+      function initLazyIframes() {
+          const iframes = document.querySelectorAll('iframe[data-src]');
+
+          const observerCallback = (entries, obs) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      const iframe = entry.target;
+                      const iframeWrapper = iframe.closest('.iframe-wrap'); // Use new class
+                      const loadingContainer = iframeWrapper?.parentElement; // Check parent for spinner container
+                      const loader = loadingContainer?.querySelector('.iframe-loading');
+
+                      if (loader) {
+                           loader.style.display = 'block';
+                       }
+                      iframe.src = iframe.getAttribute('data-src');
+                      iframe.removeAttribute('data-src');
+
+                      // Add load/error listeners specifically to hide spinner
+                      iframe.addEventListener('load', () => { if(loader) loader.style.display = 'none';});
+                      iframe.addEventListener('error', (err) => {
+                          if(loader) loader.style.display = 'none';
+                          console.error("Error loading iframe:", iframe.title || iframe.src, err);
+                          const errorMsg = document.createElement('p');
+                          errorMsg.textContent = 'Error loading content.';
+                          errorMsg.style.textAlign = 'center';
+                          errorMsg.style.padding = '20px';
+                          errorMsg.style.color = 'red';
+                          if(iframeWrapper && !iframeWrapper.querySelector('.error-message')) {
+                              errorMsg.classList.add('error-message');
+                              iframeWrapper.appendChild(errorMsg);
+                          }
+                      });
+
+                      obs.unobserve(iframe);
+                  }
+              });
+          };
+
+           const observerOptions = {
+             rootMargin: '100px 0px',
+             threshold: 0.01
+         };
+
+         const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+         iframes.forEach(iframe => {
+             const iframeWrapper = iframe.closest('.iframe-wrap'); // Use new class
+             const loadingContainer = iframeWrapper?.parentElement;
+             const loader = loadingContainer?.querySelector('.iframe-loading');
+
+             if(loader) {
+                 loader.style.display = 'none'; // Hide spinner initially
+             }
+
+             if ('IntersectionObserver' in window) {
+                 observer.observe(iframe);
+             } else {
+                 // Fallback for browsers without IntersectionObserver
+                 if (loader) loader.style.display = 'block'; // Show spinner
+                 iframe.src = iframe.getAttribute('data-src');
+                 iframe.removeAttribute('data-src');
+                 iframe.addEventListener('load', () => { if(loader) loader.style.display = 'none'; }); // Hide on load
+                 iframe.addEventListener('error', () => { if(loader) loader.style.display = 'none'; }); // Hide on error
+             }
+         });
+     }
+
+    /* --- DOMContentLoaded --- */
+    document.addEventListener('DOMContentLoaded', () => { initLazyIframes(); });
+
+    /* --- PWA Service Worker Registration --- */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registered successfully with scope: ', registration.scope);
+          })
+          .catch(err => {
+            console.error('Service Worker registration failed: ', err);
+          });
+      });
+    }
+
+    // --- END: Re-integrated JS ---
+
+  })(); // End of IIFE
   </script>
-  <!-- ******************************************** -->
-  <!-- ************** JAVASCRIPT END ************** -->
-  <!-- ******************************************** -->
 </body>
 </html>
