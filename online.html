@@ -172,7 +172,7 @@
       <!-- Amazon Daily Update -->
       <div class="dashboard-card">
         <h3><i class="fas fa-chart-line"></i> Amazon Daily Update</h3>
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&amp;single=true&amp;widget=true&amp;headers=false" title="Amazon Daily Update Spreadsheet"></iframe>
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&single=true&widget=true&headers=false" title="Amazon Daily Update Spreadsheet"></iframe>
         <a href="https://docs.google.com/spreadsheets/d/14B7m8Zq5dK3nO9lP8sW1rT0vY2xZ5eF8aJ7cI9oB6kM/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link"> <!-- Direct link to sheet if pubhtml fails -->
           View Full Sheet <i class="fas fa-external-link-alt fa-xs"></i>
         </a>
@@ -224,7 +224,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
     <p id="otp">Generating OTP...</p>
   </footer>
 
@@ -295,6 +295,20 @@
                });
            });
        }
+
+       // PWA Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('Service Worker registered successfully with scope: ', registration.scope);
+            })
+            .catch(err => {
+              console.error('Service Worker registration failed: ', err);
+            });
+        });
+      }
+
     })();
   </script>
 
