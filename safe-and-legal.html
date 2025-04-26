@@ -193,7 +193,21 @@
              document.addEventListener('click', (e) => { if (navLinks.classList.contains('active') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) { navLinks.classList.remove('active'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('mobile-nav-open'); } });
              navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { if (navLinks.classList.contains('active')) { navLinks.classList.remove('active'); hamburger.classList.remove('active'); hamburger.setAttribute('aria-expanded', 'false'); document.body.classList.remove('mobile-nav-open'); } }); });
          }
-       })();
+
+          // PWA Service Worker Registration
+         if ('serviceWorker' in navigator) {
+           window.addEventListener('load', () => {
+             navigator.serviceWorker.register('/sw.js')
+               .then(registration => {
+                 console.log('Service Worker registered successfully with scope: ', registration.scope);
+               })
+               .catch(err => {
+                 console.error('Service Worker registration failed: ', err);
+               });
+           });
+         }
+
+       })(); // End of IIFE
     </script>
 </body>
 </html>
