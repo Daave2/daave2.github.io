@@ -315,7 +315,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 Cleveleys Morrisons. All rights reserved.</p>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
   <script>
@@ -380,8 +380,20 @@
           });
       }
 
+       // PWA Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('Service Worker registered successfully with scope: ', registration.scope);
+            })
+            .catch(err => {
+              console.error('Service Worker registration failed: ', err);
+            });
+        });
+      }
+
     })();
   </script>
 </body>
 </html>
---- END OF FILE daave2.github.io-main/contacts.html ---
