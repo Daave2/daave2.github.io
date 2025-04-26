@@ -573,8 +573,9 @@
         };
         const end=()=>{
           hideEraserPreview();if(!drawing)return;drawing=false;
-          if(currentStroke&¤tStroke.p.length>1)strokes.push(currentStroke); // Only push if > 1 point
-          currentStroke=null;
+          if (currentStroke && currentStroke.p && currentStroke.p.length > 1) {
+           strokes.push(currentStroke);        // only save strokes that have more than one point
+          }
           // No need to redraw here unless debugging, render() happens on major actions
           saveLocal();
         };
