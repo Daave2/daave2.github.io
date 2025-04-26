@@ -4,9 +4,11 @@
   <link rel="manifest" href="/manifest.json">
   <!-- Add a theme-color meta tag as a fallback -->
   <meta name="theme-color" content="#006400"/>
-  <!-- Optional: Add iOS specific meta tags -->
-  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Or default, black -->
+  <!-- Favicon Links -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png"> <!-- For iOS home screen icon -->
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling, and operational guides.">
@@ -127,6 +129,11 @@
     @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
     .notification { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-green); color: white; padding: 10px 20px; border-radius: 5px; z-index: 2000; font-size: 0.9em; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
     body.dark-mode .notification { background-color: var(--secondary-yellow); color: var(--dark-background); }
+    /* Added link button style */
+    .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-green); color: var(--background-white); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; }
+    .button-link:hover { background-color: var(--secondary-yellow); color: var(--primary-green); transform: translateY(-2px); }
+    body.dark-mode .button-link { color: var(--dark-background); }
+    body.dark-mode .button-link:hover { color: var(--dark-background); }
 
   </style>
 </head>
@@ -212,6 +219,22 @@
              </div>
          </div>
       </section>
+
+      <!-- *** NEW SECTION START *** -->
+      <!-- Reminders App Section -->
+      <section id="reminders-app">
+        <h2>Reminders</h2>
+        <p>Access the reminders application below.</p>
+         <div class="iframe-loading-container"> <!-- Added container for spinner logic -->
+             <div class="iframe-loading"></div> <!-- Spinner -->
+             <div class="iframe-container">
+                <iframe data-src="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" title="Reminders Google App" loading="lazy"></iframe>
+             </div>
+         </div>
+         <!-- Optional: Add a button to open in new tab -->
+         <p style="margin-top: 1em;"><a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" target="_blank" rel="noopener noreferrer" class="button-link">Open Reminders App in New Tab <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+      </section>
+      <!-- *** NEW SECTION END *** -->
 
       <!-- Management Rota Section -->
       <section id="management-rota">
@@ -410,6 +433,20 @@
                         iframe.src = iframe.getAttribute('data-src');
                         iframe.removeAttribute('data-src');
                         obs.unobserve(iframe);
+
+                        // --- Special handling for Reminders App iframe ---
+                        if (iframe.title === "Reminders Google App") {
+                           iframe.addEventListener('load', () => {
+                               if(loader) loader.style.display = 'none';
+                           });
+                           iframe.addEventListener('error', (err) => {
+                               if(loader) loader.style.display = 'none';
+                               console.error("Error loading Reminders App iframe:", err);
+                               // Optional: display an error message within its container
+                           });
+                        }
+                        // --- End Special handling ---
+
                     }
                 });
             };
@@ -426,14 +463,14 @@
                const loadingContainer = iframeWrapper?.parentElement;
                const loader = loadingContainer?.querySelector('.iframe-loading');
 
-               if(loader) {
-                   loader.style.display = 'none';
+               if(loader && iframe.title !== "Reminders Google App") { // Don't hide spinner initially for non-reminder iframes
+                   loader.style.display = 'none'; // Hide initially
 
                    iframe.addEventListener('load', () => {
-                       loader.style.display = 'none';
+                       if(loader) loader.style.display = 'none'; // Hide on load
                    });
                    iframe.addEventListener('error', (err) => {
-                        loader.style.display = 'none';
+                        if(loader) loader.style.display = 'none'; // Hide on error
                         console.error("Error loading iframe:", iframe.title || iframe.src, err);
                         const errorMsg = document.createElement('p');
                         errorMsg.textContent = 'Error loading content.';
@@ -445,17 +482,25 @@
                             iframeWrapper.appendChild(errorMsg);
                         }
                     });
+               } else if (loader && iframe.title === "Reminders Google App") {
+                   // Keep spinner visible initially for reminder app until observed
+                   loader.style.display = 'block';
                }
+
 
                if ('IntersectionObserver' in window) {
                    observer.observe(iframe);
                } else {
-                   if (loader) loader.style.display = 'block';
+                   // Fallback for browsers without IntersectionObserver
+                   if (loader) loader.style.display = 'block'; // Show spinner
                    iframe.src = iframe.getAttribute('data-src');
-                    iframe.removeAttribute('data-src');
+                   iframe.removeAttribute('data-src');
+                   iframe.addEventListener('load', () => { if(loader) loader.style.display = 'none'; }); // Hide on load
+                   iframe.addEventListener('error', () => { if(loader) loader.style.display = 'none'; }); // Hide on error
                }
            });
        }
+
 
       /* --- DOMContentLoaded --- */
       document.addEventListener('DOMContentLoaded', () => { initLazyIframes(); });
