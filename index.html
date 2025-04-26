@@ -1,8 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- PWA & meta -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#006400" />
+  <title>Cleveleys Morrisons – Management Dashboard</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling and operational guides." />
+
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Using updated Font Awesome version -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Styles – mobile-first -->
+  <style>
+  /* ---------- Variables ---------- */
+  :root{
+    --green:#006400;
+    --green-dark:#004d00;
+    --yellow:#FFD700;
+    --bg-light:#e6ffe6;
+    --bg-card:#fff;
+    --text:#333;
+    --shadow:0 2px 6px rgba(0,0,0,.08);
+    /* whiteboard bg */
+    --light-bg-color: #ffffff;
+    /* dark */
+    --bg-dark:#121212;
+    --card-dark:#1e1e1e;
+    --text-dark:#e0e0e0;
+    --footer-dark: #333;
+    --dark-bg-color: #2e2e2e;
+  }
+
+  /* ---------- Reset / base ---------- */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;font-size:100%}
+  body{font-family:Roboto,system-ui,sans-serif;background:var(--bg-light);color:var(--text);line-height:1.55;min-block-size:100dvh;transition:background .3s,color .3s}
+  body.dark-mode{background:var(--bg-dark);color:var(--text-dark)}
+  a{color:inherit;text-decoration:none}
+  img{max-inline-size:100%;block-size:auto}
+  /* Ensure focus states are visible */
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .hamburger:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 2px; }
+  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .hamburger:focus-visible { outline-color: var(--yellow); }
+
+
+  /* ---------- Header ---------- */
+  header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--bg-card);color:var(--green);box-shadow:var(--shadow);position:sticky;top:0;z-index:100;} /* z-index added */
+  header img{inline-size:48px;}
+  header h1{font-weight:700;font-size:clamp(1.2rem,4vw+.4rem,1.8rem); flex-grow: 1; text-align: right; /* Right align header text */}
+  body.dark-mode header{background:var(--card-dark);color:var(--text-dark)}
+
+  /* ---------- Header Adjustments for Mobile ---------- */
+  @media (max-width: 600px) {
+    header {
+      padding: .5rem 1rem;
+      gap: .5rem;
+    }
+    header img {
+      inline-size: 40px;
+    }
+    header h1 {
+      font-size: clamp(1.0rem, 3.5vw + .4rem, 1.6rem);
+    }
+  }
+
+  /* ---------- Navigation ---------- */
+  nav{background:var(--yellow);box-shadow:var(--shadow)}
+  .nav-wrap{display:flex;justify-content:space-around;align-items:center;max-inline-size:1200px;margin-inline:auto;block-size:56px}
+  .nav-links{display:flex;flex:1;justify-content:space-around;list-style:none; align-items: center; }
+  .nav-links a{display:flex;flex-direction:column;align-items:center;gap:.15rem; font-size:.72rem;font-weight:500;padding: .15rem .5rem .35rem .5rem; border-radius:6px;transition:background .2s,transform .2s, color .2s; color: var(--green); text-decoration: none;}
+  .nav-links i{font-size:1.15rem}
+  .nav-links a.active,
+  .nav-links a:focus-visible,
+  .nav-links a:hover{background:var(--green);color:#fff}
+
+  @media(max-width:600px){
+    nav{position:fixed;inset-block-end:0;inset-inline:0; z-index: 99;}
+    body{padding-block-end:56px}
+  }
+  @media(min-width:601px){
+    nav {
+        position: sticky;
+        top: 0; /* Stick right below header space */
+        z-index: 98; /* Lower than header */
+    }
+    .nav-wrap{block-size:64px}
+    .nav-links a{font-size:.8rem}
+  }
+  body.dark-mode nav{background:#333}
+  body.dark-mode .nav-links a{color:var(--text-dark)}
+  body.dark-mode .nav-links a.active,
+  body.dark-mode .nav-links a:focus-visible,
+  body.dark-mode .nav-links a:hover{background:var(--yellow);color:var(--bg-dark)}
+
+
+  /* ---------- Containers & sections ---------- */
+   main {
+       position: relative;
+       z-index: 1;
+   }
+  .container{inline-size:clamp(90%,1200px,95%);margin-inline:auto;padding-block:1.25rem 2rem}
+  section{background:var(--bg-card);padding:1.25rem 1rem;border-radius:12px;box-shadow:var(--shadow);margin-block-end:1.5rem}
+  body.dark-mode section{background:var(--card-dark)}
+  section h2{font-size:clamp(1.1rem,2.2vw+.7rem,1.6rem);margin-block-end:.75rem;color:var(--green);border-block-end:2px solid var(--yellow);display:inline-block;padding-block-end:.25rem}
+  body.dark-mode section h2{color:var(--yellow);border-color:var(--green)}
+  section p { margin-bottom: 1em; }
+  section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; } /* Keep list styles for sections */
+
+
+  /* ---------- Dashboard grid ---------- */
+  #dashboard .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.9rem}
+  .tile{background:var(--green);color:#fff;text-align:center;padding:1.1rem .5rem;border-radius:10px;display:flex;flex-direction:column;gap:.5rem;align-items:center;justify-content: center; min-block-size:clamp(96px,18dvh,140px);transition:background .25s,transform .25s; text-decoration: none; /* Remove underline from tiles */}
+  .tile i{font-size:1.6rem}
+  .tile:hover{background:var(--green-dark);transform:translateY(-4px)}
+  .tile span{font-weight:700;font-size:.78rem; max-width: 100%;}
+  body.dark-mode .tile { background: var(--card-dark); color: var(--text-dark); }
+  body.dark-mode .tile:hover { background: #333; }
+
+
+  /* ---------- Content Frame (for tiles) ---------- */
+  #frame-container { display: none; margin-block-start: 1.5rem; position: relative; }
+  #frame-container.active { display: block; }
+  #content-frame { width: 100%; height: 600px; border: none; box-shadow: var(--shadow); border-radius: 12px; background-color: var(--bg-card); }
+  body.dark-mode #content-frame { background-color: var(--card-dark); }
+  #close-frame { position: absolute; top: -40px; right: 0; background-color: var(--green); color: #fff; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; transition: background-color 0.3s; font-size: 0.9em; z-index: 5;}
+  #close-frame:hover { background-color: var(--green-dark); }
+  #fallback-message { display: none; text-align: center; margin-top: 10px; padding: 15px; background-color: var(--yellow); color: var(--green); border-radius: 6px; }
+  #fallback-message a { color: var(--green); text-decoration: underline; font-weight: bold; }
+  body.dark-mode #fallback-message { background-color: var(--green); color: var(--yellow); }
+  body.dark-mode #fallback-message a { color: var(--yellow); }
+
+  /* ---------- Common iframe wrapper ---------- */
+  .iframe-wrap{position:relative; padding-bottom: 56.25%; height: 0; border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow); margin-top: 1rem; }
+  body.dark-mode .iframe-wrap{background:var(--card-dark)}
+  .iframe-wrap iframe{position: absolute; top: 0; left: 0; inline-size:100%;block-size:100%;border:0}
+
+  /* iframe loading spinner */
+  .iframe-loading-container { position: relative; }
+  .iframe-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--green); border-radius: 50%; animation: spin 1s linear infinite; z-index: 5; }
+  body.dark-mode .iframe-loading { border-color: #555; border-top-color: var(--yellow); }
+  @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+
+  /* ---------- Whiteboard container ---------- */
+  .whiteboard-container{position:relative;inline-size:100%;block-size:600px;border:1px solid var(--green);border-radius:8px;background:var(--light-bg-color);overflow:hidden;margin-top:1rem;transition:background-color .3s,border-color .3s}
+  body.dark-mode .whiteboard-container{background:var(--dark-bg-color);border-color:var(--text-dark)}
+  #whiteboard{display:block;inline-size:100%;block-size:100%;background-color:transparent;touch-action:none}
+
+  /* Dynamic cursors */
+  #whiteboard.pen-cursor{cursor:crosshair}
+  #whiteboard.text-cursor{cursor:text}
+  #whiteboard.eraser-cursor{cursor:none}
+  #eraser-preview{position:absolute;border:1px dashed grey;border-radius:50%;background:rgba(128,128,128,.3);pointer-events:none;display:none;z-index:20}
+
+  /* Whiteboard Tools & Buttons */
+  .button-group{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:8px;z-index:10}
+  .button-group button{background:var(--green);color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;font-size:.85em;transition:background-color .3s;display:flex;align-items:center;gap:5px}
+  .button-group button:hover{background:var(--green-dark)}
+  body.dark-mode .button-group button{background:#444;color:var(--text-dark)}
+  body.dark-mode .button-group button:hover{background:#222}
+
+  .button-group button.active{outline:2px solid var(--yellow);box-shadow:0 0 5px var(--yellow);background:var(--green-dark)}
+  body.dark-mode .button-group button.active{background:#222}
+
+  .button-group .fullscreen-button.full{background:var(--yellow);color:var(--green)}
+  body.dark-mode .button-group .fullscreen-button.full{background:var(--yellow);color:var(--bg-dark)}
+
+  .whiteboard-tools { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 15; }
+  body.dark-mode .whiteboard-tools { background: rgba(30, 30, 30, 0.9); }
+  .tool-button { background: none; border: 1px solid #ccc; padding: 5px 8px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; font-size: 1.1em; }
+  .tool-button:hover { background-color: #eee; }
+  .tool-button.active { background-color: var(--green); color: white; border-color: var(--green); }
+  body.dark-mode .tool-button { border-color: #555; color: var(--text-dark); }
+  body.dark-mode .tool-button:hover { background-color: #444; }
+  body.dark-mode .tool-button.active { background-color: var(--yellow); color: var(--bg-dark); border-color: var(--yellow); }
+  .color-picker, .brush-size, .font-size { height: 30px; border: 1px solid #ccc; border-radius: 4px; background: var(--bg-card); cursor: pointer; padding: 0 5px; vertical-align: middle; }
+  body.dark-mode .color-picker, body.dark-mode .brush-size, body.dark-mode .font-size { background: var(--card-dark); color: var(--text-dark); border-color: #555; }
+  .whiteboard-tools label { font-size: 0.8em; margin-right: 2px; vertical-align: middle;}
+
+  #text-input-overlay { position: absolute; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; padding: 5px; font-family: 'Roboto', sans-serif; z-index: 20; resize: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); outline: none; min-width: 100px; min-height: 40px; line-height: 1.4; }
+  body.dark-mode #text-input-overlay { background: rgba(40, 40, 40, 0.9); border-color: #555; color: var(--text-dark); }
+
+
+  /* ---------- Buttons & utilities ---------- */
+  .button-link{display:inline-block;margin-block-start:1rem;padding:.6rem .9rem;background:var(--green);color:#fff;border-radius:6px;font-weight:500;transition:background .25s,transform .25s; text-decoration: none;}
+  .button-link i{margin-inline-start:.3rem}
+  .button-link:hover{background:var(--yellow);color:var(--green);transform:translateY(-2px)}
+  body.dark-mode .button-link{color:var(--bg-dark)}
+  body.dark-mode .button-link:hover{color:var(--bg-dark)}
+
+  /* ---------- Footer ---------- */
+  footer{margin-block-start:3rem;padding:1rem;text-align:center;background:var(--green);color:#fff;font-size:.8rem}
+  body.dark-mode footer{background:var(--footer-dark)}
+
+  /* ---------- Dark-mode toggle button ---------- */
+  .theme-toggle{background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--green);padding:.25rem; margin-left: auto;} /* Pushes toggle to the right */
+  body.dark-mode .theme-toggle{color:var(--text-dark)}
+
+  /* ---------- Notification ---------- */
+  .notification{display:none;position:fixed;inset-block-end:1.25rem;inset-inline:50%;translate:-50% 0;background:var(--green);color:#fff;padding:.6rem 1rem;border-radius:6px;font-size:.82rem;box-shadow:var(--shadow);z-index:1000;opacity:0;transition:opacity .3s}
+  body.dark-mode .notification{background:var(--yellow);color:var(--bg-dark)}
+
+  /* Mobile nav open state */
+  body.mobile-nav-open { overflow: hidden; }
+
+  </style>
+</head>
+
+<body>
+  <!----- header & theme toggle ----->
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
+    <h1>Cleveleys Morrisons Dashboard</h1>
+    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
+  </header>
+
+  <!----- nav (bottom bar on phones) ----->
+  <nav>
+    <div class="nav-wrap">
+      <ul class="nav-links">
+        <li><a href="index.html" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
+        <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
+        <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
+        <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
+        <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
+        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
+        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!----- main content ----->
+  <main class="container">
+    <!-- welcome -->
+    <section id="welcome">
+      <h2>Welcome</h2>
+      <p>Quick access to essential tools, reports and operational guides.</p>
+    </section>
+
+    <!-- dashboard -->
+    <section id="dashboard">
+      <h2>Quick Links</h2>
+      <div class="grid">
+        <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="tile" data-open="frame" title="Store Mobile App"><i class="fas fa-mobile-alt"></i><span>Store App</span></a>
+        <a href="https://www.dymension.co.uk/#/account/login" class="tile" data-open="frame" title="Staff Checks"><i class="fas fa-user-check"></i><span>Staff Checks</span></a>
+        <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="tile" data-open="external" title="Price Integrity Logbook (opens new tab)"><i class="fas fa-book"></i><span>Logbook</span></a>
+        <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile" data-open="external" title="Looker Delivery Volume Report (opens new tab)"><i class="fas fa-chart-line"></i><span>Delivery</span></a>
+        <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="tile" data-open="external" title="Retail Wheel Dashboard (opens new tab)"><i class="fas fa-tachometer-alt"></i><span>Retail Wheel</span></a>
+        <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="tile" data-open="external" title="Looker Studio NPS Report (opens new tab)"><i class="fas fa-smile"></i><span>NPS</span></a>
+        <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="tile" data-open="external" title="Looker Studio Transfers Report (opens new tab)"><i class="fas fa-exchange-alt"></i><span>Transfers</span></a>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="tile" data-open="external" title="Google Script - Complaints (opens new tab)"><i class="fas fa-comments"></i><span>Complaints</span></a>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="tile" data-open="external" title="Google Script - Reminders (opens new tab)"><i class="fas fa-calendar-check"></i><span>Reminders</span></a>
+        <a href="operations.html" class="tile" data-open="self" title="Operational Guides"><i class="fas fa-cogs"></i><span>Operations</span></a>
+        <a href="shrink.html" class="tile" data-open="self" title="Shrink Management Guides"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a>
+        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="self" title="Production Plans"><i class="fas fa-mobile-alt"></i><span>Production</span></a>
+      </div>
+    </section>
+
+    <!-- Content Frame Container -->
+    <div id="frame-container">
+      <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
+      <div class="iframe-loading-container">
+           <div class="iframe-loading"></div>
+           <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
+      </div>
+      <div id="fallback-message" role="alert">
+        <p>Unable to load this page within the frame.<br>
+        <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
+      </div>
+    </div>
+
+    <!-- Who Is In Today Section -->
+     <section id="who-is-in">
+        <h2>Who Is In Today?</h2>
+         <div class="iframe-loading-container">
+             <div class="iframe-loading"></div>
+             <div class="iframe-wrap">
+                 <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
+             </div>
+         </div>
+         <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Sheet</a>
+     </section>
+
+     <!-- Reminders App Section -->
+     <section id="reminders-app">
+       <h2>Reminders</h2>
+       <p>Access the reminders application.</p>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" target="_blank" rel="noopener noreferrer" class="button-link"><i class="fas fa-external-link-alt fa-xs"></i> Open Reminders App</a>
+     </section>
+
+     <!-- Management Rota Section -->
+     <section id="management-rota">
+       <h2>Management Rota</h2>
+        <div class="iframe-loading-container">
+            <div class="iframe-loading"></div>
+            <div class="iframe-wrap">
+               <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
+            </div>
+        </div>
+        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Rota</a>
+     </section>
+
+    <!-- Retail Wheel Section -->
+    <section id="wheel">
+      <h2>Retail Wheel</h2>
+      <p>Comprehensive overview of store performance metrics.</p>
+      <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> Open Retail Wheel</a>
+    </section>
+
+    <!-- ———————— WHITEBOARD ———————— -->
+    <section id="notes">
+      <h2>Notes Whiteboard</h2>
+      <p>Sketch, annotate or leave reminders – they stay in your browser storage.</p>
+
+      <div class="whiteboard-container" id="whiteboard-container">
+        <div class="whiteboard-tools" role="toolbar" aria-label="Whiteboard tools">
+          <button class="tool-button active" data-tool="pen"    aria-label="Pen (P)"><i class="fas fa-pencil-alt"></i></button>
+          <button class="tool-button"        data-tool="text"   aria-label="Text (T)"><i class="fas fa-font"></i></button>
+          <button class="tool-button"        data-tool="eraser" aria-label="Eraser (E)"><i class="fas fa-eraser"></i></button>
+
+          <label for="colorPicker">Color:</label>
+          <input  id="colorPicker" class="color-picker" type="color" value="#000000">
+
+          <label for="brushSize">Brush:</label>
+          <select id="brushSize" class="brush-size">
+            <option>2</option><option selected>4</option><option>8</option><option>12</option><option>20</option>
+          </select>
+
+          <label for="fontSize">Font:</label>
+          <select id="fontSize" class="font-size">
+            <option>14</option><option selected>18</option><option>24</option><option>32</option>
+          </select>
+        </div>
+
+        <canvas id="whiteboard" aria-label="Interactive whiteboard"></canvas>
+        <div id="eraser-preview"></div>
+
+        <div class="button-group">
+          <button class="save-button"        aria-label="Save (⌘/Ctrl-S)"><i class="fas fa-save"></i></button>
+          <button class="load-button"        aria-label="Load"><i class="fas fa-upload"></i></button>
+          <button class="undo-button"        aria-label="Undo (⌘/Ctrl-Z)"><i class="fas fa-undo"></i></button>
+          <button class="fill-button"        aria-label="Fill background"><i class="fas fa-fill-drip"></i></button>
+          <button class="clear-button"       aria-label="Clear"><i class="fas fa-trash"></i></button>
+          <button class="export-png-button"  aria-label="Download PNG"><i class="fas fa-download"></i></button>
+
+          <!-- NEW: Full-screen -->
+          <button class="fullscreen-button"  aria-label="Full screen (⌘/Ctrl-F)"><i class="fas fa-expand"></i></button>
+        </div>
+      </div>
+    </section>
+    <!-- ———————————————————————— -->
+  </main>
+
+  <!----- footer ----->
+  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
+
+  <!----- notification placeholder ----->
+  <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
+
+  <!----- scripts ----->
   <script>
-  (()=>{ // Start new IIFE
+  (()=>{ // Start IIFE
     'use strict';
 
-    /* -------- Define Helper Functions FIRST -------- */
+    /* -------- helpers -------- */
     const $ = s=>document.querySelector(s);
     const $$= s=>document.querySelectorAll(s);
     const debounce = (fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);} };
@@ -11,26 +379,26 @@
 
     /* -------- dark-mode toggle -------- */
     const themeBtn=$(".theme-toggle");
-    // Need resizeCanvas defined before setMode calls it
-    let resizeCanvas = () => {}; // Placeholder, will be properly defined later if canvas exists
-    const setMode=isDark=>{document.body.classList.toggle("dark-mode",isDark);themeBtn.setAttribute("aria-pressed",isDark);localStorage.theme=isDark?"dark":"light";if(typeof resizeCanvas==='function')setTimeout(resizeCanvas,50)};
+    const setMode=isDark=>{document.body.classList.toggle("dark-mode",isDark);themeBtn.setAttribute("aria-pressed",isDark);localStorage.theme=isDark?"dark":"light";if(typeof resizeCanvas==='function')setTimeout(resizeCanvas,50)}; // whiteboard resize added
     themeBtn.addEventListener("click",()=>setMode(!document.body.classList.contains("dark-mode")));
     const saved=localStorage.theme;setMode(saved?saved==="dark":matchMedia("(prefers-color-scheme:dark)").matches);
     matchMedia("(prefers-color-scheme:dark)").addEventListener("change",e=>{if(!localStorage.theme)setMode(e.matches);});
 
+
     /* -------- Dashboard Tile Click Handler & Iframe -------- */
-    const dashboardTiles = $$('#dashboard .tile');
+    const dashboardTiles = $$('#dashboard .tile'); // Use new class .tile
     const frameContainer = $('#frame-container');
     const contentFrame = $('#content-frame');
     const closeFrame = $('#close-frame');
     const fallbackMessage = $('#fallback-message');
     const fallbackLink = $('#fallback-link');
-    const frameSpinner = frameContainer?.querySelector('.iframe-loading');
+    const frameSpinner = frameContainer?.querySelector('.iframe-loading'); // Spinner for the main frame
     let frameLoadTimeout;
     function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
 
     function loadContentInFrame(url) {
          if (!frameContainer || !contentFrame || !fallbackLink || !fallbackMessage || !closeFrame ) return;
+
          contentFrame.src = 'about:blank';
          fallbackMessage.style.display = 'none';
          fallbackLink.href = url;
@@ -38,7 +406,9 @@
          showFrameSpinner(true);
          contentFrame.src = url;
          frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
          clearTimeout(frameLoadTimeout);
+
          frameLoadTimeout = setTimeout(() => {
            let wasBlockedOrFailed = false;
            try {
@@ -51,6 +421,7 @@
              console.warn('[Fallback Check] Cross-origin error accessing iframe content after timeout for:', url, e);
              wasBlockedOrFailed = true;
            }
+
            if (wasBlockedOrFailed && frameSpinner && frameSpinner.style.display !== 'none') {
              console.log('[Fallback Action] Opening in new tab due to suspected blocking/failure for:', url);
              window.open(url,'_blank','noopener');
@@ -63,6 +434,7 @@
                notify("Content took too long to load.", 4000);
            }
          }, 5000);
+
          contentFrame.onload = function() {
              clearTimeout(frameLoadTimeout);
              showFrameSpinner(false);
@@ -76,7 +448,8 @@
              console.error('[iframe onerror] Fired for:', contentFrame.src, err);
              notify("Error loading content in frame.", 4000);
          };
-       } // --- End of loadContentInFrame ---
+       }
+
 
     if (closeFrame) { closeFrame.addEventListener('click', function() { if (!frameContainer || !contentFrame) return; frameContainer.classList.remove('active'); contentFrame.src = "about:blank"; fallbackMessage.style.display = "none"; showFrameSpinner(false); clearTimeout(frameLoadTimeout); }); }
 
@@ -91,6 +464,7 @@
                 e.preventDefault();
                 loadContentInFrame(url);
             }
+            // Let 'self' links navigate normally
         });
     });
 
@@ -112,97 +486,96 @@
         /*  util  */
         const themeBg = ()=>getComputedStyle(document.body).getPropertyValue(document.body.classList.contains("dark-mode")?"--dark-bg-color":"--light-bg-color").trim();
         const effectiveBg = ()=>{const f=[...strokes].reverse().find(s=>s.tool==="fill");return f?f.color:themeBg();};
-        const getPos=e=>{const r=canvas.getBoundingClientRect();const clientX=e.touches?e.touches[0].clientX:e.clientX;const clientY=e.touches?e.touches[0].clientY:e.clientY;if(clientX==null||clientY==null)return null;const x=clientX-r.left;const y=clientY-r.top;return{x,y};};
+        const getPos=e=>{const r=canvas.getBoundingClientRect();const clientX=e.touches?e.touches[0].clientX:e.clientX;const clientY=e.touches?e.touches[0].clientY:e.clientY;if(clientX==null||clientY==null)return null;const x=clientX-r.left;const y=clientY-r.top;return{x,y};}; /* Added null check */
 
         /*  size / Hi-DPI  */
-        // Redefine resizeCanvas properly within this scope
-        resizeCanvas=()=>{
-          if (!canvas.parentElement) return;
+        const resizeCanvas=()=>{
+          if (!canvas.parentElement) return; // Guard against missing parent
           const {clientWidth:w,clientHeight:h}=canvas.parentElement;
           dpr=window.devicePixelRatio||1;
           canvas.width=w*dpr;canvas.height=h*dpr;
           canvas.style.width=w+"px";canvas.style.height=h+"px";
-          ctx.setTransform(dpr,0,0,dpr,0,0);
+          ctx.setTransform(dpr,0,0,dpr,0,0); // Use setTransform for scaling
           render();
         };
 
         /* drawing engine */
         const render=()=>{
           if(!ctx) return;
-          const logicalWidth = canvas.width / dpr;
-          const logicalHeight = canvas.height / dpr;
+          ctx.clearRect(0,0,canvas.width,canvas.height); // Use canvas dimensions directly
           ctx.save();
-          // Clear based on physical pixels, but apply transform for drawing logical pixels
-          ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform to clear properly
-          ctx.clearRect(0,0,canvas.width,canvas.height);
+          // Apply DPR scaling transformation for all drawing operations
+          // ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Applied in resizeCanvas now
 
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Apply transform for drawing
           ctx.fillStyle=effectiveBg();
-          ctx.fillRect(0,0,logicalWidth,logicalHeight);
+          ctx.fillRect(0,0,canvas.width/dpr,canvas.height/dpr); // Draw background at logical size
 
           for(const s of strokes){
             if(!s)continue;
-            ctx.globalCompositeOperation="source-over";
+            ctx.globalCompositeOperation="source-over"; // Reset blend mode
             if(s.tool==="pen"||s.tool==="eraser"){
-              if (!s.p || !s.p.length) continue;
+              if (!s.p || !s.p.length) continue; // Ensure points exist
               ctx.lineJoin=ctx.lineCap="round";
               ctx.lineWidth=s.w;
-              ctx.strokeStyle=s.tool==="eraser"?"rgba(0,0,0,1)":s.c;
+              ctx.strokeStyle=s.tool==="eraser"?"rgba(0,0,0,1)":s.c; // Color only needed for pen
               ctx.globalCompositeOperation=s.tool==="eraser"?"destination-out":"source-over";
               ctx.beginPath();ctx.moveTo(s.p[0].x,s.p[0].y);
               s.p.forEach(pt=>ctx.lineTo(pt.x,pt.y));
               ctx.stroke();
             }
             else if(s.tool==="text"){
+              // ctx.globalCompositeOperation="source-over"; // Already set
               ctx.fillStyle=s.c;
               ctx.font=`${s.sz}px Roboto, sans-serif`;
-              ctx.textAlign = 'left';
-              ctx.textBaseline = 'top';
-              s.lines.forEach((ln,i)=>ctx.fillText(ln,s.x,s.y+i*s.sz*1.2));
+              ctx.textAlign = 'left'; // Ensure alignment
+              ctx.textBaseline = 'top'; // Ensure alignment
+              s.lines.forEach((ln,i)=>ctx.fillText(ln,s.x,s.y+i*s.sz*1.2)); // Draw text relative to canvas
             }
             else if(s.tool==="fill"){
+              // ctx.globalCompositeOperation="source-over"; // Already set
               ctx.fillStyle=s.color;
-              ctx.fillRect(0,0,logicalWidth,logicalHeight);
+              ctx.fillRect(0,0,canvas.width/dpr,canvas.height/dpr); // Fill background
             }
           }
-          ctx.restore();
+          ctx.restore(); // Restore original context state (including transform)
         };
 
-        const saveLocal=debounce(()=>{try{localStorage.whiteboardStrokes=JSON.stringify(strokes)}catch(e){notify("Save failed: Storage full?",5000)}},400);
+
+        const saveLocal=debounce(()=>{try{localStorage.whiteboardStrokes=JSON.stringify(strokes)}catch(e){notify("Save failed: Storage full?",5000)}},400); /* Add try-catch */
 
         /* pointer handlers */
         const start=e=>{
-          if(e.type==='touchstart') e.preventDefault();
-          const pos=getPos(e); if (!pos) return;
-          commitText();
+          if(e.type==='touchstart') e.preventDefault(); // Prevent scroll/zoom on touch
+          const pos=getPos(e); if (!pos) return; // Check for valid position
+          commitText(); // Commit any pending text first
           if(currentTool==="text"){makeTextInput(pos);return;}
           drawing=true;
           currentStroke={tool:currentTool,c:colorPicker.value,w:+brushSel.value,p:[pos]};
         };
-
         const move=e=>{
-          if(e.type==='touchmove') e.preventDefault();
-          const pos = getPos(e); if (!pos) return;
+          if(e.type==='touchmove') e.preventDefault(); // Prevent scroll/zoom on touch
+          const pos = getPos(e); if (!pos) return; // Check for valid position
           if(currentTool==="eraser")updateEraserPreview(e);
-          if(!drawing||currentTool==="text"||!currentStroke)return;
+          if(!drawing||currentTool==="text"||!currentStroke)return; // Ensure stroke exists
           const prev=currentStroke.p.at(-1);
-          if (!prev) return;
+          if (!prev) return; // Ensure previous point exists
 
-          ctx.save();
-          ctx.setTransform(dpr,0,0,dpr,0,0); // Apply scaling for drawing segment
+          ctx.save(); // Save context for drawing this segment
+          ctx.setTransform(dpr,0,0,dpr,0,0); // Apply scaling for drawing
           ctx.lineWidth=currentStroke.w;
           ctx.strokeStyle=currentStroke.tool==="eraser"?"rgba(0,0,0,1)":currentStroke.c;
           ctx.globalCompositeOperation=currentStroke.tool==="eraser"?"destination-out":"source-over";
-          ctx.lineJoin = ctx.lineCap = 'round';
+          ctx.lineJoin = ctx.lineCap = 'round'; // Ensure smooth lines
           ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(pos.x,pos.y);ctx.stroke();
-          ctx.restore();
+          ctx.restore(); // Restore context
 
           currentStroke.p.push(pos);
         };
-
-        const end=()=>{hideEraserPreview();if(!drawing)return;drawing=false;
-          if(currentStroke&¤tStroke.p.length>1)strokes.push(currentStroke);
+        const end=()=>{
+          hideEraserPreview();if(!drawing)return;drawing=false;
+          if(currentStroke&¤tStroke.p.length>1)strokes.push(currentStroke); // Only push if > 1 point
           currentStroke=null;
+          // No need to redraw here unless debugging, render() happens on major actions
           saveLocal();
         };
 
@@ -213,37 +586,37 @@
           input=document.createElement("textarea");
           input.id="text-input-overlay";
           const off=canvas.getBoundingClientRect();
-          input.style.left=(off.left+window.scrollX+pos.x)+"px";
-          input.style.top =(off.top+window.scrollY +pos.y)+"px";
+          input.style.left=(off.left+window.scrollX+pos.x)+"px"; // Account for scroll
+          input.style.top =(off.top+window.scrollY +pos.y)+"px"; // Account for scroll
           input.style.fontSize=fontSel.value+"px";
           input.style.color=colorPicker.value;
-          input.style.fontFamily='Roboto, sans-serif';
-          input.style.lineHeight = '1.2';
-          input.style.padding = '4px';
-          input.style.border = '1px dashed grey';
-          input.style.resize = 'none';
+          input.style.fontFamily='Roboto, sans-serif'; // Match canvas font
+          input.style.lineHeight = '1.2'; // Match drawing estimate
+          input.style.padding = '4px'; // Add some padding
+          input.style.border = '1px dashed grey'; // Visible border
+          input.style.resize = 'none'; // Prevent manual resize
           input.onblur=commitText;
           input.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();commitText();}};
           document.body.appendChild(input);input.focus();
         };
         const commitText=()=>{
           if(!input)return;
-          const txt=input.value;
+          const txt=input.value; // Keep whitespace for multi-line
           const off=canvas.getBoundingClientRect();
-          const x=parseFloat(input.style.left)-off.left-window.scrollX;
-          const y=parseFloat(input.style.top )-off.top -window.scrollY;
+          const x=parseFloat(input.style.left)-off.left-window.scrollX; // Adjust for scroll
+          const y=parseFloat(input.style.top )-off.top -window.scrollY; // Adjust for scroll
           const sz = +fontSel.value;
           const col = colorPicker.value;
           document.body.removeChild(input);input=null;
-          if(!txt.trim())return;
+          if(!txt.trim())return; // Don't save if only whitespace
           strokes.push({tool:"text",lines:txt.split("\n"),x,y,sz,c:col});
           render();saveLocal();
         };
 
         /* eraser preview */
         const updateEraserPreview=e=>{
-          const p=getPos(e); if (!p) return; const size=+brushSel.value; // Use logical size for CSS pixels
-          eraserPreview.style.cssText=`display:block;width:${size}px;height:${size}px;left:${canvas.offsetLeft+p.x-size/2}px;top:${canvas.offsetTop+p.y-size/2}px`; // Position based on logical coords
+          const p=getPos(e); if (!p) return; const size=+brushSel.value*dpr; // Scale preview size
+          eraserPreview.style.cssText=`display:block;width:${size}px;height:${size}px;left:${canvas.offsetLeft+p.x*dpr-size/2}px;top:${canvas.offsetTop+p.y*dpr-size/2}px`; // Scale position
         };
         const hideEraserPreview=()=>eraserPreview.style.display="none";
 
@@ -260,15 +633,20 @@
           fsBtn.classList.toggle("full",full);
           fsBtn.innerHTML=`<i class="fas fa-${full?'compress':'expand'}"></i>`;
           fsBtn.setAttribute("aria-label",full?"Exit full screen (Esc)":"Full screen (⌘/Ctrl-F)");
+          // Short delay allows fullscreen transition before resize
           setTimeout(resizeCanvas, 100);
         });
 
         /* hot-keys */
         addEventListener("keydown",e=>{
-          if(e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return; // Ignore inputs
-          if((e.metaKey||e.ctrlKey)&&e.key==="s"){e.preventDefault();$(".save-button")?.click();} // Use optional chaining
-          if((e.metaKey||e.ctrlKey)&&e.key==="z"){e.preventDefault();$(".undo-button")?.click();}
-          if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="f"){e.preventDefault();fsBtn?.click();}
+          if(e.target.tagName === 'TEXTAREA') return; // Don't interfere with text input
+          if((e.metaKey||e.ctrlKey)&&e.key==="s"){e.preventDefault();$(".save-button").click();}
+          if((e.metaKey||e.ctrlKey)&&e.key==="z"){e.preventDefault();$(".undo-button").click();}
+          if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="f"){e.preventDefault();fsBtn.click();}
+          // Optional: Add keys for tools
+          // if(e.key.toLowerCase() === 'p') $$('.tool-button[data-tool="pen"]').click();
+          // if(e.key.toLowerCase() === 't') $$('.tool-button[data-tool="text"]').click();
+          // if(e.key.toLowerCase() === 'e') $$('.tool-button[data-tool="eraser"]').click();
         });
 
         /* UI wiring */
@@ -276,36 +654,37 @@
         canvas.addEventListener("mousemove",move);
         canvas.addEventListener("mouseup",end);
         canvas.addEventListener("mouseleave",end);
-        canvas.addEventListener("touchstart",start,{passive:false});
-        canvas.addEventListener("touchmove",move,{passive:false});
+        canvas.addEventListener("touchstart",start,{passive:false}); // Use same start func
+        canvas.addEventListener("touchmove",move,{passive:false}); // Use same move func
         canvas.addEventListener("touchend",end);
-        canvas.addEventListener("touchcancel",end);
+        canvas.addEventListener("touchcancel",end); // Handle touch cancel
 
         tools.forEach(b=>b.onclick=()=>{commitText();tools.forEach(x=>x.classList.toggle("active",x===b));currentTool=b.dataset.tool;hideEraserPreview();});
 
-        $(".undo-button")?.addEventListener('click', ()=>{if(strokes.pop()){render();saveLocal();notify("Undo");}}); // Use addEventListener
-        $(".clear-button")?.addEventListener('click', ()=>{strokes=[];localStorage.removeItem("whiteboardStrokes");render();notify("Cleared");});
-        $(".fill-button")?.addEventListener('click', ()=>{strokes.push({tool:"fill",color:colorPicker.value});render();saveLocal();notify("Background filled");});
-        $(".save-button")?.addEventListener('click', ()=>{saveLocal.flush?.();localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); notify("Saved");});
-        $(".load-button")?.addEventListener('click', ()=>{
+        $(".undo-button").onclick = ()=>{if(strokes.pop()){render();saveLocal();notify("Undo");}};
+        $(".clear-button").onclick= ()=>{strokes=[];localStorage.removeItem("whiteboardStrokes");render();notify("Cleared");};
+        $(".fill-button").onclick  = ()=>{strokes.push({tool:"fill",color:colorPicker.value});render();saveLocal();notify("Background filled");}; // Push fill action
+        $(".save-button").onclick  = ()=>{saveLocal.flush?.();localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); notify("Saved");}; // Ensure latest strokes saved
+        $(".load-button").onclick  = ()=>{
           let raw=localStorage.whiteboardStrokes;try{strokes=raw?JSON.parse(raw):[];}catch{strokes=[];}
           render();notify(strokes.length?"Loaded":"Nothing saved");
-        });
-        $(".export-png-button")?.addEventListener('click',()=>{
+        };
+        $(".export-png-button").onclick=()=>{
           const a=document.createElement("a");a.href=canvas.toDataURL("image/png");a.download="morrisons-notes.png";a.click();notify("PNG downloaded");
-        });
+        };
 
         /* initial load */
         window.addEventListener("resize",debounce(resizeCanvas,200));
         try{strokes=JSON.parse(localStorage.whiteboardStrokes||"[]");}catch{strokes=[];}
-        setTimeout(resizeCanvas, 50); // Initial render after layout settles
+        // Initial resize and render deferred slightly to ensure layout is stable
+        setTimeout(resizeCanvas, 50);
 
     } else { console.log("Whiteboard canvas not found."); } // End if(canvas)
 
 
     /* --- Lazy Load Iframes & Add Spinners --- */
      function initLazyIframes() {
-         const iframes = $$('iframe[data-src]'); // Use $$ helper
+         const iframes = document.querySelectorAll('iframe[data-src]');
 
          const observerCallback = (entries, obs) => {
              entries.forEach(entry => {
@@ -385,7 +764,7 @@
       });
     }
 
-  })(); // End of IIFE
+  })(); // End IIFE
   </script>
 </body>
 </html>
