@@ -113,9 +113,9 @@
     footer { background-color: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 15px 5px; width: 100%; transition: background-color 0.3s, color 0.3s; margin-top: 40px; }
     body.dark-mode footer { background-color: var(--dark-footer-bg); color: var(--dark-footer-text); }
     footer p { margin: 0; font-size: 0.9em; }
-    /* OTP text style */
-    footer #otp { margin-top: 8px; font-size: 1em; font-weight: bold; color: var(--footer-text); /* Ensure OTP color matches footer text */}
-    body.dark-mode footer #otp { color: var(--dark-footer-text); }
+    /* OTP text style (REMOVED) */
+    /* footer #otp { margin-top: 8px; font-size: 1em; font-weight: bold; color: var(--footer-text); } */
+    /* body.dark-mode footer #otp { color: var(--dark-footer-text); } */
 
      /* Media Queries for Responsive Iframe */
     @media (max-width: 768px) { .dashboard-card iframe { height: 250px; } }
@@ -225,7 +225,7 @@
 
   <footer>
     <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
-    <p id="otp">Generating OTP...</p>
+    <!-- OTP paragraph removed -->
   </footer>
 
   <!-- Core JavaScript (Identical Base JS) -->
@@ -312,58 +312,7 @@
     })();
   </script>
 
-  <!-- OTP Generator Script -->
-  <script src="https://cdn.jsdelivr.net/npm/otplib-browser@12.0.1/dist/otplib-browser.umd.min.js" defer></script>
-  <script>
-    function runOTP() {
-      if (typeof otplib === 'undefined') {
-        console.error('otplib library failed to load.');
-        const otpElement = document.getElementById('otp');
-        if (otpElement) otpElement.textContent = 'OTP Error: Library not loaded';
-        return;
-      }
-      // IMPORTANT: Secret should ideally be fetched securely or configured, not hardcoded directly for production systems.
-      const secret = 'TYX3MCRGZYWI7RKQFV55ATV7ATGB7LOOXSTF7YXO2EUKQEGOPV7Q'; // Example secret
-      const otpElement = document.getElementById('otp');
+  <!-- OTP Generator Script Block REMOVED -->
 
-      function updateOTP() {
-         try {
-             const token = otplib.authenticator.generate(secret);
-             if (otpElement) {
-                otpElement.textContent = 'Current OTP: ' + token;
-            }
-         } catch (err) {
-             console.error("Error generating OTP:", err);
-              if (otpElement) {
-                 otpElement.textContent = 'OTP Error';
-             }
-         }
-      }
-
-      if (!otpElement) {
-          console.error('OTP display element not found');
-          return;
-      }
-
-      updateOTP(); // Initial generation
-      setInterval(updateOTP, 30000); // Update every 30 seconds
-    }
-
-    // Ensure otplib is loaded before running
-     function checkOtpLibAndRun() {
-         if (typeof otplib !== 'undefined') {
-             runOTP();
-         } else {
-             // Check again shortly, in case of slow script load
-             setTimeout(checkOtpLibAndRun, 500);
-         }
-     }
-
-     if (document.readyState === 'loading') {
-         document.addEventListener('DOMContentLoaded', checkOtpLibAndRun);
-     } else {
-         checkOtpLibAndRun(); // Already loaded
-     }
-  </script>
 </body>
 </html>
