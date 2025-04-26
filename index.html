@@ -292,6 +292,18 @@
   <script>
     (function() {
       'use strict';
+          // PWA Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('Service Worker registered successfully with scope: ', registration.scope);
+            })
+            .catch(err => {
+              console.error('Service Worker registration failed: ', err);
+            });
+        });
+      }
       /* --- Helper: Debounce --- */
       function debounce(func, wait) { let timeout; return function executedFunction(...args) { const later = () => { clearTimeout(timeout); func.apply(this, args); }; clearTimeout(timeout); timeout = setTimeout(later, wait); }; }
 
