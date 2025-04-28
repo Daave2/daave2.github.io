@@ -17,11 +17,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Styles – mobile-first (Pink theme) -->
+  <!-- Styles – mobile-first (Adapted for Pink theme) -->
   <style>
   /* ---------- Variables (Base) ---------- */
   :root{
-    --primary-color: #006400; /* Default Green */
+    /* Default Green Theme (will be overridden by .pink-theme) */
+    --primary-color: #006400;
     --primary-color-dark: #004d00;
     --secondary-color: #FFD700;
     --bg-faint: #e6ffe6;
@@ -43,20 +44,21 @@
        --primary-color-dark: #a12a6a; /* Darker Pink */
        --secondary-color: #FFB6C1; /* Light Pink */
        --bg-faint: #FFF0F5; /* Lavender Blush */
-       --bg-card: #FFFFFF;
-       --text-color: #701c4b;
+       --bg-card: #FFFFFF; /* White card */
+       --text-color: #701c4b; /* Dark Pink/Magenta */
        --footer-bg: var(--primary-color);
-       --footer-text: #fff;
+       --footer-text: #fff; /* White text on pink footer */
 
+       /* Dark Mode Overrides for Pink Theme */
         &.dark-mode {
             --primary-color: #FF69B4; /* Hot Pink */
-            --primary-color-dark: #D13887;
+            --primary-color-dark: #D13887; /* Deeper Pink */
             --secondary-color: #DB7093; /* Pale Violet Red */
             --bg-faint: var(--bg-dark);
-            --card-dark: #4a1933;
-            --text-dark: #ffebf5;
-            --footer-dark: #8B008B; /* Magenta */
-            --footer-text: #ffebf5;
+            --card-dark: #4a1933; /* Dark pink-tinted */
+            --text-dark: #ffebf5; /* Light pink text */
+            --footer-dark: #8B008B; /* Magenta footer */
+            --footer-text: #ffebf5; /* Light pink footer text */
             /* Override specific dark variables */
             --bg-card: var(--card-dark);
             --text-color: var(--text-dark);
@@ -73,7 +75,6 @@
   a:hover{text-decoration:none;}
   body.dark-mode a{color:var(--secondary-color);}
   img{max-inline-size:100%;block-size:auto}
-  strong { font-weight: 700; }
   /* Focus visible */
   a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .accordion:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
   body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .accordion:focus-visible { outline-color: var(--secondary-color); }
@@ -85,6 +86,7 @@
   header h1{font-weight:700;font-size:clamp(1.2rem,4vw+.4rem,1.8rem); flex-grow: 1; text-align: right;}
   body.dark-mode header{background:var(--card-dark);color:var(--primary-color)}
 
+  /* ---------- Header Adjustments for Mobile ---------- */
   @media (max-width: 600px) {
     header { padding: .5rem 1rem; gap: .5rem; }
     header img { inline-size: 40px; }
@@ -133,50 +135,47 @@
    body.dark-mode section h3 { color: var(--primary-color); }
    section p { margin-bottom: 1em; }
    section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; padding-left: 0; }
+   section ol { list-style: decimal; margin-left: 25px; margin-bottom: 1em; padding-left: 0; }
    section li { margin-bottom: 0.5em; }
    section strong { font-weight: 700; color: var(--primary-color); }
    body.dark-mode section strong { color: var(--primary-color); }
 
-   /* Dashboard Card (for iframe sections) */
-    .dashboard-card { background-color: var(--bg-faint); border-radius: 10px; box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px; transition: transform 0.3s, box-shadow 0.3s; }
-    body.dark-mode .dashboard-card { background-color: var(--card-dark); }
-    .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px var(--shadow); }
-    .dashboard-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--primary-color); font-size: 1.4em; display: flex; align-items: center; gap: 10px; padding-bottom: 0; border-bottom: none; }
-    body.dark-mode .dashboard-card h3 { color: var(--primary-color); }
-    .dashboard-card iframe { width: 100%; border: none; border-radius: 5px; margin-bottom: 15px; background-color: #fff; }
-    #foodIframe { height: 500px; }
-    #lookerIframe { width: 100%; height: 550px; }
-
-    /* Buttons & utilities */
-    .button-link{display:inline-block;margin-block-start:1rem;padding:.6rem .9rem;background:var(--primary-color);color:var(--footer-text);border-radius:6px;font-weight:500;transition:background .25s,transform .25s; text-decoration: none;}
-    .button-link i{margin-inline-start:.3rem}
-    .button-link:hover{background:var(--secondary-color);color:var(--primary-color);transform:translateY(-2px)}
-    body.dark-mode .button-link{color:var(--primary-color);}
-    body.dark-mode .button-link:hover{background:var(--secondary-color);color:var(--primary-color);}
-
-    .dashboard-card button { padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.3s; font-weight: 500; font-size: 0.9em; margin-top: 10px; display: inline-block; }
-    body.dark-mode .dashboard-card button { color: var(--footer-text); }
-    .dashboard-card button:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
-    body.dark-mode .dashboard-card button:hover { color: var(--primary-color); }
-
 
    /* Quick Guide List */
-   .quick-guide-list { list-style: none; padding-left: 0; margin-bottom: 1.5rem;}
+   .quick-guide-list { list-style: none; padding-left: 0; }
    .quick-guide-list li { margin-bottom: 0.8em; padding-left: 1.75rem; position: relative; }
    .quick-guide-list li::before { content: "\f058"; /* Font Awesome check-circle */ font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 0.1em; color: var(--primary-color); font-size: 1.1em; }
    body.dark-mode .quick-guide-list li::before { color: var(--primary-color); }
 
-   /* Accordion Styles */
-   .accordion { background-color: var(--bg-faint); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: 1px solid var(--primary-color); text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
-   body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); border-color: var(--secondary-color);}
-   .accordion:hover, .accordion.active { background-color: var(--primary-color); color: var(--footer-text); }
-   body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-color); color: var(--primary-color); }
-   .accordion::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
-   .accordion.active::after { transform: rotate(-180deg); }
-   .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-color); border-top: none; margin-bottom: 10px; margin-top: -10px; border-color: var(--bg-faint); }
-   body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
-   .panel div { padding: 15px 0; }
-   .panel p, .panel ul, .panel ol { margin-bottom: 1em; }
+
+   /* Dashboard Card (for iframe sections) */
+    .dashboard-card { background-color: var(--bg-card); border-radius: 10px; box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px; transition: transform 0.3s, box-shadow 0.3s; }
+    body.dark-mode .dashboard-card { background-color: var(--card-dark); }
+    .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px var(--shadow); }
+    .dashboard-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--primary-color); font-size: 1.4em; display: flex; align-items: center; gap: 10px; }
+    body.dark-mode .dashboard-card h3 { color: var(--primary-color); }
+    .dashboard-card iframe { width: 100%; border: none; border-radius: 5px; margin-bottom: 15px; background-color: #fff; /* Keep iframe background light */ }
+    #foodIframe { height: 500px; }
+    #lookerIframe { width: 100%; height: 550px; }
+
+    .dashboard-card button, .dashboard-card a.button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; text-decoration: none; }
+    body.dark-mode .dashboard-card button, body.dark-mode .dashboard-card a.button-link { color: var(--footer-text); }
+    .dashboard-card button:hover, .dashboard-card a.button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
+    body.dark-mode .dashboard-card button:hover, body.dark-mode .dashboard-card a.button-link:hover { color: var(--primary-color); }
+
+
+  /* Accordion Styles */
+  .accordion { background-color: var(--bg-faint); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: 1px solid var(--primary-color); text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+  body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); border-color: var(--secondary-color);}
+  .accordion:hover, .accordion.active { background-color: var(--primary-color); color: var(--footer-text); }
+  body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-color); color: var(--primary-color); }
+  .accordion::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
+  .accordion.active::after { transform: rotate(-180deg); }
+  .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-color); border-top: none; margin-bottom: 10px; margin-top: -10px; border-color: var(--bg-faint); }
+  body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
+  .panel div { padding: 15px 0; }
+  .panel img { margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; }
+  .panel p, .panel ul, .panel ol { margin-bottom: 1em; }
 
 
   /* ---------- Footer ---------- */
@@ -222,186 +221,161 @@
     <section id="quick-guide">
         <h2><i class="fas fa-bolt"></i> Market Street & Cafe Quick Guide</h2>
         <ul class="quick-guide-list">
-            <li><strong>Production Plans:</strong> Access via <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Market Street App</a>. Crucial for planning daily production.</li>
-            <li><strong>Cafe Routines:</strong> Refer to the <a href="#cafe-ops">Cafe Operations</a> section for Daily Checklist link & key tasks.</li>
-            <li><strong>Markdown Timings:</strong> Key times for Market Street markdowns listed <a href="#markdown-waste">here</a>.</li>
-            <li><strong>Food Safety:</strong> Adhere strictly to <a href="safe-and-legal.html">Safe & Legal</a> guidelines (HACCP, Temps, Cleaning).</li>
-            <li><strong>Equipment Issues:</strong> Log via CityFM or call Tech Helpdesk <strong>0345 611 6500</strong> (check <a href="operations.html#tech-support">Ops page</a> for specifics).</li>
+            <li><strong>Production Plans:</strong> <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Access Here</a></li>
+            <li><strong>Cafe Checklist:</strong> <a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">Daily Checklist</a></li>
+            <li><strong>Markdown Time:</strong> 5pm Standard (Check individual counter guides for exceptions)</li>
+            <li><strong>Bizerba/Scale Checks:</strong> Ensure scales online & GLP labels align correctly (See <a href="safe-and-legal.html">Safe & Legal</a>)</li>
+            <li><strong>Allergens/Natasha's Law:</strong> Correct labelling is critical (See <a href="safe-and-legal.html">Safe & Legal</a>)</li>
+            <li><strong>Food Safety Focus:</strong> Temperature Control & Cleaning Schedules (See <a href="safe-and-legal.html">Safe & Legal</a> / Counter Guides)</li>
         </ul>
     </section>
 
-    <section id="production-planning">
-        <h2><i class="fas fa-clipboard-list"></i> Production Planning</h2>
-        <p>Accurate production planning is key to maximising availability and minimising waste across Market Street. Use the <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Market Street Production Planning App</a> to guide quantities based on forecasts and historical sales.</p>
-        <p>Remember to factor in weather, local events, and promotions when adjusting plans. Production plans should be printed and available in each relevant department.</p>
-        <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer" class="button-link">Open Production App <i class="fas fa-external-link-alt fa-xs"></i></a>
+    <section id="general-market-street">
+      <h2><i class="fas fa-store"></i> General Market Street Operations</h2>
+      <p>Market Street showcases our foodmaking skills. Key focuses include fresh quality, excellent service, full availability (especially at peak times), and maintaining high standards of hygiene and presentation across all counters.</p>
+      <ul>
+          <li>Use <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Production Plans</a> daily to guide preparation volumes.</li>
+          <li>Follow Planograms for correct merchandising and layout.</li>
+          <li>Engage with customers, offer advice and tastings where appropriate.</li>
+          <li>Adhere strictly to Date Coding, Shelf Life, and Markdown procedures (See <a href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
+          <li>Maintain 'Clean As You Go' standards and follow specific cleaning schedules (See <a href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
+           <li>Ensure correct POS is displayed and legally compliant (allergens, weights, price).</li>
+      </ul>
+      <p>Detailed procedures for each counter are below:</p>
     </section>
 
-    <section id="cafe-ops">
-        <h2><i class="fas fa-coffee"></i> Cafe Operations</h2>
-        <p>The Cafe offers a vital customer experience. Focus on quality, timely service, and a clean environment.</p>
-        <a href="https://docs.google.com/presentation/d/1lM-a6B96d-RzE8J7eE8c3a1C2f4B6d8E/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Cafe Operating Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
-
-        <button class="accordion"><i class="fas fa-tasks"></i> Key Cafe Routines & Checklist</button>
-        <div class="panel"><div>
-            <p>Refer to the Cafe Operating Guide for detailed routines (Full for 8, Trade The Day, Fit for Five, Closedown).</p>
-            <ul>
-                <li><strong>Daily Checklist:</strong> Ensure completion (Link/details in guide pg 19-22 if applicable).</li>
-                <li><strong>Service:</strong> Manage queues, ensure prompt table service/clearing, handle customer requests.</li>
-                <li><strong>Food Safety:</strong> Follow HACCP, temperature checks, cleaning schedules strictly.</li>
-                <li><strong>Just Eat/Deliveroo:</strong> Handle orders promptly via tablets (Guide pg 17).</li>
-            </ul>
-        </div></div>
-    </section>
-
-    <section id="market-street-ops">
-        <h2><i class="fas fa-store"></i> Market Street Operations</h2>
-        <p>Market Street showcases our food-making skills. Maintain high standards of service, quality, availability, and hygiene across all counters.</p>
+    <section id="counter-guides">
+        <h2><i class="fas fa-concierge-bell"></i> Market Street Counter Guides</h2>
 
         <button class="accordion" id="bakery-accordion"><i class="fas fa-bread-slice"></i> Bakery</button>
         <div class="panel"><div>
-            <p>Focus on range availability according to trading times, freshness, and correct labelling.</p>
+            <p><a href="PATH_TO_BAKERY_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Bakery Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+            <h4>Key Points & Routines:</h4>
             <ul>
-                <li>Follow Production Plans for bake-off schedules.</li>
-                <li>Adhere to Doughnut production/shelf life rules.</li>
-                <li>Ensure correct GLP labelling (Natasha's Law).</li>
-                <!-- Add 1-2 more key points from Bakery Guide -->
+                <li><strong>Full for 9:</strong> Focus on core range availability (Best Breads, Baguettes, P&M), document carry-over, complete logbooks, POS checks.</li>
+                <li><strong>Trade The Day:</strong> Follow production plans, mixing schedules, proving/baking timings. Ensure correct labelling (Natasha's Law), weights, shelf life. Maintain availability, especially on promo lines.</li>
+                <li><strong>Fit For Five:</strong> Complete 100% code checks, perform markdowns correctly (5pm standard, exceptions apply).</li>
+                <li><strong>Closedown:</strong> Clean down, waste management, prep for next day (retarding, frozen prep).</li>
+                <li><strong>WGLL:</strong> Maintain clean, well-stocked fixtures according to planogram. Ensure correct packaging and labelling.</li>
             </ul>
-            <a href="https://docs.google.com/presentation/d/1u4g7T6K3Y9wX8sV1L0P2Q5rR6t9u0vW/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Bakery Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
         </div></div>
 
         <button class="accordion" id="butchery-accordion"><i class="fas fa-drumstick-bite"></i> Butchery</button>
         <div class="panel"><div>
-            <p>Focus on skilled cutting, product presentation, yield management, and food safety.</p>
-            <ul>
-                <li>Adhere to core range and value-added plans.</li>
-                <li>Follow specific cutting/trimming specs.</li>
-                <li>Use correct wrapping/labelling (Beef Labelling, GLP).</li>
-                <li>Maintain strict hygiene and temperature control.</li>
-                <!-- Add 1-2 more key points from Butchery Guide -->
-            </ul>
-            <a href="https://docs.google.com/presentation/d/1SjB8eF2gH5iM0kL7nO4pX9qW1rT3u6v/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Butchery Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
+             <p><a href="PATH_TO_BUTCHERY_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Butchery Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+             <h4>Key Points & Routines:</h4>
+             <ul>
+                 <li><strong>Full for 9:</strong> Work primal delivery, set up counter (core range, value-added), complete logbooks, POS checks, ensure correct shelf life/dating.</li>
+                 <li><strong>Trade The Day:</strong> Maintain availability (esp. peak times), manage production/replenishment, follow specs, check quality/dates, complete transfers.</li>
+                 <li><strong>Fit For Five:</strong> Complete 100% code checks, markdowns, ingredient/packaging ordering.</li>
+                 <li><strong>Closedown:</strong> Clean down counter, equipment (mincer, etc.), manage waste, prepare for next day.</li>
+                 <li><strong>WGLL:</strong> Clean, organised counter & back-up chillers. Correct labelling (Beef Traceability, GLP), POS, and merchandising standards. Safe knife handling.</li>
+             </ul>
         </div></div>
 
-        <button class="accordion" id="cake-shop-accordion"><i class="fas fa-birthday-cake"></i> Cake Shop</button>
+        <button class="accordion" id="cakeshop-accordion"><i class="fas fa-birthday-cake"></i> Cake Shop</button>
         <div class="panel"><div>
-            <p>Focus on decoration standards, availability, date coding, and allergen management.</p>
+             <p><a href="PATH_TO_CAKESHOP_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Cake Shop Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+             <h4>Key Points & Routines:</h4>
              <ul>
-                <li>Follow Production Plans and specifications.</li>
-                <li>Ensure correct defrosting and shelf-life labelling (incl. Cake Counter Shelf Life Sheet).</li>
-                <li>Maintain high standards of piping and finishing.</li>
-                <li>Adhere to Natasha's Law for labelling.</li>
-                 <!-- Add 1-2 more key points from Cake Shop Guide -->
-            </ul>
-            <a href="https://docs.google.com/presentation/d/1XyZ5eF8aJ7cI9oB6kM3nO9lP8sW1rT0v/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Cake Shop Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
+                 <li><strong>Full for 9:</strong> Check production plans, set up counter (full availability target), complete logbooks, temperature checks, POS correct.</li>
+                 <li><strong>Trade The Day:</strong> Follow production plans (Brownies, Fresh Cream Cakes), piping guidance, manage ingredients/allergens (Natasha's Law), defrost routines, maintain display.</li>
+                 <li><strong>Fit For Five:</strong> Complete 100% code checks and markdowns (5pm).</li>
+                 <li><strong>Closedown:</strong> Clean down, waste management, complete stock counts (Sunday), planograms.</li>
+                 <li><strong>WGLL:</strong> Full, correctly presented counter. Accurate labelling and POS. Correct packaging used. High cleaning standards.</li>
+             </ul>
         </div></div>
 
         <button class="accordion" id="deli-accordion"><i class="fas fa-cheese"></i> Deli</button>
         <div class="panel"><div>
-            <p>Focus on counter presentation, product quality (cheese, cooked meats, olives), slicing standards, and hygiene.</p>
+             <p><a href="PATH_TO_DELI_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Deli Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+            <h4>Key Points & Routines:</h4>
              <ul>
-                 <li>Set up counter according to planogram and merchandising standards.</li>
-                 <li>Follow shelf life rules for cut cheese/meats.</li>
-                 <li>Maintain slicer safety and cleaning procedures.</li>
-                 <li>Ensure correct labelling and allergen information is available.</li>
-                 <!-- Add 1-2 more key points from Deli Guide -->
-            </ul>
-            <a href="https://docs.google.com/presentation/d/1aZ2b4C6d8E9f0G2h5iJ7kL3mN0oP1qS/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Deli Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
+                 <li><strong>Full For 9:</strong> Set up counter (Cheese, Olives, Meats, Pies, Snacks), complete logbooks, check temps, POS.</li>
+                 <li><strong>Trade The Day:</strong> Maintain availability, manage shelf life/dating, replenish counter/express, cutting/packaging cheese, slicing meats, use slicer safely.</li>
+                 <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm). Order ingredients/packaging.</li>
+                 <li><strong>Closedown:</strong> Clean down counter/slicer, manage waste, wrap/store products correctly, stock counts (Sunday).</li>
+                 <li><strong>WGLL:</strong> Full, attractive counter following planogram. Correct POS, tickets, dating. High standards of hygiene & food safety.</li>
+             </ul>
         </div></div>
 
-         <button class="accordion" id="fish-accordion"><i class="fas fa-fish"></i> Fish</button>
+        <button class="accordion" id="fish-accordion"><i class="fas fa-fish"></i> Fish</button>
         <div class="panel"><div>
-            <p>Focus on freshness, quality checks, correct icing/display, filleting skills, and hygiene.</p>
-            <ul>
-                <li>Follow Blue Box merchandising standards.</li>
-                <li>Adhere to shelf life rules (oily vs white fish).</li>
-                <li>Maintain Health Mark procedures for shellfish.</li>
-                <li>Ensure correct handling to prevent histamine issues in oily fish.</li>
-                 <!-- Add 1-2 more key points from Fish Guide -->
-            </ul>
-             <a href="https://docs.google.com/presentation/d/1oP1qS8t0vW2xZ5eF8aJ7cI9oB6kM3nO/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Fish Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
-        </div></div>
-
-        <button class="accordion" id="ftg-pizza-accordion"><i class="fas fa-pizza-slice"></i> Fresh To Go / Pizza</button>
-        <div class="panel"><div>
-            <p>Focus on Salad Bar / Hot Pizza availability, ingredient freshness, food safety, and efficient production.</p>
-            <ul>
-                <li>Set up Salad Bar / Pizza counter to planogram.</li>
-                <li>Follow Pizza production specs and cooking guides.</li>
-                <li>Maintain Salad Bar hygiene and temperature control.</li>
-                <li>Adhere to Natasha's Law for labelling pre-packed items.</li>
-                 <!-- Add 1-2 more key points from FTG Guide -->
-            </ul>
-             <a href="https://docs.google.com/presentation/d/1RzE8J7eE8c3a1C2f4B6d8E9f0G2h5iJ/edit#slide=id.p1" target="_blank" rel="noopener noreferrer" class="button-link">View Full Fresh To Go Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
-        </div></div>
-
-    </section>
-
-     <section id="cross-cutting">
-        <h2><i class="fas fa-sync-alt"></i> Cross-Cutting Procedures</h2>
-
-        <button class="accordion" id="food-safety-haccp"><i class="fas fa-shield-alt"></i> Food Safety & HACCP</button>
-        <div class="panel"><div>
-            <p>Strict adherence to food safety is mandatory across all Market Street and Cafe areas.</p>
-            <ul>
-                <li>Follow correct hand washing procedures.</li>
-                <li>Maintain 'Clean As You Go' discipline.</li>
-                <li>Adhere to temperature control for storage, prep, display, and cooking.</li>
-                <li>Prevent cross-contamination (separate boards, utensils, cleaning).</li>
-                <li>Complete Legal Logbooks accurately and on time.</li>
-            </ul>
-            <p>Refer to specific sections in each department's guide and the <a href="safe-and-legal.html">Safe & Legal Page</a> for full details.</p>
-        </div></div>
-
-        <button class="accordion"><i class="fas fa-tags"></i> Labelling (Natasha's Law & Bizerba)</button>
-        <div class="panel"><div>
-            <p>Accurate labelling is a legal requirement.</p>
-            <ul>
-                <li>Ensure all Pre-Packed for Direct Sale (PPDS) items have full ingredients and allergens clearly listed (Natasha's Law).</li>
-                <li>Use correct PLUs on Bizerba scales/GLP printers. Refer to Street Lists.</li>
-                <li>Maintain Bizerba scales/GLP printers: Ensure they are online, clean, and labels aligned correctly.</li>
-                <li>Report labelling issues via Technology Helpdesk.</li>
-            </ul>
-             <p>Refer to specific sections in each department's guide and the <a href="safe-and-legal.html">Safe & Legal Page</a> for full details.</p>
-        </div></div>
-
-        <button class="accordion" id="markdown-waste"><i class="fas fa-dollar-sign"></i> Markdown Timings & Waste</button>
-        <div class="panel"><div>
-             <p>Specific markdown times apply to Market Street products:</p>
+            <p><a href="PATH_TO_FISH_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Fish Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+            <h4>Key Points & Routines:</h4>
              <ul>
-                 <li><strong>General Markdown Window:</strong> Mon - Sat 5pm, Sun 3pm (4pm Scotland) - Unless exceptions apply.</li>
-                 <li><strong>Bakery Exceptions:</strong> Baguettes/Sticks (Waste EOD), Doughnuts (Waste EOD / TGTG), Rolls (Reduced bag up 7:30pm, sell next day), Crusty Rolls (Waste EOD).</li>
-                 <li><strong>Deli Exceptions:</strong> Cooked Meats (50% markdown EOD counter life, move to clearance).</li>
-                 <li><strong>Hot Food Exceptions:</strong> Oven Fresh/Pies (50% markdown 1hr before close).</li>
-                 <li><strong>Salad Bar Exceptions:</strong> Pot up remaining at 6pm.</li>
-                 <li><strong>Cafe Pre-Packed:</strong> Sandwiches (50% markdown 5pm EOD).</li>
-                 <li><strong>Loose Produce:</strong> Follow selected 2nd markdown process. Berries only one markdown 5pm EOD.</li>
-                 <li><strong>Plants:</strong> Markdown based on condition/shelf life.</li>
-            </ul>
-            <p>Process all waste accurately using HHTs. Participate in daily Waste Parade.</p>
-            <p><small>Ref: Street.html original content / Fresh Food Ops Summary.</small></p>
+                  <li><strong>Full For 9:</strong> Set up counter (core range, blue boxes, ice), complete logbooks, check health marks, POS.</li>
+                  <li><strong>Trade The Day:</strong> Maintain availability, replenish counter/ice, prepare fish (filleting etc.), use wrapping machine/hot bag sealer correctly, manage shelf life/dating.</li>
+                  <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm wet fish).</li>
+                  <li><strong>Closedown:</strong> Clean down counter/equipment, manage waste, store fish correctly, stock counts (Sunday).</li>
+                  <li><strong>WGLL:</strong> Fresh, well-iced display. Correct POS & labelling. High hygiene standards.</li>
+             </ul>
         </div></div>
+
+         <button class="accordion" id="ftg-accordion"><i class="fas fa-pizza-slice"></i> Fresh To Go (Pizza & Food To Go)</button>
+        <div class="panel"><div>
+             <p><a href="PATH_TO_FTG_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Fresh To Go Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+             <h4>Key Points & Routines:</h4>
+              <ul>
+                  <li><strong>Full For 8:</strong> Set up Salad Bar, Pizza counter, FTG fixtures. Check production plans. Complete logbooks/checks.</li>
+                  <li><strong>Trade The Day:</strong> Maintain availability across Salad Bar, Pizza (inc Hot Pizza), Sandwiches, etc. Follow recipes/specs. Manage production timings/volumes. Handle ingredients safely (allergens, shelf life, Natasha's Law). Use equipment correctly (Sealer, Pizza Press/Oven).</li>
+                  <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
+                  <li><strong>Closedown:</strong> Clean down all areas/equipment (Pizza Capper etc.), manage waste, stock counts (Sunday).</li>
+                  <li><strong>WGLL:</strong> Full, fresh, correctly merchandised displays. Accurate POS, labelling (Natasha's Law), and dating. High hygiene standards.</li>
+              </ul>
+        </div></div>
+
     </section>
 
-    <!-- Embedded Reports -->
-    <section id="reports">
-        <h2><i class="fas fa-chart-bar"></i> Reports & Information</h2>
-        <div class="dashboard-card">
-          <h3><i class="fas fa-utensils"></i> Food to Order (Collection Info)</h3>
-          <iframe id="foodIframe" title="Food to Order Spreadsheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&single=true&widget=true&headers=false" loading="lazy"></iframe>
-          <button type="button" onclick="printIframe('foodIframe')">Print Food Order</button>
-          <p style="margin-top: 1em;">Note: Food to Order is now primarily processed via online Click & Collect. This sheet shows historical collection details.</p>
-        </div>
+     <section id="cafe-operations">
+        <h2><i class="fas fa-coffee"></i> Cafe Operations</h2>
+         <button class="accordion" id="cafe-accordion"><i class="fas fa-mug-hot"></i> Cafe</button>
+         <div class="panel"><div>
+             <p><a href="PATH_TO_CAFE_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Cafe Operating Guide (PDF)</a></p> <!-- UPDATE LINK -->
+             <p><a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Cafe Daily Checklist</a></p>
+             <h4>Key Points & Routines:</h4>
+             <ul>
+                 <li><strong>Full For 8 (Setup):</strong> Set up Kiosk, Till, Hot Beverage, Counter Displays (Ambient/Chilled). Complete logbooks/checks (Temperatures, Cleaning). Ensure availability & correct POS.</li>
+                 <li><strong>Trade The Day:</strong> Follow Customer Journey (Till/Table Service). Manage orders (inc. Just Eat/Deliveroo). Adhere to specs, timings, temps. Handle allergens/customer requests correctly. Maintain cleanliness (tables, condiment station, wash up). Stock management/transfers.</li>
+                  <li><strong>Fit For Five:</strong> Complete markdowns (5pm). BOC Gas/Coke checks.</li>
+                  <li><strong>Closedown:</strong> Cleaning tasks (incl Coffee Machine). Stock counts (Sunday). Secure area.</li>
+                 <li><strong>WGLL:</strong> Clean, welcoming environment. Full availability to spec. Efficient & friendly service. Safe & Legal compliance.</li>
+             </ul>
+         </div></div>
+     </section>
 
-        <div class="dashboard-card">
-          <h3><i class="fas fa-chart-line"></i> Food to Order (Alternative View)</h3>
-          <iframe id="lookerIframe" title="Looker Studio Report"
-                  src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld"
-                  frameborder="0" allowfullscreen
-                  sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" loading="lazy"></iframe>
-          <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
-        </div>
-    </section>
+     <!-- Retain existing embeds -->
+     <section id="fto-reporting">
+        <h2><i class="fas fa-chart-bar"></i> Food to Order & Reporting</h2>
+         <div class="dashboard-card">
+           <h3><i class="fas fa-utensils"></i> Food to Order (Collection Info)</h3>
+           <iframe id="foodIframe" title="Food to Order Spreadsheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&single=true&widget=true&headers=false" loading="lazy"></iframe>
+           <button type="button" onclick="printIframe('foodIframe')">Print Food Order</button>
+           <p style="margin-top: 1em;">Provides details for Market Street production based on online Food to Order collections.</p>
+            <a href="https://groceries.morrisons.com/webshop/foodToOrderHomepage.do" target="_blank" rel="noopener noreferrer" class="button-link">Food To Order Website <i class="fas fa-external-link-alt fa-xs"></i></a>
+         </div>
+
+         <div class="dashboard-card">
+           <h3><i class="fas fa-chart-pie"></i> Looker Studio Report (Example)</h3>
+           <iframe id="lookerIframe" title="Looker Studio Report"
+                   src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld"
+                   frameborder="0" allowfullscreen
+                   sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" loading="lazy"></iframe>
+           <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
+            <p style="margin-top: 1em;">Example report showing key performance indicators (Review if still relevant).</p>
+         </div>
+     </section>
+
+     <section id="cross-functional">
+        <h2><i class="fas fa-link"></i> Related Procedures</h2>
+         <p>For detailed information on the following topics, please refer to the relevant pages:</p>
+         <ul>
+             <li>Markdown and Waste processes: See <a href="shrink.html">Shrink Management</a>.</li>
+             <li>Detailed Food Safety, HACCP, Allergens, Natasha's Law, Equipment Cleaning: See <a href="safe-and-legal.html">Safe & Legal</a>.</li>
+              <li>Bizerba Scale / GLP Printer Operation & Maintenance: See <a href="safe-and-legal.html">Safe & Legal</a>.</li>
+              <li>Stock Counts (General Principles): See <a href="shrink.html">Shrink Management</a>.</li>
+         </ul>
+     </section>
 
   </main>
 
@@ -419,7 +393,7 @@
           document.body.classList.toggle('dark-mode',isDark);
           themeBtn.setAttribute('aria-pressed',isDark);
           localStorage.setItem('theme',isDark?'dark':'light');
-          // Update meta theme-color
+          // Update meta theme-color for dynamic changes on this page
           document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#8B008B' : '#D13887');
       };
       themeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('dark-mode')));
@@ -435,55 +409,49 @@
               const isActive = this.classList.toggle("active");
               this.setAttribute('aria-expanded', isActive ? 'true' : 'false');
               const panel = this.nextElementSibling;
-               if (panel) {
+              if (panel) {
                   panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-                  if (panel.style.maxHeight) {
-                      panel.style.padding = "0 18px";
-                      panel.style.maxHeight = null;
-                  } else {
-                      panel.style.maxHeight = panel.scrollHeight + "px";
-                      panel.style.padding = "0 18px";
-                      setTimeout(() => { if (panel.style.maxHeight){ const innerDiv = panel.querySelector('div'); if(innerDiv) innerDiv.style.padding = "15px 0"; } }, 300);
-                  }
-               }
-          });
-          accordions[i].addEventListener('keydown', function(event) {
-              if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault(); this.click();
+                   if (panel.style.maxHeight) {
+                     panel.style.padding = "0 18px"; // Collapse padding first
+                     panel.style.maxHeight = null;
+                   } else {
+                     panel.style.maxHeight = panel.scrollHeight + "px";
+                     panel.style.padding = "0 18px"; // Apply padding as it opens
+                     // Add inner padding after transition
+                     setTimeout(() => {
+                          if (panel.style.maxHeight){ // Check if still open
+                               const innerDiv = panel.querySelector('div');
+                               if(innerDiv) innerDiv.style.padding = "15px 0";
+                          }
+                     }, 300); // Match transition time
+                   }
               }
           });
-           // Auto-open accordion if URL hash matches its ID
-           if(window.location.hash === '#' + accordions[i].id && accordions[i].id) {
-             accordions[i].click();
-           }
+           // Allow activating accordion with Enter/Space key
+          accordions[i].addEventListener('keydown', function(event) {
+              if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  this.click();
+              }
+          });
       }
 
       /* Initial theme and dark mode load */
       document.addEventListener('DOMContentLoaded', () => {
            const savedTheme = localStorage.getItem('theme');
             const prefersDark = matchMedia('(prefers-color-scheme:dark)').matches;
-           setMode(savedTheme ? savedTheme === 'dark' : prefersDark);
+           setMode(savedTheme ? savedTheme === 'dark' : prefersDark); // Apply saved or preferred dark mode
 
+           // Apply Pink Theme Class
            document.body.classList.add('pink-theme');
-           void document.body.offsetHeight;
-
-           // Re-check hash linking after DOM is ready
-            if(window.location.hash) {
-                const targetAccordion = document.querySelector(window.location.hash);
-                if(targetAccordion && targetAccordion.classList.contains('accordion') && !targetAccordion.classList.contains('active')) {
-                    targetAccordion.click();
-                     // Optional: Scroll to the opened accordion
-                     // setTimeout(() => { targetAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 350);
-                }
-            }
+           void document.body.offsetHeight; // Force reflow if needed
        });
 
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-           if (!localStorage.getItem('theme')) { setMode(event.matches); }
+          if (!localStorage.getItem('theme')) { setMode(event.matches); }
       });
 
-
-      // Expose print function globally
+      // Expose print function globally ONLY if using inline onclick
       window.printIframe = function(iframeId) {
             const iframe = document.getElementById(iframeId);
             if (!iframe) { console.error("Iframe not found:", iframeId); return; }
@@ -496,8 +464,8 @@
                  if (iframeSrc && iframeSrc !== 'about:blank') {
                     const printWindow = window.open(iframeSrc, '_blank');
                      if(printWindow) {
-                        printWindow.onload = function () { setTimeout(() => { printWindow.print(); }, 500); };
-                    } else { alert("Could not open print window. Please check popup blocker settings."); }
+                        printWindow.onload = () => { setTimeout(() => { printWindow.print(); }, 500); };
+                    } else { alert("Could not open print window. Check popup blocker."); }
                 } else { alert("Cannot print this content directly."); }
             }
         }
