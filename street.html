@@ -4,24 +4,24 @@
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <!-- Theme color set to pink -->
-  <meta name="theme-color" content="#D13887" />
-  <title>Market Street & Cafe - Cleveleys Morrisons Dashboard</title> <!-- Updated Title -->
+  <!-- Theme color set to purple -->
+  <meta name="theme-color" content="#6A0DAD" />
+  <title>Front End Services - Cleveleys Morrisons Dashboard</title>
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Market Street & Cafe operations dashboard for Cleveleys Morrisons." />
+  <meta name="description" content="Front End Services dashboard for Cleveleys Morrisons, including CSD, Kiosk, Checkouts, More Card, Trolleys, and related procedures." /> <!-- Updated Description -->
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Styles – mobile-first (Adapted for Pink theme) -->
+  <!-- Styles – mobile-first (Adapted for Purple theme) -->
   <style>
   /* ---------- Variables (Base) ---------- */
   :root{
-    /* Default Green Theme (will be overridden by .pink-theme) */
+    /* Default Green Theme (will be overridden by .purple-theme) */
     --primary-color: #006400;
     --primary-color-dark: #004d00;
     --secondary-color: #FFD700;
@@ -38,45 +38,45 @@
     --footer-dark: #333;
   }
 
-  /* ---------- Pink Theme Override ---------- */
-   body.pink-theme {
-       --primary-color: #D13887; /* Deeper Pink */
-       --primary-color-dark: #a12a6a; /* Darker Pink */
-       --secondary-color: #FFB6C1; /* Light Pink */
-       --bg-faint: #FFF0F5; /* Lavender Blush */
-       --bg-card: #FFFFFF; /* White card */
-       --text-color: #701c4b; /* Dark Pink/Magenta */
-       --footer-bg: var(--primary-color);
-       --footer-text: #fff; /* White text on pink footer */
+  /* ---------- Purple Theme Override ---------- */
+   body.purple-theme {
+      --primary-color: #6A0DAD; /* Purple */
+      --primary-color-dark: #4d0080; /* Darker Purple */
+      --secondary-color: #9370DB; /* Medium Purple (used for nav bg, borders) */
+      --bg-faint: #f0e6ff; /* Faint Purple */
+      --bg-card: #F8F0FF; /* Lighter Purple Card */
+      --text-color: #2E0854; /* Dark Purple Text */
+      --footer-bg: var(--primary-color);
+      --footer-text: #fff; /* White text on purple footer */
 
-       /* Dark Mode Overrides for Pink Theme */
-        &.dark-mode {
-            --primary-color: #FF69B4; /* Hot Pink */
-            --primary-color-dark: #D13887; /* Deeper Pink */
-            --secondary-color: #DB7093; /* Pale Violet Red */
-            --bg-faint: var(--bg-dark);
-            --card-dark: #4a1933; /* Dark pink-tinted */
-            --text-dark: #ffebf5; /* Light pink text */
-            --footer-dark: #8B008B; /* Magenta footer */
-            --footer-text: #ffebf5; /* Light pink footer text */
-            /* Override specific dark variables */
-            --bg-card: var(--card-dark);
-            --text-color: var(--text-dark);
-            --footer-bg: var(--footer-dark);
-        }
+      /* Dark Mode Overrides for Purple Theme */
+       &.dark-mode {
+           --primary-color: #9370DB; /* Medium Purple */
+           --primary-color-dark: #800080; /* Purple */
+           --secondary-color: #B19CD9; /* Light Purple */
+           --bg-faint: var(--bg-dark); /* Use dark background */
+           --card-dark: #2e0e4d; /* Dark purple-tinted card */
+           --text-dark: #f0e0ff; /* Light purple text */
+           --footer-dark: #4d0080; /* Darker Purple footer */
+           --footer-text: #f0e0ff; /* Light purple footer text */
+           /* Override specific dark variables */
+           --bg-card: var(--card-dark);
+           --text-color: var(--text-dark);
+           --footer-bg: var(--footer-dark);
+       }
    }
+
 
   /* ---------- Reset / base ---------- */
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;font-size:100%}
   body{font-family:Roboto,system-ui,sans-serif;background:var(--bg-faint);color:var(--text-color);line-height:1.55;min-block-size:100dvh;transition:background .3s,color .3s}
   body.dark-mode{background:var(--bg-dark);color:var(--text-dark)}
-  a{color:var(--primary-color);text-decoration:underline;}
+  a{color:var(--primary-color);text-decoration:underline;} /* Use themed primary color for links */
   a:hover{text-decoration:none;}
-  body.dark-mode a{color:var(--secondary-color);}
+  body.dark-mode a{color:var(--secondary-color);} /* Use themed secondary for dark links */
   img{max-inline-size:100%;block-size:auto}
-   strong { font-weight: 700; } /* Ensure strong tag works */
-  /* Focus visible */
+  /* Ensure focus states are visible */
   a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .accordion:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
   body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .accordion:focus-visible { outline-color: var(--secondary-color); }
 
@@ -125,57 +125,27 @@
   section{background:var(--bg-card);padding:1.25rem 1rem;border-radius:12px;box-shadow:var(--shadow);margin-block-end:1.5rem}
   body.dark-mode section{background:var(--card-dark)}
   section h2{font-size:clamp(1.1rem,2.2vw+.7rem,1.6rem);margin-block-end:.75rem;color:var(--primary-color);border-block-end:2px solid var(--secondary-color);display:inline-block;padding-block-end:.25rem}
-  body.dark-mode section h2{color:var(--primary-color);border-color:var(--secondary-color)}
+  body.dark-mode section h2{color:var(--primary-color);border-color:var(--secondary-color)} /* Adjust dark h2 colors for theme */
    section h3 {
         font-size: clamp(1rem, 1.8vw + .6rem, 1.4rem);
         color: var(--primary-color);
         margin-top: 1.25rem;
         margin-bottom: 0.75rem;
    }
-   body.dark-mode section h3 { color: var(--primary-color); }
+   body.dark-mode section h3 { color: var(--primary-color); } /* Adjust dark h3 */
    section p { margin-bottom: 1em; }
    section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; padding-left: 0; }
-   section ol { list-style: decimal; margin-left: 25px; margin-bottom: 1em; padding-left: 0; }
    section li { margin-bottom: 0.5em; }
    section strong { font-weight: 700; color: var(--primary-color); }
-   body.dark-mode section strong { color: var(--primary-color); }
+   body.dark-mode section strong { color: var(--primary-color); } /* Adjust dark strong */
 
 
-   /* Quick Guide List */
-   .quick-guide-list { list-style: none; padding-left: 0; }
-   .quick-guide-list li { margin-bottom: 0.8em; padding-left: 1.75rem; position: relative; }
-   .quick-guide-list li::before { content: "\f058"; /* Font Awesome check-circle */ font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 0.1em; color: var(--primary-color); font-size: 1.1em; }
-   body.dark-mode .quick-guide-list li::before { color: var(--primary-color); }
-
-
-   /* Dashboard Card (for iframe sections) */
-    .dashboard-card { background-color: var(--bg-card); border-radius: 10px; box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px; transition: transform 0.3s, box-shadow 0.3s; }
-    body.dark-mode .dashboard-card { background-color: var(--card-dark); }
-    .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px var(--shadow); }
-    .dashboard-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--primary-color); font-size: 1.4em; display: flex; align-items: center; gap: 10px; }
-    body.dark-mode .dashboard-card h3 { color: var(--primary-color); }
-    .dashboard-card iframe { width: 100%; border: none; border-radius: 5px; margin-bottom: 15px; background-color: #fff; /* Keep iframe background light */ }
-    #foodIframe { height: 500px; }
-    #lookerIframe { width: 100%; height: 550px; }
-
-    .dashboard-card button, .dashboard-card a.button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; text-decoration: none; margin-right: 5px; } /* Added margin-right */
-    body.dark-mode .dashboard-card button, body.dark-mode .dashboard-card a.button-link { color: var(--footer-text); }
-    .dashboard-card button:hover, .dashboard-card a.button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
-    body.dark-mode .dashboard-card button:hover, body.dark-mode .dashboard-card a.button-link:hover { color: var(--primary-color); }
-
-
-  /* Accordion Styles */
-  .accordion { background-color: var(--bg-faint); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: 1px solid var(--primary-color); text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
-  body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); border-color: var(--secondary-color);}
-  .accordion:hover, .accordion.active { background-color: var(--primary-color); color: var(--footer-text); }
-  body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-color); color: var(--primary-color); }
-  .accordion::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
-  .accordion.active::after { transform: rotate(-180deg); }
-  .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-color); border-top: none; margin-bottom: 10px; margin-top: -10px; border-color: var(--bg-faint); }
-  body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
-  .panel div { padding: 15px 0; }
-  .panel img { margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; max-width: 100%; height: auto; } /* Make images responsive */
-  .panel p, .panel ul, .panel ol { margin-bottom: 1em; } /* Ensure spacing within panels */
+    /* Button Link Style */
+    .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; margin-right: 5px; text-decoration: none;}
+    .button-link i { margin-left: 5px; }
+    body.dark-mode .button-link { color: var(--footer-text); }
+    .button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
+    body.dark-mode .button-link:hover { color: var(--primary-color); }
 
 
   /* ---------- Footer ---------- */
@@ -187,10 +157,22 @@
   .theme-toggle{background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--primary-color);padding:.25rem; margin-left: auto;}
   body.dark-mode .theme-toggle{color:var(--text-dark)}
 
+  /* ---------- Accordion Styles ---------- */
+    .accordion { background-color: var(--bg-faint); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: 1px solid var(--primary-color); text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+    body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); border-color: var(--secondary-color);}
+    .accordion:hover, .accordion.active { background-color: var(--primary-color); color: var(--footer-text); } /* Use footer text for contrast */
+    body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-color); color: var(--primary-color); } /* Use primary color for contrast */
+    .accordion::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
+    .accordion.active::after { transform: rotate(-180deg); }
+    .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-color); border-top: none; margin-bottom: 10px; margin-top: -10px; border-color: var(--bg-faint); }
+    body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
+    .panel div { padding: 15px 0; }
+    .panel p, .panel ul, .panel ol { margin-bottom: 1em; } /* Ensure spacing within panels */
+
   </style>
 </head>
 
-<body class="pink-theme"> <!-- Apply theme class -->
+<body class="purple-theme"> <!-- Apply theme class -->
 
   <!----- header & theme toggle ----->
   <header>
@@ -203,14 +185,14 @@
   <nav>
     <div class="nav-wrap">
       <ul class="nav-links">
-          <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
-          <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
-          <li><a href="street.html" class="active"><i class="fas fa-store"></i><span>Market</span></a></li>
-          <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
-          <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
-          <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
-          <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
-          <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
+         <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
+         <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
+         <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
+         <li><a href="services.html" class="active"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
+         <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
+         <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
+         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
+         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
       </ul>
     </div>
   </nav>
@@ -218,179 +200,209 @@
   <!----- main content ----->
   <main class="container">
 
-    <section id="quick-guide">
-        <h2><i class="fas fa-bolt"></i> Market Street & Cafe Quick Guide</h2>
-        <ul class="quick-guide-list">
-            <li><strong>Production Plans:</strong> <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Access Here</a></li>
-            <li><strong>Cafe Checklist:</strong> <a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">Daily Checklist (Link in Cafe Guide)</a></li>
-            <li><strong>Markdown Time:</strong> Generally 5pm (Check counter guides for exceptions).</li>
-            <li><strong>Bizerba/Scale Checks:</strong> Ensure online & labels align (See <a href="safe-and-legal.html">Safe & Legal</a>).</li>
-            <li><strong>Allergens/Natasha's Law:</strong> Critical for correct labelling (See <a href="safe-and-legal.html">Safe & Legal</a>).</li>
-            <li><strong>Food Safety Focus:</strong> Temp Control, Cleaning, Handwashing (See <a href="safe-and-legal.html">Safe & Legal</a> / Counter Guides).</li>
-        </ul>
+    <section id="front-end-overview">
+        <h2><i class="fas fa-door-open"></i> Front End Services Overview</h2>
+        <p>The Front End (Checkouts, CSD, Kiosk, SCO, Car Park) is crucial for efficient, friendly service. Key principles include Customer First behaviours, queue management (1+1 rule), clean service areas, and operational equipment.</p>
+        <p><a href="https://docs.google.com/presentation/d/1dwcdIAg1Z2nNiXayH0sPFy_DSAQ93uI_GKu2_pKm5mc/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Front End Operating Guide <i class="fas fa-external-link-alt fa-xs"></i></a></p>
     </section>
 
-    <section id="general-market-street">
-      <h2><i class="fas fa-store"></i> General Market Street Operations</h2>
-      <p>Market Street showcases our foodmaking skills. Key focuses include fresh quality, excellent service, full availability (especially at peak times), and maintaining high standards of hygiene and presentation across all counters.</p>
-      <ul>
-          <li>Use <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Production Plans</a> daily to guide preparation volumes.</li>
-          <li>Follow Planograms for correct merchandising and layout.</li>
-          <li>Engage with customers, offer advice and tastings where appropriate.</li>
-          <li>Adhere strictly to Date Coding, Shelf Life, and Markdown procedures (See <a href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
-          <li>Maintain 'Clean As You Go' standards and follow specific cleaning schedules (See <a href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
-          <li>Ensure correct POS is displayed and legally compliant (allergens, weights, price).</li>
-          <li>Check equipment (scales, GLP printers, slicers, wrapping machines) is operational and clean.</li>
-      </ul>
-      <p>Detailed procedures for each counter are below:</p>
+    <section id="service-principles">
+        <h2><i class="fas fa-handshake"></i> Service Behaviours & Standards</h2>
+        <button class="accordion"><i class="fas fa-star"></i> Key Service Behaviours</button>
+        <div class="panel"><div>
+            <p>Consistently demonstrate:</p>
+            <ol>
+                <li><strong>Greet Customers:</strong> Friendly acknowledgement.</li>
+                <li><strong>Offer a Basket:</strong> Proactive assistance.</li>
+                <li><strong>Answer Questions:</strong> Helpful attitude, aim for "Yes".</li>
+            </ol>
+            <p>Refer to the <a href="operations.html#customer-first">Customer First 15-point plan</a> on the Operations page for full details.</p>
+            <p><small>Ref: Front End Op Guide p3</small></p>
+        </div></div>
+
+        <button class="accordion"><i class="fas fa-users"></i> Queue Management</button>
+        <div class="panel"><div>
+            <p>Standard: <strong>1 customer served + 1 customer waiting (1+1)</strong>.</p>
+            <ul>
+                <li><strong>Main Bank:</strong> Min. 1 till open always. Schedule based on planners/demand.</li>
+                <li><strong>Self Scan (SCO):</strong> Manned during store hours. Colleague wears hi-vis, assists proactively, manages cash/card modes, replenishes consumables, focuses on Service & Protect.</li>
+                <li><strong>Kiosk/CSD:</strong> Manned during specified hours. Use headset for support.</li>
+                <li><strong>Monitoring:</strong> Service Team Leaders visually monitor, use headset/baton, check Efficiency Measure Dashboard (Looker).</li>
+            </ul>
+             <p><small>Ref: Front End Op Guide p12 (Queue Line)</small></p>
+        </div></div>
     </section>
 
-    <section id="counter-guides">
-        <h2><i class="fas fa-concierge-bell"></i> Market Street Counter Guides</h2>
+     <section id="operational-areas">
+        <h2><i class="fas fa-cash-register"></i> Operational Area Guides</h2>
 
-         <!-- Bakery -->
-         <button class="accordion" id="bakery-accordion"><i class="fas fa-bread-slice"></i> Bakery</button>
+         <button class="accordion"><i class="fas fa-desktop"></i> CSD & Kiosk Operations</button>
          <div class="panel"><div>
-             <p><a href="https://docs.google.com/presentation/d/13bQS4paM07rcIUrNOM9UeTnJrXwXmWZNV6WhJVjwnd8/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Bakery Operating Guide (PDF)</a></p>
-             <h4>Key Routines & WGLL Summary:</h4>
+              <h4>Operating Clock Summary:</h4>
+              <p>Key tasks include: Set up, Legal Checks (Logbook), Cigarette Delivery/Stock Checks/Gap Scan, Lost & Found log, Replenish tobacco, Tidy/Clean, Secure at close. Throughout day: Serve customers, Lottery/Scratchcards, Balloons, Queries, Returns/Refunds, Post, Deliveroo Handovers, Visitor Sign-in.</p>
+             <h4>Layout & Standards:</h4>
              <ul>
-                 <li><strong>Full For 9:</strong> Print/amend Production Plan, Primal Delivery, Counter Setup, Logbooks, POS checks, Bake-off retard/frozen bread/baguettes, Best Bread/P&M.</li>
-                 <li><strong>Trade The Day:</strong> Follow production plans, mixing schedules, proving/baking timings. Ensure correct labelling (Natasha's Law), weights, shelf life. Maintain availability, especially on promo lines.</li>
-                 <li><strong>Fit For Five:</strong> Markdowns (5pm exceptions: Sticks/Baguettes/Doughnuts/ISP Rolls), Check Range by Time of Day.</li>
-                 <li><strong>Closedown:</strong> Bread Slicing, Clean down, Waste management, Knife Procedure, Stock Count (Sun).</li>
-                 <li><strong>WGLL:</strong> Follow Planogram, Correct POS/Labels, Full availability (peak times), Correct packaging, Hygiene standards met.</li>
+                 <li>Clean, tidy, clutter-free desks/kiosks.</li>
+                 <li>Correct signage displayed (Refunds, Licensing, C25, etc.).</li>
+                 <li>Essential equipment available & stored correctly (Lottery terminal, Vocovo, Till rolls, Mart Cart keys).</li>
+                 <li>Lost property managed via Salesforce (secure storage, 4-week retention).</li>
              </ul>
-             <p><small>Ref: Bakery Operating Guidance - Jan 2025</small></p>
-         </div></div>
-
-         <!-- Butchery -->
-         <button class="accordion" id="butchery-accordion"><i class="fas fa-drumstick-bite"></i> Butchery</button>
-         <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1QJcivDmDWerixRMWHRElnvmobADt6DKHKNKoc7nzIAU/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Butchery Operating Guide (PDF)</a></p>
-              <h4>Key Routines & WGLL Summary:</h4>
+             <h4>Key Tasks Summary:</h4>
               <ul>
-                  <li><strong>Full For 9:</strong> Primal Delivery processing, Counter Set Up (Core Range, Steaks, Joints, Value Added), Logbooks, Temperature Checks, POS.</li>
-                  <li><strong>Trade The Day:</strong> Maintain availability (replenish, produce), Check quality/dates, Manage stock rotation, Use Wrapping Machine/GLP correctly, Adhere to specifications, Transfer stock accurately.</li>
-                  <li><strong>Fit For Five:</strong> Complete 100% code check, Markdowns (5pm). Order ingredients/packaging.</li>
-                  <li><strong>Closedown:</strong> Clean counter/mincer/blocks, Secure knives, Manage waste, Weekly Stock Count (Sun).</li>
-                  <li><strong>WGLL:</strong> Fresh, well-presented counter following planogram. Correct tickets/POS. Clean equipment/area. Correct PPE/uniform.</li>
+                  <li>Handle refunds, exchanges, complaints per policy (See dedicated accordion).</li>
+                  <li>Process lottery sales/payouts.</li>
+                  <li>Manage Mart Cart checks/booking (Salesforce).</li>
+                  <li>Sign in visitors & brief on fire safety.</li>
+                   <li>Assist with More Card issues (See More Card section).</li>
+                   <li>Handle Cash Office items (Saver Stamps, Gift Vouchers - See Cash Office section).</li>
               </ul>
-              <p><small>Ref: Butchery Operating Guidance - Jan 2024</small></p>
+             <p><small>Ref: Front End Op Guide p5, 15</small></p>
          </div></div>
 
-         <!-- Cake Shop -->
-         <button class="accordion" id="cakeshop-accordion"><i class="fas fa-birthday-cake"></i> Cake Shop</button>
+         <button class="accordion"><i class="fas fa-barcode"></i> Checkouts & Self-Checkout (SCO) Standards</button>
          <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1UeyXOfz2hP0eEA2cSiGNj9SGFlcf8Xobq8Lzm02BqTo/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Cake Shop Operating Guide (PDF)</a></p>
-              <h4>Key Routines & WGLL Summary:</h4>
+              <h4>Checkout WGLL:</h4>
               <ul>
-                  <li><strong>Full For 9:</strong> Review Production Plan, Set up Counter/Chiller, Logbooks, POS checks, Ensure 'What Good Looks Like' standards met.</li>
-                  <li><strong>Trade The Day:</strong> Follow production plan (Brownies, Fresh Cream Cakes), Use piping techniques correctly, Manage ingredients/allergens (Natasha's Law), Handle defrost/thaw & serve lines correctly, Maintain display/availability.</li>
-                  <li><strong>Fit For Five:</strong> Complete 100% code checks and markdowns (5pm). Order stock/ingredients.</li>
-                  <li><strong>Closedown:</strong> Clean equipment/area, Manage waste, Weekly Stock Count (Sunday).</li>
-                  <li><strong>WGLL:</strong> Full, attractive display following planogram. Correct POS/labels/dates. High hygiene standards.</li>
+                  <li>Cleanliness: Belts, bagging areas, drawers, floors. Equipment: Tags stored, bins empty, consumables replenished, Vocovo ready.</li>
+                  <li>Merchandising: Queue lines correct, impulse tidy. Service: Helpful, friendly, efficient.</li>
               </ul>
-              <p><small>Ref: Cake Shop Operating Guidance - Jan 2024</small></p>
+              <h4>SCO WGLL:</h4>
+              <ul>
+                  <li>Signage: Correct Cash/Card, Contactless, C25 visible.</li>
+                  <li>Cleanliness: Surfaces, scanner glass clean.</li>
+                  <li>Equipment: Bags/rolls replenished, headset ready, detagger secure, tag bin available/emptied, SCO cabinet stocked.</li>
+                  <li>Colleague Presence: Hi-vis worn, proactive assist, vigilant (Service & Protect).</li>
+                   <li>More Card Scanning: Ensure customers scan.</li>
+                   <li>Catalina Coupons: Understand process, troubleshoot basics (printer paper/ink - see More Card Guide p38-40).</li>
+              </ul>
+              <p><small>Ref: Front End Op Guide p10-14</small></p>
          </div></div>
 
-         <!-- Deli -->
-         <button class="accordion" id="deli-accordion"><i class="fas fa-cheese"></i> Deli</button>
+         <button class="accordion"><i class="fas fa-car"></i> Car Park & Trolleys/Baskets</button>
          <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1Ohuch5x3LsQme9-7m8ayQkZCWOsYQRY58tfZFhosuOg/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Deli Operating Guide (PDF)</a></p>
-             <h4>Key Routines & WGLL Summary:</h4>
+             <p><a href="https://docs.google.com/presentation/d/1hZGH2A0hBrnlYPNj_heS_l0uaPY_mHcHF4RKlCoBUh8/edit" target="_blank" rel="noopener noreferrer">View Full Trolley & Basket Guide (PDF)</a></p>
+             <h4>Trolley Standards:</h4>
+             <ul>
+                 <li>Gathered regularly, clean, undamaged, secured at close. Bays clean, posters correct.</li>
+                 <li>Order new/report damaged via Wanzl form/email/phone (link/details in guide).</li>
+                 <li>Report theft >9 trolleys to LP Control Room (0345 611 6711), <9 via MySecurity.</li>
+                 <li>Use Trolleywise for abandoned trolleys (<a href="mailto:trolleywise@wanzl.co.uk">trolleywise@wanzl.co.uk</a>).</li>
+             </ul>
+             <h4>Basket Standards:</h4>
               <ul>
-                  <li><strong>Full For 9:</strong> Set up counter (Cheese, Olives, Cooked Meats, Pies, Snacks), Complete logbooks, Temperature checks, POS.</li>
-                  <li><strong>Trade The Day:</strong> Maintain availability (replenish counter/express), Check shelf life/dating, Cut/pack cheese, Slice cooked meats safely, Offer tastings.</li>
-                  <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
-                  <li><strong>Closedown:</strong> Clean down counter/slicer, Manage waste, Store products correctly, Weekly Stock Count (Sunday).</li>
-                  <li><strong>WGLL:</strong> Follow planogram, Correct POS/tickets/dating, High hygiene standards, Knowledgeable service.</li>
+                  <li>Stacked <50 high. Located correctly (not blocking exits/outside).</li>
               </ul>
-              <p><small>Ref: Deli Operating Guidance - Jan 2024</small></p>
+               <h4>General Area WGLL:</h4>
+               <ul>
+                  <li>Clean, litter-free, recycling areas clear, external signage good.</li>
+                  <li>Safety: Grit available (winter), no obstructions, good lighting.</li>
+               </ul>
+              <p><small>Ref: Front End Op Guide p16 & Trolley/Basket Guide</small></p>
          </div></div>
 
-         <!-- Fish -->
-         <button class="accordion" id="fish-accordion"><i class="fas fa-fish"></i> Fish</button>
-         <div class="panel"><div>
-             <p><a href="https://docs.google.com/presentation/d/1Ofjj8tMkHvwf6jItl5ysq9gfqlEKeWOQImhmhnSt9os/edit#slide=id.g15305ed4842_0_0" target="_blank" rel="noopener noreferrer">View Full Fish Operating Guide (PDF)</a></p>
-             <h4>Key Routines & WGLL Summary:</h4>
-              <ul>
-                   <li><strong>Full For 9:</strong> Set up counter (Core Range, Ice, Blue Boxes), Complete logbooks, Health Mark checks, POS.</li>
-                   <li><strong>Trade The Day:</strong> Maintain availability, Replenish ice, Fish Preparation (Filleting etc.), Use Wrapping Machine/Hot Bag Sealer, Manage shelf life (Oily vs Non-Oily).</li>
-                   <li><strong>Fit For Five:</strong> Code checks & Markdowns (5pm Wet Fish).</li>
-                   <li><strong>Closedown:</strong> Clean counter/equipment, Ice Machine care, Manage waste, Weekly Stock Count (Sunday).</li>
-                   <li><strong>WGLL:</strong> Fresh, well-iced display following flow. Correct POS/Labels. High hygiene standards. Use correct equipment.</li>
-              </ul>
-              <p><small>Ref: Fish Operating Guidance - Jan 2025</small></p>
-         </div></div>
-
-          <!-- Fresh To Go / Pizza -->
-          <button class="accordion" id="ftg-accordion"><i class="fas fa-pizza-slice"></i> Fresh To Go (incl. Pizza & Salad)</button>
+          <button class="accordion"><i class="fas fa-undo"></i> Refunds, Exchanges & Goodwill</button>
           <div class="panel"><div>
-               <p><a href="https://docs.google.com/presentation/d/1Eh3W-qf_-Ye3X3x7R0piZ9tI2YVrPXTu3TrNgBmZH-g/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Fresh To Go Operating Guide (PDF)</a></p>
-               <h4>Key Routines & WGLL Summary:</h4>
-                <ul>
-                    <li><strong>Full For 8:</strong> Set up Salad Bar, Pizza counter, FTG fixtures. Check production plans. Complete logbooks/checks.</li>
-                    <li><strong>Trade The Day:</strong> Maintain availability across Salad Bar, Pizza (inc Hot Pizza), Sandwiches, etc. Follow recipes/specs. Manage production timings/volumes. Handle ingredients safely (allergens, shelf life, Natasha's Law). Use equipment correctly (Sealer, Pizza Press/Oven).</li>
-                    <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
-                    <li><strong>Closedown:</strong> Clean down all areas/equipment (Pizza Capper etc.), manage waste, stock counts (Sunday).</li>
-                    <li><strong>WGLL:</strong> Full, fresh, correctly merchandised displays. Accurate POS, labelling (Natasha's Law), and dating. High hygiene standards.</li>
-                </ul>
-                <p><small>Ref: Fresh To Go Operating Guidance - Jan 2024</small></p>
-          </div></div>
+               <h4>Refund & Exchange Policy:</h4>
+               <ul>
+                   <li><strong>30-Day Change of Mind:</strong> Requires proof of purchase, original re-saleable condition. Check exclusions.</li>
+                   <li><strong>Faulty Goods:</strong> Statutory rights apply.</li>
+                   <li><strong>Process:</strong> Process at CSD/Kiosk using correct Till Refund Codes. >£11 requires manager check slip. Logbook entry needed.</li>
+               </ul>
+               <h4>Goodwill Guidelines:</h4>
+               <ul>
+                   <li>Listen, apologise, resolve first time.</li>
+                   <li>Use Goodwill Matrix (£5-£10 typical value). Store Manager auth needed >£10 (max £30).</li>
+                   <li>Use 'Goodwill' tender for product goodwill. Log complex complaints on Salesforce.</li>
+               </ul>
+               <p><small>Ref: Front End Op Guide p28</small></p>
+           </div></div>
 
-    </section>
+     </section>
 
-     <section id="cafe-operations">
-        <h2><i class="fas fa-coffee"></i> Cafe Operations</h2>
-         <button class="accordion" id="cafe-accordion"><i class="fas fa-mug-hot"></i> Cafe</button>
+     <section id="more-card-support">
+         <h2><i class="fas fa-star"></i> More Card Support</h2>
+          <p>Front End colleagues assist customers with More Card queries and processes.</p>
+          <p><a href="https://docs.google.com/presentation/d/1N-0zG5M9aZVW9aNTj4SKT4uH-ahHn-pitsii3nBBTuY/edit" target="_blank" rel="noopener noreferrer">View Full More Card Operating Guide (PDF)</a></p>
+
+         <button class="accordion"><i class="fas fa-user-plus"></i> Sign Up & Account Management</button>
          <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Cafe Operating Guide (PDF)</a></p>
-              <!-- <p><a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Cafe Daily Checklist</a></p> --> <!-- Redundant as it's within the main guide -->
-              <h4>Key Routines & WGLL Summary:</h4>
+             <ul>
+                 <li>Assist sign-up via App, Website, or Salesforce (in-store). Provide temporary card if needed.</li>
+                 <li>Report Lost/Stolen via Salesforce if customer cannot use App/Web.</li>
+                 <li>Help update contact details or voucher preferences via Salesforce.</li>
+                 <li>Guide customers on linking colleague/F&F discount cards (via MyMorri).</li>
+             </ul>
+             <p><small>Ref: More Card Guide p6, 29-31</small></p>
+         </div></div>
+
+         <button class="accordion"><i class="fas fa-receipt"></i> Points, Fivers & Troubleshooting</button>
+         <div class="panel"><div>
               <ul>
-                  <li><strong>Full For 8 (Setup):</strong> Set up Kiosk, Till, Hot Beverage, Counter Displays (Ambient/Chilled). Complete logbooks/checks (Temps, Cleaning, Street List, POS).</li>
-                  <li><strong>Trade The Day:</strong> Follow Customer Journey (Till/Table Service/Mobile Order). Manage orders (inc. Just Eat/Deliveroo). Adhere to specs, timings, temps. Handle allergens/customer requests. Maintain cleanliness. Stock management/transfers.</li>
-                  <li><strong>Fit For Five:</strong> Markdowns (5pm - TGTG focus). BOC Gas/Coke checks.</li>
-                  <li><strong>Closedown:</strong> Cleaning tasks (incl Coffee Machine). Stock counts (Sun). Secure area.</li>
-                  <li><strong>WGLL:</strong> Clean, welcoming environment. Full availability to spec. Efficient & friendly service. Safe & Legal compliance.</li>
+                  <li>Explain points earning & Fiver conversion (5000 points = £5).</li>
+                  <li>Troubleshoot common issues (check guide p26): App not loading, Fiver not applying (check dates, card scanned?), Passcode issues.</li>
+                  <li>Add missed points/collector spend via Salesforce ('Add Receipt' function - Guide p32-34) for store/fuel kiosk receipts ONLY (not PAP or MFG).</li>
+                  <li>Handle physical Fivers at till; troubleshoot scanning issues (check voucher matches card, date OK?). Manual coupon button for deduction if needed, log NCR case.</li>
               </ul>
-              <p><small>Ref: Cafe Operating Guidance - Jan 2025</small></p>
+             <p><small>Ref: More Card Guide p12-14, 18, 26, 32-34</small></p>
+         </div></div>
+
+         <button class="accordion"><i class="fas fa-tags"></i> Offers & Promotions</button>
+         <div class="panel"><div>
+              <ul>
+                  <li>Advise customers to scan More Card for More Card Prices (MCP). Identify MCP on SELs/HHT.</li>
+                  <li>Explain More Rewards (personalised App offers needing activation).</li>
+                  <li>Explain Collectors (App/Coupon based, track spend weekly).</li>
+                  <li>Explain Points Boosters (App only offers).</li>
+                  <li>Handle points coupons printed at till (check expiry, scan More Card and coupon).</li>
+              </ul>
+              <p><small>Ref: More Card Guide p19-22, 11</small></p>
          </div></div>
      </section>
 
-     <!-- Retain existing embeds - verify relevance -->
-     <section id="fto-reporting">
-        <h2><i class="fas fa-chart-bar"></i> Food to Order & Reporting (Market Street Impact)</h2>
-         <div class="dashboard-card">
-           <h3><i class="fas fa-clipboard-list"></i> Food to Order (Production Info)</h3>
-           <iframe id="foodIframe" title="Food to Order Spreadsheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&single=true&widget=true&headers=false" loading="lazy"></iframe>
-           <button type="button" onclick="printIframe('foodIframe')">Print Food Order Sheet</button>
-           <p style="margin-top: 1em;">Provides details for Market Street production based on online Food to Order collections.</p>
-            <a href="https://groceries.morrisons.com/webshop/foodToOrderHomepage.do" target="_blank" rel="noopener noreferrer" class="button-link">Food To Order Website <i class="fas fa-external-link-alt fa-xs"></i></a>
-         </div>
+     <section id="cash-office-procedures">
+        <h2><i class="fas fa-calculator"></i> Cash Office Procedures (Front End Role)</h2>
+         <p>Front End colleagues perform tasks that directly interact with Cash Office procedures.</p>
+          <p><a href="https://docs.google.com/presentation/d/1bL5d5gQjSfhPdz0bldDSVFQqhjHFiCFAIz2gAnfyZWo/edit" target="_blank" rel="noopener noreferrer">View Full Cash Office Operating Guide (PDF)</a></p>
 
-         <div class="dashboard-card">
-           <h3><i class="fas fa-chart-pie"></i> Looker Studio Report (FTO Alternative View)</h3>
-           <iframe id="lookerIframe" title="Looker Studio Report"
-                   src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld"
-                   frameborder="0" allowfullscreen
-                   sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" loading="lazy"></iframe>
-           <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
-            <p style="margin-top: 1em;">Alternative view showing Food To Order data impacting Market Street.</p>
-         </div>
+         <button class="accordion"><i class="fas fa-money-bill-wave"></i> Till Handling & Reconciliation</button>
+         <div class="panel"><div>
+             <ul>
+                 <li>**Till Loans:** Receive change loans accurately, sign logbook. Process via Till Function > Till Loan.</li>
+                 <li>**Till Lifts (ICH):** Follow correct procedure for securing and removing cash via ICH pouches. Ensure correct values entered on Storeline for lifts.</li>
+                 <li>**End of Day:** Securely cash up till, follow cashing up procedures, hand over takings/media correctly.</li>
+                 <li>**Overs/Shorts:** Be aware of till accuracy. Cooperate with investigations (£10+ discrepancy). Report any issues immediately.</li>
+                 <li>**Logbooks:** Complete Till & Saver Stamp Loan sheet accurately.</li>
+             </ul>
+              <p><small>Ref: Cash Office Guide p10-11, 28-31, 36-40</small></p>
+         </div></div>
+
+         <button class="accordion"><i class="fas fa-ticket-alt"></i> Specific Tenders & Processes</button>
+         <div class="panel"><div>
+             <ul>
+                 <li>**Lottery/Scratchcards (Kiosk):** Reconcile sales/prizes accurately against terminal reports. Log details correctly.</li>
+                 <li>**PayPoint/Payzone (Kiosk):** Follow specific procedures for transactions and reconciliation.</li>
+                 <li>**Refunds/Voids:** Process correctly using supervisor authorisation where needed. Understand impact on till accuracy.</li>
+                 <li>**Manual EFT/Fallback:** Process correctly via PDQ and till, retain voucher securely.</li>
+                 <li>**Coupons/Vouchers:** Process correctly at till (scan where possible). Secure validated coupons for Cash Office. Understand Catalina process.</li>
+                 <li>**Gift Cards:** Process sales/redemptions correctly.</li>
+             </ul>
+              <p><small>Ref: Cash Office Guide p17-22, 28, 54, 39-41</small></p>
+         </div></div>
      </section>
 
-     <section id="cross-functional">
-        <h2><i class="fas fa-link"></i> Related Procedures</h2>
-         <p>For detailed information on the following topics, please refer to the relevant pages:</p>
-         <ul>
-             <li>Markdown and Waste processes: See <a href="shrink.html">Shrink Management</a>.</li>
-             <li>Detailed Food Safety, HACCP, Allergens, Natasha's Law, Equipment Cleaning: See <a href="safe-and-legal.html">Safe & Legal</a>.</li>
-              <li>Bizerba Scale / GLP Printer Operation & Maintenance: See <a href="safe-and-legal.html">Safe & Legal</a>.</li>
-              <li>Stock Counts (General Principles): See <a href="shrink.html">Shrink Management</a>.</li>
-              <li>General Store Operations (Replenishment, etc.): See <a href="operations.html">Operations</a>.</li>
-         </ul>
-     </section>
+    <section id="pharmacy-ref">
+        <h2><i class="fas fa-pills"></i> Pharmacy Interaction (Reference Only)</h2>
+         <p>Guidance for Front End staff when interacting with Pharmacy-related queries.</p>
+          <p><a href="https://docs.google.com/presentation/d/153hcMpDK5dhpliZoyCcV_6p2QzSCpwF9Pe_Y684Gpj4/edit" target="_blank" rel="noopener noreferrer">View Full Pharmacy Operating Guide (PDF)</a></p>
+        <ul>
+            <li>Direct ALL prescription, medication advice, and specific health condition queries to the Pharmacy counter/Pharmacist. Do not attempt to advise.</li>
+            <li>Know the Pharmacy opening hours and location within the store.</li>
+            <li>Understand that P-Medicines (Pharmacy Only) require Pharmacist authorisation for sale.</li>
+            <li>Be aware of nationally/locally commissioned services offered (e.g., Flu Jabs, New Medicines Service) to signpost customers correctly, but refer to Pharmacy for details and booking.</li>
+            <li>Handle requests for basic items stocked outside pharmacy (e.g., simple painkillers) as normal retail sales.</li>
+        </ul>
+        <p><small>Ref: Pharmacy Op Guide</small></p>
+    </section>
 
   </main>
 
@@ -409,8 +421,8 @@
           themeBtn.setAttribute('aria-pressed',isDark);
           localStorage.setItem('theme',isDark?'dark':'light');
           // Update meta theme-color for dynamic changes on this page
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#8B008B' : '#D13887');
-      };
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#4d0080' : '#6A0DAD');
+        };
       themeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('dark-mode')));
 
       /* Accordion Functionality */
@@ -451,7 +463,7 @@
           });
       }
 
-       /* Initial theme and dark mode load */
+      /* Initial theme and dark mode load */
        document.addEventListener('DOMContentLoaded', () => {
            // Ensure page starts at the very top
            window.scrollTo(0, 0);
@@ -460,8 +472,8 @@
            const prefersDark = matchMedia('(prefers-color-scheme:dark)').matches;
            setMode(savedTheme ? savedTheme === 'dark' : prefersDark);
 
-           // Apply Pink Theme Class
-           document.body.classList.add('pink-theme');
+           // Apply Purple Theme Class
+           document.body.classList.add('purple-theme');
            void document.body.offsetHeight; // Force reflow if needed
 
            // --- Removed hash linking logic to prevent scroll on load ---
@@ -472,31 +484,17 @@
           if (!localStorage.getItem('theme')) { setMode(event.matches); }
       });
 
-      // Expose print function globally ONLY if using inline onclick
-      window.printIframe = function(iframeId) {
-            const iframe = document.getElementById(iframeId);
-            if (!iframe) { console.error("Iframe not found:", iframeId); return; }
-            try {
-                const iframeWindow = iframe.contentWindow || iframe;
-                iframeWindow.focus(); iframeWindow.print();
-            } catch (e) {
-                console.error("Printing failed:", e);
-                const iframeSrc = iframe.src;
-                 if (iframeSrc && iframeSrc !== 'about:blank') {
-                    const printWindow = window.open(iframeSrc, '_blank');
-                     if(printWindow) {
-                        printWindow.onload = () => { setTimeout(() => { printWindow.print(); }, 500); };
-                    } else { alert("Could not open print window. Check popup blocker."); }
-                } else { alert("Cannot print this content directly."); }
-            }
-        }
 
       /* --- PWA Service Worker Registration --- */
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
-            .then(registration => { console.log('SW registered: ', registration.scope); })
-            .catch(err => { console.error('SW registration failed: ', err); });
+            .then(registration => {
+              console.log('Service Worker registered successfully with scope: ', registration.scope);
+            })
+            .catch(err => {
+              console.error('Service Worker registration failed: ', err);
+            });
         });
       }
 
