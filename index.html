@@ -43,11 +43,14 @@
   html{scroll-behavior:smooth;font-size:100%}
   body{font-family:Roboto,system-ui,sans-serif;background:var(--bg-light);color:var(--text);line-height:1.55;min-block-size:100dvh;transition:background .3s,color .3s}
   body.dark-mode{background:var(--bg-dark);color:var(--text-dark)}
-  a{color:inherit;text-decoration:none}
+  a{color:var(--green);text-decoration:underline;} /* Links underlined by default */
+   a:hover{text-decoration:none;}
+  body.dark-mode a{color:var(--yellow);}
   img{max-inline-size:100%;block-size:auto}
+  strong { font-weight: 700; }
   /* Ensure focus states are visible */
-  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .hamburger:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 2px; }
-  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .hamburger:focus-visible { outline-color: var(--yellow); }
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .hamburger:focus-visible, .accordion:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 2px; }
+  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .hamburger:focus-visible, body.dark-mode .accordion:focus-visible { outline-color: var(--yellow); }
 
 
   /* ---------- Header ---------- */
@@ -242,7 +245,7 @@
     <!-- welcome -->
     <section id="welcome">
       <h2>Welcome</h2>
-      <p>Quick access to essential tools, reports and operational guides.</p>
+      <p>Quick access to essential tools, reports and operational guides for Cleveleys Morrisons Management.</p>
     </section>
 
     <!-- dashboard -->
@@ -252,15 +255,15 @@
         <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="tile" data-open="frame" title="Store Mobile App"><i class="fas fa-mobile-alt"></i><span>Store App</span></a>
         <a href="https://www.dymension.co.uk/#/account/login" class="tile" data-open="frame" title="Staff Checks"><i class="fas fa-user-check"></i><span>Staff Checks</span></a>
         <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="tile" data-open="external" title="Price Integrity Logbook (opens new tab)"><i class="fas fa-book"></i><span>Logbook</span></a>
-        <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile" data-open="external" title="Looker Delivery Volume Report (opens new tab)"><i class="fas fa-chart-line"></i><span>Delivery</span></a>
-        <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="tile" data-open="external" title="Retail Wheel Dashboard (opens new tab)"><i class="fas fa-tachometer-alt"></i><span>Retail Wheel</span></a>
+        <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile" data-open="external" title="Looker Delivery Volume Report (opens new tab)"><i class="fas fa-chart-line"></i><span>Delivery Vol</span></a>
+        <a href="https://lookerstudio.google.com/embed/reporting/d93a03c7-25dc-439d-abaa-dd2f3780daa5/page/BLfDE" class="tile" data-open="external" title="Retail Wheel Dashboard (opens new tab)"><i class="fas fa-tachometer-alt"></i><span>Retail Wheel</span></a> <!-- UPDATED LINK -->
         <a href="https://lookerstudio.google.com/u/0/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_bghtutfsbd" class="tile" data-open="external" title="Looker Studio NPS Report (opens new tab)"><i class="fas fa-smile"></i><span>NPS</span></a>
         <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="tile" data-open="external" title="Looker Studio Transfers Report (opens new tab)"><i class="fas fa-exchange-alt"></i><span>Transfers</span></a>
         <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="tile" data-open="external" title="Google Script - Complaints (opens new tab)"><i class="fas fa-comments"></i><span>Complaints</span></a>
         <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="tile" data-open="external" title="Google Script - Reminders (opens new tab)"><i class="fas fa-calendar-check"></i><span>Reminders</span></a>
         <a href="operations.html" class="tile" data-open="self" title="Operational Guides"><i class="fas fa-cogs"></i><span>Operations</span></a>
         <a href="shrink.html" class="tile" data-open="self" title="Shrink Management Guides"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a>
-        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="self" title="Production Plans"><i class="fas fa-mobile-alt"></i><span>Production</span></a>
+        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="external" title="Production Plans (Opens new tab)"><i class="fas fa-clipboard-list"></i><span>Production</span></a> <!-- Changed to external link -->
       </div>
     </section>
 
@@ -286,7 +289,7 @@
                  <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
              </div>
          </div>
-         <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Sheet</a>
+         <a href="https://docs.google.com/spreadsheets/d/1T_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/edit#gid=1881177460" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Sheet</a> <!-- Link to editable version? -->
      </section>
 
      <!-- Reminders App Section -->
@@ -305,14 +308,14 @@
                <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
             </div>
         </div>
-        <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Rota</a>
+        <a href="https://docs.google.com/spreadsheets/d/1TYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/edit#gid=0" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Rota</a> <!-- Link to editable version? -->
      </section>
 
     <!-- Retail Wheel Section -->
     <section id="wheel">
       <h2>Retail Wheel</h2>
       <p>Comprehensive overview of store performance metrics.</p>
-      <a href="https://morrisonsprd.cloud.looker.com/dashboards/32" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> Open Retail Wheel</a>
+      <a href="https://lookerstudio.google.com/embed/reporting/d93a03c7-25dc-439d-abaa-dd2f3780daa5/page/BLfDE" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> Open Retail Wheel</a> <!-- UPDATED LINK -->
     </section>
 
     <!-- ———————— WHITEBOARD ———————— -->
@@ -381,19 +384,17 @@
     const themeBtn=$(".theme-toggle");
     const setMode=isDark=>{document.body.classList.toggle("dark-mode",isDark);themeBtn.setAttribute("aria-pressed",isDark);localStorage.theme=isDark?"dark":"light";if(typeof resizeCanvas==='function')setTimeout(resizeCanvas,50)}; // whiteboard resize added
     themeBtn.addEventListener("click",()=>setMode(!document.body.classList.contains("dark-mode")));
-    const saved=localStorage.theme;setMode(saved?saved==="dark":matchMedia("(prefers-color-scheme:dark)").matches);
-    matchMedia("(prefers-color-scheme:dark)").addEventListener("change",e=>{if(!localStorage.theme)setMode(e.matches);});
-
 
     /* -------- Dashboard Tile Click Handler & Iframe -------- */
-    const dashboardTiles = $$('#dashboard .tile'); // Use new class .tile
+    const dashboardTiles = $$('#dashboard .tile');
     const frameContainer = $('#frame-container');
     const contentFrame = $('#content-frame');
     const closeFrame = $('#close-frame');
     const fallbackMessage = $('#fallback-message');
     const fallbackLink = $('#fallback-link');
-    const frameSpinner = frameContainer?.querySelector('.iframe-loading'); // Spinner for the main frame
+    const frameSpinner = frameContainer?.querySelector('.iframe-loading');
     let frameLoadTimeout;
+
     function showFrameSpinner(show) { if (frameSpinner) frameSpinner.style.display = show ? 'block' : 'none'; }
 
     function loadContentInFrame(url) {
@@ -404,42 +405,70 @@
          fallbackLink.href = url;
          frameContainer.classList.add('active');
          showFrameSpinner(true);
-         contentFrame.src = url;
+         // Set reasonable width/height for the frame container itself before loading
+         frameContainer.style.width = '100%';
+         frameContainer.style.height = '70vh'; // Adjust as needed
+
+         contentFrame.src = url; // Load the actual URL
          frameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
          clearTimeout(frameLoadTimeout);
 
+         // Reduced timeout as requested by user feedback
          frameLoadTimeout = setTimeout(() => {
            let wasBlockedOrFailed = false;
            try {
-             const doc = contentFrame.contentDocument || contentFrame.contentWindow?.document;
-             if (contentFrame.src !== 'about:blank' && (!doc || !doc.body || doc.body.innerHTML.trim() === "")) {
-                 console.warn('[Fallback Check] iframe content seems empty or inaccessible after timeout for:', url);
-                 wasBlockedOrFailed = true;
+             // Check if content loaded or was blocked (more likely for login pages)
+             if (contentFrame.contentWindow?.length === 0 || contentFrame.contentDocument?.body.innerHTML.trim() === "") {
+                  // Check if it's a known login page URL that might just appear blank due to X-Frame-Options
+                  const knownLoginDomains = ['dymension.co.uk', 'storemobile.apps.mymorri.com'];
+                  const currentDomain = new URL(contentFrame.src).hostname;
+                  if (!knownLoginDomains.some(domain => currentDomain.includes(domain))) {
+                      console.warn('[Fallback Check] iframe content seems empty after timeout for:', url);
+                      wasBlockedOrFailed = true;
+                  } else {
+                       console.log('[Fallback Check] Known login page detected, assuming load success despite potential cross-origin limitations.');
+                       showFrameSpinner(false); // Hide spinner even if content is inaccessible
+                       fallbackMessage.style.display = 'none'; // Don't show fallback for known login pages
+                       return; // Skip further fallback logic
+                  }
              }
            } catch (e) {
              console.warn('[Fallback Check] Cross-origin error accessing iframe content after timeout for:', url, e);
-             wasBlockedOrFailed = true;
+             wasBlockedOrFailed = true; // Assume failure on error
            }
 
-           if (wasBlockedOrFailed && frameSpinner && frameSpinner.style.display !== 'none') {
-             console.log('[Fallback Action] Opening in new tab due to suspected blocking/failure for:', url);
-             window.open(url,'_blank','noopener');
-             frameContainer.classList.remove('active');
+            // Show fallback only if it wasn't a known login page and spinner is still visible
+           if (wasBlockedOrFailed && frameSpinner?.style.display !== 'none') {
              showFrameSpinner(false);
-             notify('Opened in new tab (embedding blocked/failed).', 4000);
-           } else if (frameSpinner && frameSpinner.style.display !== 'none') {
-               showFrameSpinner(false);
-               fallbackMessage.style.display = 'block';
-               notify("Content took too long to load.", 4000);
+             fallbackMessage.style.display = 'block';
+             notify("Content embedding likely blocked. Use fallback link.", 4000);
+           } else if (frameSpinner?.style.display !== 'none') {
+              // If spinner still visible but no explicit block detected, assume slow load
+              showFrameSpinner(false);
+              fallbackMessage.style.display = 'block';
+              notify("Content took a while to load.", 4000);
            }
-         }, 5000);
+         }, 8000); // Extended timeout slightly to 8s
 
          contentFrame.onload = function() {
+             console.log('[iframe onload] Fired for:', contentFrame.src);
              clearTimeout(frameLoadTimeout);
              showFrameSpinner(false);
              fallbackMessage.style.display = 'none';
-             console.log('[iframe onload] Fired for:', contentFrame.src);
+             // Check for specific "refused to connect" messages or blank pages post-load
+             try {
+                if (contentFrame.contentDocument?.body.innerHTML.trim() === "" && contentFrame.src !== 'about:blank') {
+                    console.warn('[iframe onload] Content is blank after loading:', contentFrame.src);
+                    fallbackMessage.style.display = 'block';
+                }
+             } catch(e) {
+                console.warn('[iframe onload] Cross-origin error checking content:', e);
+                // Potentially show fallback if access error implies block
+                if (contentFrame.src !== 'about:blank') {
+                     fallbackMessage.style.display = 'block';
+                }
+             }
          };
          contentFrame.onerror = function(err) {
              clearTimeout(frameLoadTimeout);
@@ -472,7 +501,7 @@
     const container=$("#whiteboard-container");
     const canvas   =$("#whiteboard");
     if(canvas){ // Check if canvas exists before proceeding
-        const ctx=canvas.getContext("2d");
+        const ctx=canvas.getContext("2d",{willReadFrequently:true}); // Added willReadFrequently
         const tools=$$(".tool-button");
         const colorPicker=$("#colorPicker");
         const brushSel=$("#brushSize");
@@ -482,144 +511,241 @@
 
         let currentTool="pen",drawing=false,currentStroke=null,strokes=[];
         let dpr=window.devicePixelRatio||1;
+        let history = []; // For undo
+        let historyIndex = -1;
 
         /*  util  */
         const themeBg = ()=>getComputedStyle(document.body).getPropertyValue(document.body.classList.contains("dark-mode")?"--dark-bg-color":"--light-bg-color").trim();
         const effectiveBg = ()=>{const f=[...strokes].reverse().find(s=>s.tool==="fill");return f?f.color:themeBg();};
-        const getPos=e=>{const r=canvas.getBoundingClientRect();const clientX=e.touches?e.touches[0].clientX:e.clientX;const clientY=e.touches?e.touches[0].clientY:e.clientY;if(clientX==null||clientY==null)return null;const x=clientX-r.left;const y=clientY-r.top;return{x,y};}; /* Added null check */
+        const getPos=e=>{const r=canvas.getBoundingClientRect();let clientX,clientY;if(e.touches){if(e.touches.length === 0) return null;clientX=e.touches[0].clientX;clientY=e.touches[0].clientY;}else{clientX=e.clientX;clientY=e.clientY;}if(clientX==null||clientY==null)return null;const x=(clientX-r.left);const y=(clientY-r.top);return{x,y};}; /* Adjusted for DPR */
+
+        /*  History management */
+         const saveState = () => {
+             historyIndex++;
+             // If we draw after undoing, discard future states
+             if (historyIndex < history.length) { history.length = historyIndex; }
+             // Store strokes and background color
+             history.push({ strokes: JSON.parse(JSON.stringify(strokes)), bgColor: effectiveBg() });
+              // Limit history size (optional)
+             // if (history.length > 50) { history.shift(); historyIndex--; }
+         };
+
+         const undo = () => {
+             if (historyIndex > 0) {
+                 historyIndex--;
+                 const previousState = history[historyIndex];
+                 strokes = JSON.parse(JSON.stringify(previousState.strokes));
+                 // Restore background color explicitly if needed, though render() should handle it
+                 render();
+                 saveLocal(); // Save undone state
+                 notify("Undo");
+             } else {
+                // Maybe clear canvas if undoing the first action? Or just notify "Nothing to undo"
+                // strokes = []; render(); saveLocal();
+                notify("Nothing more to undo");
+             }
+         };
 
         /*  size / Hi-DPI  */
         const resizeCanvas=()=>{
-          if (!canvas.parentElement) return; // Guard against missing parent
+          if (!canvas.parentElement) return;
           const {clientWidth:w,clientHeight:h}=canvas.parentElement;
           dpr=window.devicePixelRatio||1;
-          canvas.width=w*dpr;canvas.height=h*dpr;
+          // Check if size actually changed to avoid unnecessary redraws
+          if (canvas.width === Math.round(w * dpr) && canvas.height === Math.round(h * dpr)) return;
+
+          canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr); // Use Math.round
           canvas.style.width=w+"px";canvas.style.height=h+"px";
-          ctx.setTransform(dpr,0,0,dpr,0,0); // Use setTransform for scaling
-          render();
+          ctx.setTransform(dpr,0,0,dpr,0,0);
+          render(); // Render immediately after resize
         };
 
         /* drawing engine */
         const render=()=>{
           if(!ctx) return;
-          ctx.clearRect(0,0,canvas.width,canvas.height); // Use canvas dimensions directly
-          ctx.save();
-          // Apply DPR scaling transformation for all drawing operations
-          // ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Applied in resizeCanvas now
+          const logicalWidth = canvas.width / dpr;
+          const logicalHeight = canvas.height / dpr;
 
+          ctx.clearRect(0,0,logicalWidth, logicalHeight); // Clear logical coordinates
+          ctx.save();
           ctx.fillStyle=effectiveBg();
-          ctx.fillRect(0,0,canvas.width/dpr,canvas.height/dpr); // Draw background at logical size
+          ctx.fillRect(0,0,logicalWidth, logicalHeight);
 
           for(const s of strokes){
             if(!s)continue;
-            ctx.globalCompositeOperation="source-over"; // Reset blend mode
+            ctx.globalCompositeOperation="source-over";
             if(s.tool==="pen"||s.tool==="eraser"){
-              if (!s.p || !s.p.length) continue; // Ensure points exist
+              if (!s.p || s.p.length < 2) continue; // Need at least 2 points
               ctx.lineJoin=ctx.lineCap="round";
               ctx.lineWidth=s.w;
-              ctx.strokeStyle=s.tool==="eraser"?"rgba(0,0,0,1)":s.c; // Color only needed for pen
+              ctx.strokeStyle=s.tool==="eraser"?"rgba(0,0,0,1)":s.c;
               ctx.globalCompositeOperation=s.tool==="eraser"?"destination-out":"source-over";
               ctx.beginPath();ctx.moveTo(s.p[0].x,s.p[0].y);
-              s.p.forEach(pt=>ctx.lineTo(pt.x,pt.y));
+              // Draw segments for smoother lines
+              for(let i = 1; i < s.p.length; i++){
+                  ctx.lineTo(s.p[i].x, s.p[i].y);
+              }
               ctx.stroke();
             }
             else if(s.tool==="text"){
-              // ctx.globalCompositeOperation="source-over"; // Already set
               ctx.fillStyle=s.c;
               ctx.font=`${s.sz}px Roboto, sans-serif`;
-              ctx.textAlign = 'left'; // Ensure alignment
-              ctx.textBaseline = 'top'; // Ensure alignment
-              s.lines.forEach((ln,i)=>ctx.fillText(ln,s.x,s.y+i*s.sz*1.2)); // Draw text relative to canvas
+              ctx.textAlign = 'left';
+              ctx.textBaseline = 'top';
+              s.lines.forEach((ln,i)=>ctx.fillText(ln,s.x,s.y+i*s.sz*1.2));
             }
             else if(s.tool==="fill"){
-              // ctx.globalCompositeOperation="source-over"; // Already set
               ctx.fillStyle=s.color;
-              ctx.fillRect(0,0,canvas.width/dpr,canvas.height/dpr); // Fill background
+              ctx.fillRect(0,0,logicalWidth, logicalHeight);
             }
           }
-          ctx.restore(); // Restore original context state (including transform)
+          ctx.restore();
         };
 
 
-        const saveLocal=debounce(()=>{try{localStorage.whiteboardStrokes=JSON.stringify(strokes)}catch(e){notify("Save failed: Storage full?",5000)}},400); /* Add try-catch */
+        const saveLocal=debounce(()=>{try{localStorage.whiteboardStrokes=JSON.stringify(strokes)}catch(e){notify("Save failed: Storage full?",5000)}},400);
 
         /* pointer handlers */
         const start=e=>{
-          if(e.type==='touchstart') e.preventDefault(); // Prevent scroll/zoom on touch
-          const pos=getPos(e); if (!pos) return; // Check for valid position
-          commitText(); // Commit any pending text first
+          if(e.type==='touchstart') e.preventDefault();
+          const pos=getPos(e); if (!pos) return;
+          commitText();
           if(currentTool==="text"){makeTextInput(pos);return;}
           drawing=true;
           currentStroke={tool:currentTool,c:colorPicker.value,w:+brushSel.value,p:[pos]};
-        };
-        const move=e=>{
-          if(e.type==='touchmove') e.preventDefault(); // Prevent scroll/zoom on touch
-          const pos = getPos(e); if (!pos) return; // Check for valid position
-          if(currentTool==="eraser")updateEraserPreview(e);
-          if(!drawing||currentTool==="text"||!currentStroke)return; // Ensure stroke exists
-          const prev=currentStroke.p.at(-1);
-          if (!prev) return; // Ensure previous point exists
-
-          ctx.save(); // Save context for drawing this segment
-          ctx.setTransform(dpr,0,0,dpr,0,0); // Apply scaling for drawing
-          ctx.lineWidth=currentStroke.w;
-          ctx.strokeStyle=currentStroke.tool==="eraser"?"rgba(0,0,0,1)":currentStroke.c;
+          // Draw the starting dot
+          ctx.save();
+          ctx.setTransform(dpr,0,0,dpr,0,0); // Apply scaling
+          ctx.fillStyle = currentStroke.tool === "eraser" ? effectiveBg() : currentStroke.c; // Use background for eraser dot
           ctx.globalCompositeOperation=currentStroke.tool==="eraser"?"destination-out":"source-over";
-          ctx.lineJoin = ctx.lineCap = 'round'; // Ensure smooth lines
-          ctx.beginPath();ctx.moveTo(prev.x,prev.y);ctx.lineTo(pos.x,pos.y);ctx.stroke();
-          ctx.restore(); // Restore context
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, currentStroke.w / 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        };
 
-          currentStroke.p.push(pos);
+        const move=e=>{
+          if(e.type==='touchmove') e.preventDefault();
+          const pos = getPos(e); if (!pos) return;
+          if(currentTool==="eraser")updateEraserPreview(e);
+          if(!drawing||currentTool==="text"||!currentStroke)return;
+          const prev=currentStroke.p.at(-1);
+           if (!prev) return; // Should not happen if start worked
+
+           // Only add point if moved significantly (optional, can smooth lines)
+           // const dist = Math.hypot(pos.x - prev.x, pos.y - prev.y);
+           // if (dist < 2) return;
+
+          currentStroke.p.push(pos); // Add new point
+
+          // Draw line segment from previous point to current point
+           ctx.save();
+           ctx.setTransform(dpr,0,0,dpr,0,0); // Apply scaling
+           ctx.lineWidth=currentStroke.w;
+           ctx.strokeStyle=currentStroke.tool==="eraser"?"rgba(0,0,0,1)":currentStroke.c;
+           ctx.globalCompositeOperation=currentStroke.tool==="eraser"?"destination-out":"source-over";
+           ctx.lineJoin = ctx.lineCap = 'round';
+           ctx.beginPath();
+           ctx.moveTo(prev.x,prev.y);
+           ctx.lineTo(pos.x,pos.y);
+           ctx.stroke();
+           ctx.restore();
         };
         const end=()=>{
-          hideEraserPreview();if(!drawing)return;drawing=false;
-          if (currentStroke && currentStroke.p && currentStroke.p.length > 1) {
-           strokes.push(currentStroke);        // only save strokes that have more than one point
+          hideEraserPreview();
+          if(!drawing)return;
+          drawing=false;
+          if (currentStroke && currentStroke.p && currentStroke.p.length > 0) { // Keep even single points (dots)
+           strokes.push(currentStroke);
+           saveState(); // Save state after a stroke is completed
           }
-          // No need to redraw here unless debugging, render() happens on major actions
+          currentStroke = null; // Reset current stroke
           saveLocal();
         };
 
         /* text tool */
         let input=null;
         const makeTextInput=pos=>{
-          if(input)return;
+          if(input) commitText(); // Commit existing text if user clicks elsewhere
           input=document.createElement("textarea");
           input.id="text-input-overlay";
           const off=canvas.getBoundingClientRect();
-          input.style.left=(off.left+window.scrollX+pos.x)+"px"; // Account for scroll
-          input.style.top =(off.top+window.scrollY +pos.y)+"px"; // Account for scroll
-          input.style.fontSize=fontSel.value+"px";
+          const scale = dpr; // Use devicePixelRatio for scaling
+          input.style.left=(off.left+window.scrollX+pos.x)+"px"; // Position based on logical coords
+          input.style.top =(off.top+window.scrollY +pos.y)+"px";
+          input.style.fontSize = fontSel.value+"px"; // Use logical font size
+          input.style.lineHeight = 1.2;
+          input.style.fontFamily = 'Roboto, sans-serif';
           input.style.color=colorPicker.value;
-          input.style.fontFamily='Roboto, sans-serif'; // Match canvas font
-          input.style.lineHeight = '1.2'; // Match drawing estimate
-          input.style.padding = '4px'; // Add some padding
-          input.style.border = '1px dashed grey'; // Visible border
-          input.style.resize = 'none'; // Prevent manual resize
+          input.style.background = 'rgba(255, 255, 255, 0.8)';
+          input.style.border = '1px dashed grey';
+          input.style.padding = '2px';
+          input.style.resize = 'none';
+           input.style.minWidth = '50px'; // Minimum width
+           input.style.minHeight = (parseFloat(fontSel.value) * 1.2 + 4) + 'px'; // Min height based on font size
+           input.style.overflow = 'hidden'; // Hide scrollbars initially
+           input.style.whiteSpace = 'pre-wrap'; // Handle line breaks
+           input.style.zIndex = '25';
+
+           // Auto-resize textarea
+           input.addEventListener('input', () => {
+                input.style.height = 'auto'; // Reset height
+                input.style.height = input.scrollHeight + 'px';
+                input.style.width = 'auto'; // Reset width
+                input.style.width = input.scrollWidth + 'px';
+           });
+
           input.onblur=commitText;
-          input.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();commitText();}};
-          document.body.appendChild(input);input.focus();
+          input.onkeydown=e=>{
+              if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();commitText();}
+              else if (e.key === "Escape") { input.value = ''; commitText(); } // Allow escape to cancel
+           };
+          document.body.appendChild(input);
+          // Small delay to ensure element is in DOM before focus/resize
+          setTimeout(() => {
+               input.focus();
+               // Trigger initial size adjustment
+               input.style.height = input.scrollHeight + 'px';
+               input.style.width = Math.max(50, input.scrollWidth) + 'px';
+          }, 0);
         };
         const commitText=()=>{
           if(!input)return;
-          const txt=input.value; // Keep whitespace for multi-line
+          const txt=input.value;
           const off=canvas.getBoundingClientRect();
-          const x=parseFloat(input.style.left)-off.left-window.scrollX; // Adjust for scroll
-          const y=parseFloat(input.style.top )-off.top -window.scrollY; // Adjust for scroll
+          const scale = dpr;
+          const x = (parseFloat(input.style.left)-off.left-window.scrollX) ; // Position based on logical coordinates
+          const y = (parseFloat(input.style.top )-off.top -window.scrollY) ;
           const sz = +fontSel.value;
           const col = colorPicker.value;
           document.body.removeChild(input);input=null;
-          if(!txt.trim())return; // Don't save if only whitespace
+          if(!txt.trim())return;
           strokes.push({tool:"text",lines:txt.split("\n"),x,y,sz,c:col});
-          render();saveLocal();
+          render();
+          saveState(); // Save state after adding text
+          saveLocal();
         };
 
         /* eraser preview */
         const updateEraserPreview=e=>{
-          const p=getPos(e); if (!p) return; const size=+brushSel.value*dpr; // Scale preview size
-          eraserPreview.style.cssText=`display:block;width:${size}px;height:${size}px;left:${canvas.offsetLeft+p.x*dpr-size/2}px;top:${canvas.offsetTop+p.y*dpr-size/2}px`; // Scale position
+          const p=getPos(e); if (!p) return;
+           const size=+brushSel.value; // Logical size
+           const previewSize = size * dpr; // Scale size for display
+           const previewX = canvas.offsetLeft + p.x * dpr - previewSize / 2; // Scale position
+           const previewY = canvas.offsetTop + p.y * dpr - previewSize / 2;
+           eraserPreview.style.cssText=`display:block; border-radius:50%; border: 1px dashed grey; background: rgba(128,128,128,0.3); width:${previewSize}px; height:${previewSize}px; left:${previewX}px; top:${previewY}px; position: absolute; pointer-events: none; z-index: 30;`;
         };
         const hideEraserPreview=()=>eraserPreview.style.display="none";
+
+        /* Cursors based on tool */
+        const updateCursor = () => {
+            canvas.classList.remove('pen-cursor', 'text-cursor', 'eraser-cursor');
+            hideEraserPreview(); // Hide preview when changing tool
+            if (currentTool === 'pen') canvas.classList.add('pen-cursor');
+            else if (currentTool === 'text') canvas.classList.add('text-cursor');
+            else if (currentTool === 'eraser') canvas.classList.add('eraser-cursor'); // We'll show preview on move
+        };
+
 
         /* full-screen */
         fsBtn.onclick=()=>{
@@ -634,20 +760,25 @@
           fsBtn.classList.toggle("full",full);
           fsBtn.innerHTML=`<i class="fas fa-${full?'compress':'expand'}"></i>`;
           fsBtn.setAttribute("aria-label",full?"Exit full screen (Esc)":"Full screen (⌘/Ctrl-F)");
-          // Short delay allows fullscreen transition before resize
-          setTimeout(resizeCanvas, 100);
+          setTimeout(resizeCanvas, 150); // Increased delay slightly
         });
 
         /* hot-keys */
         addEventListener("keydown",e=>{
-          if(e.target.tagName === 'TEXTAREA') return; // Don't interfere with text input
-          if((e.metaKey||e.ctrlKey)&&e.key==="s"){e.preventDefault();$(".save-button").click();}
-          if((e.metaKey||e.ctrlKey)&&e.key==="z"){e.preventDefault();$(".undo-button").click();}
-          if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="f"){e.preventDefault();fsBtn.click();}
-          // Optional: Add keys for tools
-          // if(e.key.toLowerCase() === 'p') $$('.tool-button[data-tool="pen"]').click();
-          // if(e.key.toLowerCase() === 't') $$('.tool-button[data-tool="text"]').click();
-          // if(e.key.toLowerCase() === 'e') $$('.tool-button[data-tool="eraser"]').click();
+           // Ignore keydowns if focus is inside the text input overlay
+          if (document.activeElement === input) return;
+
+          const isModifier = e.metaKey || e.ctrlKey;
+
+          if(isModifier && e.key.toLowerCase()==="s"){e.preventDefault();$(".save-button").click();}
+          if(isModifier && e.key.toLowerCase()==="z"){e.preventDefault();undo();} // Call undo function
+          if(isModifier && e.key.toLowerCase()==="f"){e.preventDefault();fsBtn.click();}
+          // Tool hotkeys (ensure they don't clash with browser/OS shortcuts if modifier not used)
+          if(!isModifier) {
+               if(e.key.toLowerCase() === 'p') $$('.tool-button[data-tool="pen"]')[0]?.click();
+               if(e.key.toLowerCase() === 't') $$('.tool-button[data-tool="text"]')[0]?.click();
+               if(e.key.toLowerCase() === 'e') $$('.tool-button[data-tool="eraser"]')[0]?.click();
+          }
         });
 
         /* UI wiring */
@@ -655,30 +786,86 @@
         canvas.addEventListener("mousemove",move);
         canvas.addEventListener("mouseup",end);
         canvas.addEventListener("mouseleave",end);
-        canvas.addEventListener("touchstart",start,{passive:false}); // Use same start func
-        canvas.addEventListener("touchmove",move,{passive:false}); // Use same move func
+        canvas.addEventListener("touchstart",start,{passive:false});
+        canvas.addEventListener("touchmove",move,{passive:false});
         canvas.addEventListener("touchend",end);
-        canvas.addEventListener("touchcancel",end); // Handle touch cancel
+        canvas.addEventListener("touchcancel",end);
 
-        tools.forEach(b=>b.onclick=()=>{commitText();tools.forEach(x=>x.classList.toggle("active",x===b));currentTool=b.dataset.tool;hideEraserPreview();});
+        tools.forEach(b=>b.onclick=()=>{commitText();tools.forEach(x=>x.classList.remove("active"));b.classList.add("active");currentTool=b.dataset.tool; updateCursor();});
 
-        $(".undo-button").onclick = ()=>{if(strokes.pop()){render();saveLocal();notify("Undo");}};
-        $(".clear-button").onclick= ()=>{strokes=[];localStorage.removeItem("whiteboardStrokes");render();notify("Cleared");};
-        $(".fill-button").onclick  = ()=>{strokes.push({tool:"fill",color:colorPicker.value});render();saveLocal();notify("Background filled");}; // Push fill action
-        $(".save-button").onclick  = ()=>{saveLocal.flush?.();localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); notify("Saved");}; // Ensure latest strokes saved
+        $(".undo-button").onclick = undo; // Use undo function
+        $(".clear-button").onclick= ()=>{strokes=[];render();saveState();saveLocal();notify("Cleared");}; // Save cleared state
+        $(".fill-button").onclick  = ()=>{strokes.push({tool:"fill",color:colorPicker.value});render();saveState();saveLocal();notify("Background filled");};
+        $(".save-button").onclick  = ()=>{saveLocal.flush?.();localStorage.setItem('whiteboardStrokes', JSON.stringify(strokes)); notify("Saved");};
         $(".load-button").onclick  = ()=>{
-          let raw=localStorage.whiteboardStrokes;try{strokes=raw?JSON.parse(raw):[];}catch{strokes=[];}
+          let raw=localStorage.whiteboardStrokes;
+          try{
+              strokes=raw?JSON.parse(raw):[];
+              history = [{ strokes: JSON.parse(JSON.stringify(strokes)), bgColor: effectiveBg() }]; // Reset history
+              historyIndex = 0;
+          }catch{strokes=[]; history=[{strokes:[], bgColor: themeBg()}]; historyIndex = 0;}
           render();notify(strokes.length?"Loaded":"Nothing saved");
         };
         $(".export-png-button").onclick=()=>{
-          const a=document.createElement("a");a.href=canvas.toDataURL("image/png");a.download="morrisons-notes.png";a.click();notify("PNG downloaded");
+           try {
+             // Create a temporary canvas to draw without DPR scaling for export
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                const exportWidth = canvas.clientWidth; // Logical dimensions
+                const exportHeight = canvas.clientHeight;
+                tempCanvas.width = exportWidth;
+                tempCanvas.height = exportHeight;
+
+                // Draw background
+                 tempCtx.fillStyle=effectiveBg();
+                 tempCtx.fillRect(0,0,exportWidth, exportHeight);
+
+                // Draw strokes onto temp canvas without DPR scaling
+                strokes.forEach(s => {
+                     if(!s) return;
+                     tempCtx.globalCompositeOperation = "source-over";
+                     if(s.tool==="pen"||s.tool==="eraser"){
+                       if (!s.p || s.p.length < 2) return;
+                       tempCtx.lineJoin = tempCtx.lineCap = "round";
+                       tempCtx.lineWidth = s.w; // Use logical width
+                       tempCtx.strokeStyle = s.tool === "eraser" ? "rgba(0,0,0,1)" : s.c;
+                       tempCtx.globalCompositeOperation = s.tool === "eraser" ? "destination-out" : "source-over";
+                       tempCtx.beginPath(); tempCtx.moveTo(s.p[0].x, s.p[0].y);
+                       for(let i = 1; i < s.p.length; i++){ tempCtx.lineTo(s.p[i].x, s.p[i].y); }
+                       tempCtx.stroke();
+                     } else if(s.tool==="text"){
+                       tempCtx.fillStyle = s.c;
+                       tempCtx.font = `${s.sz}px Roboto, sans-serif`; // Use logical size
+                       tempCtx.textAlign = 'left'; tempCtx.textBaseline = 'top';
+                       s.lines.forEach((ln,i)=>tempCtx.fillText(ln,s.x,s.y+i*s.sz*1.2));
+                     } // Fill is already handled by background
+                });
+
+                // Export from temp canvas
+                const a=document.createElement("a");
+                a.href=tempCanvas.toDataURL("image/png");
+                a.download="morrisons-notes.png";
+                a.click();notify("PNG downloaded");
+            } catch(e) {
+                console.error("Error exporting PNG:", e);
+                notify("Error exporting PNG", 4000);
+            }
         };
 
         /* initial load */
-        window.addEventListener("resize",debounce(resizeCanvas,200));
-        try{strokes=JSON.parse(localStorage.whiteboardStrokes||"[]");}catch{strokes=[];}
-        // Initial resize and render deferred slightly to ensure layout is stable
-        setTimeout(resizeCanvas, 50);
+        window.addEventListener("resize",debounce(resizeCanvas,150)); // Shortened debounce
+        try{
+            strokes=JSON.parse(localStorage.whiteboardStrokes||"[]");
+             history = [{ strokes: JSON.parse(JSON.stringify(strokes)), bgColor: effectiveBg() }];
+             historyIndex = 0;
+        }catch{strokes=[]; history=[{strokes:[], bgColor: themeBg()}]; historyIndex = 0;}
+        // Initial resize and render deferred slightly
+        setTimeout(() => {
+            resizeCanvas();
+            updateCursor(); // Set initial cursor
+            // Save initial state after loading
+            // saveState(); // Removed - initial state is now index 0 in history
+        }, 50);
 
     } else { console.log("Whiteboard canvas not found."); } // End if(canvas)
 
@@ -733,12 +920,13 @@
             const loader = loadingContainer?.querySelector('.iframe-loading');
 
             if(loader) {
-                loader.style.display = 'none';
+                loader.style.display = 'none'; // Hide initially
             }
 
             if ('IntersectionObserver' in window) {
                 observer.observe(iframe);
             } else {
+                // Fallback for browsers without IntersectionObserver
                 if (loader) loader.style.display = 'block';
                 iframe.src = iframe.getAttribute('data-src');
                 iframe.removeAttribute('data-src');
@@ -750,7 +938,42 @@
 
 
     /* --- DOMContentLoaded --- */
-    document.addEventListener('DOMContentLoaded', () => { initLazyIframes(); });
+     document.addEventListener('DOMContentLoaded', () => {
+        // Ensure page starts at the very top
+        window.scrollTo(0, 0);
+
+        // Dark mode init
+        const saved=localStorage.theme;setMode(saved?saved==="dark":matchMedia("(prefers-color-scheme:dark)").matches);
+
+        // Lazy iframe init
+        initLazyIframes();
+
+         // Whiteboard init (ensure canvas exists)
+         if(canvas) {
+            resizeCanvas(); // Initial size calculation
+            updateCursor(); // Set initial cursor state
+            // Load initial state if needed
+            if (localStorage.whiteboardStrokes) {
+                try {
+                   strokes = JSON.parse(localStorage.whiteboardStrokes);
+                   history = [{ strokes: JSON.parse(JSON.stringify(strokes)), bgColor: effectiveBg() }];
+                   historyIndex = 0;
+                   render();
+                } catch {
+                    strokes = [];
+                    history = [{ strokes: [], bgColor: themeBg() }];
+                    historyIndex = 0;
+                }
+            } else {
+                 history = [{ strokes: [], bgColor: themeBg() }]; // Initialize history for a blank canvas
+                 historyIndex = 0;
+            }
+         }
+    });
+
+    /* --- Dark Mode System Preference Listener --- */
+    matchMedia("(prefers-color-scheme:dark)").addEventListener("change",e=>{if(!localStorage.theme)setMode(e.matches);});
+
 
     /* --- PWA Service Worker Registration --- */
     if ('serviceWorker' in navigator) {
