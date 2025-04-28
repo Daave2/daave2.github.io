@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Front End Services dashboard for Cleveleys Morrisons." />
+  <meta name="description" content="Front End Services dashboard for Cleveleys Morrisons, including CSD, Kiosk, Checkouts, More Card, Trolleys, and related procedures." /> <!-- Updated Description -->
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
@@ -77,8 +77,8 @@
   body.dark-mode a{color:var(--secondary-color);} /* Use themed secondary for dark links */
   img{max-inline-size:100%;block-size:auto}
   /* Ensure focus states are visible */
-  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
-  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible { outline-color: var(--secondary-color); }
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .accordion:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
+  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .accordion:focus-visible { outline-color: var(--secondary-color); }
 
 
   /* ---------- Header ---------- */
@@ -138,9 +138,13 @@
    section li { margin-bottom: 0.5em; }
    section strong { font-weight: 700; color: var(--primary-color); }
    body.dark-mode section strong { color: var(--primary-color); } /* Adjust dark strong */
-   .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-   .wgl-item { margin-bottom: 15px; }
-   .wgl-item strong { display: block; margin-bottom: 5px; }
+
+  /* Button Link Style */
+   .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; margin-right: 5px; text-decoration: none;}
+   .button-link i { margin-left: 5px; }
+   body.dark-mode .button-link { color: var(--footer-text); }
+   .button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
+   body.dark-mode .button-link:hover { color: var(--primary-color); }
 
 
   /* ---------- Footer ---------- */
@@ -153,15 +157,16 @@
   body.dark-mode .theme-toggle{color:var(--text-dark)}
 
   /* ---------- Accordion Styles ---------- */
-    .accordion { background-color: var(--bg-card); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
-    body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); }
+    .accordion { background-color: var(--bg-faint); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: 1px solid var(--primary-color); text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+    body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); border-color: var(--secondary-color);}
     .accordion:hover, .accordion.active { background-color: var(--primary-color); color: var(--footer-text); } /* Use footer text for contrast */
     body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-color); color: var(--primary-color); } /* Use primary color for contrast */
     .accordion::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
     .accordion.active::after { transform: rotate(-180deg); }
-    .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--bg-faint); border-top: none; margin-bottom: 10px; margin-top: -10px; }
+    .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-color); border-top: none; margin-bottom: 10px; margin-top: -10px; border-color: var(--bg-faint); }
     body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
     .panel div { padding: 15px 0; }
+    .panel p, .panel ul, .panel ol { margin-bottom: 1em; } /* Ensure spacing within panels */
 
   </style>
 </head>
@@ -193,154 +198,203 @@
 
   <!----- main content ----->
   <main class="container">
-    <!-- Content Copied from original services.html -->
+
     <section id="front-end-overview">
-      <h2>Front End Services Overview</h2>
-      <p>The Front End is a critical customer interaction point, encompassing checkouts, Customer Service Desk (CSD), Kiosk, Self Checkouts, and the Car Park. Our goal is to provide friendly, helpful, and efficient service at all times.</p>
-      <p>Key principles include adhering to the <strong>Customer First</strong> behaviours, managing queues effectively (1+1 rule), maintaining clean and organised service areas, and ensuring all equipment is operational.</p>
+        <h2><i class="fas fa-door-open"></i> Front End Services Overview</h2>
+        <p>The Front End (Checkouts, CSD, Kiosk, SCO, Car Park) is crucial for efficient, friendly service. Key principles include Customer First behaviours, queue management (1+1 rule), clean service areas, and operational equipment.</p>
+        <p>Access the full Front End Operating Guidance <a href="https://docs.google.com/presentation/d/1dwcdIAg1Z2nNiXayH0sPFy_DSAQ93uI_GKu2_pKm5mc/edit" target="_blank" rel="noopener noreferrer">here</a>.</p>
     </section>
 
-    <section id="key-service-behaviours">
-        <h2>Key Service Behaviours & Principles</h2>
-        <p>All Front End colleagues must consistently demonstrate our key service behaviours:</p>
-        <ul>
-            <li><strong>Greet Customers:</strong> Acknowledge every customer with a friendly greeting.</li>
-            <li><strong>Offer a Basket:</strong> Be proactive if a customer looks like they need one.</li>
-            <li><strong>Answer Questions:</strong> Always aim to help and say "Yes".</li>
-        </ul>
-        <p>Refer to the <a href="operations.html#customer-first">Operations page</a> for the full Customer First 15-point plan covering Assistance, Experience, and Families pillars.</p>
-        <p>Regular colleague observations focusing on these behaviours are crucial for coaching and maintaining standards.</p>
-    </section>
-
-    <section id="operating-clocks">
-        <h2>Operating Clocks & Routines</h2>
-        <p>Following structured routines ensures consistent service and operational efficiency.</p>
-        <button class="accordion">Front End Operating Clock</button>
+    <section id="service-principles">
+        <h2><i class="fas fa-handshake"></i> Service Behaviours & Standards</h2>
+        <button class="accordion"><i class="fas fa-star"></i> Key Service Behaviours</button>
         <div class="panel"><div>
-            <ul>
-                <li><strong>Pre-opening:</strong> Morning set up, equipment checks, security checks, disable alarm check.</li>
-                <li><strong>07:00-08:00:</strong> Review scheduler overs/unders, discuss support needs, complete exceptions.</li>
-                <li><strong>09:00-10:15:</strong> Complete logbook legal checks, check standards across areas.</li>
-                <li><strong>10:15-10:30:</strong> Random till checks (min 1 Cafe, 1 Petrol, 1 Main Store), ensure put backs actioned.</li>
-                <li><strong>10:45-11:00:</strong> Review till overs/shorts, plan rechecks/investigations.</li>
-                <li><strong>13:00-13:45:</strong> Review evening scheduler, complete amends, £11 refund check.</li>
-                <li><strong>13:45-14:15:</strong> Repeat random till checks.</li>
-                <li><strong>14:00-14:30:</strong> Disabled Alarm Check, ensure put backs actioned.</li>
-                <li><strong>16:00-17:00:</strong> Fit for 5 standards check.</li>
-                <li><strong>19:00-19:45:</strong> £11 refund check, repeat random till checks.</li>
-                 <li><strong>21:00-22:00:</strong> Ensure put backs/hangers/tags returned, consumables available, tills tidy/cleaned.</li>
-                 <li><strong>After close:</strong> Coordinated close down routines (Empty ICH, count tills, suspend/retrieve checks, collect coupons, lottery instants, detachers).</li>
-                 <li><strong>Throughout the day:</strong> Serve Customers, Manage Queues (minimum 1 Main Bank Open), Toilet checks, Floor checks.</li>
-            </ul>
+            <p>Consistently demonstrate:</p>
+            <ol>
+                <li><strong>Greet Customers:</strong> Friendly acknowledgement.</li>
+                <li><strong>Offer a Basket:</strong> Proactive assistance.</li>
+                <li><strong>Answer Questions:</strong> Helpful attitude, aim for "Yes".</li>
+            </ol>
+            <p>Refer to the <a href="operations.html#customer-first">Customer First 15-point plan</a> on the Operations page for full details.</p>
+            <p><small>Ref: Front End Op Guide p3</small></p>
         </div></div>
-        <button class="accordion">Combined CSD & Kiosk Operating Clock</button>
+
+        <button class="accordion"><i class="fas fa-users"></i> Queue Management</button>
         <div class="panel"><div>
+            <p>Standard: <strong>1 customer served + 1 customer waiting (1+1)</strong>.</p>
             <ul>
-                <li><strong>Pre-opening:</strong> Morning set up, unlock bunker/lottery, print Food Orders.</li>
-                 <li><strong>07:00-07:30:</strong> Review comms book.</li>
-                 <li><strong>08:00-08:30:</strong> Complete legal checks (Logbook).</li>
-                 <li><strong>08:30-10:30:</strong> Check cigarette delivery/stock, Tobacco/Vape Gap Scan (Sun/Trial), pick petrol station order (twice/week).</li>
-                 <li><strong>10:30-10:45:</strong> Review Lost & Found log.</li>
-                 <li><strong>19:45-21:00:</strong> Replenish tobacco stock.</li>
-                 <li><strong>21:00-22:00:</strong> Kiosk tidy/cleaned, place Mart Cart on charge, check wheelchairs.</li>
-                 <li><strong>Close:</strong> Lock bunker/scratch cards, sign off terminal/tills, return keys.</li>
-                 <li><strong>Throughout the day:</strong> Serve customers, sell/redeem lottery/scratch cards, fill balloons, handle queries, log issues (Salesforce), process returns/refunds/food orders, check More Card points, sign for post, accept Deliveroo, call Help Desk/taxi if needed, sign in visitors.</li>
+                <li><strong>Main Bank:</strong> Min. 1 till open always. Schedule based on planners/demand.</li>
+                <li><strong>Self Scan (SCO):</strong> Manned during store hours. Colleague wears hi-vis, assists proactively, manages cash/card modes, replenishes consumables, focuses on Service & Protect.</li>
+                <li><strong>Kiosk/CSD:</strong> Manned during specified hours. Use headset for support.</li>
+                <li><strong>Monitoring:</strong> Service Team Leaders visually monitor, use headset/baton, check Efficiency Measure Dashboard (Looker).</li>
             </ul>
+             <p><small>Ref: Front End Op Guide - Based on original services.html content, cross-ref with linked guide if needed.</small></p>
         </div></div>
     </section>
 
-     <section id="queue-management">
-        <h2>Queue Management</h2>
-        <p>Efficient queue management is vital for customer satisfaction. Our standard is **1 customer being served + 1 customer waiting (1+1)**.</p>
-        <h3>Principles:</h3>
-        <ul>
-            <li><strong>Main Bank:</strong> At least one main bank till must be open during all trading hours. Schedule additional tills based on planners and customer demand.</li>
-            <li><strong>Self Scan (SCO):</strong> Manned by a dedicated colleague during full store opening hours (may vary based on store format/hours). SCO colleagues should wear high-vis, manage cash/card settings, replenish consumables, assist customers proactively (especially red lights), and focus on Service & Protect (vigilance against shrink). Dual corrals should be managed appropriately (open/close based on demand).</li>
-            <li><strong>Kiosk/CSD:</strong> Minimum 1 colleague available during trading hours (9am-5pm minimum for standalone CSDs). Use headset to call for support if queues build.</li>
-            <li><strong>Monitoring:</strong> Service Team Leaders should visually monitor queues across all checkout types and use headsets/baton to direct customers and call for relief/additional checkouts. The new Efficiency Measure Dashboard (on Looker) replaces the old 'Customers Don't Queue' system.</li>
-             <li><strong>Colleague Guidance:</strong> Main bank colleagues focus on efficient scanning and friendly interaction. SCO colleagues focus on assistance, Service & Protect, and maintaining the area. All colleagues should adhere to the 3 Key Service Asks.</li>
-        </ul>
-        <p>Refer to the 'Managing Queues at the Front End' guide for full details on manning, tools (Headsets, Baton, Checkout Arrow), efficiency measures, and colleague responsibilities.</p>
-    </section>
+     <section id="operational-areas">
+        <h2><i class="fas fa-cash-register"></i> Operational Area Guides</h2>
 
-    <section id="csd-kiosk-operations">
-        <h2>CSD & Kiosk Specifics</h2>
-        <h3>Layout & Equipment:</h3>
-        <ul>
-            <li>Desks/Kiosks kept clean, tidy, and clutter-free.</li>
-            <li>All required signage displayed correctly and visibly (Refund Policy, Privacy Policy, Licensing Notices, Challenge 25, promotional/variable notices as needed).</li>
-            <li>Equipment (Lottery terminal, Vocovo headsets, Mart Cart keys, Till rolls, Bunzl supplies) stored correctly and available.</li>
-            <li>Lost property stored securely (valuables in Cash Office, non-valuables in designated cupboard/area) and logged via Salesforce. Follow retention and disposal procedures (4 weeks).</li>
-            <li>Kiosk Bunker (if applicable) organised as a mirror image of cabinets, shelves tidy, stock rotated.</li>
-        </ul>
-        <h3>Key Tasks:</h3>
-         <ul>
-             <li>Handle refunds, exchanges, and complaints according to policy (see <a href="#refunds-goodwill">Refunds & Goodwill</a> section).</li>
-             <li>Process lottery sales/payouts, manage scratch cards.</li>
-             <li>Manage Food to Order collections (now processed online, assist customers as needed).</li>
-             <li>Handle Lost & Found logging and reclaiming (using Salesforce).</li>
-             <li>Manage Mart Cart bookings and daily checks (using Salesforce).</li>
-             <li>Sign in visitors and explain fire safety information.</li>
-             <li>Assist with general customer enquiries and More Card issues.</li>
-         </ul>
-    </section>
+         <button class="accordion"><i class="fas fa-desktop"></i> CSD & Kiosk Operations</button>
+         <div class="panel"><div>
+             <h4>Layout & Standards:</h4>
+             <ul>
+                 <li>Clean, tidy, clutter-free desks/kiosks.</li>
+                 <li>Correct signage displayed (Refunds, Licensing, C25, etc.).</li>
+                 <li>Essential equipment available (Lottery terminal, Vocovo, Till rolls).</li>
+                 <li>Lost property managed via Salesforce (secure storage, 4-week retention).</li>
+                 <li>Kiosk Bunker organised, stock rotated.</li>
+             </ul>
+             <h4>Key Tasks:</h4>
+              <ul>
+                  <li>Refunds/Exchanges (See dedicated accordion).</li>
+                  <li>Lottery/Scratchcards.</li>
+                  <li>Lost & Found logging/reclaiming (Salesforce).</li>
+                  <li>Mart Cart checks/booking (Salesforce).</li>
+                  <li>Visitor sign-in & fire safety briefing.</li>
+                  <li>Handling Cash Office items (Saver Stamps, Gift Vouchers - See Cash Office section).</li>
+                   <li>Accepting partner delivery driver collections (e.g. Deliveroo).</li>
+              </ul>
+             <p><small>Ref: Front End Op Guide p5, 15</small></p>
+         </div></div>
 
-     <section id="checkouts-sco">
-        <h2>Checkouts & Self-Checkout (SCO) Standards</h2>
-        <h3>What Good Looks Like (Checkouts):</h3>
-        <ul>
-             <li>Cleanliness: Belts, bagging areas, desk, drawers, floors clean and clutter-free.</li>
-             <li>Equipment: Security tags stored correctly, rubbish bins emptied, bags/till rolls replenished, Vocovo available, emergency stop accessible.</li>
-             <li>Merchandising: Queue line signage correct, impulse items tidy and planogram compliant.</li>
-             <li>Service: Helpful, friendly, efficient service. Adhere to Key Service Behaviours. Use tools (headset, arrow) effectively.</li>
-        </ul>
-         <h3>What Good Looks Like (Self-Checkouts):</h3>
-        <ul>
-             <li>Signage: Correct Cash/Card signage displayed, contactless visible, Challenge 25 present.</li>
-             <li>Cleanliness: Surfaces clean, residue-free. Scanner glass clean.</li>
-             <li>Equipment: Bags replenished, headset available, de-tagger locked, security tag bin available/emptied, SCO cabinet stocked (sprays, blue roll, till rolls, dustpan/brush).</li>
-             <li>Colleague Presence: High-vis vest worn, proactive assistance, vigilant for shrink (Service & Protect).</li>
-             <li>Cash Handling (if applicable): Correct float levels maintained, secure emptying procedures followed.</li>
-        </ul>
-    </section>
+         <button class="accordion"><i class="fas fa-barcode"></i> Checkouts & Self-Checkout (SCO) Standards</button>
+         <div class="panel"><div>
+              <h4>Checkout WGLL:</h4>
+              <ul>
+                  <li>Cleanliness: Belts, bagging areas, drawers, floors.</li>
+                  <li>Equipment: Tags stored, bins empty, consumables replenished, Vocovo ready.</li>
+                  <li>Merchandising: Queue lines correct, impulse tidy.</li>
+                  <li>Service: Helpful, friendly, efficient, Key Behaviours met.</li>
+              </ul>
+              <h4>SCO WGLL:</h4>
+              <ul>
+                  <li>Signage: Correct Cash/Card, Contactless, C25 visible.</li>
+                  <li>Cleanliness: Surfaces, scanner glass clean.</li>
+                  <li>Equipment: Bags/rolls replenished, headset ready, detagger secure, tag bin available/emptied, SCO cabinet stocked.</li>
+                  <li>Colleague Presence: Hi-vis worn, proactive assist, vigilant (Service & Protect).</li>
+                  <li>More Card Scanning: Ensure customers scan More Card for points/offers.</li>
+                  <li>Catalina Coupons: Understand process, troubleshoot basic printer issues (See More Card Guide p38-39).</li>
+              </ul>
+              <p><small>Ref: Front End Op Guide p10-14</small></p>
+         </div></div>
 
-     <section id="car-park">
-        <h2>Car Park Standards</h2>
-         <h3>What Good Looks Like:</h3>
-         <ul>
-             <li>Trolleys & Baskets: Returned regularly to bays, clean, undamaged. Secured end of day if required.</li>
-             <li>Trolley Bays: Clean, litter-free, posters displayed correctly in frames (order via Bunzl). Report damaged bays to Maintenance.</li>
-             <li>General Area: Clean, litter-free, recycling areas clear, external signage/A-frames in good condition.</li>
-             <li>Safety: Winter grit stored correctly, no obstructions, adequate lighting.</li>
-         </ul>
-    </section>
+         <button class="accordion"><i class="fas fa-car"></i> Car Park & Trolleys/Baskets</button>
+         <div class="panel"><div>
+             <p><a href="PATH_TO_TROLLEY_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Trolley & Basket Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+             <h4>Trolley Standards:</h4>
+             <ul>
+                 <li>Returned regularly to bays, clean, undamaged. Secured at close.</li>
+                 <li>Bays clean, posters correct. Report damage to Wanzl/Maintenance.</li>
+                 <li>Order new/report damaged trolleys via form (link in guide). Wanzl partnership manages maintenance (SLAs apply).</li>
+                 <li>Report theft >9 trolleys to LP Control Room (0345 611 6711), <9 via MySecurity.</li>
+                 <li>Use Trolleywise app/email (<a href="mailto:trolleywise@wanzl.co.uk">trolleywise@wanzl.co.uk</a>) for abandoned trolleys.</li>
+             </ul>
+             <h4>Basket Standards:</h4>
+              <ul>
+                  <li>Stacked <50 high. Located correctly (in-store, not blocking exits).</li>
+                  <li>All types available, not stored outside.</li>
+              </ul>
+               <h4>General Area WGLL:</h4>
+               <ul>
+                  <li>Clean, litter-free, recycling areas clear, external signage good.</li>
+                  <li>Safety: Grit available (winter), no obstructions, good lighting.</li>
+               </ul>
+              <p><small>Ref: Front End Op Guide p16 & Trolley/Basket Guide</small></p>
+         </div></div>
 
-    <section id="refunds-goodwill">
-        <h2>Refunds, Exchanges & Goodwill</h2>
-        <p>Handle refunds and exchanges efficiently and according to policy, always aiming for customer satisfaction.</p>
-         <button class="accordion">Refund & Exchange Policy Summary</button>
-        <div class="panel"><div>
-            <ul>
-                <li><strong>30-Day Change of Mind:</strong> Customers can return items within 30 days with proof of purchase (receipt) in original, re-saleable condition for a full refund/exchange. Exclusions apply (see policy poster/guide). Use discretion where appropriate.</li>
-                 <li><strong>Faulty Goods:</strong> Legal statutory rights apply. Faulty goods can always be returned, even if excluded from the change-of-mind policy.</li>
-                 <li><strong>Accepted 'Change of Mind' Returns (Update):</strong> Includes sealed Alcohol, sealed shop floor Medicines, sealed Cosmetics, sealed Baby Formula/Milk, full Postage Stamp books, Tobacco/Cigarettes (sealed), Swimwear (if hygiene strip intact).</li>
-                 <li><strong>Exclusions (Check Full Policy):</strong> Typically includes Pharmacy meds, unsealed items (where applicable), pierced jewellery, CDs/DVDs (unless faulty), gift cards, lottery, top-ups etc.</li>
-                 <li><strong>Process:</strong> Refunds processed at CSD/Kiosk. Use correct Till Refund Codes. Refunds over £11 require additional slip and Manager check.</li>
-                 <li><strong>Exchanges:</strong> Use Exchange function on till. Weighted items processed same as refunds. Customer pays difference if new item costs more; refunded difference if less.</li>
-            </ul>
-        </div></div>
-         <button class="accordion">Goodwill Guidelines</button>
-        <div class="panel"><div>
-            <ul>
-                <li>Listen to the customer's complaint fully to understand the issue.</li>
-                <li>Apologise and aim to resolve the issue at first point of contact.</li>
-                <li>A gesture of goodwill may support resolution. Follow the Goodwill Matrix for consistency (£5-£10 typical value via Flowers, Chocolates, Wine, Cafe Meal, Gift Card/Refund Card).</li>
-                 <li>Store Manager authorisation required for higher value goodwill (up to £30 on refund card).</li>
-                 <li>Use the 'Goodwill' tender button on tills for processing product-based goodwill (e.g., giving flowers). This tracks goodwill but doesn't require cash balancing.</li>
-                 <li>Refund cards can be used if paper vouchers are unavailable (must be authorised).</li>
-            </ul>
-        </div></div>
-        <p>Refer to the 'Operational Guidance - Customer Service Desk & Kiosk, Salesforce, Refunds and Complaints' document for full details, including handling specific complaint types (Foreign Body, Illness, Allergens etc.) and using Salesforce for logging.</p>
+          <button class="accordion"><i class="fas fa-undo"></i> Refunds, Exchanges & Goodwill</button>
+          <div class="panel"><div>
+               <h4>Refund & Exchange Policy:</h4>
+               <ul>
+                   <li><strong>30-Day Change of Mind:</strong> Requires proof of purchase, original re-saleable condition. Exclusions apply (check policy).</li>
+                   <li><strong>Faulty Goods:</strong> Statutory rights apply; always returnable.</li>
+                   <li><strong>Process:</strong> Process at CSD/Kiosk using correct Till Refund Codes. >£11 requires manager check slip.</li>
+               </ul>
+               <h4>Goodwill Guidelines:</h4>
+               <ul>
+                   <li>Listen, apologise, resolve first time.</li>
+                   <li>Use Goodwill Matrix (£5-£10 typical value via product/gift card). Store Manager auth needed for >£10 (max £30 on refund card).</li>
+                   <li>Use 'Goodwill' tender for product goodwill.</li>
+                   <li>Log complex complaints/Foreign Body/Illness via Salesforce.</li>
+               </ul>
+               <p><small>Ref: Front End Op Guide p28 (and original services.html summary)</small></p>
+           </div></div>
+
+     </section>
+
+     <section id="more-card-support">
+         <h2><i class="fas fa-star"></i> More Card Support</h2>
+          <p>Front End colleagues are key to supporting customers with the More Card scheme.</p>
+          <p><a href="PATH_TO_MORECARD_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full More Card Operating Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+
+         <button class="accordion"><i class="fas fa-user-plus"></i> Sign Up & Lost/Stolen</button>
+         <div class="panel"><div>
+             <ul>
+                 <li>Offer sign-up via App, Website, or Salesforce (in-store). See Guide p6, 29.</li>
+                 <li>Temporary cards available at CSD while physical card is delivered (up to 14 days).</li>
+                 <li>Report Lost/Stolen via App, Website, or Salesforce (Guide p30). New digital card immediate, physical within 14 days.</li>
+             </ul>
+         </div></div>
+
+         <button class="accordion"><i class="fas fa-receipt"></i> Points, Fivers & Troubleshooting</button>
+         <div class="panel"><div>
+              <ul>
+                  <li>Explain points earning (Fuel, specific products). Balance visible on app, website, till receipts (Guide p18).</li>
+                  <li>Explain Fiver conversion (5000 points = £5). Digital fivers via app/website, physical print automatically for non-digital users (Guide p12-14).</li>
+                  <li>Troubleshooting common issues (app won't load, fiver not applying, passcode not received) - see Guide p26. Log Salesforce case if unresolved.</li>
+                  <li>Adding missed points/collector spend from receipts (Guide p32-33).</li>
+                  <li>Updating voucher preferences (digital vs print) via Salesforce (Guide p31).</li>
+              </ul>
+         </div></div>
+
+         <button class="accordion"><i class="fas fa-tags"></i> More Card Prices & Promotions</button>
+         <div class="panel"><div>
+              <ul>
+                  <li>Explain More Card Prices (exclusive discounts scanned at till). Identify via SELs/App (Guide p19).</li>
+                  <li>Explain More Rewards (personalised app offers needing activation) (Guide p20).</li>
+                  <li>Explain Collectors (e.g., Christmas Collector - track spend via app/coupon) (Guide p21).</li>
+                  <li>Explain Points Boosters (app-only offers on specific brands/categories) (Guide p22).</li>
+              </ul>
+         </div></div>
+     </section>
+
+     <section id="cash-office-procedures">
+        <h2><i class="fas fa-cash-register"></i> Cash Office Procedures (Front End Interaction)</h2>
+         <p>Front End colleagues interact with Cash Office processes daily.</p>
+          <p><a href="PATH_TO_CASHOFFICE_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Cash Office Operating Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+
+         <button class="accordion"><i class="fas fa-money-bill-wave"></i> Till Loans, Lifts & Balancing</button>
+         <div class="panel"><div>
+             <ul>
+                 <li>**Loans:** Receive change loans from Cash Office/Manager at start of day/shift. Process via Till Function > Till Loan (Guide p11).</li>
+                 <li>**Lifts (ICH Pouches):** Securely handle cash removed from tills/SCOs via ICH pouches. Correct process for entering value as Till Lift on Storeline crucial for balancing (Guide p28).</li>
+                 <li>**Balancing/Over Shorts:** Understand Till Over/Short report. Cooperate with investigations for discrepancies >£10 (Guide p36-40).</li>
+                 <li>**Till Locking:** Ensure tills are correctly actioned for Till Locking process by Cash Office (usually 8am) (Guide p31).</li>
+             </ul>
+         </div></div>
+
+         <button class="accordion"><i class="fas fa-receipt"></i> Tenders & Reconciliation</button>
+         <div class="panel"><div>
+             <ul>
+                 <li>**Manual Tenders:** Handle specific tenders correctly (e.g., manual EFT fallbacks, specific vouchers - requires clear understanding of what's accepted).</li>
+                 <li>**Lottery/Scratchcards:** Correctly reconcile sales/prizes at Kiosk/till against Lottery terminal reports (Guide p17-22).</li>
+                 <li>**Banking Prep:** Ensure coupons, vouchers, specific tenders are correctly separated and processed for Cash Office banking prep (Guide p54).</li>
+             </ul>
+         </div></div>
+     </section>
+
+    <section id="pharmacy-ref">
+        <h2><i class="fas fa-pills"></i> Pharmacy Interaction (Reference Only)</h2>
+         <p>The Pharmacy operates separately, but Front End staff may interact with patients/customers.</p>
+          <p><a href="PATH_TO_PHARMACY_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Pharmacy Operating Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+        <ul>
+            <li>Direct all prescription and specific medicine queries directly to the Pharmacy counter/Pharmacist.</li>
+            <li>Be aware of Pharmacy opening hours (these may differ from main store).</li>
+            <li>Locate the Pharmacy within the store to provide directions.</li>
+            <li>Understand that P-Medicines can only be sold when a Pharmacist is present.</li>
+            <li>Familiarise yourself with basic services offered (e.g., Flu Jabs - seasonal) to signpost customers, but always refer them to Pharmacy staff for details.</li>
+        </ul>
     </section>
 
   </main>
@@ -367,38 +421,60 @@
       /* Accordion Functionality */
       const accordions = document.getElementsByClassName("accordion");
       for (let i = 0; i < accordions.length; i++) {
-        accordions[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          const panel = this.nextElementSibling;
-           if (panel.style.maxHeight) {
-             panel.style.padding = "0 18px"; // Collapse padding first
-             panel.style.maxHeight = null;
-             panel.setAttribute('aria-hidden', 'true');
-           } else {
-             panel.style.maxHeight = panel.scrollHeight + "px";
-             panel.style.padding = "0 18px"; // Apply padding as it opens
-             // Add inner padding after transition
-             setTimeout(() => {
-                  if (panel.style.maxHeight){ // Check if still open
-                       const innerDiv = panel.querySelector('div');
-                       if(innerDiv) innerDiv.style.padding = "15px 0";
-                  }
-             }, 300); // Match transition time
-             panel.setAttribute('aria-hidden', 'false');
-           }
-        });
+          accordions[i].setAttribute('aria-expanded', 'false'); // Initial state
+          const panel = accordions[i].nextElementSibling;
+          if(panel) panel.setAttribute('aria-hidden', 'true'); // Initial state
+
+          accordions[i].addEventListener("click", function() {
+              const isActive = this.classList.toggle("active");
+              this.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+              const panel = this.nextElementSibling;
+              if (panel) {
+                  panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+                   if (panel.style.maxHeight) {
+                     panel.style.padding = "0 18px"; // Collapse padding first
+                     panel.style.maxHeight = null;
+                   } else {
+                     panel.style.maxHeight = panel.scrollHeight + "px";
+                     panel.style.padding = "0 18px"; // Apply padding as it opens
+                     // Add inner padding after transition
+                     setTimeout(() => {
+                          if (panel.style.maxHeight){ // Check if still open
+                               const innerDiv = panel.querySelector('div');
+                               if(innerDiv) innerDiv.style.padding = "15px 0";
+                          }
+                     }, 300); // Match transition time
+                   }
+              }
+          });
+           // Allow activating accordion with Enter/Space key
+          accordions[i].addEventListener('keydown', function(event) {
+              if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  this.click();
+              }
+          });
       }
 
       /* Initial theme and dark mode load */
-      document.addEventListener('DOMContentLoaded', () => {
-           const savedTheme = localStorage.getItem('theme');
-           setMode(saved?saved==='dark':matchMedia('(prefers-color-scheme:dark)').matches); // Apply saved or preferred dark mode
+       document.addEventListener('DOMContentLoaded', () => {
+           // Ensure page starts at the very top
+           window.scrollTo(0, 0);
 
-           // Apply Purple Theme Class (already on body tag, but ensure styles apply)
+           const savedTheme = localStorage.getItem('theme');
+           const prefersDark = matchMedia('(prefers-color-scheme:dark)').matches;
+           setMode(savedTheme ? savedTheme === 'dark' : prefersDark);
+
+           // Apply Purple Theme Class
            document.body.classList.add('purple-theme');
            void document.body.offsetHeight; // Force reflow if needed
+
+            // Removed hash linking logic to prevent scroll on load
        });
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { if (!localStorage.getItem('theme')) { setMode(event.matches); } });
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+          if (!localStorage.getItem('theme')) { setMode(event.matches); }
+      });
 
 
       /* --- PWA Service Worker Registration --- */
