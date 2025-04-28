@@ -139,12 +139,13 @@
    section strong { font-weight: 700; color: var(--primary-color); }
    body.dark-mode section strong { color: var(--primary-color); } /* Adjust dark strong */
 
-  /* Button Link Style */
-   .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; margin-right: 5px; text-decoration: none;}
-   .button-link i { margin-left: 5px; }
-   body.dark-mode .button-link { color: var(--footer-text); }
-   .button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
-   body.dark-mode .button-link:hover { color: var(--primary-color); }
+
+    /* Button Link Style */
+    .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; margin-right: 5px; text-decoration: none;}
+    .button-link i { margin-left: 5px; }
+    body.dark-mode .button-link { color: var(--footer-text); }
+    .button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
+    body.dark-mode .button-link:hover { color: var(--primary-color); }
 
 
   /* ---------- Footer ---------- */
@@ -202,7 +203,7 @@
     <section id="front-end-overview">
         <h2><i class="fas fa-door-open"></i> Front End Services Overview</h2>
         <p>The Front End (Checkouts, CSD, Kiosk, SCO, Car Park) is crucial for efficient, friendly service. Key principles include Customer First behaviours, queue management (1+1 rule), clean service areas, and operational equipment.</p>
-        <p>Access the full Front End Operating Guidance <a href="https://docs.google.com/presentation/d/1dwcdIAg1Z2nNiXayH0sPFy_DSAQ93uI_GKu2_pKm5mc/edit" target="_blank" rel="noopener noreferrer">here</a>.</p>
+        <p><a href="https://docs.google.com/presentation/d/1dwcdIAg1Z2nNiXayH0sPFy_DSAQ93uI_GKu2_pKm5mc/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Front End Operating Guide <i class="fas fa-external-link-alt fa-xs"></i></a></p>
     </section>
 
     <section id="service-principles">
@@ -228,7 +229,7 @@
                 <li><strong>Kiosk/CSD:</strong> Manned during specified hours. Use headset for support.</li>
                 <li><strong>Monitoring:</strong> Service Team Leaders visually monitor, use headset/baton, check Efficiency Measure Dashboard (Looker).</li>
             </ul>
-             <p><small>Ref: Front End Op Guide - Based on original services.html content, cross-ref with linked guide if needed.</small></p>
+             <p><small>Ref: Front End Op Guide p12 (Queue Line)</small></p>
         </div></div>
     </section>
 
@@ -237,23 +238,23 @@
 
          <button class="accordion"><i class="fas fa-desktop"></i> CSD & Kiosk Operations</button>
          <div class="panel"><div>
+              <h4>Operating Clock Summary:</h4>
+              <p>Key tasks include: Set up, Legal Checks (Logbook), Cigarette Delivery/Stock Checks/Gap Scan, Lost & Found log, Replenish tobacco, Tidy/Clean, Secure at close. Throughout day: Serve customers, Lottery/Scratchcards, Balloons, Queries, Returns/Refunds, Post, Deliveroo Handovers, Visitor Sign-in.</p>
              <h4>Layout & Standards:</h4>
              <ul>
                  <li>Clean, tidy, clutter-free desks/kiosks.</li>
                  <li>Correct signage displayed (Refunds, Licensing, C25, etc.).</li>
-                 <li>Essential equipment available (Lottery terminal, Vocovo, Till rolls).</li>
+                 <li>Essential equipment available & stored correctly (Lottery terminal, Vocovo, Till rolls, Mart Cart keys).</li>
                  <li>Lost property managed via Salesforce (secure storage, 4-week retention).</li>
-                 <li>Kiosk Bunker organised, stock rotated.</li>
              </ul>
-             <h4>Key Tasks:</h4>
+             <h4>Key Tasks Summary:</h4>
               <ul>
-                  <li>Refunds/Exchanges (See dedicated accordion).</li>
-                  <li>Lottery/Scratchcards.</li>
-                  <li>Lost & Found logging/reclaiming (Salesforce).</li>
-                  <li>Mart Cart checks/booking (Salesforce).</li>
-                  <li>Visitor sign-in & fire safety briefing.</li>
-                  <li>Handling Cash Office items (Saver Stamps, Gift Vouchers - See Cash Office section).</li>
-                   <li>Accepting partner delivery driver collections (e.g. Deliveroo).</li>
+                  <li>Handle refunds, exchanges, complaints per policy (See dedicated accordion).</li>
+                  <li>Process lottery sales/payouts.</li>
+                  <li>Manage Mart Cart checks/booking (Salesforce).</li>
+                  <li>Sign in visitors & brief on fire safety.</li>
+                   <li>Assist with More Card issues (See More Card section).</li>
+                   <li>Handle Cash Office items (Saver Stamps, Gift Vouchers - See Cash Office section).</li>
               </ul>
              <p><small>Ref: Front End Op Guide p5, 15</small></p>
          </div></div>
@@ -262,10 +263,8 @@
          <div class="panel"><div>
               <h4>Checkout WGLL:</h4>
               <ul>
-                  <li>Cleanliness: Belts, bagging areas, drawers, floors.</li>
-                  <li>Equipment: Tags stored, bins empty, consumables replenished, Vocovo ready.</li>
-                  <li>Merchandising: Queue lines correct, impulse tidy.</li>
-                  <li>Service: Helpful, friendly, efficient, Key Behaviours met.</li>
+                  <li>Cleanliness: Belts, bagging areas, drawers, floors. Equipment: Tags stored, bins empty, consumables replenished, Vocovo ready.</li>
+                  <li>Merchandising: Queue lines correct, impulse tidy. Service: Helpful, friendly, efficient.</li>
               </ul>
               <h4>SCO WGLL:</h4>
               <ul>
@@ -273,27 +272,25 @@
                   <li>Cleanliness: Surfaces, scanner glass clean.</li>
                   <li>Equipment: Bags/rolls replenished, headset ready, detagger secure, tag bin available/emptied, SCO cabinet stocked.</li>
                   <li>Colleague Presence: Hi-vis worn, proactive assist, vigilant (Service & Protect).</li>
-                  <li>More Card Scanning: Ensure customers scan More Card for points/offers.</li>
-                  <li>Catalina Coupons: Understand process, troubleshoot basic printer issues (See More Card Guide p38-39).</li>
+                   <li>More Card Scanning: Ensure customers scan.</li>
+                   <li>Catalina Coupons: Understand process, troubleshoot basics (printer paper/ink - see More Card Guide p38-40).</li>
               </ul>
               <p><small>Ref: Front End Op Guide p10-14</small></p>
          </div></div>
 
          <button class="accordion"><i class="fas fa-car"></i> Car Park & Trolleys/Baskets</button>
          <div class="panel"><div>
-             <p><a href="PATH_TO_TROLLEY_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Trolley & Basket Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+             <p><a href="https://docs.google.com/presentation/d/1hZGH2A0hBrnlYPNj_heS_l0uaPY_mHcHF4RKlCoBUh8/edit" target="_blank" rel="noopener noreferrer">View Full Trolley & Basket Guide (PDF)</a></p>
              <h4>Trolley Standards:</h4>
              <ul>
-                 <li>Returned regularly to bays, clean, undamaged. Secured at close.</li>
-                 <li>Bays clean, posters correct. Report damage to Wanzl/Maintenance.</li>
-                 <li>Order new/report damaged trolleys via form (link in guide). Wanzl partnership manages maintenance (SLAs apply).</li>
+                 <li>Gathered regularly, clean, undamaged, secured at close. Bays clean, posters correct.</li>
+                 <li>Order new/report damaged via Wanzl form/email/phone (link/details in guide).</li>
                  <li>Report theft >9 trolleys to LP Control Room (0345 611 6711), <9 via MySecurity.</li>
-                 <li>Use Trolleywise app/email (<a href="mailto:trolleywise@wanzl.co.uk">trolleywise@wanzl.co.uk</a>) for abandoned trolleys.</li>
+                 <li>Use Trolleywise for abandoned trolleys (<a href="mailto:trolleywise@wanzl.co.uk">trolleywise@wanzl.co.uk</a>).</li>
              </ul>
              <h4>Basket Standards:</h4>
               <ul>
-                  <li>Stacked <50 high. Located correctly (in-store, not blocking exits).</li>
-                  <li>All types available, not stored outside.</li>
+                  <li>Stacked <50 high. Located correctly (not blocking exits/outside).</li>
               </ul>
                <h4>General Area WGLL:</h4>
                <ul>
@@ -307,94 +304,104 @@
           <div class="panel"><div>
                <h4>Refund & Exchange Policy:</h4>
                <ul>
-                   <li><strong>30-Day Change of Mind:</strong> Requires proof of purchase, original re-saleable condition. Exclusions apply (check policy).</li>
-                   <li><strong>Faulty Goods:</strong> Statutory rights apply; always returnable.</li>
-                   <li><strong>Process:</strong> Process at CSD/Kiosk using correct Till Refund Codes. >£11 requires manager check slip.</li>
+                   <li><strong>30-Day Change of Mind:</strong> Requires proof of purchase, original re-saleable condition. Check exclusions.</li>
+                   <li><strong>Faulty Goods:</strong> Statutory rights apply.</li>
+                   <li><strong>Process:</strong> Process at CSD/Kiosk using correct Till Refund Codes. >£11 requires manager check slip. Logbook entry needed.</li>
                </ul>
                <h4>Goodwill Guidelines:</h4>
                <ul>
                    <li>Listen, apologise, resolve first time.</li>
-                   <li>Use Goodwill Matrix (£5-£10 typical value via product/gift card). Store Manager auth needed for >£10 (max £30 on refund card).</li>
-                   <li>Use 'Goodwill' tender for product goodwill.</li>
-                   <li>Log complex complaints/Foreign Body/Illness via Salesforce.</li>
+                   <li>Use Goodwill Matrix (£5-£10 typical value). Store Manager auth needed >£10 (max £30).</li>
+                   <li>Use 'Goodwill' tender for product goodwill. Log complex complaints on Salesforce.</li>
                </ul>
-               <p><small>Ref: Front End Op Guide p28 (and original services.html summary)</small></p>
+               <p><small>Ref: Front End Op Guide p28</small></p>
            </div></div>
 
      </section>
 
      <section id="more-card-support">
          <h2><i class="fas fa-star"></i> More Card Support</h2>
-          <p>Front End colleagues are key to supporting customers with the More Card scheme.</p>
-          <p><a href="PATH_TO_MORECARD_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full More Card Operating Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+          <p>Front End colleagues assist customers with More Card queries and processes.</p>
+          <p><a href="https://docs.google.com/presentation/d/1N-0zG5M9aZVW9aNTj4SKT4uH-ahHn-pitsii3nBBTuY/edit" target="_blank" rel="noopener noreferrer">View Full More Card Operating Guide (PDF)</a></p>
 
-         <button class="accordion"><i class="fas fa-user-plus"></i> Sign Up & Lost/Stolen</button>
+         <button class="accordion"><i class="fas fa-user-plus"></i> Sign Up & Account Management</button>
          <div class="panel"><div>
              <ul>
-                 <li>Offer sign-up via App, Website, or Salesforce (in-store). See Guide p6, 29.</li>
-                 <li>Temporary cards available at CSD while physical card is delivered (up to 14 days).</li>
-                 <li>Report Lost/Stolen via App, Website, or Salesforce (Guide p30). New digital card immediate, physical within 14 days.</li>
+                 <li>Assist sign-up via App, Website, or Salesforce (in-store). Provide temporary card if needed.</li>
+                 <li>Report Lost/Stolen via Salesforce if customer cannot use App/Web.</li>
+                 <li>Help update contact details or voucher preferences via Salesforce.</li>
+                 <li>Guide customers on linking colleague/F&F discount cards (via MyMorri).</li>
              </ul>
+             <p><small>Ref: More Card Guide p6, 29-31</small></p>
          </div></div>
 
          <button class="accordion"><i class="fas fa-receipt"></i> Points, Fivers & Troubleshooting</button>
          <div class="panel"><div>
               <ul>
-                  <li>Explain points earning (Fuel, specific products). Balance visible on app, website, till receipts (Guide p18).</li>
-                  <li>Explain Fiver conversion (5000 points = £5). Digital fivers via app/website, physical print automatically for non-digital users (Guide p12-14).</li>
-                  <li>Troubleshooting common issues (app won't load, fiver not applying, passcode not received) - see Guide p26. Log Salesforce case if unresolved.</li>
-                  <li>Adding missed points/collector spend from receipts (Guide p32-33).</li>
-                  <li>Updating voucher preferences (digital vs print) via Salesforce (Guide p31).</li>
+                  <li>Explain points earning & Fiver conversion (5000 points = £5).</li>
+                  <li>Troubleshoot common issues (check guide p26): App not loading, Fiver not applying (check dates, card scanned?), Passcode issues.</li>
+                  <li>Add missed points/collector spend via Salesforce ('Add Receipt' function - Guide p32-34) for store/fuel kiosk receipts ONLY (not PAP or MFG).</li>
+                  <li>Handle physical Fivers at till; troubleshoot scanning issues (check voucher matches card, date OK?). Manual coupon button for deduction if needed, log NCR case.</li>
               </ul>
+             <p><small>Ref: More Card Guide p12-14, 18, 26, 32-34</small></p>
          </div></div>
 
-         <button class="accordion"><i class="fas fa-tags"></i> More Card Prices & Promotions</button>
+         <button class="accordion"><i class="fas fa-tags"></i> Offers & Promotions</button>
          <div class="panel"><div>
               <ul>
-                  <li>Explain More Card Prices (exclusive discounts scanned at till). Identify via SELs/App (Guide p19).</li>
-                  <li>Explain More Rewards (personalised app offers needing activation) (Guide p20).</li>
-                  <li>Explain Collectors (e.g., Christmas Collector - track spend via app/coupon) (Guide p21).</li>
-                  <li>Explain Points Boosters (app-only offers on specific brands/categories) (Guide p22).</li>
+                  <li>Advise customers to scan More Card for More Card Prices (MCP). Identify MCP on SELs/HHT.</li>
+                  <li>Explain More Rewards (personalised App offers needing activation).</li>
+                  <li>Explain Collectors (App/Coupon based, track spend weekly).</li>
+                  <li>Explain Points Boosters (App only offers).</li>
+                  <li>Handle points coupons printed at till (check expiry, scan More Card and coupon).</li>
               </ul>
+              <p><small>Ref: More Card Guide p19-22, 11</small></p>
          </div></div>
      </section>
 
      <section id="cash-office-procedures">
-        <h2><i class="fas fa-cash-register"></i> Cash Office Procedures (Front End Interaction)</h2>
-         <p>Front End colleagues interact with Cash Office processes daily.</p>
-          <p><a href="PATH_TO_CASHOFFICE_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Cash Office Operating Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+        <h2><i class="fas fa-calculator"></i> Cash Office Procedures (Front End Role)</h2>
+         <p>Front End colleagues perform tasks that directly interact with Cash Office procedures.</p>
+          <p><a href="https://docs.google.com/presentation/d/1bL5d5gQjSfhPdz0bldDSVFQqhjHFiCFAIz2gAnfyZWo/edit" target="_blank" rel="noopener noreferrer">View Full Cash Office Operating Guide (PDF)</a></p>
 
-         <button class="accordion"><i class="fas fa-money-bill-wave"></i> Till Loans, Lifts & Balancing</button>
+         <button class="accordion"><i class="fas fa-money-bill-wave"></i> Till Handling & Reconciliation</button>
          <div class="panel"><div>
              <ul>
-                 <li>**Loans:** Receive change loans from Cash Office/Manager at start of day/shift. Process via Till Function > Till Loan (Guide p11).</li>
-                 <li>**Lifts (ICH Pouches):** Securely handle cash removed from tills/SCOs via ICH pouches. Correct process for entering value as Till Lift on Storeline crucial for balancing (Guide p28).</li>
-                 <li>**Balancing/Over Shorts:** Understand Till Over/Short report. Cooperate with investigations for discrepancies >£10 (Guide p36-40).</li>
-                 <li>**Till Locking:** Ensure tills are correctly actioned for Till Locking process by Cash Office (usually 8am) (Guide p31).</li>
+                 <li>**Till Loans:** Receive change loans accurately, sign logbook. Process via Till Function > Till Loan.</li>
+                 <li>**Till Lifts (ICH):** Follow correct procedure for securing and removing cash via ICH pouches. Ensure correct values entered on Storeline for lifts.</li>
+                 <li>**End of Day:** Securely cash up till, follow cashing up procedures, hand over takings/media correctly.</li>
+                 <li>**Overs/Shorts:** Be aware of till accuracy. Cooperate with investigations (£10+ discrepancy). Report any issues immediately.</li>
+                 <li>**Logbooks:** Complete Till & Saver Stamp Loan sheet accurately.</li>
              </ul>
+              <p><small>Ref: Cash Office Guide p10-11, 28-31, 36-40</small></p>
          </div></div>
 
-         <button class="accordion"><i class="fas fa-receipt"></i> Tenders & Reconciliation</button>
+         <button class="accordion"><i class="fas fa-ticket-alt"></i> Specific Tenders & Processes</button>
          <div class="panel"><div>
              <ul>
-                 <li>**Manual Tenders:** Handle specific tenders correctly (e.g., manual EFT fallbacks, specific vouchers - requires clear understanding of what's accepted).</li>
-                 <li>**Lottery/Scratchcards:** Correctly reconcile sales/prizes at Kiosk/till against Lottery terminal reports (Guide p17-22).</li>
-                 <li>**Banking Prep:** Ensure coupons, vouchers, specific tenders are correctly separated and processed for Cash Office banking prep (Guide p54).</li>
+                 <li>**Lottery/Scratchcards (Kiosk):** Reconcile sales/prizes accurately against terminal reports. Log details correctly.</li>
+                 <li>**PayPoint/Payzone (Kiosk):** Follow specific procedures for transactions and reconciliation.</li>
+                 <li>**Refunds/Voids:** Process correctly using supervisor authorisation where needed. Understand impact on till accuracy.</li>
+                 <li>**Manual EFT/Fallback:** Process correctly via PDQ and till, retain voucher securely.</li>
+                 <li>**Coupons/Vouchers:** Process correctly at till (scan where possible). Secure validated coupons for Cash Office. Understand Catalina process.</li>
+                 <li>**Gift Cards:** Process sales/redemptions correctly.</li>
              </ul>
+              <p><small>Ref: Cash Office Guide p17-22, 28, 54, 39-41</small></p>
          </div></div>
      </section>
 
     <section id="pharmacy-ref">
         <h2><i class="fas fa-pills"></i> Pharmacy Interaction (Reference Only)</h2>
-         <p>The Pharmacy operates separately, but Front End staff may interact with patients/customers.</p>
-          <p><a href="PATH_TO_PHARMACY_GUIDE.pdf" target="_blank" rel="noopener noreferrer">View Full Pharmacy Operating Guide (PDF)</a></p> <!-- ACTION: UPDATE LINK -->
+         <p>Guidance for Front End staff when interacting with Pharmacy-related queries.</p>
+          <p><a href="https://docs.google.com/presentation/d/153hcMpDK5dhpliZoyCcV_6p2QzSCpwF9Pe_Y684Gpj4/edit" target="_blank" rel="noopener noreferrer">View Full Pharmacy Operating Guide (PDF)</a></p>
         <ul>
-            <li>Direct all prescription and specific medicine queries directly to the Pharmacy counter/Pharmacist.</li>
-            <li>Be aware of Pharmacy opening hours (these may differ from main store).</li>
-            <li>Locate the Pharmacy within the store to provide directions.</li>
-            <li>Understand that P-Medicines can only be sold when a Pharmacist is present.</li>
-            <li>Familiarise yourself with basic services offered (e.g., Flu Jabs - seasonal) to signpost customers, but always refer them to Pharmacy staff for details.</li>
+            <li>Direct ALL prescription, medication advice, and specific health condition queries to the Pharmacy counter/Pharmacist. Do not attempt to advise.</li>
+            <li>Know the Pharmacy opening hours and location within the store.</li>
+            <li>Understand that P-Medicines (Pharmacy Only) require Pharmacist authorisation for sale.</li>
+            <li>Be aware of nationally/locally commissioned services offered (e.g., Flu Jabs, New Medicines Service) to signpost customers correctly, but refer to Pharmacy for details and booking.</li>
+            <li>Handle requests for basic items stocked outside pharmacy (e.g., simple painkillers) as normal retail sales.</li>
         </ul>
+        <p><small>Ref: Pharmacy Op Guide</small></p>
     </section>
 
   </main>
@@ -469,8 +476,9 @@
            document.body.classList.add('purple-theme');
            void document.body.offsetHeight; // Force reflow if needed
 
-            // Removed hash linking logic to prevent scroll on load
+           // --- Removed hash linking logic to prevent scroll on load ---
        });
+
 
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
           if (!localStorage.getItem('theme')) { setMode(event.matches); }
