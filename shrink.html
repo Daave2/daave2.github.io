@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Shrink management, stocktake, and audit information for Cleveleys Morrisons." />
+  <meta name="description" content="Shrink management, stocktake, audit, waste, and product protection information for Cleveleys Morrisons." /> <!-- Updated Description -->
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
@@ -75,9 +75,10 @@
   a:hover{text-decoration:none;}
   body.dark-mode a{color:var(--secondary-color);}
   img{max-inline-size:100%;block-size:auto}
+   strong { font-weight: 700; } /* Ensure strong tag works */
   /* Ensure focus states are visible */
-  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
-  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible { outline-color: var(--secondary-color); }
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .accordion:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
+  body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .accordion:focus-visible { outline-color: var(--secondary-color); }
 
 
   /* ---------- Header ---------- */
@@ -144,26 +145,29 @@
     .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 20px; }
     .dashboard-item { background-color: var(--primary-color); color: var(--footer-text); border-radius: 10px; text-align: center; padding: 20px 10px; text-decoration: none; transition: background-color 0.3s, transform 0.3s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; min-height: 120px; }
     .dashboard-item:hover { background-color: var(--primary-color-dark); transform: translateY(-3px); }
-    body.dark-mode .dashboard-item:hover { background-color: #CD5C5C; } /* Keep existing dark hover */
+    body.dark-mode .dashboard-item { background-color: var(--card-dark); } /* Use card dark for dark mode */
+    body.dark-mode .dashboard-item:hover { background-color: var(--primary-color); color: var(--text-dark); } /* Use themed color for dark hover */
     .dashboard-item i { font-size: 2.2em; margin-bottom: 10px; }
     .dashboard-item span { font-weight: bold; font-size: 1em; }
 
 
   /* Accordion Styles */
-    .accordion { background-color: var(--bg-card); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
-    body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); }
+    .accordion { background-color: var(--bg-faint); color: var(--text-color); cursor: pointer; padding: 15px; width: 100%; border: 1px solid var(--primary-color); text-align: left; outline: none; font-size: 1.1em; transition: background-color 0.3s; border-radius: 8px; margin-bottom: 10px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+    body.dark-mode .accordion { background-color: var(--card-dark); color: var(--text-dark); border-color: var(--secondary-color); }
     .accordion:hover, .accordion.active { background-color: var(--primary-color); color: var(--footer-text); }
     body.dark-mode .accordion:hover, body.dark-mode .accordion.active { background-color: var(--secondary-color); color: var(--primary-color); } /* Adjust dark hover */
     .accordion::after { content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900; transition: transform 0.3s; margin-left: 10px; }
     .accordion.active::after { transform: rotate(-180deg); }
-    .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--bg-faint); border-top: none; margin-bottom: 10px; margin-top: -10px; }
+    .panel { padding: 0 18px; background-color: var(--bg-card); max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-color); border-top: none; margin-bottom: 10px; margin-top: -10px; border-color: var(--bg-faint); }
     body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
     .panel div { padding: 15px 0; }
+    .panel p, .panel ul, .panel ol { margin-bottom: 1em; } /* Ensure spacing within panels */
 
    /* Link button style */
     .button-link { display: inline-block; padding: 10px 15px; background-color: var(--primary-color); color: var(--footer-text); border: none; border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s; cursor: pointer; margin-top: 10px; text-decoration: none;}
+    .button-link i{ margin-left: 5px; }
     .button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
-    body.dark-mode .button-link { color: var(--primary-color);} /* Use theme color */
+    body.dark-mode .button-link { color: var(--footer-text);}
     body.dark-mode .button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); }
 
 
@@ -206,11 +210,11 @@
 
   <!----- main content ----->
   <main class="container">
-    <!-- Content copied from original shrink.html -->
+
     <section id="shrink-overview">
-      <h2>Shrink Management & Stocktake</h2>
-      <p>Effective shrink management involves accurate stocktakes, robust auditing, correct product protection, and diligent waste validation. This section provides access to key resources and guides.</p>
-       <div class="dashboard-grid"> <!-- Use class="dashboard-grid" -->
+      <h2><i class="fas fa-search-minus"></i> Shrink Management Overview</h2>
+      <p>Effective shrink management involves accurate stocktakes, robust auditing, correct product protection, diligent waste validation, and loss prevention awareness. This section provides access to key resources and guides.</p>
+       <div class="dashboard-grid">
            <a href="https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Think Shrink Toolkit (opens new tab)">
                <i class="fas fa-lightbulb"></i>
                <span>Think Shrink Toolkit</span>
@@ -219,128 +223,127 @@
                <i class="fas fa-user-check"></i>
                <span>Monitor Staff Checks</span>
            </a>
-           <a href="https://drive.google.com/file/d/1lcxZhhyVqYF5L8M30DeFdy13lj21NrGN/view" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Stock Adjustments Guide (Google Drive - opens new tab)">
-               <i class="fas fa-boxes-stacked"></i>
-               <span>Stock Adjustments</span>
+           <a href="https://docs.google.com/presentation/d/1BNZsODAET-KLZPMi1SywdtvyLxySSoz8zorOzXchE-k/edit" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Waste & Markdown Guide (opens new tab)">
+               <i class="fas fa-recycle"></i>
+               <span>Waste & Markdown Guide</span>
            </a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdipkAbU8vo4hcYYHFDC8qfVypVMRknKMl1swauu8MRWYUZjw/viewform" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Self Audit Form (Google Forms - opens new tab)">
+           <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Waste Validation Dashboard (Looker Studio - opens new tab)">
+               <i class="fas fa-chart-pie"></i>
+               <span>Waste Validation Dash</span>
+           </a>
+           <a href="https://docs.google.com/forms/d/e/1FAIpQLSdipkAbU8vo4hcYYHFDC8qfVypVMRknKMl1swauu8MRWYUZjw/viewform" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Self Audit Form (Google Forms - opens new tab)">
                <i class="fas fa-clipboard-check"></i>
                <span>Self Audit Form</span>
            </a>
            <a href="https://lookerstudio.google.com/reporting/43ed0955-fc21-4dde-8aad-534a37da8e8d/page/p_jg72aczz5c" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Self Audit Dashboard (Looker Studio - opens new tab)">
-               <i class="fas fa-chart-pie"></i>
+               <i class="fas fa-tasks"></i>
                <span>Self Audit Dashboard</span>
-           </a>
-           <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Waste Validation Dashboard (Looker Studio - opens new tab)">
-               <i class="fas fa-recycle"></i>
-               <span>Waste Validation</span>
            </a>
        </div>
     </section>
 
-    <section id="stocktake-2025">
-        <h2>Stocktake 2025 Guidance</h2>
-        <p>Stocktakes are crucial for determining stock position, shrink, and updating stock records. The Store Manager is accountable for ensuring the stocktake is well-planned and executed accurately.</p>
-        <h3>Key Dates & Process:</h3>
-        <ul>
-            <li><strong>-4 Weeks:</strong> Store Specific Communications issued.</li>
-            <li><strong>-2 Weeks:</strong> Pre-count documents available; LP Stocktake Call for preparation discussion. Google Form submission due Thursday.</li>
-             <li><strong>-1 Week:</strong> Google Form submission due Thursday.</li>
-             <li><strong>Count Week:</strong> Friday - Start times/Supervisor details shared. Count Day - Execute Wall-to-Wall count.</li>
-             <li><strong>+1 Day (Tues-Sun):</strong> Complete up to 50 Prompted Counts daily (based on >£200 variances) by 9:45am.</li>
-             <li><strong>+3 Days:</strong> Count results communicated to store.</li>
-             <li><strong>+7 Days:</strong> Action Plan to be completed based on results.</li>
-        </ul>
-         <p>Refer to the 'Operational Guidance - Stocktake 2025' document for full details on preparation, hours, scheduling, specific counts (loose produce, Candy King), back checks, and post-count procedures.</p>
-          <a href="https://docs.google.com/document/d/1.../edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link">View Full Stocktake Guide (Example Link) <i class="fas fa-external-link-alt fa-xs"></i></a>
-    </section>
+    <section id="stocktake-audit">
+        <h2><i class="fas fa-boxes"></i> Stocktake & Audits</h2>
 
-    <section id="q2-audit">
-        <h2>Q2 Shrink and Cash Loss Audit</h2>
-        <p>This audit assesses compliance with Loss Prevention standards. Key changes and focus areas are outlined below.</p>
-         <button class="accordion">Audit Guide (Q2 FY24/25 Summary)</button>
+         <button class="accordion" id="stocktake-accordion"><i class="fas fa-calendar-check"></i> Stocktake Guidance</button>
          <div class="panel"><div>
-           <p><strong>Briefing Document: Q2 Shrink and Cash Loss Audit – FY24/25</strong></p>
-           <h4>1. Introduction</h4>
-           <p>Audit period: Jan 27th - Apr 25th (pause Apr 14th-21st). Objective: Assess LP compliance, minimise shrink/cash loss.</p>
-           <h4>2. Key Changes and Focus Areas</h4>
-           <ul>
-             <li><strong>Removed:</strong> Loose produce waste recording question.</li>
-             <li><strong>Re-introduced:</strong> Waste Management, Food to Go Pizzas, Product Protection (BWS), Scorecard (Transfers), Shrink (Tobacco Backstock).</li>
-             <li><strong>Updated:</strong> Product Protection (BWS - new caps/nets), Scorecard Metrics (aligned to LP Shrink Scorecard, Cafe transfers general), Shrink (Tobacco Backstock security check), Unknown Loss (Pizza weighing, Waste area checks), Security (CCTV operational check).</li>
-           </ul>
-           <h4>3. Audit Process and Structure</h4>
-           <ul>
-             <li><strong>Duration:</strong> 90-minute assessment.</li>
-             <li><strong>Scoring:</strong> Pass requires 85%+ across 45 marked questions.</li>
-             <li><strong>Re-audits:</strong> Possible solo re-audit for hygiene or shrink based on Q1 results.</li>
-             <li><strong>Action Plans:</strong> Signed off by Store Manager, closed within one week post-audit.</li>
-             <li><strong>Self-Assessment:</strong> Platform available reflecting Q2 changes.</li>
-           </ul>
-           <h4>4. Key Resources and Contacts</h4>
-           <ul>
-             <li>Self Assessment Platform & Dashboard, Engagement Pack (links available internally).</li>
-             <li>Key Contacts: Terri Waters, Hannah Cleary, David Grey, Robert Palmer.</li>
-           </ul>
+             <p>Stocktakes are crucial for determining stock position, shrink, and updating stock records. The Store Manager is accountable for ensuring the stocktake is well-planned and executed accurately.</p>
+             <p><a href="https://docs.google.com/document/d/1f_iA2R0plNCBkgn5Djja43aq_Cz3AxhGGAUXDeBU8NE/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Stocktake Guide (Google Doc) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+             <h4>Key Process Summary:</h4>
+             <ul>
+                 <li><strong>Prep (-4 to -1 Weeks):</strong> Store Specific Comms, Pre-count document review, LP Stocktake Call, Weekly Google Form submissions (photos required). Warehouse prep, capping shelf sorting, waste/markdown clearance are critical.</li>
+                 <li><strong>Count Week:</strong> Final Google Form submission. Execute Wall-to-Wall count according to schedule provided by Count Supervisor.</li>
+                 <li><strong>Post-Count (+1 to +7 Days):</strong> Complete daily Prompted Counts (up to 50 checks on >£200 variances) via HHT by 9:45am. Await results communication (+3 Days). Complete Action Plan based on results (+7 Days).</li>
+                 <li><strong>Key Resources:</strong> Utilise Cutover document, Google Form, What Good Looks Like standards (linked in full guide).</li>
+             </ul>
+             <p><small>Ref: Operational Guidance Stocktake 2025</small></p>
+         </div></div>
+
+         <button class="accordion" id="audit-accordion"><i class="fas fa-clipboard-list"></i> Shrink & Cash Loss Audit (Q3 FY24/25 Focus) </button>
+         <div class="panel"><div>
+            <p>This audit assesses compliance with Loss Prevention standards. It's typically a 90-minute assessment aiming for an 85%+ pass mark.</p>
+             <p><a href="https://docs.google.com/presentation/d/1lTRWNOs-wfBwzgTozXZVGRwWUuq-Dbyu7zXImbL3wUU/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Q3 Audit Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+             <h4>Key Q3 Focus Areas/Changes Summary:</h4>
+             <ul>
+                 <li><strong>New - Shrink 8:</strong> Yard bin security (padlock/key control), correct waste bag usage, no food waste in skips, visible waste recorded.</li>
+                 <li><strong>New - Online 2 (Unmarked):</strong> Amazon Driver ID check process (Amazon stores), Immediacy bag sealing/content visibility check (Immediacy stores).</li>
+                 <li><strong>Updated - Protection 4 (Meat):</strong> Aligned wording with latest product protection guidance.</li>
+                  <li><strong>Updated - Unknown Loss 6:</strong> Clearly identifiable waste areas (Fresh/Frozen/Ambient), pre-validation area checks, separate/tidy validated waste.</li>
+                 <li><strong>Fail Points Added (Unknown Loss 6):</strong> No overspill waste in other areas; TGTG bags checked & waste recorded correctly.</li>
+                 <li><strong>Removed:</strong> Protection 9 (Shelf edge POS); Security 6 (Smart gates).</li>
+             </ul>
+             <p>Use the Self Assessment Platform to prepare. Action plans due within one week post-audit.</p>
+             <p><small>Ref: Q3 Shrink & Cash Loss Audit Slides</small></p>
          </div></div>
     </section>
 
-    <section id="tagging-guide">
-      <h2>Product Protection (Tagging) Guide</h2>
-      <p>Correct product protection is essential for shrink reduction. Always refer to the latest guidance.</p>
-       <button class="accordion">Tagging Guide Summary</button>
-       <div class="panel"><div>
-           <h4>Health & Beauty</h4>
-            <ul>
-                <li>Baby Milk (£10+): Soft tag (Selected stores: Baby Milk Cap).</li>
-                <li>Skincare (£10+): Soft tag (Clam Shell where possible).</li>
-                <li>Hair Removal/Razors (£10+): Pin tag (or Soft tag).</li>
-                <li>Sun Care (£10+): Soft tag (Riemann: Safer Case).</li>
-                <li>Electric Toothbrushes (£0-£30): Pin tag; (£30+): Spider Wrap. Heads/Refills: Pin Tag. Toothpaste/Whitening (£10+): Soft Tag.</li>
-                <li>Fragrances (£10+): Safer Case or Spider Tag.</li>
-                <li>Pregnancy/Ovulation Kits (£10+): Soft tag (unless source tagged). Lubricants (£10+): Soft tag. Condoms: Soft tag (unless source tagged).</li>
-                <li>Nicotine Replacements: Quickmist: Spider Wrap (or Pin); Others: Soft tag.</li>
-                <li>Nutrition/Vitamins (£10+): Soft tag.</li>
-                <li>Medicinal/Slimming (£10+): Soft tag (XLS specific lines source-tagged).</li>
-                <li>Footcare (£10+): Soft tag. Scholl (£10+): Pin tag (or Soft tag).</li>
-                <li>Manuka Honey (£10+): Soft tag (unless source tagged).</li>
-                <li>Jointcare/Voltarol (£10+): Soft tag.</li>
-                <li>Men’s Toiletries: Razor Blades: Safer Case (or Pin); Handles: Pin Tag; Trimmers: Spider Wrap (or Pin); Disposables/Skincare/Shave Care (£10+): Soft Tag.</li>
-           </ul>
-            <h4>General Merchandise</h4>
-            <ul>
-                <li>Clothing (£15+, excludes certain items): Pin tag (or Soft tag). Selected stores may tag at £10+.</li>
-                <li>Knives (Folding/Utility): Safer Case (or Pin).</li>
-                <li>Batteries/Torches (£10+): Soft tag (unless source tagged).</li>
-                <li>JML: (£10+): Spider Wrap; (£9.99-): Pin Tag. (Use Soft tag if others don't fit).</li>
-                <li>Home Office: Ink Cartridges: Pin Tag; Sandisks: Safer Case.</li>
-                <li>Small Electricals (£10+, not source tagged): Spider Wrap (or Soft tag).</li>
-                <li>WIGIGS: (£10+): Soft Tag; (£30+): Spider Tag.</li>
-           </ul>
-            <h4>Beers, Wines, & Spirits</h4>
-            <ul>
-                <li>Spirits (inc. non-alc): Bottlelox/Caps. Presentation Boxes: UFO Tag. Bottles not fitting Bottlelox: Wide Neck UFO/Net. Chambord: Soft Tag.</li>
-                <li>Champagne: Net (applicable stores) or UFO Tag (Black).</li>
-                <li>Wine (£12+): Bottlelox. Bottles not fitting Bottlelox: UFO/Wide Neck/Net.</li>
-           </ul>
-            <h4>Other Departments</h4>
-            <ul>
-                 <li>Gift Sets (£10+, not source tagged): Soft Tag.</li>
-                 <li>Toys (£10+): Soft/Source Tag; (£30+): Spider Wrap (or Soft tag). LOL Dolls: Soft Tag; Barbie/Hot Wheels: Soft Tag.</li>
-                 <li>Meat (Beef/Lamb/Pork Joints/Steaks £5+): Yellow Soft Tag (top left GLP label for in-store only; pre-pack source tagged).</li>
-                 <li>Vape (not source tagged): Soft Tag.</li>
-                 <li>Flowers (Bouquets £15+): Soft Tag.</li>
-           </ul>
-            <h4>General Notes</h4>
-            <ul>
-                 <li>Source Tagged items may still need additional protection if specified.</li>
-                 <li>Restricted Fill Extenders: Use for Spirits, Champagne, Smoking Cessation, Skincare.</li>
-                 <li>Capping Shelves: No high-value/protected stock.</li>
-                 <li>Tag Recycling: Containers at checkouts/trolley stations. Red UFO tags segregated.</li>
-           </ul>
-       </div></div>
+    <section id="protection-waste">
+        <h2><i class="fas fa-shield-alt"></i> Product Protection & Waste Management</h2>
+
+         <button class="accordion" id="tagging-accordion"><i class="fas fa-tag"></i> Product Protection (Tagging) Guide</button>
+         <div class="panel"><div>
+            <p>Correct product protection is essential. Always refer to the latest guidance for specific items.</p>
+            <p><a href="https://docs.google.com/presentation/d/1LUynIZc3606WoSBHnNzFIUmflDfKyc6gTFZEueGPk_U/present" target="_blank" rel="noopener noreferrer" class="button-link">View Full Tagging Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+            <h4>General Principles Summary:</h4>
+             <ul>
+                 <li>Use appropriate tags (Soft Tag, Pin Tag, Spider Wrap, Safer Case, Bottlelox/Net/UFO) based on product type and value thresholds (check guide).</li>
+                 <li>Commonly tagged areas: H&B (£10+), GM (£10+/£15+/£30+ thresholds), BWS (£12+ wine, all Spirits/Champagne), High-Value Meat (£5+ joints/steaks - Yellow Soft Tag), Vapes.</li>
+                 <li>Source Tagged items generally don't need additional tags unless specified.</li>
+                 <li>Ensure tags don't obscure essential product info. Apply securely but without damaging product.</li>
+                 <li>Use Restricted Fill Extenders for high-theft lines where applicable.</li>
+                 <li>No high-value/protected stock on Capping Shelves.</li>
+                 <li>Manage Tag Recycling containers at checkouts/trolley stations.</li>
+             </ul>
+              <p><small>Ref: Pocket Tagging Guide - April 2025</small></p>
+         </div></div>
+
+          <button class="accordion" id="waste-accordion"><i class="fas fa-dumpster"></i> Waste & Markdown Management</button>
+         <div class="panel"><div>
+             <p>Accurate waste recording and timely markdowns are crucial for shrink control.</p>
+             <p><a href="https://docs.google.com/presentation/d/1BNZsODAET-KLZPMi1SywdtvyLxySSoz8zorOzXchE-k/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Waste & Markdown Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+             <h4>Key Principles Summary:</h4>
+             <ul>
+                 <li>Use Mobile Device for all waste/markdown actions.</li>
+                 <li>Follow correct markdown timings (generally 7pm day before expiry / 5pm day of expiry - see guide for exceptions).</li>
+                 <li>Use correct Waste Reason Codes.</li>
+                 <li>Process waste accurately (scan product/QR code).</li>
+                 <li>Utilise Too Good To Go and Colleague Collection where applicable (follow specific guidance).</li>
+                 <li>Handle Charity Waste correctly (approved items, logging, storage).</li>
+                 <li>Segregate waste types correctly (Food Waste pallet, General Waste, Recycling).</li>
+                 <li>Manage Damaged Stock / Split Packs according to process (Repair Station, correct wasting).</li>
+                 <li>Clearance Bays: Keep tidy, correctly labelled, action promptly.</li>
+             </ul>
+             <p><small>Ref: Waste & Markdown Operating Guidance - June 2024</small></p>
+         </div></div>
     </section>
-    <!-- End Content -->
+
+    <section id="loss-prevention">
+        <h2><i class="fas fa-user-secret"></i> Loss Prevention Focus</h2>
+         <button class="accordion" id="lp-contacts-accordion"><i class="fas fa-phone"></i> Key Contacts & Reporting</button>
+         <div class="panel"><div>
+             <ul>
+                 <li>**Emergency/Immediate Threat:** Dial 999 first, then LP Control Room.</li>
+                 <li>**LP Control Room (0345 611 6711):** Report major incidents - Robbery, Burglary, Aggravated Theft, Serious Assaults, Major Disorder, Data Breaches, significant cash loss (>£1k), large scale theft (>10 trolleys).</li>
+                 <li>**MySecurity App (Tablet):** Report standard incidents - Shoplifting, ASB, Drive Offs, Trolley Theft (<9), Policy Breaches, safety concerns.</li>
+                 <li>**Retail Support Centre (Option 2 for LP):** General LP queries, advice.</li>
+                 <li>**Your Regional LP Manager:** For ongoing issues, trends, advice, support. (See <a href="contacts.html">Contacts Page</a>)</li>
+             </ul>
+         </div></div>
+
+          <button class="accordion" id="lp-procedures-accordion"><i class="fas fa-book"></i> Key LP Procedures</button>
+         <div class="panel"><div>
+            <ul>
+                <li>**Staff Checks (Dymension):** Ensure regular checks are completed and recorded accurately. Follow up failures.</li>
+                <li>**Cash Handling:** Adhere to all cash office procedures, till handling limits, safe procedures. Investigate discrepancies promptly.</li>
+                <li>**Product Protection:** Apply tags correctly as per guide. Ensure EAS gates are operational.</li>
+                <li>**Receiving Goods:** Check deliveries accurately, report shortages/damages via correct process. Secure back door areas.</li>
+                <li>**Refunds/Voids:** Follow correct procedures, require authorisation where necessary. Monitor via dashboards.</li>
+                <li>**Awareness:** Be vigilant for suspicious activity, scams, internal theft indicators. Report concerns.</li>
+            </ul>
+             <p>Refer to specific guides (Cash Office, Front End, Stocktake etc.) and the Think Shrink toolkit for detailed procedures.</p>
+         </div></div>
+    </section>
+
   </main>
 
   <!----- footer ----->
@@ -365,32 +368,54 @@
       /* Accordion Functionality */
       const accordions = document.getElementsByClassName("accordion");
       for (let i = 0; i < accordions.length; i++) {
-        accordions[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          const panel = this.nextElementSibling;
-           if (panel.style.maxHeight) {
-             panel.style.padding = "0 18px";
-             panel.style.maxHeight = null;
-             panel.setAttribute('aria-hidden', 'true');
-           } else {
-             panel.style.maxHeight = panel.scrollHeight + "px";
-             panel.style.padding = "0 18px";
-              setTimeout(() => { if (panel.style.maxHeight){ const innerDiv = panel.querySelector('div'); if(innerDiv) innerDiv.style.padding = "15px 0"; } }, 300);
-             panel.setAttribute('aria-hidden', 'false');
-           }
-        });
+          accordions[i].setAttribute('aria-expanded', 'false'); // Initial state
+          const panel = accordions[i].nextElementSibling;
+          if(panel) panel.setAttribute('aria-hidden', 'true'); // Initial state
+
+          accordions[i].addEventListener("click", function() {
+              const isActive = this.classList.toggle("active");
+              this.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+              const panel = this.nextElementSibling;
+              if (panel) {
+                  panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+                   if (panel.style.maxHeight) {
+                     panel.style.padding = "0 18px"; // Collapse padding first
+                     panel.style.maxHeight = null;
+                   } else {
+                     panel.style.maxHeight = panel.scrollHeight + "px";
+                     panel.style.padding = "0 18px"; // Apply padding as it opens
+                      setTimeout(() => { if (panel.style.maxHeight){ const innerDiv = panel.querySelector('div'); if(innerDiv) innerDiv.style.padding = "15px 0"; } }, 300);
+                   }
+              }
+          });
+           // Allow activating accordion with Enter/Space key
+          accordions[i].addEventListener('keydown', function(event) {
+              if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  this.click();
+              }
+          });
       }
 
       /* Initial theme and dark mode load */
-      document.addEventListener('DOMContentLoaded', () => {
+       document.addEventListener('DOMContentLoaded', () => {
+           // Ensure page starts at the very top
+           window.scrollTo(0, 0);
+
            const savedTheme = localStorage.getItem('theme');
-           setMode(saved?saved==='dark':matchMedia('(prefers-color-scheme:dark)').matches);
+           const prefersDark = matchMedia('(prefers-color-scheme:dark)').matches;
+           setMode(savedTheme ? savedTheme === 'dark' : prefersDark);
 
            // Apply Red Theme Class
            document.body.classList.add('red-theme');
            void document.body.offsetHeight; // Force reflow if needed
+
+           // --- Removed hash linking logic ---
        });
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { if (!localStorage.getItem('theme')) { setMode(event.matches); } });
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+          if (!localStorage.getItem('theme')) { setMode(event.matches); }
+      });
 
 
       /* --- PWA Service Worker Registration --- */
