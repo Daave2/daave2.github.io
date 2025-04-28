@@ -4,25 +4,23 @@
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <!-- Use yellow theme color for this page -->
-  <meta name="theme-color" content="#FFB800" />
-  <title>Online Operations - Cleveleys Morrisons Dashboard</title> <!-- Updated Title -->
+  <meta name="theme-color" content="#FFB800" /> <!-- Yellow Theme -->
+  <title>Online Operations - Cleveleys Morrisons Dashboard</title>
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Online Operations (Click & Collect, Amazon, Deliveroo, JE, UE) dashboard for Cleveleys Morrisons." /> <!-- Updated Description -->
+  <meta name="description" content="Online Operations (Click & Collect, Amazon, Deliveroo, JE, UE) dashboard for Cleveleys Morrisons." />
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Styles – mobile-first (Adapted for Online page theme) -->
+  <!-- Styles – mobile-first (Yellow theme) -->
   <style>
   /* ---------- Variables (Base) ---------- */
   :root{
-    /* Default Green Theme (will be overridden by .yellow-theme) */
-    --primary-color: #006400;
+    --primary-color: #006400; /* Default Green */
     --primary-color-dark: #004d00;
     --secondary-color: #FFD700;
     --bg-faint: #e6ffe6;
@@ -44,22 +42,20 @@
       --primary-color-dark: #cc9400; /* Darker Yellow for hover */
       --secondary-color: #006400; /* Dark Green for secondary */
       --bg-faint: #fffadf; /* Lighter Faint Yellow */
-      --bg-card: #fff; /* White card still ok */
+      --bg-card: #fff;
       --text-color: #4d3800; /* Darker text for readability on yellow */
       --footer-bg: var(--primary-color);
       --footer-text: #333; /* Dark text on yellow footer */
 
-      /* Dark Mode Overrides for Yellow Theme */
        &.dark-mode {
-           --primary-color: #FFD700; /* Gold in dark mode */
+           --primary-color: #FFD700; /* Gold */
            --primary-color-dark: #cca300;
            --secondary-color: #008000; /* Brighter Green */
-           --bg-faint: var(--bg-dark); /* Use dark background */
+           --bg-faint: var(--bg-dark);
            --bg-card: #2a2a11; /* Dark yellow-tinted card */
-           --text-color: #fff5cc; /* Light yellow text */
-           --footer-bg: #4d3800; /* Dark brown/gold footer */
+           --text-color: #fff5cc;
+           --footer-bg: #4d3800;
            --footer-text: #fff5cc;
-           /* Override card dark for theme consistency */
            --card-dark: #2a2a11;
            --text-dark: #fff5cc;
            --footer-dark: #4d3800;
@@ -70,11 +66,12 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;font-size:100%}
   body{font-family:Roboto,system-ui,sans-serif;background:var(--bg-faint);color:var(--text-color);line-height:1.55;min-block-size:100dvh;transition:background .3s,color .3s}
-  body.dark-mode{background:var(--bg-dark);color:var(--text-dark)} /* Apply dark mode text color */
-  a{color:var(--primary-color);text-decoration:underline;} /* Theme links */
+  body.dark-mode{background:var(--bg-dark);color:var(--text-dark)}
+  a{color:var(--primary-color);text-decoration:underline;}
   a:hover{text-decoration:none;}
-  body.dark-mode a{color:var(--secondary-color);} /* Theme dark links */
+  body.dark-mode a{color:var(--secondary-color);}
   img{max-inline-size:100%;block-size:auto}
+  strong { font-weight: 700; } /* Ensure strong tag works */
   /* Focus visible */
   a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, [tabindex="0"]:focus-visible, .accordion:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; border-radius: 2px; }
   body.dark-mode a:focus-visible, body.dark-mode button:focus-visible, body.dark-mode select:focus-visible, body.dark-mode input:focus-visible, body.dark-mode [tabindex="0"]:focus-visible, body.dark-mode .accordion:focus-visible { outline-color: var(--secondary-color); }
@@ -86,7 +83,6 @@
   header h1{font-weight:700;font-size:clamp(1.2rem,4vw+.4rem,1.8rem); flex-grow: 1; text-align: right;}
   body.dark-mode header{background:var(--card-dark);color:var(--primary-color)}
 
-  /* ---------- Header Adjustments for Mobile ---------- */
   @media (max-width: 600px) {
     header { padding: .5rem 1rem; gap: .5rem; }
     header img { inline-size: 40px; }
@@ -94,7 +90,7 @@
   }
 
   /* ---------- Navigation ---------- */
-  nav{background:var(--secondary-color);box-shadow:var(--shadow)} /* Use secondary color */
+  nav{background:var(--secondary-color);box-shadow:var(--shadow)}
   .nav-wrap{display:flex;justify-content:space-around;align-items:center;max-inline-size:1200px;margin-inline:auto;block-size:56px}
   .nav-links{display:flex;flex:1;justify-content:space-around;list-style:none; align-items: center; }
   .nav-links a{display:flex;flex-direction:column;align-items:center;gap:.15rem; font-size:.72rem;font-weight:500;padding: .15rem .5rem .35rem .5rem; border-radius:6px;transition:background .2s,transform .2s, color .2s; color: var(--primary-color); text-decoration: none; }
@@ -143,27 +139,33 @@
 
   /* ---------- Dashboard Card Grid Styles ---------- */
   .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 20px 0; }
-  .dashboard-card { background-color: var(--bg-card); border-radius: 10px; box-shadow: var(--shadow); padding: 25px; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+  .dashboard-card { background-color: var(--bg-card); border-radius: 10px; box-shadow: var(--shadow); padding: 20px; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; } /* Removed justify-content */
   body.dark-mode .dashboard-card { background-color: var(--card-dark); }
   .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 6px 18px var(--shadow); }
-  .dashboard-card h3 { margin-bottom: 15px; color: var(--primary-color); display: flex; align-items: center; gap: 10px; font-size: 1.5em; transition: color 0.3s; border-bottom: none; padding-bottom: 0; } /* Removed h3 border */
+  .dashboard-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--primary-color); display: flex; align-items: center; gap: 10px; font-size: 1.5em; transition: color 0.3s; border-bottom: none; padding-bottom: 0; }
   body.dark-mode .dashboard-card h3 { color: var(--primary-color); }
-  .dashboard-card p { flex-grow: 1; margin-bottom: 20px; font-size: 1em; }
+  .dashboard-card p { flex-grow: 1; margin-bottom: 15px; font-size: 1em; }
   .dashboard-card iframe { width: 100%; height: 300px; border: none; border-radius: 8px; margin-bottom: 15px; background-color: #fff; }
-  .dashboard-card a.button-link { display: inline-block; padding: 12px 20px; background-color: var(--primary-color); color: var(--footer-text); border-radius: 5px; text-align: center; font-weight: 500; transition: background-color 0.3s, transform 0.3s, color 0.3s; align-self: flex-start; font-size: 0.95em; text-decoration: none; margin-top: 5px; margin-right: 5px;} /* Add margin */
-  body.dark-mode .dashboard-card a.button-link { color: var(--footer-text); }
-  .dashboard-card a.button-link:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); }
-  body.dark-mode .dashboard-card a.button-link:hover { background-color: var(--secondary-color); color: var(--primary-color) }
+  /* Card Actions (Cleaner Button/Link Layout) */
+  .dashboard-card .card-actions { margin-top: auto; /* Pushes actions to bottom */ padding-top: 15px; border-top: 1px solid var(--bg-faint); }
+  body.dark-mode .dashboard-card .card-actions { border-top-color: #333; }
+  .dashboard-card .card-actions a.button-link, .dashboard-card .card-actions a { display: block; /* Stack links vertically */ text-align: center; margin-bottom: 8px; text-decoration: none; padding: 10px 15px; border-radius: 5px; transition: background-color 0.3s, transform 0.3s; font-weight: 500; }
+  .dashboard-card .card-actions a.button-link { background-color: var(--primary-color); color: var(--footer-text); } /* Button style */
+  .dashboard-card .card-actions a { background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); } /* Link style */
+  body.dark-mode .dashboard-card .card-actions a.button-link { color: var(--footer-text); }
+  body.dark-mode .dashboard-card .card-actions a { color: var(--primary-color); border-color: var(--primary-color); }
+  .dashboard-card .card-actions a.button-link:hover, .dashboard-card .card-actions a:hover { background-color: var(--secondary-color); color: var(--primary-color); transform: translateY(-2px); border-color: var(--secondary-color); }
+  body.dark-mode .dashboard-card .card-actions a.button-link:hover { color: var(--primary-color); background-color: var(--secondary-color); }
+  body.dark-mode .dashboard-card .card-actions a:hover { background-color: var(--secondary-color); color: var(--primary-color); border-color: var(--secondary-color); }
   .dashboard-card ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
   .dashboard-card li { margin-bottom: 0.5em; }
   .dashboard-card strong { font-weight: 700; color: var(--primary-color); }
   body.dark-mode .dashboard-card strong { color: var(--primary-color); }
-  .dashboard-card .card-actions { margin-top: auto; /* Pushes actions to bottom */ }
 
   /* Quick Guide List */
   .quick-guide-list { list-style: none; padding-left: 0; }
   .quick-guide-list li { margin-bottom: 0.8em; padding-left: 1.75rem; position: relative; }
-  .quick-guide-list li::before { content: "\f058"; /* Font Awesome check-circle */ font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 0.1em; color: var(--primary-color); font-size: 1.1em; }
+  .quick-guide-list li::before { content: "\f058"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 0.1em; color: var(--primary-color); font-size: 1.1em; }
   body.dark-mode .quick-guide-list li::before { color: var(--primary-color); }
 
 
@@ -178,6 +180,7 @@
   body.dark-mode .panel { background-color: var(--card-dark); border-color: #333; }
   .panel div { padding: 15px 0; }
   .panel img { margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; }
+  .panel p, .panel ul, .panel ol { margin-bottom: 1em; } /* Ensure spacing within panels */
 
 
   /* ---------- Footer ---------- */
@@ -223,57 +226,66 @@
     <section id="quick-guide">
         <h2><i class="fas fa-bolt"></i> Online Operations Quick Guide</h2>
         <ul class="quick-guide-list">
-            <li><strong>Platforms:</strong>
+            <li><strong>Key Platforms:</strong>
                 <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer">Amazon Seller</a> |
                 <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer">Deliveroo Hub</a> |
-                <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">OSP (C&C)</a>
-                <small>(Just Eat/Uber Eats - No portal yet)</small>
+                <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">OSP (C&C)</a> |
+                 JE/UE (Tablet)
             </li>
-            <li><strong>Amazon Specifics:</strong>
+            <li><strong>Amazon Tools:</strong>
                  <a href="https://docs.google.com/presentation/d/1Otdd8xaMR9RF4ZASfw0anlDYfLXv23VCnOEQJ43bpQs/edit?usp=drive_web" target="_blank" rel="noopener noreferrer">Rota Guide</a> |
-                 <a href="https://docs.google.com/document/d/1U7QTdUoZ3xQhCgVpwnptFjWNfKDxngyL1WqxmSdK-Ok/edit?tab=t.0" target="_blank" rel="noopener noreferrer">Capacity/Headcount Process</a>
+                 <a href="https://docs.google.com/document/d/1U7QTdUoZ3xQhCgVpwnptFjWNfKDxngyL1WqxmSdK-Ok/edit?tab=t.0" target="_blank" rel="noopener noreferrer">Capacity/Headcount</a>
              </li>
-            <li><strong>Handset Info:</strong> Default Pass: `123456a` | KDM Proxy: `bcproxy.morrisonsplc.co.uk:8080` (Manual). <a href="#handset-troubleshooting-accordion">(Full Guide Below)</a></li>
-            <li><strong>Key Contacts:</strong> IT Desk: `0345 611 6500` | EE Mobile Support: `0800 079 0260` (Pass: `Morrisons1899`)</li>
+             <li><strong>Essential Handset Info:</strong> Default Pswd: <strong>123456a</strong> | KDM Proxy: <strong>bcproxy.morrisonsplc.co.uk:8080</strong> (Manual). <a href="#handset-troubleshooting-accordion">(Full Guide)</a></li>
+             <li><strong>Key Contacts:</strong> IT Desk: <strong>0345 611 6500</strong> | EE Mobile: <strong>0800 079 0260</strong> (Pass: <strong>Morrisons1899</strong>) | Just Eat: <strong>02475 427 000</strong> | Uber Eats: <strong>0808 1892471</strong></li>
         </ul>
     </section>
 
     <section id="partner-platforms">
       <h2><i class="fas fa-store"></i> Partner Platform Management</h2>
-      <div class="dashboard"> <!-- Wrap cards in a section with class="dashboard" -->
+      <div class="dashboard">
           <!-- Amazon -->
           <div class="dashboard-card">
               <h3><i class="fab fa-amazon"></i> Amazon</h3>
-              <p>Manage Amazon sales, inventory, orders, rota and capacity requests.</p>
-              <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&single=true&widget=true&headers=false" title="Amazon Daily Update Spreadsheet"></iframe>
+              <p>Manage Amazon sales, inventory, orders, rota and capacity requests via Seller Central.</p>
+              <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBw67pSBFk7O-5zvLygvjkY0g6klwCu5_s38Ttvv8bGIt7VuGxp84IrOS7un30awI-tjmswt1jMrV/pubhtml?gid=183737495&single=true&widget=true&headers=false" title="Amazon Daily Update Spreadsheet" loading="lazy"></iframe>
                <div class="card-actions">
-                  <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer" class="button-link">Seller Central <i class="fas fa-external-link-alt fa-xs"></i></a>
-                  <a href="https://docs.google.com/presentation/d/1Otdd8xaMR9RF4ZASfw0anlDYfLXv23VCnOEQJ43bpQs/edit?usp=drive_web" target="_blank" rel="noopener noreferrer" class="button-link">Rota Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
-                  <a href="https://docs.google.com/document/d/1U7QTdUoZ3xQhCgVpwnptFjWNfKDxngyL1WqxmSdK-Ok/edit?tab=t.0" target="_blank" rel="noopener noreferrer" class="button-link">Capacity/Headcount <i class="fas fa-external-link-alt fa-xs"></i></a>
-                  <a href="https://docs.google.com/spreadsheets/d/14B7m8Zq5dK3nO9lP8sW1rT0vY2xZ5eF8aJ7cI9oB6kM/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="button-link">Daily Update Sheet <i class="fas fa-external-link-alt fa-xs"></i></a>
-                  <a href="#amazon-procedures-accordion" class="button-link">Amazon Procedures</a>
+                  <a href="https://sellercentral.amazon.co.uk/snowdash/ref=xx_shopdash_dnav_xx#" target="_blank" rel="noopener noreferrer" class="button-link">Open Seller Central <i class="fas fa-external-link-alt fa-xs"></i></a>
+                  <a href="https://docs.google.com/presentation/d/1Otdd8xaMR9RF4ZASfw0anlDYfLXv23VCnOEQJ43bpQs/edit?usp=drive_web" target="_blank" rel="noopener noreferrer">Rota Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
+                  <a href="https://docs.google.com/document/d/1U7QTdUoZ3xQhCgVpwnptFjWNfKDxngyL1WqxmSdK-Ok/edit?tab=t.0" target="_blank" rel="noopener noreferrer">Capacity/Headcount <i class="fas fa-external-link-alt fa-xs"></i></a>
+                  <a href="https://docs.google.com/spreadsheets/d/14B7m8Zq5dK3nO9lP8sW1rT0vY2xZ5eF8aJ7cI9oB6kM/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Daily Update Sheet <i class="fas fa-external-link-alt fa-xs"></i></a>
                </div>
           </div>
 
           <!-- Deliveroo -->
           <div class="dashboard-card">
               <h3><i class="fas fa-motorcycle"></i> Deliveroo</h3>
-              <p>Manage Deliveroo restaurant operations, orders, and menu.</p>
+              <p>Manage Deliveroo orders, menu, and operations via the Hub.</p>
                <div class="card-actions">
-                  <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer" class="button-link">Deliveroo Hub <i class="fas fa-external-link-alt fa-xs"></i></a>
-                  <a href="#deliveroo-procedures-accordion" class="button-link">Deliveroo Procedures</a>
+                  <a href="https://restaurant-hub.deliveroo.net/login?redirect=/home" target="_blank" rel="noopener noreferrer" class="button-link">Open Deliveroo Hub <i class="fas fa-external-link-alt fa-xs"></i></a>
+                  <!-- Link to a summary if needed, or directly to the PDF section if possible -->
+                  <a href="https://docs.google.com/presentation/d/1BUbQmLX9XuULwEj4jbPeLdR7P2Bs9QI96rrD_P18fgA/edit#slide=id.p89" target="_blank" rel="noopener noreferrer">Deliveroo Ops Guide (p89) <i class="fas fa-external-link-alt fa-xs"></i></a>
                </div>
           </div>
 
-          <!-- Just Eat / Uber Eats Placeholder -->
-          <div class="dashboard-card">
-             <h3><i class="fas fa-utensils"></i> Just Eat / Uber Eats</h3>
-             <p>Portals not yet available. Follow standard order processing procedures using the tablets provided.</p>
-             <!-- Add links here when available -->
-              <div class="card-actions">
-                  <!-- <a href="#" target="_blank" rel="noopener noreferrer" class="button-link">Just Eat Portal <i class="fas fa-external-link-alt fa-xs"></i></a> -->
-                  <!-- <a href="#" target="_blank" rel="noopener noreferrer" class="button-link">Uber Eats Portal <i class="fas fa-external-link-alt fa-xs"></i></a> -->
+          <!-- Just Eat -->
+           <div class="dashboard-card">
+             <h3><i class="fas fa-utensils"></i> Just Eat</h3>
+             <p>Manage orders via the Just Eat Tablet. Portal not yet available. Support: <strong>02475 427 000</strong></p>
+             <div class="card-actions">
+                <a href="https://docs.google.com/presentation/d/1yjUo4bOCdIW5NGS0QFajgZWRwJ3MMiaCdqYRqGCLv4Y/edit" target="_blank" rel="noopener noreferrer">Just Eat Ops Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
+                <!-- Add Device/Tablet specific tips here if useful, or link to accordion below -->
              </div>
+          </div>
+
+           <!-- Uber Eats -->
+           <div class="dashboard-card">
+             <h3><i class="fas fa-utensils"></i> Uber Eats</h3>
+             <p>Manage orders via the Uber Eats Tablet/App. Portal not yet available. Support: <strong>0808 1892471</strong></p>
+             <div class="card-actions">
+                 <a href="https://docs.google.com/presentation/d/1VV-VzB7fLDAOLwKNXRs1cW2Q1h6ZvNc-NCDTQLTa1yg/edit" target="_blank" rel="noopener noreferrer">Uber Eats Ops Guide <i class="fas fa-external-link-alt fa-xs"></i></a>
+                  <!-- Add Device/Tablet specific tips here if useful, or link to accordion below -->
+            </div>
           </div>
       </div>
     </section>
@@ -281,11 +293,11 @@
      <section id="click-collect">
         <h2><i class="fas fa-shopping-basket"></i> Click & Collect (C&C)</h2>
         <p>Manage C&C orders via OSP and follow specific service guidelines.</p>
-        <ul>
-            <li><a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer">Access OSP Platform</a> (Used for C&C Management)</li>
-            <li><a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer">View C&C Guide (Online Support Centre)</a></li>
-            <li><a href="#cnc-service-accordion" class="button-link">C&C Service Principles</a></li>
-        </ul>
+        <div class="card-actions"> <!-- Using card-actions style for consistency -->
+            <a href="https://home.morrisons.osp.tech/" target="_blank" rel="noopener noreferrer" class="button-link">Open OSP Platform <i class="fas fa-external-link-alt fa-xs"></i></a>
+            <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/click-collect" target="_blank" rel="noopener noreferrer">C&C Guide (Support Centre) <i class="fas fa-external-link-alt fa-xs"></i></a>
+            <a href="https://docs.google.com/presentation/d/1BUbQmLX9XuULwEj4jbPeLdR7P2Bs9QI96rrD_P18fgA/edit#slide=id.g1e717b187e_0_0" target="_blank" rel="noopener noreferrer">C&C Ops Guide (p76, 88) <i class="fas fa-external-link-alt fa-xs"></i></a>
+        </div>
      </section>
 
      <section id="ops-tools">
@@ -297,25 +309,25 @@
              <ol>
                  <li>Settings > Connections > Wi-Fi.</li>
                  <li>Select KDM network.</li>
-                 <li>Password: Find your store password <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/it-support/handheld-terminal-hht-support" target="_blank" rel="noopener noreferrer">here (link to HHT support page)</a>. *You may need to provide the actual link or instructions on finding this*</li>
+                 <li>Password: Find your store password <a href="https://sites.google.com/morrisonsplc.co.uk/online-support-centre/home/it-support/handheld-terminal-hht-support" target="_blank" rel="noopener noreferrer">here (MyMorri Link)</a>.</li>
                  <li>Press 'Advanced'.</li>
                  <li>Proxy Settings: Select 'Manual'.</li>
-                 <li>Proxy Hostname: `bcproxy.morrisonsplc.co.uk`</li>
-                 <li>Proxy Port: `8080`</li>
+                 <li>Proxy Hostname: <strong>bcproxy.morrisonsplc.co.uk</strong></li>
+                 <li>Proxy Port: <strong>8080</strong></li>
                  <li>Save changes.</li>
              </ol>
              <h3>Connectivity Issues:</h3>
              <ol>
                  <li>Ensure device is connected to KDM (check Wi-Fi icon).</li>
-                 <li>If connected but issues persist, raise a Tech Ticket via MyMorri (IT Service Desk: 0345 611 6500).</li>
-                 <li>**Urgent:** If connectivity stops picking entirely, raise with field team specialist immediately (provide tech ticket ref).</li>
+                 <li>If connected but issues persist, raise a Tech Ticket via MyMorri (IT Service Desk: <strong>0345 611 6500</strong>).</li>
+                 <li><strong>Urgent:</strong> If connectivity stops picking entirely, raise with field team specialist immediately (provide tech ticket ref).</li>
              </ol>
              <h3>Default Phone Password:</h3>
-             <p>`123456a`</p>
+             <p><strong>123456a</strong></p>
              <h3>Amazon Seller Central App Install:</h3>
              <p>If the app isn't on the device:</p>
              <ol>
-                 <li>Text this link to the phone: `https://d38yiac49447yo.cloudfront.net/static-site/index.html?version=3.23.0/207763` (Or scan QR code below).</li>
+                 <li>Text this link to the phone: <strong>https://d38yiac49447yo.cloudfront.net/static-site/index.html?version=3.23.0/207763</strong> (Or scan QR code below).</li>
                  <li>Ensure all Chrome tabs are closed if the link fails.</li>
                  <li>Download the app file.</li>
                  <li>Open the downloaded file.</li>
@@ -324,37 +336,27 @@
                  <li>Press back button to return to installation.</li>
                  <li>Once installed, check the flag in the Seller App sign-in screen is UK (not USA).</li>
              </ol>
-             <img src="QR_CODE_IMAGE_URL" alt="QR Code for Seller Central App" style="max-width: 150px;"> <!-- ** ACTION NEEDED: Replace QR_CODE_IMAGE_URL ** -->
-             <p><small>See PDF pages 80-83 for more IT Desk details.</small></p>
+             <img src="QR_CODE_IMAGE_URL" alt="QR Code for Seller Central App - INSERT URL" style="max-width: 150px;"> <!-- ** ACTION NEEDED: Replace QR_CODE_IMAGE_URL ** -->
+             <p><small>Ref: Handset Troubleshooting Guide PDF / Online Ops Guide p75-83.</small></p>
          </div></div>
 
          <button class="accordion"><i class="fas fa-dolly"></i> Picking Trolley & Tote Management</button>
          <div class="panel"><div>
-             <p><strong>Trolley Setup (PDF p24):</strong> Prepare trolleys in advance using 'Prepare Trolley Application'. Scan trolley barcode, then scan each tote barcode into the correct position (A-H). Use Yellow totes for Ambient/Fresh, Grey for Frozen (check regime requirements).</p>
-             <p><strong>Tote Hygiene & Washing (PDF p41, p100):</strong> 'Clean As You Go' for spills. Check totes are clean before pick walk. Follow scheduled weekly deep cleaning process with store cleaning team (hot water pressure wash). Store totes cleanly indoors. Use clear bags for raw meat/chemicals separation.</p>
-             <p><strong>Tote Checking (PDF p104):</strong> Daily checks on buffered totes are crucial. Use HHT (OSP > Menu > Search Barcode > Scan Tote > Contents) or MySecurity App. Look for:
-                <ul>
-                    <li>Missing items (marked picked but not present).</li>
-                    <li>Additional items (not ordered/picked).</li>
-                    <li>Damaged items ('Would I Buy It?' standard).</li>
-                    <li>Date code issues (min 3 days shelf life usually required - check specifics).</li>
-                    <li>Poor packing standards (heavy items at bottom, fragile on top).</li>
-                 </ul>
-             Correct issues by adding/removing items and updating OSP, or substituting if needed. Log checks in MySecurity.
-             </p>
+             <p><strong>Trolley Setup (Online Ops Guide p9):</strong> Prepare trolleys in advance using 'Prepare Trolley Application' (HHT). Scan trolley barcode, then scan each tote barcode into the correct position (A-H). Use Yellow totes for Ambient/Fresh, Grey for Frozen.</p>
+             <p><strong>Tote Hygiene & Washing (Online Ops Guide p30):</strong> 'Clean As You Go' for spills. Check totes are clean before pick walk. Follow scheduled weekly deep cleaning process. Store totes cleanly indoors. Use clear bags (CAR95011) for raw meat/chemicals.</p>
+             <p><strong>Tote Checking (Online Ops Guide p22):</strong> Daily checks on buffered totes via OSP or MySecurity App. Check for missing/additional items, damage, date codes, and packing standards. Correct issues and log checks.</p>
          </div></div>
 
          <button class="accordion"><i class="fas fa-chart-line"></i> Pick Progress & Availability</button>
          <div class="panel"><div>
-             <p>Use the Store Pick Progress Report daily to monitor picking efficiency and availability.</p>
+             <p>Use the Store Pick Progress Report daily (after picks complete) to monitor efficiency and availability.</p>
              <ul>
-                 <li>Access the report <a href="https://morrisonsprd.cloud.looker.com/reports/onlinestorepickprogress" target="_blank" rel="noopener noreferrer">here (Example Link - Needs Verification)</a>.</li>
-                 <li>Review Top Lines Non Picked to identify root causes (stock record, replenishment, range).</li>
-                 <li>Use Store Mobile App / HHT to investigate stock record accuracy.</li>
-                 <li>Monitor individual colleague performance (availability %, picks per hour). Target: 99% avail (inc subs), 96% (ex subs). Provide coaching/support where needed.</li>
-                 <li>Feed back persistent issues during Huddles/Store Walks.</li>
+                 <li>Access Report: <a href="https://morrisonsprd.cloud.looker.com/reports/onlinestorepickprogress" target="_blank" rel="noopener noreferrer">[Link Needs Verification]</a></li>
+                 <li>Review 'Top Lines Non Picked' & investigate root causes (stock counts, replenishment). Use HHT/Store Mobile App.</li>
+                 <li>Monitor Colleague Performance: Availability % and Picks Per Hour. Coach/support as needed.</li>
+                 <li>Feedback issues in Huddles.</li>
              </ul>
-             <p><small>See PDF pages 37, 93, 94, 96 for context.</small></p>
+             <p><small>Ref: Online Ops Guide p26, 83-85.</small></p>
          </div></div>
      </section>
 
@@ -363,97 +365,58 @@
 
          <button class="accordion"><i class="fas fa-star"></i> Customer Promises & Quality</button>
          <div class="panel"><div>
-             <p>Our 6 Online Customer Promises (PDF p5):</p>
+             <p>Our 6 Online Customer Promises (Online Ops Guide p4):</p>
              <ol>
-                 <li>Send ordered products or suitable alternative if unavailable.</li>
-                 <li>Allow customer choice on substitutes/missing items (inform them).</li>
-                 <li>Pick, handle, and pack items with care.</li>
-                 <li>Pick products with the best quality and date life.</li>
-                 <li>(Partners/C&C Focus): Provide timely and efficient handover/collection service.</li>
-                 <li>(C&C Focus): Happily assist with loading shopping into the customer's car if requested.</li>
+                 <li>Send ordered products or suitable alternative.</li>
+                 <li>Allow customer choice on substitutes/missing items.</li>
+                 <li>Pick, handle, and pack with care.</li>
+                 <li>Pick best quality and date life.</li>
+                 <li>Provide timely and efficient handover/collection.</li>
+                 <li>(C&C) Assist with loading shopping if requested.</li>
              </ol>
-             <p><strong>Quality Checks (PDF p97, 99):</strong> Always apply the 'Would I Buy It?' test. Check dates (min 3 days rule), packaging integrity (no dents/damage), freshness (no mould, wilting, bruising). Handle items carefully.</p>
+             <p><strong>Quality Checks (Online Ops Guide p83-84, 89):</strong> Always apply 'Would I Buy It?'. Check dates (min 3 days typical), packaging, freshness. Handle carefully.</p>
          </div></div>
 
          <button class="accordion"><i class="fas fa-box-open"></i> Packing Standards</button>
          <div class="panel"><div>
-             <p><strong>Bagless Operation:</strong> Most items are placed directly into totes.</p>
-             <p><strong>Required Bags (Clear Bags - CAR95011):</strong> Use for raw meat/fish, chemical products (like bleach), unwrapped loose seeds, flowers/bulbs, soil-contaminated goods (potatoes/plants) to prevent cross-contamination (PDF p100).</p>
-             <p><strong>Packing Order:</strong> Heavy/robust items at the bottom, lighter/fragile items on top. Keep chilled/frozen separate where tote types differ. Ensure totes aren't overfilled.</p>
-             <p><strong>Picking Trolley Guidance (PDF p101):</strong> Keep trolley with you. Avoid picking from list for multiple items at once to prevent tote errors. Don't leave trolleys unattended.</p>
+             <p><strong>Bagless Operation:</strong> Most items placed directly into totes.</p>
+             <p><strong>Required Bags (Clear Bags - CAR95011):</strong> Use for raw meat/fish, chemicals, unwrapped seeds, flowers/bulbs, soil-contaminated goods (Online Ops Guide p86).</p>
+             <p><strong>Packing Order:</strong> Heavy items bottom, fragile top. Keep regimes separate if needed. Don't overfill.</p>
+             <p><strong>Picking Trolley:</strong> Stay with trolley. Scan tote *each time*. (Online Ops Guide p101 - adapted).</p>
          </div></div>
 
           <button class="accordion"><i class="fas fa-search"></i> Missing Items</button>
          <div class="panel"><div>
-             <p>Missing items (charged but not received) are a major complaint driver (PDF p102-103).</p>
+             <p>Prevent missing items (charged but not received). (Online Ops Guide p85, 102-103).</p>
              <p><strong>Causes & Prevention:</strong></p>
              <ul>
-                 <li><strong>Picker Errors:</strong> Placing items in wrong tote (scan tote barcode *every time*), miscounting multiple items (double-check count), picking wrong variation (verify product details). Leaving trolley unattended.</li>
-                 <li><strong>Handover/Collection Errors:</strong> Ensure *all* totes are scanned and handed over/loaded. Perform adjustments on HHT *before* marking order complete if customer rejects items.</li>
+                 <li><strong>Picker:</strong> Scan correct tote every time. Double-check counts. Verify product variations. Don't leave trolley.</li>
+                 <li><strong>Handover/Collection:</strong> Ensure *all* totes scanned/handed over. Process rejects/adjustments *before* completing order on HHT/Device.</li>
              </ul>
-             <p><strong>Manager Action:</strong> Perform regular Tote Checks. Coach pickers on careful checking and packing.</p>
+             <p><strong>Manager Action:</strong> Regular Tote Checks. Coach pickers.</p>
          </div></div>
 
          <button class="accordion"><i class="fas fa-id-card"></i> Challenge 25</button>
          <div class="panel"><div>
-             <p>Applies to Alcohol and other age-restricted products (knives, etc.) for C&C and partner deliveries (PDF p21, 110).</p>
+             <p>Applies to Alcohol & age-restricted items for C&C and partner deliveries (Online Ops Guide p28).</p>
              <ul>
                  <li>If customer looks under 25, request valid photo ID (Passport, Driving Licence, PASS Card).</li>
-                 <li>Verify age (must be 18+).</li>
-                 <li>If valid ID shown and customer is 18+, complete handover. Record challenge on HHT if prompted/applicable.</li>
-                 <li>If no valid ID / underage / showing signs of intoxication, refuse the age-restricted items. Remove items from order using HHT adjustment before completing.</li>
-                 <li>For C&C, follow guidance on visual ID checks through car windows if customer is self-isolating (PDF p31).</li>
+                 <li>Verify age (18+).</li>
+                 <li>If ID valid & 18+, complete handover.</li>
+                 <li>If no valid ID / underage / intoxicated, refuse age-restricted items. Adjust order *before* completing. For Just Eat/Uber Eats, ensure items are packed separately and Driver is notified for refusal if applicable at doorstep.</li>
              </ul>
          </div></div>
-
-         <button class="accordion" id="amazon-procedures-accordion"><i class="fab fa-amazon"></i> Amazon Specific Procedures</button>
-         <div class="panel"><div>
-            <p>Refer to the 'How I Run My Amazon Online' guide for detailed procedures. Key areas include:</p>
-             <ul>
-                <li>Order Management via Seller Central.</li>
-                <li>Using the Amazon Rota spreadsheet for scheduling.</li>
-                <li>Managing capacity and requesting closures/headcount changes via the Google Doc process.</li>
-                <!-- Add any other critical points specific to Amazon ops -->
-             </ul>
-             <p><small>See PDF p88.</small></p>
-         </div></div>
-
-         <button class="accordion" id="deliveroo-procedures-accordion"><i class="fas fa-motorcycle"></i> Deliveroo Specific Procedures</button>
-         <div class="panel"><div>
-             <p>Refer to the 'Deliveroo Operational Guidance' document for detailed procedures. Key areas include:</p>
-             <ul>
-                 <li>Managing orders via the Deliveroo Hub tablet.</li>
-                 <li>Menu availability management.</li>
-                 <li>Driver handover process.</li>
-                 <!-- Add any other critical points specific to Deliveroo ops -->
-             </ul>
-              <p><small>See PDF p89.</small></p>
-         </div></div>
-
-         <button class="accordion" id="cnc-service-accordion"><i class="fas fa-car"></i> C&C Service Principles</button>
-          <div class="panel"><div>
-              <p>Key principles for excellent C&C service (PDF p109-111):</p>
-              <ul>
-                  <li><strong>Preparation:</strong> Check order for unavailable/substituted items before customer arrives.</li>
-                  <li><strong>Greeting:</strong> Warm, friendly welcome, thank for waiting.</li>
-                  <li><strong>Communication:</strong> Advise on any subs/shortages, allow customer to reject items.</li>
-                  <li><strong>Packing/Handover:</strong> Ask customer preference (unload for them vs self-pack). Offer Fresh Check. Load car carefully if requested.</li>
-                  <li><strong>Efficiency:</strong> Aim to meet wait time target (4m 15s). Use HHT sound alerts. Mark complete promptly.</li>
-                  <li><strong>Demeanour:</strong> Be natural, smile, engage positively.</li>
-                  <li><strong>Safety:</strong> Follow distancing/Challenge 25/Safety protocols.</li>
-              </ul>
-          </div></div>
 
          <button class="accordion"><i class="fas fa-exclamation-triangle"></i> Issue Escalation</button>
          <div class="panel"><div>
-             <p>Follow structured escalation for issues (PDF p47, 49, 51, 75, 79).</p>
+             <p>Follow structured escalation for issues (Online Ops Guide p50-52, 71).</p>
              <ul>
-                 <li><strong>Initial Troubleshooting:</strong> Use guides, check connections, restart devices.</li>
-                 <li><strong>Store Buddy System:</strong> Contact neighbouring store manager/team for advice on operational queries (Dial 7170 + Store No + 269).</li>
-                 <li><strong>IT Service Desk (0345 611 6500):</strong> For technical faults (Devices, Network, OSP/Partner Platform Issues). State 'Online Home Delivery (Store Pick)'. Note Priority Levels (P1=Major Outage, P2=Multiple Stores/Part Delivery Affected, P3=Single Device/Minor Issue). Get ticket reference.</li>
-                  <li><strong>Partner Support:</strong> Use direct support channels for Amazon/Deliveroo etc. for platform-specific issues if IT Desk cannot resolve.</li>
-                 <li><strong>Regional Operations Manager:</strong> Escalate unresolved IT issues (provide ticket ref), major incidents (accidents, security), persistent operational problems, route cancellations (rarely applicable for C&C/Partner).</li>
-                 <li><strong>Specific Issues:</strong> Use dedicated processes for Road Traffic Accidents (PDF p52), Property Damage (PDF p70 - LIABREP), Security Incidents (PDF p55 - MySecurity), Lost Keys/Equipment (PDF p10, 60).</li>
+                 <li><strong>Self-Help:</strong> Use guides, check connections, restart.</li>
+                 <li><strong>Store Buddy:</strong> Contact neighbour store for operational advice (7170 + Store No + 269).</li>
+                 <li><strong>IT Service Desk (0345 611 6500):</strong> For Tech faults (HHT, Network, OSP, PC). State 'Online Store Pick'. Note Priority Levels (P1=Major outage). Get ticket ref.</li>
+                 <li><strong>Partner Support:</strong> Use JE (02475 427 000) / UE (0808 1892471) / Deliveroo / Amazon specific channels for their platform/tablet issues if IT can't fix.</li>
+                 <li><strong>Regional Ops Manager:</strong> Escalate unresolved P1/P2 IT issues (with ticket ref), major incidents, persistent problems.</li>
+                 <li><strong>Specific Issues:</strong> Use dedicated processes for Accidents (MTRACCID/LIABREP), Security (MySecurity), Lost Keys etc. (See relevant guides/Contacts page).</li>
              </ul>
          </div></div>
      </section>
@@ -474,8 +437,6 @@
           document.body.classList.toggle('dark-mode',isDark);
           themeBtn.setAttribute('aria-pressed',isDark);
           localStorage.setItem('theme',isDark?'dark':'light');
-          // Optional: Update meta theme-color for dynamic changes
-          // document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#4d3800' : '#FFB800');
         };
       themeBtn.addEventListener('click',()=>setMode(!document.body.classList.contains('dark-mode')));
 
@@ -491,12 +452,11 @@
               this.setAttribute('aria-expanded', isActive ? 'true' : 'false');
               const panel = this.nextElementSibling;
               if (panel) {
+                  panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
                   if (panel.style.maxHeight) {
                       panel.style.padding = "0 18px"; // Collapse padding first
                       panel.style.maxHeight = null;
-                      panel.setAttribute('aria-hidden', 'true');
                   } else {
-                      panel.setAttribute('aria-hidden', 'false');
                       panel.style.maxHeight = panel.scrollHeight + "px";
                       panel.style.padding = "0 18px"; // Apply padding as it opens
                       // Add inner padding after transition
@@ -516,24 +476,37 @@
                   this.click();
               }
           });
+          // Auto-open accordion if URL hash matches its ID
+          if(window.location.hash === '#' + accordions[i].id && accordions[i].id) {
+             accordions[i].click();
+             // Optional: Scroll to the opened accordion
+             // setTimeout(() => { accordions[i].scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 350); // Delay after animation
+          }
       }
 
-      /* Initial theme and dark mode load */
-      document.addEventListener('DOMContentLoaded', () => {
+       /* Initial theme and dark mode load */
+       document.addEventListener('DOMContentLoaded', () => {
            const savedTheme = localStorage.getItem('theme');
            const prefersDark = matchMedia('(prefers-color-scheme:dark)').matches;
-           setMode(savedTheme ? savedTheme === 'dark' : prefersDark); // Apply saved or preferred dark mode
+           setMode(savedTheme ? savedTheme === 'dark' : prefersDark);
 
-           // Ensure Yellow Theme Class is present
            document.body.classList.add('yellow-theme');
-           void document.body.offsetHeight; // Force reflow if needed
+           void document.body.offsetHeight;
+
+            // Re-check hash linking after DOM is ready
+            if(window.location.hash) {
+                const targetAccordion = document.querySelector(window.location.hash);
+                if(targetAccordion && targetAccordion.classList.contains('accordion') && !targetAccordion.classList.contains('active')) {
+                    targetAccordion.click();
+                     // Scroll into view might be needed here too if initial auto-open didn't work reliably
+                    // setTimeout(() => { targetAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 350);
+                }
+            }
        });
 
+
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-          // Only update if theme isn't manually set
-          if (!localStorage.getItem('theme')) {
-              setMode(event.matches);
-          }
+          if (!localStorage.getItem('theme')) { setMode(event.matches); }
       });
 
 
