@@ -59,18 +59,10 @@
   header h1{font-weight:700;font-size:clamp(1.2rem,4vw+.4rem,1.8rem); flex-grow: 1; text-align: right; /* Right align header text */}
   body.dark-mode header{background:var(--card-dark);color:var(--text-dark)}
 
-  /* ---------- Header Adjustments for Mobile ---------- */
   @media (max-width: 600px) {
-    header {
-      padding: .5rem 1rem;
-      gap: .5rem;
-    }
-    header img {
-      inline-size: 40px;
-    }
-    header h1 {
-      font-size: clamp(1.0rem, 3.5vw + .4rem, 1.6rem);
-    }
+    header { padding: .5rem 1rem; gap: .5rem; }
+    header img { inline-size: 40px; }
+    header h1 { font-size: clamp(1.0rem, 3.5vw + .4rem, 1.6rem); }
   }
 
   /* ---------- Navigation ---------- */
@@ -88,11 +80,7 @@
     body{padding-block-end:56px}
   }
   @media(min-width:601px){
-    nav {
-        position: sticky;
-        top: 0; /* Stick right below header space */
-        z-index: 98; /* Lower than header */
-    }
+    nav { position: sticky; top: 0; z-index: 98; }
     .nav-wrap{block-size:64px}
     .nav-links a{font-size:.8rem}
   }
@@ -104,17 +92,32 @@
 
 
   /* ---------- Containers & sections ---------- */
-   main {
-       position: relative;
-       z-index: 1;
-   }
+   main { position: relative; z-index: 1; }
   .container{inline-size:clamp(90%,1200px,95%);margin-inline:auto;padding-block:1.25rem 2rem}
   section{background:var(--bg-card);padding:1.25rem 1rem;border-radius:12px;box-shadow:var(--shadow);margin-block-end:1.5rem}
   body.dark-mode section{background:var(--card-dark)}
   section h2{font-size:clamp(1.1rem,2.2vw+.7rem,1.6rem);margin-block-end:.75rem;color:var(--green);border-block-end:2px solid var(--yellow);display:inline-block;padding-block-end:.25rem}
   body.dark-mode section h2{color:var(--yellow);border-color:var(--green)}
   section p { margin-bottom: 1em; }
-  section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; } /* Keep list styles for sections */
+  section ul { list-style: disc; margin-left: 25px; margin-bottom: 1em; }
+
+  /* ---------- Search ---------- */
+  .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .search-container { position: relative; margin-bottom: 1.5rem; }
+  #site-search { width: 100%; padding: 0.75rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; }
+  body.dark-mode #site-search { background-color: var(--card-dark); border-color: #555; color: var(--text-dark); }
+  #site-search:focus { border-color: var(--primary-color); outline: 2px solid var(--primary-color); }
+  body.dark-mode #site-search:focus { border-color: var(--yellow); outline-color: var(--yellow); }
+
+  .search-results-dropdown { display: none; /* Hidden by default */ position: absolute; top: 100%; left: 0; right: 0; background-color: var(--bg-card); border: 1px solid #ccc; border-top: none; border-radius: 0 0 6px 6px; max-height: 300px; overflow-y: auto; z-index: 101; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  body.dark-mode .search-results-dropdown { background-color: var(--card-dark); border-color: #555; }
+  .search-results-dropdown a { display: block; padding: 0.75rem 1rem; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--bg-faint); }
+   .search-results-dropdown a:last-child { border-bottom: none; }
+  body.dark-mode .search-results-dropdown a { color: var(--text-dark); border-bottom-color: #333; }
+  .search-results-dropdown a:hover, .search-results-dropdown a:focus { background-color: var(--bg-faint); color: var(--green); }
+  body.dark-mode .search-results-dropdown a:hover, body.dark-mode .search-results-dropdown a:focus { background-color: #333; color: var(--yellow); }
+   .search-results-dropdown span { font-size: 0.85em; color: #666; display: block; margin-top: 2px; }
+   body.dark-mode .search-results-dropdown span { color: #aaa; }
 
 
   /* ---------- Dashboard grid ---------- */
@@ -156,7 +159,6 @@
   body.dark-mode .whiteboard-container{background:var(--dark-bg-color);border-color:var(--text-dark)}
   #whiteboard{display:block;inline-size:100%;block-size:100%;background-color:transparent;touch-action:none}
 
-  /* Dynamic cursors */
   #whiteboard.pen-cursor{cursor:crosshair}
   #whiteboard.text-cursor{cursor:text}
   #whiteboard.eraser-cursor{cursor:none}
@@ -203,7 +205,7 @@
   body.dark-mode footer{background:var(--footer-dark)}
 
   /* ---------- Dark-mode toggle button ---------- */
-  .theme-toggle{background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--green);padding:.25rem; margin-left: auto;} /* Pushes toggle to the right */
+  .theme-toggle{background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--green);padding:.25rem; margin-left: auto;}
   body.dark-mode .theme-toggle{color:var(--text-dark)}
 
   /* ---------- Notification ---------- */
@@ -242,6 +244,18 @@
 
   <!----- main content ----->
   <main class="container">
+
+    <!-- Search Section -->
+    <section id="site-search-section" aria-labelledby="search-heading">
+      <h2 id="search-heading" class="visually-hidden">Site Search</h2> <!-- Hidden heading for accessibility -->
+      <div class="search-container">
+        <label for="site-search" class="visually-hidden">Search this site:</label>
+        <input type="search" id="site-search" placeholder="Search pages & sections...">
+        <div id="search-results" class="search-results-dropdown" aria-live="polite"></div>
+      </div>
+    </section>
+    <!-- End Search Section -->
+
     <!-- welcome -->
     <section id="welcome">
       <h2>Welcome</h2>
@@ -263,7 +277,7 @@
         <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="tile" data-open="external" title="Google Script - Reminders (opens new tab)"><i class="fas fa-calendar-check"></i><span>Reminders</span></a>
         <a href="operations.html" class="tile" data-open="self" title="Operational Guides"><i class="fas fa-cogs"></i><span>Operations</span></a>
         <a href="shrink.html" class="tile" data-open="self" title="Shrink Management Guides"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a>
-        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="external" title="Production Plans (Opens new tab)"><i class="fas fa-clipboard-list"></i><span>Production</span></a> <!-- Changed to external link -->
+        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="external" title="Production Plans (Opens new tab)"><i class="fas fa-clipboard-list"></i><span>Production</span></a>
       </div>
     </section>
 
@@ -289,7 +303,7 @@
                  <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
              </div>
          </div>
-         <a href="https://docs.google.com/spreadsheets/d/1T_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/edit#gid=1881177460" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Sheet</a> <!-- Link to editable version? -->
+         <a href="https://docs.google.com/spreadsheets/d/1T_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/edit#gid=1881177460" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Sheet</a>
      </section>
 
      <!-- Reminders App Section -->
@@ -308,7 +322,7 @@
                <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
             </div>
         </div>
-        <a href="https://docs.google.com/spreadsheets/d/1TYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/edit#gid=0" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Rota</a> <!-- Link to editable version? -->
+        <a href="https://docs.google.com/spreadsheets/d/1TYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/edit#gid=0" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Rota</a>
      </section>
 
     <!-- Retail Wheel Section -->
@@ -854,18 +868,6 @@
 
         /* initial load */
         window.addEventListener("resize",debounce(resizeCanvas,150)); // Shortened debounce
-        try{
-            strokes=JSON.parse(localStorage.whiteboardStrokes||"[]");
-             history = [{ strokes: JSON.parse(JSON.stringify(strokes)), bgColor: effectiveBg() }];
-             historyIndex = 0;
-        }catch{strokes=[]; history=[{strokes:[], bgColor: themeBg()}]; historyIndex = 0;}
-        // Initial resize and render deferred slightly
-        setTimeout(() => {
-            resizeCanvas();
-            updateCursor(); // Set initial cursor
-            // Save initial state after loading
-            // saveState(); // Removed - initial state is now index 0 in history
-        }, 50);
 
     } else { console.log("Whiteboard canvas not found."); } // End if(canvas)
 
@@ -936,6 +938,86 @@
         });
     }
 
+    /* -------- Simple Site Search -------- */
+    const searchInput = document.getElementById('site-search');
+    const searchResultsContainer = document.getElementById('search-results');
+
+    // Define the searchable content (manual index)
+    const searchablePages = [
+        { title: 'Home / Dashboard', url: 'index.html', keywords: 'dashboard welcome quick links rota whiteboard notes' },
+        { title: 'Online Operations', url: 'online.html', keywords: 'cnc click collect amazon deliveroo justeat uber eats osp partner handset troubleshoot' },
+        { title: 'Market Street / Cafe', url: 'street.html', keywords: 'bakery butchery fish deli cake shop pizza food to go cafe production plan checklist wgll markdown' },
+        { title: 'Front End Services', url: 'services.html', keywords: 'csd kiosk checkouts sco self scan tills more card trolleys baskets pharmacy logbook mpro5' },
+        { title: 'Operations', url: 'operations.html', keywords: 'replenishment scanning mic routines tech support it helpdesk emergency' },
+        { title: 'Contacts', url: 'contacts.html', keywords: 'phone email helpdesk support central loss prevention lp retail trust pharmacy' },
+        { title: 'Shrink Management', url: 'shrink.html', keywords: 'stocktake audit tagging waste loss prevention dymension think shrink' },
+        { title: 'Safe & Legal', url: 'safe-and-legal.html', keywords: 'haccp food safety health hs licensing compliance audits data protection gdpr' }
+    ];
+
+    const handleSearch = debounce(() => {
+        const query = searchInput.value.trim().toLowerCase();
+        searchResultsContainer.innerHTML = ''; // Clear previous results
+
+        if (query.length < 2) { // Only search if query is at least 2 chars
+            searchResultsContainer.style.display = 'none';
+            return;
+        }
+
+        const results = searchablePages.filter(page =>
+            page.title.toLowerCase().includes(query) ||
+            page.keywords.toLowerCase().includes(query) ||
+            page.url.toLowerCase().includes(query)
+        );
+
+        if (results.length > 0) {
+             // Limit results displayed
+            const maxResults = 7;
+            results.slice(0, maxResults).forEach(result => {
+                const link = document.createElement('a');
+                link.href = result.url;
+                link.textContent = result.title;
+                searchResultsContainer.appendChild(link);
+            });
+            searchResultsContainer.style.display = 'block';
+        } else {
+            const noResult = document.createElement('div');
+             noResult.textContent = 'No results found.';
+             noResult.style.padding = '0.75rem 1rem'; // Style similar to links
+             searchResultsContainer.appendChild(noResult);
+            searchResultsContainer.style.display = 'block';
+        }
+    }, 300); // Debounce search input
+
+    if (searchInput && searchResultsContainer) {
+        searchInput.addEventListener('input', handleSearch);
+
+        // Hide results when clicking outside
+        document.addEventListener('click', (event) => {
+             // Check if the click target is the search input or the results container itself
+            if (!searchInput.contains(event.target) && !searchResultsContainer.contains(event.target)) {
+                searchResultsContainer.style.display = 'none';
+            }
+        });
+         // Hide results on Escape key
+         searchInput.addEventListener('keydown', (event) => {
+             if (event.key === 'Escape') {
+                 searchResultsContainer.style.display = 'none';
+                 searchInput.blur(); // Optionally remove focus from input
+             }
+         });
+          // Ensure results are shown if input gains focus and has value > 1 char
+         searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim().length >= 2) {
+                handleSearch.flush?.(); // Ensure immediate search if debounced
+                 if (searchResultsContainer.innerHTML.trim() !== '') { // Check if results exist
+                     searchResultsContainer.style.display = 'block';
+                }
+            }
+         });
+
+    }
+    /* -------- End Search -------- */
+
 
     /* --- DOMContentLoaded --- */
      document.addEventListener('DOMContentLoaded', () => {
@@ -969,6 +1051,9 @@
                  historyIndex = 0;
             }
          }
+
+        // --- Removed hash linking scroll logic ---
+
     });
 
     /* --- Dark Mode System Preference Listener --- */
