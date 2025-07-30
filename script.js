@@ -128,6 +128,9 @@
     /* -------- WHITEBOARD -------- */
     const container=$("#whiteboard-container");
     const canvas   =$("#whiteboard");
+    // Predeclare vars used outside the block
+    let resizeCanvas, render, updateCursor;
+    let strokes = [], history = [], historyIndex = -1;
     if(canvas){ // Check if canvas exists before proceeding
         const ctx=canvas.getContext("2d",{willReadFrequently:true}); // Added willReadFrequently
         const tools=$$(".tool-button");
@@ -137,10 +140,8 @@
         const eraserPreview=$("#eraser-preview");
         const fsBtn=$(".fullscreen-button");
 
-        let currentTool="pen",drawing=false,currentStroke=null,strokes=[];
+        let currentTool="pen",drawing=false,currentStroke=null;
         let dpr=window.devicePixelRatio||1;
-        let history = []; // For undo
-        let historyIndex = -1;
 
         /*  util  */
         const themeBg = ()=>getComputedStyle(document.body).getPropertyValue(document.body.classList.contains("dark-mode")?"--dark-bg-color":"--light-bg-color").trim();
@@ -175,7 +176,7 @@
          };
 
         /*  size / Hi-DPI  */
-        const resizeCanvas=()=>{
+        resizeCanvas=()=>{
           if (!canvas.parentElement) return;
           const {clientWidth:w,clientHeight:h}=canvas.parentElement;
           dpr=window.devicePixelRatio||1;
@@ -189,7 +190,7 @@
         };
 
         /* drawing engine */
-        const render=()=>{
+        render=()=>{
           if(!ctx) return;
           const logicalWidth = canvas.width / dpr;
           const logicalHeight = canvas.height / dpr;
@@ -366,7 +367,7 @@
         const hideEraserPreview=()=>eraserPreview.style.display="none";
 
         /* Cursors based on tool */
-        const updateCursor = () => {
+        updateCursor = () => {
             canvas.classList.remove('pen-cursor', 'text-cursor', 'eraser-cursor');
             hideEraserPreview(); // Hide preview when changing tool
             if (currentTool === 'pen') canvas.classList.add('pen-cursor');
