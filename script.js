@@ -647,6 +647,7 @@
          // Whiteboard init (ensure canvas exists)
          if(canvas) {
             resizeCanvas(); // Initial size calculation
+            window.addEventListener('load', resizeCanvas); // Recalculate once page fully loads
             updateCursor(); // Set initial cursor state
             // Load initial state if needed
             if (localStorage.whiteboardStrokes) {
