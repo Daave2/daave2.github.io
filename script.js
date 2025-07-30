@@ -634,7 +634,7 @@
 
 
     /* --- DOMContentLoaded --- */
-     document.addEventListener('DOMContentLoaded', () => {
+    const initPage = () => {
         // Ensure page starts at the very top
         window.scrollTo(0, 0);
 
@@ -668,7 +668,13 @@
 
         // --- Removed hash linking scroll logic ---
 
-    });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPage);
+    } else {
+        initPage();
+    }
 
     /* --- Dark Mode System Preference Listener --- */
     matchMedia("(prefers-color-scheme:dark)").addEventListener("change",e=>{if(!localStorage.theme)setMode(e.matches);});
