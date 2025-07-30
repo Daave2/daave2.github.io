@@ -14,6 +14,7 @@ const APP_SHELL_URLS = [
     '/shrink.html',
     '/safe-and-legal.html',
     '/dash.html', // Include dash.html if still used
+    '/offline.html',
     // '/css/style.css', // If you had separate CSS files
     // '/js/main.js',   // If you had separate JS files
     '/icons/icon-192x192.png',
@@ -87,17 +88,9 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(
             fetch(event.request)
                 .catch(() => {
-                    // Network failed, try the cache
                     return caches.match(event.request)
                         .then((cachedResponse) => {
-                            if (cachedResponse) {
-                                return cachedResponse;
-                            }
-                            // Optional: return an offline fallback page if even cache fails
-                            // return caches.match('/offline.html');
-                            console.warn('[Service Worker] Navigation failed, not in cache:', event.request.url);
-                            // Return a generic error response maybe?
-                            return new Response('Network error and not in cache', { status: 503, statusText: 'Service Unavailable'});
+                            return cachedResponse || caches.match('/offline.html');
                         });
                 })
         );
@@ -128,14 +121,8 @@ self.addEventListener('fetch', (event) => {
                     }
                     */
                     return networkResponse;
-                }).catch(error => {
-                    console.error('[Service Worker] Fetch failed:', error);
-                    // Optional: Provide a fallback image/resource if fetch fails
-                    // if (event.request.url.match(/\.(jpe?g|png|gif|svg)$/)) {
-                    //     return caches.match('/images/fallback.png');
-                    // }
-                    // Return a simple error response
-                     return new Response('Network error', { status: 503, statusText: 'Service Unavailable'});
+                }).catch(() => {
+                    return caches.match('/offline.html');
                 });
             })
     );
