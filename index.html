@@ -389,7 +389,7 @@
 
     /* -------- helpers -------- */
     const $ = s=>document.querySelector(s);
-    const $$= s=>document.querySelectorAll(s);
+    const $$= s=>Array.from(document.querySelectorAll(s));
     const debounce = (fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);} };
     const notify=(msg,ms=3000)=>{const n=$("#notification");if(!n)return;n.textContent=msg;n.style.display="block";n.style.opacity=1;n.style.transition='opacity .3s';
                                  setTimeout(()=>{n.style.opacity=0;setTimeout(()=>n.style.display="none",300);},ms);};
