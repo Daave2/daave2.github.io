@@ -566,7 +566,8 @@
         { title: 'Operations', url: 'operations.html', keywords: 'replenishment scanning mic routines tech support it helpdesk emergency' },
         { title: 'Contacts', url: 'contacts.html', keywords: 'phone email helpdesk support central loss prevention lp retail trust pharmacy' },
         { title: 'Shrink Management', url: 'shrink.html', keywords: 'stocktake audit tagging waste loss prevention dymension think shrink' },
-        { title: 'Safe & Legal', url: 'safe-and-legal.html', keywords: 'haccp food safety health hs licensing compliance audits data protection gdpr' }
+        { title: 'Safe & Legal', url: 'safe-and-legal.html', keywords: 'haccp food safety health hs licensing compliance audits data protection gdpr' },
+        { title: 'Stock Info (SMU) App', url: 'https://app.218.team', keywords: 'stock info smu investigation 218 team inventory counts' }
     ];
 
     const handleSearch = debounce(() => {
@@ -591,6 +592,10 @@
                 const link = document.createElement('a');
                 link.href = result.url;
                 link.textContent = result.title;
+                if (/^https?:\/\//.test(result.url)) {
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                }
                 searchResultsContainer.appendChild(link);
             });
             searchResultsContainer.style.display = 'block';
