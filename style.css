@@ -130,7 +130,7 @@
   .search-container { position: relative; margin-bottom: 1.5rem; }
   #site-search { width: 100%; padding: 0.75rem 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; }
   body.dark-mode #site-search { background-color: var(--card-dark); border-color: #555; color: var(--text-dark); }
-  #site-search:focus { border-color: var(--primary-color); outline: 2px solid var(--primary-color); }
+  #site-search:focus { border-color: var(--green); outline: 2px solid var(--green); }
   body.dark-mode #site-search:focus { border-color: var(--yellow); outline-color: var(--yellow); }
 
   .search-results-dropdown { display: none; /* Hidden by default */ position: absolute; top: 100%; left: 0; right: 0; background-color: var(--bg-card); border: 1px solid #ccc; border-top: none; border-radius: 0 0 6px 6px; max-height: 300px; overflow-y: auto; z-index: 101; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
