@@ -15,12 +15,8 @@
   <!-- Google Fonts for Modern Typography -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <!-- Font Awesome for Icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css" />
-        integrity="sha512-Fo3rlrQkTyjnu/0bX9MwYpztA3g50kqfL+g1epw1l0kGtwXedgS3Wv+qh48I6sFjg7ABwH5D07KyN0zvjwMZjg=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer" />
 </head>
 <body>
   <header>
@@ -28,6 +24,7 @@
     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png"
          alt="Morrisons Logo">
     <h1>Cleveleys Morrisons Dashboard</h1>
+    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
   </header>
 
   <!-- Navigation -->
@@ -42,11 +39,6 @@
         <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i>Shrink</a></li>
         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i>Safe &amp; Legal</a></li>
       </ul>
-      <div class="nav-actions">
-        <button class="dark-mode-toggle" aria-label="Toggle Dark Mode" aria-pressed="false">
-          🌓
-        </button>
-      </div>
       <div class="hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false" role="button" tabindex="0">
         <span></span>
         <span></span>
@@ -56,60 +48,61 @@
   </nav>
 
   <!-- Dashboard Grid -->
-  <div class="dashboard-container">
-    <div class="dashboard-grid">
+  <section id="dashboard">
+    <h2>Quick Links</h2>
+    <div class="grid">
       <!-- Working in frame -->
-      <a href="https://storemobile.apps.mymorri.com/#/login" class="dashboard-item" data-open="frame">
+      <a href="https://storemobile.apps.mymorri.com/#/login" class="tile" data-open="frame">
         <i class="fas fa-mobile-alt"></i>
         <span>Store App</span>
       </a>
-      <a href="https://app.218.team" class="dashboard-item" data-open="external">
+      <a href="https://app.218.team" class="tile" data-open="external">
         <i class="fas fa-box"></i>
         <span>Stock Info (SMU)</span>
       </a>
-      <a href="https://www.dymension.co.uk/#/account/login" class="dashboard-item" data-open="frame">
+      <a href="https://www.dymension.co.uk/#/account/login" class="tile" data-open="frame">
         <i class="fas fa-user-check"></i>
         <span>Staff Checks</span>
       </a>
       <!-- The rest will open externally -->
-      <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="dashboard-item" data-open="external">
+      <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="tile" data-open="external">
         <i class="fas fa-book"></i>
         <span>Logbook</span>
       </a>
-      <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="dashboard-item" data-open="external">
+      <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile" data-open="external">
         <i class="fas fa-chart-line"></i>
         <span>Delivery Volume</span>
       </a>
-      <a href="https://live.microlise.com/MORRISONS/TMCWebPortal/authentication/login.aspx?ReturnUrl=%2fMORRISONS%2fTMCWebPortal%2fSite%2fVisits%2f218%3fsiteIdEncoded%3dFalse&amp;siteIdEncoded=False" class="dashboard-item" data-open="external">
+      <a href="https://live.microlise.com/MORRISONS/TMCWebPortal/authentication/login.aspx?ReturnUrl=%2fMORRISONS%2fTMCWebPortal%2fSite%2fVisits%2f218%3fsiteIdEncoded%3dFalse&amp;siteIdEncoded=False" class="tile" data-open="external">
         <i class="fas fa-truck"></i>
         <span>Delivery Tracker</span>
       </a>
-      <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_swllr1wxqd" class="dashboard-item" data-open="external">
+      <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_swllr1wxqd" class="tile" data-open="external">
         <i class="fas fa-comments"></i>
         <span>Complaints Dash</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="dashboard-item" data-open="external">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzIdtjqOn7Ktfs6SCOwIRdqEt0PFqt0sbR1zq8K-WJIyL9d5gXY3j0r5m3OVgIOyZIABw/exec" class="tile" data-open="external">
         <i class="fas fa-sync-alt"></i>
         <span>Retail Wheel</span>
       </a>
-      <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_lhi3f1wxqd" class="dashboard-item" data-open="external">
+      <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_lhi3f1wxqd" class="tile" data-open="external">
         <i class="fas fa-smile"></i>
         <span>NPS</span>
       </a>
-      <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="dashboard-item" data-open="external">
+      <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="tile" data-open="external">
         <i class="fas fa-exchange-alt"></i>
         <span>Transfers</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="dashboard-item" data-open="external">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzZL9nqqm3g3dovfDamSnPlnuRnPa2c18oPUzMzxe3zywAT1kQVgNIWmWIH1LI1DMlz/exec" class="tile" data-open="external">
         <i class="fas fa-reply"></i>
         <span>Complaints Reply</span>
       </a>
-      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzJZnla-nRdlfnp_KDx_X3wS33eXKCgY-ghWprNDk13qXBXUvci2DTCBAmd0URT8i8/exec" class="dashboard-item" data-open="external">
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbzJZnla-nRdlfnp_KDx_X3wS33eXKCgY-ghWprNDk13qXBXUvci2DTCBAmd0URT8i8/exec" class="tile" data-open="external">
         <i class="fas fa-calendar-check"></i>
         <span>Reminders</span>
       </a>
     </div>
-  </div>
+  </section>
 
   <!-- Content Frame Container -->
   <div id="frame-container">
