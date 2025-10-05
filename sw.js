@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = 'cleveleys-dash-cache-v2'; // <<< Cache name incremented
+const CACHE_NAME = 'cleveleys-dash-cache-v3'; // <<< Cache name incremented
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [
@@ -21,7 +21,7 @@ const APP_SHELL_URLS = [
     '/icons/icon-512x512.png',
     // Add external resources you want to cache for offline use (be careful with versioning)
     'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
     'https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png'
     // REMOVED: 'https://cdn.jsdelivr.net/npm/otplib-browser@12.0.1/dist/otplib-browser.umd.min.js' // Cache OTP library
     // REMOVED or COMMENTED OUT: '/js/vendor/otplib-browser.umd.min.js' // Also remove if you added the local version
