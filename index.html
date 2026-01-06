@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
@@ -10,40 +11,27 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling and operational guides." />
+  <meta name="description"
+    content="Cleveleys Morrisons Management Dashboard for tasks, notes, scheduling and operational guides." />
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <!-- Using updated Font Awesome version -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Styles – mobile-first -->
+  <script src="components/header.js" defer></script>
+  <script src="components/nav.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <!----- header & theme toggle ----->
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
-    <h1>Cleveleys Morrisons Dashboard</h1>
-    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
-  </header>
+  <site-header></site-header>
 
   <!----- nav (bottom bar on phones) ----->
-  <nav>
-    <div class="nav-wrap">
-      <ul class="nav-links">
-        <li><a href="index.html" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
-        <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
-        <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
-      </ul>
-    </div>
-  </nav>
+  <site-nav></site-nav>
 
   <!----- main content ----->
   <main class="container">
@@ -68,22 +56,44 @@
     <!-- dashboard -->
     <section id="dashboard">
       <h2>Quick Links</h2>
-      <div class="grid">
-        <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="tile" data-open="frame" title="Store Mobile App"><i class="fas fa-mobile-alt"></i><span>Store App</span></a>
-        <a href="https://app.218.team" class="tile" data-open="external" title="Stock Info App (opens new tab)"><i class="fas fa-box"></i><span>Stock Info (SMU)</span></a>
-        <a href="https://www.dymension.co.uk/#/account/login" class="tile" data-open="frame" title="Staff Checks"><i class="fas fa-user-check"></i><span>Staff Checks</span></a>
-        <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="tile" data-open="external" title="Price Integrity Logbook (opens new tab)"><i class="fas fa-book"></i><span>Logbook</span></a>
-        <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile" data-open="external" title="Looker Delivery Volume Report (opens new tab)"><i class="fas fa-chart-line"></i><span>Delivery Vol</span></a>
-        <a href="https://lookerstudio.google.com/embed/reporting/d93a03c7-25dc-439d-abaa-dd2f3780daa5/page/BLfDE" class="tile" data-open="external" title="Retail Wheel Dashboard (opens new tab)"><i class="fas fa-tachometer-alt"></i><span>Retail Wheel</span></a> <!-- UPDATED LINK -->
-        <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_lhi3f1wxqd" class="tile" data-open="external" title="Looker Studio Customer NPS Dashboard (opens new tab)"><i class="fas fa-smile"></i><span>NPS</span></a>
-        <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME" class="tile" data-open="external" title="Looker Studio Transfers Report (opens new tab)"><i class="fas fa-exchange-alt"></i><span>Transfers</span></a>
-        <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_swllr1wxqd" class="tile" data-open="external" title="Looker Studio Complaints Dashboard (opens new tab)"><i class="fas fa-comments"></i><span>Complaints Dash</span></a>
-        <a href="https://storemapper-ai-584939250419.us-west1.run.app" class="tile" data-open="external" title="Promo Map (opens new tab)"><i class="fas fa-map-marked-alt"></i><span>Promo Map</span></a>
-        <a href="https://live.microlise.com/MORRISONS/TMCWebPortal/authentication/login.aspx?ReturnUrl=%2fMORRISONS%2fTMCWebPortal%2fSite%2fVisits%2f218%3fsiteIdEncoded%3dFalse&amp;siteIdEncoded=False" class="tile" data-open="external" title="Microlise Delivery Tracker (opens new tab)"><i class="fas fa-truck"></i><span>Delivery Tracker</span></a>
-        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" class="tile" data-open="external" title="Google Script - Reminders (opens new tab)"><i class="fas fa-calendar-check"></i><span>Reminders</span></a>
-        <a href="operations.html" class="tile" data-open="self" title="Operational Guides"><i class="fas fa-cogs"></i><span>Operations</span></a>
-        <a href="shrink.html" class="tile" data-open="self" title="Shrink Management Guides"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a>
-        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="external" title="Production Plans (Opens new tab)"><i class="fas fa-clipboard-list"></i><span>Production</span></a>
+      <div class="dashboard-grid">
+        <a href="https://storemobile.apps.mymorri.com/#/choose-option/218" class="tile" data-open="frame"
+          title="Store Mobile App"><i class="fas fa-mobile-alt"></i><span>Store App</span></a>
+        <a href="https://app.218.team" class="tile" data-open="external" title="Stock Info App (opens new tab)"><i
+            class="fas fa-box"></i><span>Stock Info (SMU)</span></a>
+        <a href="https://www.dymension.co.uk/#/account/login" class="tile" data-open="frame" title="Staff Checks"><i
+            class="fas fa-user-check"></i><span>Staff Checks</span></a>
+        <a href="https://priceintegrity.apps.mymorri.com/#/checks" class="tile" data-open="external"
+          title="Price Integrity Logbook (opens new tab)"><i class="fas fa-book"></i><span>Logbook</span></a>
+        <a href="https://morrisonsprd.cloud.looker.com/dashboards/retail::store_inbound_report" class="tile"
+          data-open="external" title="Looker Delivery Volume Report (opens new tab)"><i
+            class="fas fa-chart-line"></i><span>Delivery Vol</span></a>
+        <a href="https://lookerstudio.google.com/embed/reporting/d93a03c7-25dc-439d-abaa-dd2f3780daa5/page/BLfDE"
+          class="tile" data-open="external" title="Retail Wheel Dashboard (opens new tab)"><i
+            class="fas fa-tachometer-alt"></i><span>Retail Wheel</span></a> <!-- UPDATED LINK -->
+        <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_lhi3f1wxqd"
+          class="tile" data-open="external" title="Looker Studio Customer NPS Dashboard (opens new tab)"><i
+            class="fas fa-smile"></i><span>NPS</span></a>
+        <a href="https://lookerstudio.google.com/u/1/reporting/b28a8a2b-e768-483f-bb21-c0452cf8592d/page/jhKME"
+          class="tile" data-open="external" title="Looker Studio Transfers Report (opens new tab)"><i
+            class="fas fa-exchange-alt"></i><span>Transfers</span></a>
+        <a href="https://lookerstudio.google.com/embed/u/1/reporting/b69cfd73-8c0a-453d-9c10-6561fa953f7c/page/p_swllr1wxqd"
+          class="tile" data-open="external" title="Looker Studio Complaints Dashboard (opens new tab)"><i
+            class="fas fa-comments"></i><span>Complaints Dash</span></a>
+        <a href="https://storemapper-ai-584939250419.us-west1.run.app" class="tile" data-open="external"
+          title="Promo Map (opens new tab)"><i class="fas fa-map-marked-alt"></i><span>Promo Map</span></a>
+        <a href="https://live.microlise.com/MORRISONS/TMCWebPortal/authentication/login.aspx?ReturnUrl=%2fMORRISONS%2fTMCWebPortal%2fSite%2fVisits%2f218%3fsiteIdEncoded%3dFalse&amp;siteIdEncoded=False"
+          class="tile" data-open="external" title="Microlise Delivery Tracker (opens new tab)"><i
+            class="fas fa-truck"></i><span>Delivery Tracker</span></a>
+        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec"
+          class="tile" data-open="external" title="Google Script - Reminders (opens new tab)"><i
+            class="fas fa-calendar-check"></i><span>Reminders</span></a>
+        <a href="operations.html" class="tile" data-open="self" title="Operational Guides"><i
+            class="fas fa-cogs"></i><span>Operations</span></a>
+        <a href="shrink.html" class="tile" data-open="self" title="Shrink Management Guides"><i
+            class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a>
+        <a href="https://marketstreet.retail.apps.mymorri.com/" class="tile" data-open="external"
+          title="Production Plans (Opens new tab)"><i class="fas fa-clipboard-list"></i><span>Production</span></a>
       </div>
     </section>
 
@@ -91,51 +101,65 @@
     <div id="frame-container">
       <button id="close-frame" title="Close Frame"><i class="fas fa-times"></i> Close</button>
       <div class="iframe-loading-container">
-           <div class="iframe-loading"></div>
-           <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
+        <div class="iframe-loading"></div>
+        <iframe id="content-frame" title="Embedded Content Frame" src="about:blank"></iframe>
       </div>
       <div id="fallback-message" role="alert">
         <p>Unable to load this page within the frame.<br>
-        <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new tab.</p>
+          <a id="fallback-link" href="" target="_blank" rel="noopener noreferrer">Click here</a> to open it in a new
+          tab.
+        </p>
       </div>
     </div>
 
     <!-- Who Is In Today Section -->
-     <section id="who-is-in">
-        <h2>Who Is In Today?</h2>
-         <div class="iframe-loading-container">
-             <div class="iframe-loading"></div>
-             <div class="iframe-wrap">
-                 <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false" title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
-             </div>
-         </div>
-         <a href="https://docs.google.com/spreadsheets/d/1T_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/edit#gid=1881177460" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Sheet</a>
-     </section>
-
-     <!-- Reminders App Section -->
-     <section id="reminders-app">
-       <h2>Reminders</h2>
-       <p>Access the reminders application.</p>
-        <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec" target="_blank" rel="noopener noreferrer" class="button-link"><i class="fas fa-external-link-alt fa-xs"></i> Open Reminders App</a>
-     </section>
-
-     <!-- Management Rota Section -->
-     <section id="management-rota">
-       <h2>Management Rota</h2>
-        <div class="iframe-loading-container">
-            <div class="iframe-loading"></div>
-            <div class="iframe-wrap">
-               <iframe data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false" title="Management Rota Spreadsheet" loading="lazy"></iframe>
-            </div>
+    <section id="who-is-in">
+      <h2>Who Is In Today?</h2>
+      <div class="iframe-loading-container">
+        <div class="iframe-loading"></div>
+        <div class="iframe-wrap">
+          <iframe
+            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/pubhtml?gid=1881177460&single=true&widget=true&headers=false"
+            title="Who Is In Today Spreadsheet" loading="lazy"></iframe>
         </div>
-        <a href="https://docs.google.com/spreadsheets/d/1TYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/edit#gid=0" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> View Full Rota</a>
-     </section>
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/1T_y-07M_h42TtOYaixA3J-8DNM9ifSLpQX2oASHEvSuzij4AtP_HwAX0TRwRX8hfcTSP-EJKiuNko6/edit#gid=1881177460"
+        class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i>
+        View Full Sheet</a>
+    </section>
+
+    <!-- Reminders App Section -->
+    <section id="reminders-app">
+      <h2>Reminders</h2>
+      <p>Access the reminders application.</p>
+      <a href="https://script.google.com/a/macros/morrisonsplc.co.uk/s/AKfycbwcruXBXnOk0d1wlfZJHn4sy4IYpuj1GMtzSldMHAj2VWxNCKjEuGiEqCCpTfkWXUcp/exec"
+        target="_blank" rel="noopener noreferrer" class="button-link"><i class="fas fa-external-link-alt fa-xs"></i>
+        Open Reminders App</a>
+    </section>
+
+    <!-- Management Rota Section -->
+    <section id="management-rota">
+      <h2>Management Rota</h2>
+      <div class="iframe-loading-container">
+        <div class="iframe-loading"></div>
+        <div class="iframe-wrap">
+          <iframe
+            data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/pubhtml?widget=true&headers=false"
+            title="Management Rota Spreadsheet" loading="lazy"></iframe>
+        </div>
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/1TYlntl23_036PdM7a3KIWjPjvq9AEXJdT6V_oCb9KHPfmu3tLBhcEDVwyVnY0c0Ye9-It8ZbS_PnAz/edit#gid=0"
+        class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i>
+        View Full Rota</a>
+    </section>
 
     <!-- Retail Wheel Section -->
     <section id="wheel">
       <h2>Retail Wheel</h2>
       <p>Comprehensive overview of store performance metrics.</p>
-      <a href="https://lookerstudio.google.com/embed/reporting/d93a03c7-25dc-439d-abaa-dd2f3780daa5/page/BLfDE" class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i> Open Retail Wheel</a> <!-- UPDATED LINK -->
+      <a href="https://lookerstudio.google.com/embed/reporting/d93a03c7-25dc-439d-abaa-dd2f3780daa5/page/BLfDE"
+        class="button-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt fa-xs"></i>
+        Open Retail Wheel</a> <!-- UPDATED LINK -->
     </section>
 
     <!-- ———————— WHITEBOARD ———————— -->
@@ -144,38 +168,73 @@
       <p>Sketch, annotate or leave reminders – they stay in your browser storage.</p>
 
       <div class="whiteboard-container" id="whiteboard-container">
-        <div class="whiteboard-tools" role="toolbar" aria-label="Whiteboard tools">
-          <button class="tool-button active" data-tool="pen"    aria-label="Pen (P)"><i class="fas fa-pencil-alt"></i></button>
-          <button class="tool-button"        data-tool="text"   aria-label="Text (T)"><i class="fas fa-font"></i></button>
-          <button class="tool-button"        data-tool="eraser" aria-label="Eraser (E)"><i class="fas fa-eraser"></i></button>
+        <!-- Unified Sticky Toolbar -->
+        <div class="whiteboard-toolbar" role="toolbar" aria-label="Whiteboard tools">
+          <!-- Drawing Tools -->
+          <div class="toolbar-group">
+            <button class="tool-button active" data-tool="pen" aria-label="Pen (P)" title="Pen"><i
+                class="fas fa-pencil-alt"></i></button>
+            <button class="tool-button" data-tool="text" aria-label="Text (T)" title="Text"><i
+                class="fas fa-font"></i></button>
+            <button class="tool-button" data-tool="eraser" aria-label="Eraser (E)" title="Eraser"><i
+                class="fas fa-eraser"></i></button>
+          </div>
 
-          <label for="colorPicker">Color:</label>
-          <input  id="colorPicker" class="color-picker" type="color" value="#000000">
+          <!-- Shape Tools -->
+          <div class="toolbar-group">
+            <button class="tool-button" data-tool="line" aria-label="Line" title="Line"><i
+                class="fas fa-minus"></i></button>
+            <button class="tool-button" data-tool="rectangle" aria-label="Rectangle" title="Rectangle"><i
+                class="far fa-square"></i></button>
+            <button class="tool-button" data-tool="circle" aria-label="Circle" title="Circle"><i
+                class="far fa-circle"></i></button>
+            <button class="tool-button" data-tool="arrow" aria-label="Arrow" title="Arrow"><i
+                class="fas fa-long-arrow-alt-right"></i></button>
+          </div>
 
-          <label for="brushSize">Brush:</label>
-          <select id="brushSize" class="brush-size">
-            <option>2</option><option selected>4</option><option>8</option><option>12</option><option>20</option>
-          </select>
+          <!-- Settings -->
+          <div class="toolbar-group">
+            <input id="colorPicker" class="color-picker" type="color" value="#000000" title="Color">
+            <select id="brushSize" class="brush-size" title="Brush Size">
+              <option>2</option>
+              <option selected>4</option>
+              <option>8</option>
+              <option>12</option>
+              <option>20</option>
+            </select>
+            <select id="fontSize" class="font-size" title="Font Size">
+              <option>14</option>
+              <option selected>18</option>
+              <option>24</option>
+              <option>32</option>
+            </select>
+            <input id="opacity" class="opacity-slider" type="range" min="10" max="100" value="100" title="Opacity">
+          </div>
 
-          <label for="fontSize">Font:</label>
-          <select id="fontSize" class="font-size">
-            <option>14</option><option selected>18</option><option>24</option><option>32</option>
-          </select>
+          <!-- Actions -->
+          <div class="toolbar-group">
+            <button class="undo-button" aria-label="Undo (⌘/Ctrl-Z)" title="Undo"><i class="fas fa-undo"></i></button>
+            <button class="redo-button" aria-label="Redo (⌘/Ctrl-Y)" title="Redo"><i class="fas fa-redo"></i></button>
+            <button class="clear-button" aria-label="Clear" title="Clear"><i class="fas fa-trash"></i></button>
+          </div>
+
+          <!-- File Actions -->
+          <div class="toolbar-group">
+            <button class="save-button" aria-label="Save (⌘/Ctrl-S)" title="Save"><i class="fas fa-save"></i></button>
+            <button class="load-button" aria-label="Load" title="Load"><i class="fas fa-upload"></i></button>
+            <button class="fill-button" aria-label="Fill background" title="Fill Background"><i
+                class="fas fa-fill-drip"></i></button>
+            <button class="export-png-button" aria-label="Download PNG" title="Download PNG"><i
+                class="fas fa-download"></i></button>
+            <button class="fullscreen-button" aria-label="Full screen (⌘/Ctrl-F)" title="Fullscreen"><i
+                class="fas fa-expand"></i></button>
+          </div>
         </div>
 
-        <canvas id="whiteboard" aria-label="Interactive whiteboard"></canvas>
-        <div id="eraser-preview"></div>
-
-        <div class="button-group">
-          <button class="save-button"        aria-label="Save (⌘/Ctrl-S)"><i class="fas fa-save"></i></button>
-          <button class="load-button"        aria-label="Load"><i class="fas fa-upload"></i></button>
-          <button class="undo-button"        aria-label="Undo (⌘/Ctrl-Z)"><i class="fas fa-undo"></i></button>
-          <button class="fill-button"        aria-label="Fill background"><i class="fas fa-fill-drip"></i></button>
-          <button class="clear-button"       aria-label="Clear"><i class="fas fa-trash"></i></button>
-          <button class="export-png-button"  aria-label="Download PNG"><i class="fas fa-download"></i></button>
-
-          <!-- NEW: Full-screen -->
-          <button class="fullscreen-button"  aria-label="Full screen (⌘/Ctrl-F)"><i class="fas fa-expand"></i></button>
+        <!-- Canvas -->
+        <div class="whiteboard-canvas-wrap">
+          <canvas id="whiteboard" aria-label="Interactive whiteboard"></canvas>
+          <div id="eraser-preview"></div>
         </div>
       </div>
     </section>
@@ -183,12 +242,15 @@
   </main>
 
   <!----- footer ----->
-  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
+  <footer>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+  </footer>
 
   <!----- notification placeholder ----->
   <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
 
   <!----- scripts ----->
-  <script src="script.js"></script>
+  <script src="script.js" type="module"></script>
 </body>
+
 </html>

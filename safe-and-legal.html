@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
@@ -10,119 +11,112 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Safe and Legal compliance information for Cleveleys Morrisons, including licensing, audits, H&S, food safety, and data protection." /> <!-- Updated -->
+  <meta name="description"
+    content="Safe and Legal compliance information for Cleveleys Morrisons, including licensing, audits, H&S, food safety, and data protection." />
+  <!-- Updated -->
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Styles – mobile-first (Copied from index.html) -->
+  <script src="components/header.js" defer></script>
+  <script src="components/nav.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body> <!-- Default Green Theme -->
 
   <!----- header & theme toggle ----->
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
-    <h1>Cleveleys Morrisons Dashboard</h1>
-    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
-  </header>
+  <site-header></site-header>
 
   <!----- nav (bottom bar on phones) ----->
-  <nav>
-    <div class="nav-wrap">
-      <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
-        <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
-        <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
-        <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
-        <li><a href="safe-and-legal.html" class="active"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
-      </ul>
-    </div>
-  </nav>
+  <site-nav></site-nav>
 
   <!----- main content ----->
   <main class="container">
     <section id="overview">
-        <h2><i class="fas fa-shield-alt"></i> Safe and Legal Compliance Overview</h2>
-        <p>Maintaining a safe and legally compliant environment is paramount for our colleagues and customers. This involves adhering to various procedures and regulations across all store operations, from licensing and audits to health, safety, and data protection.</p>
-        <blockquote>"It also reminds us how important it is to remain safe and legal and with excellent hygiene standards at all times and shows us how to achieve this." - Operating Guidance Intro</blockquote>
+      <h2><i class="fas fa-shield-alt"></i> Safe and Legal Compliance</h2>
+      <p>Maintain a safe, compliant environment by adhering to procedures. "Safety First" ensures we protect our
+        colleagues and customers.</p>
     </section>
 
-    <section id="licensing">
-        <h2><i class="fas fa-id-card"></i> Licensing & Age Restricted Sales</h2>
-        <ul>
-            <li>Ensure all required licenses (Premises Licence, Authorisation to Sell Alcohol) are correctly displayed, up-to-date, and readily available for inspection. (See <a href="services.html">Front End</a> for signage specifics).</li>
-            <li>Authorisation notices must list currently licensed colleagues (check My Morri / People Manager) and be updated promptly following personnel changes.</li>
-            <li><strong>Challenge 25:</strong> This policy MUST be followed for alcohol and other age-restricted items (e.g., knives, aerosols, lottery, some medicines). If a customer appears under 25, ask for valid photo ID (Passport, Driving Licence, PASS card). Refuse sale if no valid ID or underage.</li>
-            <li>Challenge 25 signage must be clearly displayed at checkouts, CSD, Kiosk, SCO, and relevant aisles.</li>
-            <li>Record refusals/challenges as per local policy/guidance (may involve HHT logging for online/SCO).</li>
-            <li>Specific procedures apply to online deliveries/C&C collections regarding Challenge 25 checks (See <a href="online.html">Online</a> Guide).</li>
-        </ul>
-    </section>
+    <div class="dashboard-grid">
 
-    <section id="audits-checks">
-        <h2><i class="fas fa-clipboard-check"></i> Audits and Checks</h2>
+      <!-- Licensing -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-id-card"></i> Licensing & Age</h3>
         <ul>
-            <li>**Logbooks:** Accurate and timely completion of all Legal Logbooks (Front End, Cafe, Market Street counters, Cleaning) is mandatory for due diligence. Store for 6 months minimum. See specific guides for details (e.g., <a href="services.html">Front End</a> p23, <a href="street.html">Market Street</a> pages).</li>
-            <li>**Internal Audits:** Cooperate fully with Shrink and Cash Loss Audits and Safe & Legal Audits. Action plans must be completed promptly. (See <a href="shrink.html">Shrink</a> page).</li>
-            <li>**Self Audits (Dymension):** Complete regular self-assessments via Dymension to proactively identify and fix compliance gaps. (See <a href="shrink.html">Shrink</a> page).</li>
-            <li>**Daily/Weekly Checks:** Ensure routine checks are performed and documented, e.g., Fridge Temps (see Food Safety), Induction Loop Tests, Chip & Pin checks, Fire Exits clear, Alarm tests (as per schedule).</li>
-            <li>**Natasha's Law Checks:** Ensure compliance checks (e.g., correct labelling on PPDS) are completed daily (usually before 2pm - see <a href="operations.html">MIC Routines</a>).</li>
+          <li><strong>Display:</strong> Premises Licence & Auth to Sell Alcohol must be visible.</li>
+          <li><strong>Authorisation:</strong> Notices updated with current staff.</li>
+          <li><strong>Challenge 25:</strong> Mandatory for alcohol/restricted items. No valid ID = No Sale.</li>
+          <li><strong>Signage:</strong> Displayed at all sales points.</li>
+          <li><strong>Refusals:</strong> Record all challenges/refusals accurately.</li>
         </ul>
-    </section>
+      </div>
 
-    <section id="health-safety">
-        <h2><i class="fas fa-hard-hat"></i> Health & Safety</h2>
+      <!-- Audits -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-clipboard-check"></i> Audits & Checks</h3>
         <ul>
-            <li><strong>Warehouse Safety:** Keep areas clear (esp. Fire Exits), use MHE (PPTs, Forklifts) safely (trained operators only), wear correct PPE (Hi-Vis, Safety Shoes). (See <a href="operations.html">Operations</a> page).</li>
-            <li><strong>Manual Handling:** Use correct techniques, assess risks, use aids where possible. Training via MyLearning.</li>
-            <li><strong>Slips, Trips & Falls:** Maintain good housekeeping, clean up spills immediately, use 'Wet Floor' signs.</li>
-            <li><strong>Fire Safety:** Keep fire exits/routes clear. Know assembly points. Regular checks on fire equipment (extinguishers, alarms - logged). Staff briefing on evacuation.</li>
-            <li><strong>Equipment Safety:** Use equipment correctly (e.g., Slicers, Knives, Ovens, Balers). Report defects immediately via appropriate channels (Maintenance/VMU). Ensure guarding is in place. Lockout/Tagout procedures for maintenance.</li>
-            <li><strong>Cleaning Chemicals (COSHH):** Store correctly, use appropriate PPE, follow dilution instructions. Safety Data Sheets available.</li>
-             <li><strong>Accident Reporting:** Report all colleague/customer accidents via MySecurity. Investigate appropriately. First Aiders available & details displayed.</li>
-             <li><strong>Contractor Control:** Sign in visitors/contractors, check RAMS, ensure they work safely.</li>
+          <li><strong>Logbooks:</strong> Complete Front End, Cafe, Counters, Cleaning logs daily.</li>
+          <li><strong>Internal Audits:</strong> Action Cash Loss/Safe & Legal audit points promptly.</li>
+          <li><strong>Self Audits:</strong> Use Dymension for regular compliance checks.</li>
+          <li><strong>Daily Checks:</strong> Fridge temps, Fire exits, Alarms, Chip & Pin.</li>
+          <li><strong>Natasha's Law:</strong> Daily PPDS labelling checks (by 2pm).</li>
         </ul>
-    </section>
+      </div>
 
-    <section id="food-safety">
-        <h2><i class="fas fa-utensil-spoon"></i> Food Safety & Hygiene</h2>
+      <!-- Health & Safety -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-hard-hat"></i> Health & Safety</h3>
         <ul>
-            <li><strong>HACCP:** Understand and follow HACCP principles relevant to your department (See individual Market Street/Cafe guides).</li>
-            <li><strong>Temperature Control:** Monitor and record fridge/freezer temperatures daily. Maintain the cold chain (20-min rule). Pre-chill ingredients where required. Cook/reheat to correct core temperatures.</li>
-            <li><strong>Date Coding & Rotation:** Strict adherence to Use By/Best Before dates. Use Day Dots/Date Guns accurately. Rotate stock using FIFO (First-In, First-Out).</li>
-            <li><strong>Cross-Contamination:** Separate Raw and Ready-to-Eat foods (storage, prep areas, equipment - use colour-coding). Effective handwashing is critical. Correct cleaning procedures between tasks.</li>
-            <li><strong>Cleaning & Sanitation:** Follow 'Clean As You Go'. Adhere to daily/weekly cleaning schedules using correct chemicals and procedures (2-stage clean). Keep food contact surfaces clean and sanitised.</li>
-            <li><strong>Personal Hygiene:** High standards essential (clean uniform, hair tied back/netted, correct handwashing, reporting illness).</li>
-            <li><strong>Allergen Control:** Understand Natasha's Law (PPDS labelling). Prevent cross-contamination. Use correct utensils/boards. Provide accurate allergen information to customers (use official guides/specs).</li>
-            <li><strong>Pest Control:** Maintain clean environment, report sightings immediately, ensure bins managed correctly, doors/shutters closed where possible.</li>
-            <li><strong>Waste Management:** Segregate food/general waste correctly. Manage waste bins to prevent overflow/pests. Follow specific procedures for Cat 3 waste (See <a href="shrink.html">Shrink/Waste</a> guide).</li>
+          <li><strong>Warehouse:</strong> Clear exits, safe MHE use (trained only), PPE.</li>
+          <li><strong>Manual Handling:</strong> Assess risks, use aids.</li>
+          <li><strong>Hazards:</strong> Clean spills ('Wet Floor' signs), clear trip hazards.</li>
+          <li><strong>Fire:</strong> Clear routes, know assembly points, check extinguishers.</li>
+          <li><strong>Equipment:</strong> Use safely (guards in place), Lockout/Tagout for maintenance.</li>
+          <li><strong>COSHH:</strong> Store chemicals safely, use PPE.</li>
+          <li><strong>Accidents:</strong> Report via MySecurity.</li>
         </ul>
-         <p>Refer to specific Market Street counter guides (<a href="street.html">Market Street Page</a>) for detailed procedures related to food handling in those areas.</p>
-    </section>
+      </div>
 
-     <section id="data-protection">
-        <h2><i class="fas fa-user-shield"></i> Data Protection & Security</h2>
+      <!-- Food Safety -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-utensil-spoon"></i> Food Safety</h3>
         <ul>
-            <li><strong>GDPR:** Handle customer and colleague personal data securely and confidentially. Only access/use data necessary for your role.</li>
-            <li><strong>Passwords & Logins:** Never share login credentials (Tills, PCs, Apps). Log out/lock screens when leaving terminals unattended. Use strong, unique passwords.</li>
-            <li><strong>Physical Security:** Secure cash/valuables. Control access to sensitive areas (Cash Office, Stockrooms). Report any security concerns (suspicious activity, damaged locks etc.). Follow key control procedures.</li>
-            <li><strong>CCTV:** Be aware CCTV is in operation. Follow correct procedures for requesting footage (usually via LP/Managers for specific incidents).</li>
-            <li><strong>Data Requests:** Direct Data Subject Access Requests (DSARs) or formal Police requests to the appropriate central teams (dataprotection@morrisonsplc.co.uk / Legal).</li>
-            <li><strong>Whistleblowing:** Use the confidential helpline (0800 084 3474) or website (http://morrisons.navexone.uk/) to report serious concerns. (See <a href="contacts.html">Contacts</a> page).</li>
+          <li><strong>HACCP/Temps:</strong> Monitor fridge/freezer temps daily. Cold chain (20min rule).</li>
+          <li><strong>Dates/Rotation:</strong> FIFO. Strict Use By adherence. Accurate date coding.</li>
+          <li><strong>Hygiene:</strong> 'Clean As You Go'. Personal hygiene (uniform/handwashing).</li>
+          <li><strong>Allergens:</strong> Prevent cross-contamination. Accurate info (Natasha's Law).</li>
+          <li><strong>Pest Control:</strong> clean environment, reporting sightings, bin management.</li>
+          <li><strong>Waste:</strong> Segregate correctly. Secure bins.</li>
         </ul>
-    </section>
+      </div>
+
+      <!-- Data Protection -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-user-shield"></i> Data & Security</h3>
+        <ul>
+          <li><strong>GDPR:</strong> Handle personal data securely.</li>
+          <li><strong>Security:</strong> Secure cash/keys. Report suspicious activity.</li>
+          <li><strong>Logins:</strong> No sharing. Lock unattended screens.</li>
+          <li><strong>CCTV:</strong> Awareness and correct request procedure.</li>
+          <li><strong>Whistleblowing:</strong> <a href="tel:08000843474">0800 084 3474</a> for serious concerns.</li>
+        </ul>
+      </div>
+
+    </div>
   </main>
 
   <!----- footer ----->
-  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
+  <footer>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+  </footer>
 
   <!----- scripts ----->
-  <script src="script.js"></script>
+  <script src="script.js" type="module"></script>
 </body>
+
 </html>

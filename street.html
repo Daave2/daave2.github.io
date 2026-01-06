@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
@@ -15,220 +16,292 @@
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Styles – mobile-first (Adapted for Pink theme) -->
+  <script src="components/header.js" defer></script>
+  <script src="components/nav.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="pink-theme"> <!-- Apply theme class -->
 
   <!----- header & theme toggle ----->
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
-    <h1>Cleveleys Morrisons Dashboard</h1>
-    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
-  </header>
+  <site-header></site-header>
 
   <!----- nav (bottom bar on phones) ----->
-  <nav>
-    <div class="nav-wrap">
-      <ul class="nav-links">
-          <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
-          <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
-          <li><a href="street.html" class="active"><i class="fas fa-store"></i><span>Market</span></a></li>
-          <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
-          <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
-          <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
-          <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
-          <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
-      </ul>
-    </div>
-  </nav>
+  <site-nav></site-nav>
 
   <!----- main content ----->
   <main class="container">
 
     <section id="quick-guide">
-        <h2><i class="fas fa-bolt"></i> Market Street & Cafe Quick Guide</h2>
-        <ul class="quick-guide-list">
-            <li><strong>Production Plans:</strong> <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Access Here</a></li>
-            <li><strong>Cafe Checklist:</strong> <a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">Daily Checklist (Link in Cafe Guide)</a></li>
-            <li><strong>Markdown Time:</strong> Generally 5pm (Check counter guides for exceptions).</li>
-            <li><strong>Bizerba/Scale Checks:</strong> Ensure online & labels align (See <a href="safe-and-legal.html">Safe & Legal</a>).</li>
-            <li><strong>Allergens/Natasha's Law:</strong> Critical for correct labelling (See <a href="safe-and-legal.html">Safe & Legal</a>).</li>
-            <li><strong>Food Safety Focus:</strong> Temp Control, Cleaning, Handwashing (See <a href="safe-and-legal.html">Safe & Legal</a> / Counter Guides).</li>
-        </ul>
+      <h2><i class="fas fa-bolt"></i> Market Street & Cafe Quick Guide</h2>
+      <ul class="quick-guide-list">
+        <li><strong>Production Plans:</strong> <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank"
+            rel="noopener noreferrer">Access Here</a></li>
+        <li><strong>Cafe Checklist:</strong> <a
+            href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0"
+            target="_blank" rel="noopener noreferrer">Daily Checklist (Link in Cafe Guide)</a></li>
+        <li><strong>Markdown Time:</strong> Generally 5pm (Check counter guides for exceptions).</li>
+        <li><strong>Bizerba/Scale Checks:</strong> Ensure online & labels align (See <a href="safe-and-legal.html">Safe
+            & Legal</a>).</li>
+        <li><strong>Allergens/Natasha's Law:</strong> Critical for correct labelling (See <a
+            href="safe-and-legal.html">Safe & Legal</a>).</li>
+        <li><strong>Food Safety Focus:</strong> Temp Control, Cleaning, Handwashing (See <a
+            href="safe-and-legal.html">Safe & Legal</a> / Counter Guides).</li>
+      </ul>
     </section>
 
     <section id="general-market-street">
       <h2><i class="fas fa-store"></i> General Market Street Operations</h2>
-      <p>Market Street showcases our foodmaking skills. Key focuses include fresh quality, excellent service, full availability (especially at peak times), and maintaining high standards of hygiene and presentation across all counters.</p>
+      <p>Market Street showcases our foodmaking skills. Key focuses include fresh quality, excellent service, full
+        availability (especially at peak times), and maintaining high standards of hygiene and presentation across all
+        counters.</p>
       <ul>
-          <li>Use <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank" rel="noopener noreferrer">Production Plans</a> daily to guide preparation volumes.</li>
-          <li>Follow Planograms for correct merchandising and layout.</li>
-          <li>Engage with customers, offer advice and tastings where appropriate.</li>
-          <li>Adhere strictly to Date Coding, Shelf Life, and Markdown procedures (See <a href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
-          <li>Maintain 'Clean As You Go' standards and follow specific cleaning schedules (See <a href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
-          <li>Ensure correct POS is displayed and legally compliant (allergens, weights, price).</li>
-          <li>Check equipment (scales, GLP printers, slicers, wrapping machines) is operational and clean.</li>
+        <li>Use <a href="https://marketstreet.retail.apps.mymorri.com/" target="_blank"
+            rel="noopener noreferrer">Production Plans</a> daily to guide preparation volumes.</li>
+        <li>Follow Planograms for correct merchandising and layout.</li>
+        <li>Engage with customers, offer advice and tastings where appropriate.</li>
+        <li>Adhere strictly to Date Coding, Shelf Life, and Markdown procedures (See <a href="safe-and-legal.html">Safe
+            & Legal</a> and counter guides).</li>
+        <li>Maintain 'Clean As You Go' standards and follow specific cleaning schedules (See <a
+            href="safe-and-legal.html">Safe & Legal</a> and counter guides).</li>
+        <li>Ensure correct POS is displayed and legally compliant (allergens, weights, price).</li>
+        <li>Check equipment (scales, GLP printers, slicers, wrapping machines) is operational and clean.</li>
       </ul>
       <p>Detailed procedures for each counter are below:</p>
     </section>
 
     <section id="counter-guides">
-        <h2><i class="fas fa-concierge-bell"></i> Market Street Counter Guides</h2>
+      <h2><i class="fas fa-concierge-bell"></i> Market Street Counter Guides</h2>
 
-         <!-- Bakery -->
-         <button class="accordion" id="bakery-accordion"><i class="fas fa-bread-slice"></i> Bakery</button>
-         <div class="panel"><div>
-             <p><a href="https://docs.google.com/presentation/d/13bQS4paM07rcIUrNOM9UeTnJrXwXmWZNV6WhJVjwnd8/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Bakery Operating Guide (PDF)</a></p>
-             <h4>Key Routines & WGLL Summary:</h4>
-             <ul>
-                 <li><strong>Full For 9:</strong> Print/amend Production Plan, Primal Delivery, Counter Setup, Logbooks, POS checks, Bake-off retard/frozen bread/baguettes, Best Bread/P&M.</li>
-                 <li><strong>Trade The Day:</strong> Follow production plans, mixing schedules, proving/baking timings. Ensure correct labelling (Natasha's Law), weights, shelf life. Maintain availability, especially on promo lines.</li>
-                 <li><strong>Fit For Five:</strong> Markdowns (5pm exceptions: Sticks/Baguettes/Doughnuts/ISP Rolls), Check Range by Time of Day.</li>
-                 <li><strong>Closedown:</strong> Bread Slicing, Clean down, Waste management, Knife Procedure, Stock Count (Sun).</li>
-                 <li><strong>WGLL:</strong> Follow Planogram, Correct POS/Labels, Full availability (peak times), Correct packaging, Hygiene standards met.</li>
-             </ul>
-             <p><small>Ref: Bakery Operating Guidance - Jan 2025</small></p>
-         </div></div>
+      <!-- Bakery -->
+      <button class="accordion" id="bakery-accordion"><i class="fas fa-bread-slice"></i> Bakery</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/13bQS4paM07rcIUrNOM9UeTnJrXwXmWZNV6WhJVjwnd8/edit#slide=id.g12eeff6f898_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Bakery Operating Guide (PDF)</a></p>
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 9:</strong> Print/amend Production Plan, Primal Delivery, Counter Setup, Logbooks, POS
+              checks, Bake-off retard/frozen bread/baguettes, Best Bread/P&M.</li>
+            <li><strong>Trade The Day:</strong> Follow production plans, mixing schedules, proving/baking timings.
+              Ensure correct labelling (Natasha's Law), weights, shelf life. Maintain availability, especially on promo
+              lines.</li>
+            <li><strong>Fit For Five:</strong> Markdowns (5pm exceptions: Sticks/Baguettes/Doughnuts/ISP Rolls), Check
+              Range by Time of Day.</li>
+            <li><strong>Closedown:</strong> Bread Slicing, Clean down, Waste management, Knife Procedure, Stock Count
+              (Sun).</li>
+            <li><strong>WGLL:</strong> Follow Planogram, Correct POS/Labels, Full availability (peak times), Correct
+              packaging, Hygiene standards met.</li>
+          </ul>
+          <p><small>Ref: Bakery Operating Guidance - Jan 2025</small></p>
+        </div>
+      </div>
 
-         <!-- Butchery -->
-         <button class="accordion" id="butchery-accordion"><i class="fas fa-drumstick-bite"></i> Butchery</button>
-         <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1QJcivDmDWerixRMWHRElnvmobADt6DKHKNKoc7nzIAU/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Butchery Operating Guide (PDF)</a></p>
-              <h4>Key Routines & WGLL Summary:</h4>
-              <ul>
-                  <li><strong>Full For 9:</strong> Primal Delivery processing, Counter Set Up (Core Range, Steaks, Joints, Value Added), Logbooks, Temperature Checks, POS.</li>
-                  <li><strong>Trade The Day:</strong> Maintain availability (replenish, produce), Check quality/dates, Manage stock rotation, Use Wrapping Machine/GLP correctly, Adhere to specifications, Transfer stock accurately.</li>
-                  <li><strong>Fit For Five:</strong> Complete 100% code check, Markdowns (5pm). Order ingredients/packaging.</li>
-                  <li><strong>Closedown:</strong> Clean counter/mincer/blocks, Secure knives, Manage waste, Weekly Stock Count (Sun).</li>
-                  <li><strong>WGLL:</strong> Fresh, well-presented counter following planogram. Correct tickets/POS. Clean equipment/area. Correct PPE/uniform.</li>
-              </ul>
-              <p><small>Ref: Butchery Operating Guidance - Jan 2024</small></p>
-         </div></div>
+      <!-- Butchery -->
+      <button class="accordion" id="butchery-accordion"><i class="fas fa-drumstick-bite"></i> Butchery</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/1QJcivDmDWerixRMWHRElnvmobADt6DKHKNKoc7nzIAU/edit#slide=id.g12eeff6f898_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Butchery Operating Guide (PDF)</a></p>
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 9:</strong> Primal Delivery processing, Counter Set Up (Core Range, Steaks, Joints,
+              Value Added), Logbooks, Temperature Checks, POS.</li>
+            <li><strong>Trade The Day:</strong> Maintain availability (replenish, produce), Check quality/dates, Manage
+              stock rotation, Use Wrapping Machine/GLP correctly, Adhere to specifications, Transfer stock accurately.
+            </li>
+            <li><strong>Fit For Five:</strong> Complete 100% code check, Markdowns (5pm). Order ingredients/packaging.
+            </li>
+            <li><strong>Closedown:</strong> Clean counter/mincer/blocks, Secure knives, Manage waste, Weekly Stock Count
+              (Sun).</li>
+            <li><strong>WGLL:</strong> Fresh, well-presented counter following planogram. Correct tickets/POS. Clean
+              equipment/area. Correct PPE/uniform.</li>
+          </ul>
+          <p><small>Ref: Butchery Operating Guidance - Jan 2024</small></p>
+        </div>
+      </div>
 
-         <!-- Cake Shop -->
-         <button class="accordion" id="cakeshop-accordion"><i class="fas fa-birthday-cake"></i> Cake Shop</button>
-         <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1UeyXOfz2hP0eEA2cSiGNj9SGFlcf8Xobq8Lzm02BqTo/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Cake Shop Operating Guide (PDF)</a></p>
-              <h4>Key Routines & WGLL Summary:</h4>
-              <ul>
-                  <li><strong>Full For 9:</strong> Review Production Plan, Set up Counter/Chiller, Logbooks, POS checks, Ensure 'What Good Looks Like' standards met.</li>
-                  <li><strong>Trade The Day:</strong> Follow production plan (Brownies, Fresh Cream Cakes), Use piping techniques correctly, Manage ingredients/allergens (Natasha's Law), Handle defrost/thaw & serve lines correctly, Maintain display/availability.</li>
-                  <li><strong>Fit For Five:</strong> Complete 100% code checks and markdowns (5pm). Order stock/ingredients.</li>
-                  <li><strong>Closedown:</strong> Clean equipment/area, Manage waste, Weekly Stock Count (Sunday).</li>
-                  <li><strong>WGLL:</strong> Full, attractive display following planogram. Correct POS/labels/dates. High hygiene standards.</li>
-              </ul>
-              <p><small>Ref: Cake Shop Operating Guidance - Jan 2024</small></p>
-         </div></div>
+      <!-- Cake Shop -->
+      <button class="accordion" id="cakeshop-accordion"><i class="fas fa-birthday-cake"></i> Cake Shop</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/1UeyXOfz2hP0eEA2cSiGNj9SGFlcf8Xobq8Lzm02BqTo/edit#slide=id.g12eeff6f898_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Cake Shop Operating Guide (PDF)</a></p>
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 9:</strong> Review Production Plan, Set up Counter/Chiller, Logbooks, POS checks,
+              Ensure 'What Good Looks Like' standards met.</li>
+            <li><strong>Trade The Day:</strong> Follow production plan (Brownies, Fresh Cream Cakes), Use piping
+              techniques correctly, Manage ingredients/allergens (Natasha's Law), Handle defrost/thaw & serve lines
+              correctly, Maintain display/availability.</li>
+            <li><strong>Fit For Five:</strong> Complete 100% code checks and markdowns (5pm). Order stock/ingredients.
+            </li>
+            <li><strong>Closedown:</strong> Clean equipment/area, Manage waste, Weekly Stock Count (Sunday).</li>
+            <li><strong>WGLL:</strong> Full, attractive display following planogram. Correct POS/labels/dates. High
+              hygiene standards.</li>
+          </ul>
+          <p><small>Ref: Cake Shop Operating Guidance - Jan 2024</small></p>
+        </div>
+      </div>
 
-         <!-- Deli -->
-         <button class="accordion" id="deli-accordion"><i class="fas fa-cheese"></i> Deli</button>
-         <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1Ohuch5x3LsQme9-7m8ayQkZCWOsYQRY58tfZFhosuOg/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Deli Operating Guide (PDF)</a></p>
-             <h4>Key Routines & WGLL Summary:</h4>
-              <ul>
-                  <li><strong>Full For 9:</strong> Set up counter (Cheese, Olives, Cooked Meats, Pies, Snacks), Complete logbooks, Temperature checks, POS.</li>
-                  <li><strong>Trade The Day:</strong> Maintain availability (replenish counter/express), Check shelf life/dating, Cut/pack cheese, Slice cooked meats safely, Offer tastings.</li>
-                  <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
-                  <li><strong>Closedown:</strong> Clean down counter/slicer, Manage waste, Store products correctly, Weekly Stock Count (Sunday).</li>
-                  <li><strong>WGLL:</strong> Follow planogram, Correct POS/tickets/dating, High hygiene standards, Knowledgeable service.</li>
-              </ul>
-              <p><small>Ref: Deli Operating Guidance - Jan 2024</small></p>
-         </div></div>
+      <!-- Deli -->
+      <button class="accordion" id="deli-accordion"><i class="fas fa-cheese"></i> Deli</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/1Ohuch5x3LsQme9-7m8ayQkZCWOsYQRY58tfZFhosuOg/edit#slide=id.g12eeff6f898_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Deli Operating Guide (PDF)</a></p>
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 9:</strong> Set up counter (Cheese, Olives, Cooked Meats, Pies, Snacks), Complete
+              logbooks, Temperature checks, POS.</li>
+            <li><strong>Trade The Day:</strong> Maintain availability (replenish counter/express), Check shelf
+              life/dating, Cut/pack cheese, Slice cooked meats safely, Offer tastings.</li>
+            <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
+            <li><strong>Closedown:</strong> Clean down counter/slicer, Manage waste, Store products correctly, Weekly
+              Stock Count (Sunday).</li>
+            <li><strong>WGLL:</strong> Follow planogram, Correct POS/tickets/dating, High hygiene standards,
+              Knowledgeable service.</li>
+          </ul>
+          <p><small>Ref: Deli Operating Guidance - Jan 2024</small></p>
+        </div>
+      </div>
 
-         <!-- Fish -->
-         <button class="accordion" id="fish-accordion"><i class="fas fa-fish"></i> Fish</button>
-         <div class="panel"><div>
-             <p><a href="https://docs.google.com/presentation/d/1Ofjj8tMkHvwf6jItl5ysq9gfqlEKeWOQImhmhnSt9os/edit#slide=id.g15305ed4842_0_0" target="_blank" rel="noopener noreferrer">View Full Fish Operating Guide (PDF)</a></p>
-             <h4>Key Routines & WGLL Summary:</h4>
-              <ul>
-                   <li><strong>Full For 9:</strong> Set up counter (Core Range, Ice, Blue Boxes), Complete logbooks, Health Mark checks, POS.</li>
-                   <li><strong>Trade The Day:</strong> Maintain availability, Replenish ice, Fish Preparation (Filleting etc.), Use Wrapping Machine/Hot Bag Sealer, Manage shelf life (Oily vs Non-Oily).</li>
-                   <li><strong>Fit For Five:</strong> Code checks & Markdowns (5pm Wet Fish).</li>
-                   <li><strong>Closedown:</strong> Clean counter/equipment, Ice Machine care, Manage waste, Weekly Stock Count (Sunday).</li>
-                   <li><strong>WGLL:</strong> Fresh, well-iced display following flow. Correct POS/Labels. High hygiene standards. Use correct equipment.</li>
-              </ul>
-              <p><small>Ref: Fish Operating Guidance - Jan 2025</small></p>
-         </div></div>
+      <!-- Fish -->
+      <button class="accordion" id="fish-accordion"><i class="fas fa-fish"></i> Fish</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/1Ofjj8tMkHvwf6jItl5ysq9gfqlEKeWOQImhmhnSt9os/edit#slide=id.g15305ed4842_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Fish Operating Guide (PDF)</a></p>
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 9:</strong> Set up counter (Core Range, Ice, Blue Boxes), Complete logbooks, Health
+              Mark checks, POS.</li>
+            <li><strong>Trade The Day:</strong> Maintain availability, Replenish ice, Fish Preparation (Filleting etc.),
+              Use Wrapping Machine/Hot Bag Sealer, Manage shelf life (Oily vs Non-Oily).</li>
+            <li><strong>Fit For Five:</strong> Code checks & Markdowns (5pm Wet Fish).</li>
+            <li><strong>Closedown:</strong> Clean counter/equipment, Ice Machine care, Manage waste, Weekly Stock Count
+              (Sunday).</li>
+            <li><strong>WGLL:</strong> Fresh, well-iced display following flow. Correct POS/Labels. High hygiene
+              standards. Use correct equipment.</li>
+          </ul>
+          <p><small>Ref: Fish Operating Guidance - Jan 2025</small></p>
+        </div>
+      </div>
 
-          <!-- Fresh To Go / Pizza -->
-          <button class="accordion" id="ftg-accordion"><i class="fas fa-pizza-slice"></i> Fresh To Go (incl. Pizza & Salad)</button>
-          <div class="panel"><div>
-               <p><a href="https://docs.google.com/presentation/d/1Eh3W-qf_-Ye3X3x7R0piZ9tI2YVrPXTu3TrNgBmZH-g/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Fresh To Go Operating Guide (PDF)</a></p>
-               <h4>Key Routines & WGLL Summary:</h4>
-                <ul>
-                    <li><strong>Full For 8:</strong> Set up Salad Bar, Pizza counter, FTG fixtures. Check production plans. Complete logbooks/checks.</li>
-                    <li><strong>Trade The Day:</strong> Maintain availability across Salad Bar, Pizza (inc Hot Pizza), Sandwiches, etc. Follow recipes/specs. Manage production timings/volumes. Handle ingredients safely (allergens, shelf life, Natasha's Law). Use equipment correctly (Sealer, Pizza Press/Oven).</li>
-                    <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
-                    <li><strong>Closedown:</strong> Clean down all areas/equipment (Pizza Capper etc.), manage waste, stock counts (Sunday).</li>
-                    <li><strong>WGLL:</strong> Full, fresh, correctly merchandised displays. Accurate POS, labelling (Natasha's Law), and dating. High hygiene standards.</li>
-                </ul>
-                <p><small>Ref: Fresh To Go Operating Guidance - Jan 2024</small></p>
-          </div></div>
+      <!-- Fresh To Go / Pizza -->
+      <button class="accordion" id="ftg-accordion"><i class="fas fa-pizza-slice"></i> Fresh To Go (incl. Pizza &
+        Salad)</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/1Eh3W-qf_-Ye3X3x7R0piZ9tI2YVrPXTu3TrNgBmZH-g/edit#slide=id.g12eeff6f898_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Fresh To Go Operating Guide (PDF)</a></p>
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 8:</strong> Set up Salad Bar, Pizza counter, FTG fixtures. Check production plans.
+              Complete logbooks/checks.</li>
+            <li><strong>Trade The Day:</strong> Maintain availability across Salad Bar, Pizza (inc Hot Pizza),
+              Sandwiches, etc. Follow recipes/specs. Manage production timings/volumes. Handle ingredients safely
+              (allergens, shelf life, Natasha's Law). Use equipment correctly (Sealer, Pizza Press/Oven).</li>
+            <li><strong>Fit For Five:</strong> Code checks & markdowns (5pm).</li>
+            <li><strong>Closedown:</strong> Clean down all areas/equipment (Pizza Capper etc.), manage waste, stock
+              counts (Sunday).</li>
+            <li><strong>WGLL:</strong> Full, fresh, correctly merchandised displays. Accurate POS, labelling (Natasha's
+              Law), and dating. High hygiene standards.</li>
+          </ul>
+          <p><small>Ref: Fresh To Go Operating Guidance - Jan 2024</small></p>
+        </div>
+      </div>
 
     </section>
 
-     <section id="cafe-operations">
-        <h2><i class="fas fa-coffee"></i> Cafe Operations</h2>
-         <button class="accordion" id="cafe-accordion"><i class="fas fa-mug-hot"></i> Cafe</button>
-         <div class="panel"><div>
-              <p><a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Full Cafe Operating Guide (PDF)</a></p>
-              <!-- <p><a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Cafe Daily Checklist</a></p> --> <!-- Redundant as it's within the main guide -->
-              <h4>Key Routines & WGLL Summary:</h4>
-              <ul>
-                  <li><strong>Full For 8 (Setup):</strong> Set up Kiosk, Till, Hot Beverage, Counter Displays (Ambient/Chilled). Complete logbooks/checks (Temps, Cleaning, Street List, POS).</li>
-                  <li><strong>Trade The Day:</strong> Follow Customer Journey (Till/Table Service/Mobile Order). Manage orders (inc. Just Eat/Deliveroo). Adhere to specs, timings, temps. Handle allergens/customer requests. Maintain cleanliness. Stock management/transfers.</li>
-                  <li><strong>Fit For Five:</strong> Markdowns (5pm - TGTG focus). BOC Gas/Coke checks.</li>
-                  <li><strong>Closedown:</strong> Cleaning tasks (incl Coffee Machine). Stock counts (Sun). Secure area.</li>
-                  <li><strong>WGLL:</strong> Clean, welcoming environment. Full availability to spec. Efficient & friendly service. Safe & Legal compliance.</li>
-              </ul>
-              <p><small>Ref: Cafe Operating Guidance - Jan 2025</small></p>
-         </div></div>
-     </section>
+    <section id="cafe-operations">
+      <h2><i class="fas fa-coffee"></i> Cafe Operations</h2>
+      <button class="accordion" id="cafe-accordion"><i class="fas fa-mug-hot"></i> Cafe</button>
+      <div class="panel">
+        <div>
+          <p><a
+              href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0"
+              target="_blank" rel="noopener noreferrer">View Full Cafe Operating Guide (PDF)</a></p>
+          <!-- <p><a href="https://docs.google.com/presentation/d/1bdfIKX3h8F9UiXXL3UVfPNh1cRniy4y20LetOGsdTCI/edit#slide=id.g12eeff6f898_0_0" target="_blank" rel="noopener noreferrer">View Cafe Daily Checklist</a></p> -->
+          <!-- Redundant as it's within the main guide -->
+          <h4>Key Routines & WGLL Summary:</h4>
+          <ul>
+            <li><strong>Full For 8 (Setup):</strong> Set up Kiosk, Till, Hot Beverage, Counter Displays
+              (Ambient/Chilled). Complete logbooks/checks (Temps, Cleaning, Street List, POS).</li>
+            <li><strong>Trade The Day:</strong> Follow Customer Journey (Till/Table Service/Mobile Order). Manage orders
+              (inc. Just Eat/Deliveroo). Adhere to specs, timings, temps. Handle allergens/customer requests. Maintain
+              cleanliness. Stock management/transfers.</li>
+            <li><strong>Fit For Five:</strong> Markdowns (5pm - TGTG focus). BOC Gas/Coke checks.</li>
+            <li><strong>Closedown:</strong> Cleaning tasks (incl Coffee Machine). Stock counts (Sun). Secure area.</li>
+            <li><strong>WGLL:</strong> Clean, welcoming environment. Full availability to spec. Efficient & friendly
+              service. Safe & Legal compliance.</li>
+          </ul>
+          <p><small>Ref: Cafe Operating Guidance - Jan 2025</small></p>
+        </div>
+      </div>
+    </section>
 
-     <!-- Retain existing embeds - verify relevance -->
-     <section id="fto-reporting">
-        <h2><i class="fas fa-chart-bar"></i> Food to Order & Reporting (Market Street Impact)</h2>
-         <div class="dashboard-card">
-           <h3><i class="fas fa-clipboard-list"></i> Food to Order (Production Info)</h3>
-           <iframe id="foodIframe" title="Food to Order Spreadsheet" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&single=true&widget=true&headers=false" loading="lazy"></iframe>
-           <button type="button" onclick="printIframe('foodIframe')">Print Food Order Sheet</button>
-           <p style="margin-top: 1em;">Provides details for Market Street production based on online Food to Order collections.</p>
-            <a href="https://groceries.morrisons.com/webshop/foodToOrderHomepage.do" target="_blank" rel="noopener noreferrer" class="button-link">Food To Order Website <i class="fas fa-external-link-alt fa-xs"></i></a>
-         </div>
+    <!-- Retain existing embeds - verify relevance -->
+    <section id="fto-reporting">
+      <h2><i class="fas fa-chart-bar"></i> Food to Order & Reporting (Market Street Impact)</h2>
+      <div class="dashboard-card">
+        <h3><i class="fas fa-clipboard-list"></i> Food to Order (Production Info)</h3>
+        <iframe id="foodIframe" title="Food to Order Spreadsheet"
+          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSGwiw2DKxtkQKOCvQkFbaB2uM05dfTw_8FyfflTX5q_Cvc7UtN5ZSQ2lSIDKYKA_-V2BTebS6i-4_t/pubhtml?gid=1577160612&single=true&widget=true&headers=false"
+          loading="lazy"></iframe>
+        <button type="button" onclick="printIframe('foodIframe')">Print Food Order Sheet</button>
+        <p style="margin-top: 1em;">Provides details for Market Street production based on online Food to Order
+          collections.</p>
+        <a href="https://groceries.morrisons.com/webshop/foodToOrderHomepage.do" target="_blank"
+          rel="noopener noreferrer" class="button-link">Food To Order Website <i
+            class="fas fa-external-link-alt fa-xs"></i></a>
+      </div>
 
-         <div class="dashboard-card">
-           <h3><i class="fas fa-chart-pie"></i> Looker Studio Report (FTO Alternative View)</h3>
-           <iframe id="lookerIframe" title="Looker Studio Report"
-                   src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld"
-                   frameborder="0" allowfullscreen
-                   sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" loading="lazy"></iframe>
-           <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
-            <p style="margin-top: 1em;">Alternative view showing Food To Order data impacting Market Street.</p>
-         </div>
-     </section>
+      <div class="dashboard-card">
+        <h3><i class="fas fa-chart-pie"></i> Looker Studio Report (FTO Alternative View)</h3>
+        <iframe id="lookerIframe" title="Looker Studio Report"
+          src="https://lookerstudio.google.com/embed/reporting/65cb4d97-37d3-4de9-aab2-096b5d753b96/page/p_3uhgsgcvld"
+          frameborder="0" allowfullscreen
+          sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+          loading="lazy"></iframe>
+        <button type="button" onclick="printIframe('lookerIframe')">Print Report</button>
+        <p style="margin-top: 1em;">Alternative view showing Food To Order data impacting Market Street.</p>
+      </div>
+    </section>
 
-     <section id="cross-functional">
-        <h2><i class="fas fa-link"></i> Related Procedures</h2>
-         <p>For detailed information on the following topics, please refer to the relevant pages:</p>
-         <ul>
-             <li>Markdown and Waste processes: See <a href="shrink.html">Shrink Management</a>.</li>
-             <li>Detailed Food Safety, HACCP, Allergens, Natasha's Law, Equipment Cleaning: See <a href="safe-and-legal.html">Safe & Legal</a>.</li>
-              <li>Bizerba Scale / GLP Printer Operation & Maintenance: See <a href="safe-and-legal.html">Safe & Legal</a>.</li>
-              <li>Stock Counts (General Principles): See <a href="shrink.html">Shrink Management</a>.</li>
-              <li>General Store Operations (Replenishment, etc.): See <a href="operations.html">Operations</a>.</li>
-         </ul>
-     </section>
+    <section id="cross-functional">
+      <h2><i class="fas fa-link"></i> Related Procedures</h2>
+      <p>For detailed information on the following topics, please refer to the relevant pages:</p>
+      <ul>
+        <li>Markdown and Waste processes: See <a href="shrink.html">Shrink Management</a>.</li>
+        <li>Detailed Food Safety, HACCP, Allergens, Natasha's Law, Equipment Cleaning: See <a
+            href="safe-and-legal.html">Safe & Legal</a>.</li>
+        <li>Bizerba Scale / GLP Printer Operation & Maintenance: See <a href="safe-and-legal.html">Safe & Legal</a>.
+        </li>
+        <li>Stock Counts (General Principles): See <a href="shrink.html">Shrink Management</a>.</li>
+        <li>General Store Operations (Replenishment, etc.): See <a href="operations.html">Operations</a>.</li>
+      </ul>
+    </section>
 
   </main>
 
   <!----- footer ----->
-  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
+  <footer>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+  </footer>
 
   <!----- scripts ----->
-  <script src="script.js"></script>
+  <script src="script.js" type="module"></script>
 </body>
+
 </html>

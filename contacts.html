@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
@@ -10,175 +11,129 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Key contact information for Cleveleys Morrisons, including internal support, helplines, and external partners." /> <!-- Updated Description -->
+  <meta name="description"
+    content="Key contact information for Cleveleys Morrisons, including internal support, helplines, and external partners." />
+  <!-- Updated Description -->
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Styles – mobile-first (Copied from index.html) -->
+  <script src="components/header.js" defer></script>
+  <script src="components/nav.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <!----- header & theme toggle ----->
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
-    <h1>Cleveleys Morrisons Dashboard</h1>
-    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
-  </header>
+  <site-header></site-header>
 
   <!----- nav (bottom bar on phones) ----->
-  <nav>
-    <div class="nav-wrap">
-      <ul class="nav-links">
-        <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
-        <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
-        <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
-        <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
-        <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
-        <li><a href="contacts.html" class="active"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
-        <li><a href="shrink.html"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
-        <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
-      </ul>
-    </div>
-  </nav>
+  <site-nav></site-nav>
 
   <!----- main content ----->
   <main class="container">
-    <section>
-      <h2>Key Contacts</h2>
-      <p>Essential contact information for store support and escalation.</p>
+    <h2><i class="fas fa-address-book"></i> Key Contacts</h2>
+    <p>Essential contact information for store support and escalation.</p>
 
-      <h3 id="central-support-heading">Central Support Centre (Internal Dial: 6711)</h3>
-      <ul>
-        <li class="emergency"><strong>Option 1: EMERGENCY ONLY (24/7)</strong>
-          <ul>
-            <li>Sub Option 1: Maintenance Emergency</li>
-            <li>Sub Option 2: Loss Prevention Emergency</li>
-          </ul>
-        </li>
-        <li><strong>Option 2: IT & Technology Queries (24/7)</strong> - Use External number <a href="tel:03456116500">0345 611 6500</a> first if possible (See detailed options below).
-          <ul>
-            <li>Option 1: Calling from a store</li>
-            <li>Option 2: Calling from a Petrol Filling Station</li>
-          </ul>
-        </li>
-        <li><strong>Option 3: Maintenance & Procurement</strong>
-          <ul>
-            <li>Option 1: Property and Refrigeration Issues (City FM also contactable directly)</li>
-            <li>Option 2: Escalation of equipment issues (Consult Procurement Directory first; Mon-Fri 8am-6pm, Sat 8am-4.30pm, 24hr Emergency OOH)</li>
-            <li>Option 3: Oracle & Order Pad Expense (Mon-Fri 8am-4.30pm)</li>
-            <li>Option 4: Waste Management (Mon-Fri 8am-4.30pm)</li>
-            <li>Option 5: Pest Control Issues (Mon-Fri 8am-6pm, Sat 8am-4.30pm)</li>
-            <li>Option 6: Fleet Support (Mon-Fri 8am-5pm)</li>
-          </ul>
-        </li>
-         <li><strong>Option 4: Customer Queries</strong> (Mon-Fri 8am-8pm, Sat 9am-5pm, Sun 10am-4pm)
-          <ul>
-            <li>Option 1: More Card Query</li>
-            <li>Option 2: Any other Customer Queries (See also Customer Complaints Support below)</li>
-          </ul>
-        </li>
-        <li class="email"><strong>Option 5: Retail Support Queries</strong> (Email Only: <a href="mailto:retailsupportoffice@morrisonsplc.co.uk">retailsupportoffice@morrisonsplc.co.uk</a> - response within 24 hrs)</li>
-        <li><strong>Option 6: Supply Chain & Logistics</strong>
-          <ul>
-            <li>Option 1: Supply Chain Emergencies (Use stock management routines first)</li>
-            <li>Option 2: Logistics Support Team (Mon-Fri 7am-6.30pm / Sat 7am-6pm / Sun 9am-5pm)</li>
-          </ul>
-        </li>
-         <li><strong>Option 7: Trading Helpdesk</strong>
-          <ul>
-            <li>Option 1: Pricing or Promotions, POS, Scanning (Mon 6am-5.30pm, Tue-Fri 7.30am-5.30pm)</li>
-            <li>Option 2: Search for Buying Team, Merchandiser, Market Street Specialist (Various hours - see guide)</li>
-            <li class="emergency"><strong>Emergency outside hours: Contact Option 7, Sub Option 1</strong></li>
-          </ul>
-        </li>
-        <li><strong>Option 8: People Support</strong> (Mon-Fri 8am-5pm)
-            <ul>
-                <li>Option 1: Payroll</li>
-                <li>Option 2: HR Systems</li>
-                <li>Option 3: People, ER, Ops, Benefits, Central HR</li>
-                <li>Option 4: Pensions</li>
-                <li>Option 5: Training</li>
-                <li>Option 6: Expenses</li>
-             </ul>
-         </li>
-      </ul>
-
-      <h3 id="tech-support-heading">Technology Support</h3>
-      <p>For IT issues, call the main **Technology Helpdesk: <a href="tel:03456116500">0345 611 6500</a>** and select the relevant options. State 'Online Store Pick' if related to Online Ops HHTs/Apps. See <a href="operations.html#tech-support">Operations Page</a> for full details.</p>
-      <ul>
-        <li><strong>NCR (Option 1 > Option 1):</strong> Tills, SCOs, Price Integrity, ICH, Printers (Receipt/Label), HHT Hardware, Van Cradles.</li>
-        <li><strong>Computacenter/IT Service Desk (Option 1 > Option 2):</strong> Store Network, Back Office PCs/Printers, Phones, ASCOM, Gap Scan App, Pick/Driver Apps (OSP), OSP Dashboard, Click & Collect App.</li>
-        <li><strong>PFS Helpdesk (Option 2):</strong> All Petrol Filling Station IT issues (except Power/Physical pumps).</li>
-        <li><strong>Bizerba Scales:</strong> Hardware: 0844 826 5201 | Data/PLU Issues: 0345 611 6500 Opt 3.</li>
-        <li><strong>Small Equipment Process (HHT/SIM/Mobile):</strong> EE Support <a href="tel:08000790260">0800 079 0260</a> (Pass: Morrisons1899).</li>
-        <li class="escalation email"><strong>Technology Escalations:</strong> <a href="mailto:technologyretailescalations@morrisonsplc.co.uk">technologyretailescalations@morrisonsplc.co.uk</a> (Use after logging ticket & ROM approval).</li>
-        <li class="email"><strong>Online Growth Support (Escalations):</strong> <a href="mailto:techgrowthsupport-ug@morrisonsplc.co.uk">techgrowthsupport-ug@morrisonsplc.co.uk</a> (For unresolved Online Ops tickets via ROM).</li>
-      </ul>
-
-       <h3 id="operational-support-heading">Operational Support</h3>
-       <ul>
-           <li class="phone"><strong>Accounts Payable:</strong> 0845 611 5700</li>
-           <li class="phone"><strong>Front of House (Hilmore):</strong> 0845 611 5001 / 5002</li>
-           <li class="phone"><strong>Insurance Helpline:</strong> 0845 611 4851</li>
-           <li class="email"><strong>News & Mags Contact:</strong> <a href="mailto:newsandmags@morrisonsplc.co.uk">newsandmags@morrisonsplc.co.uk</a></li>
-           <li class="email"><strong>Trolley Services (Wanzl):</strong> <a href="mailto:morrisons@wanzl.com">morrisons@wanzl.com</a> / Tel: 01376 386966</li>
-           <li class="email"><strong>TrolleyWise (Abandoned Trolleys):</strong> <a href="mailto:trolleywise@wanzl.co.uk">trolleywise@wanzl.co.uk</a> (or via App)</li>
-       </ul>
-
-        <h3 id="people-support-heading">People Support & Helplines</h3>
+    <div class="dashboard-grid">
+      <!-- Central Support -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-building"></i> Central Support (6711)</h3>
         <ul>
-            <li class="phone"><strong>Retail Trust Helpline (Confidential Support):</strong> <a href="tel:08088010808">0808 801 0808</a></li>
-            <li class="email"><strong>Retail Trust Email:</strong> <a href="mailto:helpline@retailtrust.org.uk">helpline@retailtrust.org.uk</a></li>
-            <li class="web"><strong>Retail Trust Website:</strong> <a href="https://www.retailtrust.org.uk" target="_blank" rel="noopener noreferrer">www.retailtrust.org.uk</a></li>
-            <li class="phone"><strong>Whistleblowing Helpline (Navex):</strong> <a href="tel:08000843474">0800 084 3474</a></li>
-            <li class="web"><strong>Whistleblowing Website:</strong> <a href="http://morrisons.navexone.uk/" target="_blank" rel="noopener noreferrer">http://morrisons.navexone.uk/</a></li>
-            <li class="info">See Central Support Option 8 for Payroll, HR Systems, Pensions, Training etc.</li>
+          <li class="emergency"><strong>Option 1: EMERGENCY (24/7)</strong><br>Maintenance & Loss Prevention</li>
+          <li><strong>Option 2: IT Queries (24/7)</strong><br><a href="tel:03456116500">0345 611 6500</a> (Store/PFS)
+          </li>
+          <li><strong>Option 3: Maint. & Procurement</strong><br>Refrigeration, Waste, Pest, Fleet</li>
+          <li><strong>Option 4: Customer Queries</strong><br>More Card, Complaints</li>
+          <li class="email"><strong>Option 5: Retail Support</strong><br><a
+              href="mailto:retailsupportoffice@morrisonsplc.co.uk">Email Only</a></li>
+          <li><strong>Option 6: Supply Chain</strong><br>Emergencies & Logistics</li>
+          <li><strong>Option 7: Trading Desk</strong><br>Price, Promo, POS</li>
+          <li><strong>Option 8: People Support</strong><br>Payroll, HR, Training</li>
         </ul>
+      </div>
 
-       <h3 id="lp-security-heading">Loss Prevention & Audit</h3>
-       <ul>
-           <li class="emergency phone"><strong>LP Control Room (Major Incidents/Theft >10 Trolleys):</strong> <a href="tel:03456116711">0345 611 6711</a></li>
-           <li class="info">Report standard theft/incidents via MySecurity App.</li>
-           <li>Terri Waters (Audit and Stocktake Manager): <a href="mailto:Terri.Waters@morrisonsplc.co.uk">Terri.Waters@morrisonsplc.co.uk</a></li>
-           <li>Hannah Cleary (Senior Loss Prevention Manager): <a href="mailto:Hannah.Cleary@morrisonsplc.co.uk">Hannah.Cleary@morrisonsplc.co.uk</a></li>
-           <li>David Grey (Senior Loss Prevention Manager): <a href="mailto:David.Grey@morrisonsplc.co.uk">David.Grey@morrisonsplc.co.uk</a></li>
-           <li>Robert Palmer (Loss Prevention Specialist - Data & Analytics): <a href="mailto:Robert.3.Palmer@Morrisonsplc.co.uk">Robert.3.Palmer@Morrisonsplc.co.uk</a></li>
-       </ul>
-
-      <h3 id="external-support-heading">Customer & Partner Support</h3>
+      <!-- Tech Support -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-laptop-medical"></i> Technology Support</h3>
+        <p><strong>Helpdesk:</strong> <a href="tel:03456116500">0345 611 6500</a></p>
         <ul>
-            <li class="phone"><strong>Customer Complaints General Contact:</strong> <a href="tel:03456116111">0345 611 6111</a></li>
-            <li class="email"><strong>Customer Complaints Email:</strong> <a href="mailto:customercomplaintssupport@morrisonsplc.co.uk">customercomplaintssupport@morrisonsplc.co.uk</a></li>
-            <li class="web"><strong>Customer Contact Website:</strong> <a href="https://www.morrisons.com/help/" target="_blank" rel="noopener noreferrer">Morrisons.com/help/</a></li>
-            <li class="phone"><strong>Just Eat Live Support:</strong> <a href="tel:02475427000">02475 427 000</a> (For live order issues)</li>
-            <li class="phone"><strong>Uber Eats Live Support:</strong> <a href="tel:08081892471">0808 189 2471</a></li>
-            <li class="info">See <a href="online.html">Online page</a> for Deliveroo/Amazon contacts.</li>
-       </ul>
+          <li><strong>NCR (Opt 1>1):</strong> Tills, SCO, Printers</li>
+          <li><strong>IT Desk (Opt 1>2):</strong> PCs, Network, OSP</li>
+          <li><strong>PFS (Opt 2):</strong> Petrol Station IT</li>
+          <li><strong>EE Support:</strong> <a href="tel:08000790260">0800 079 0260</a> (Pass: Morrisons1899)</li>
+          <li class="escalation email"><strong>Escalations:</strong> <a
+              href="mailto:technologyretailescalations@morrisonsplc.co.uk">Email Team</a></li>
+        </ul>
+      </div>
 
-       <h3 id="pharmacy-contacts-heading">Pharmacy Contacts (Central Team)</h3>
-       <ul>
-           <li>Robert Brewis: <a href="mailto:robert.brewis@morrisonsplc.co.uk">robert.brewis@morrisonsplc.co.uk</a> (<a href="tel:07854230161">07854 230 161</a>)</li>
-           <li>Elin Palmer: <a href="mailto:elin.palmer@morrisonsplc.co.uk">elin.palmer@morrisonsplc.co.uk</a></li>
-           <li>Sarah Jane Morrison: <a href="mailto:sarah.jane.morrison@morrisonsplc.co.uk">sarah.jane.morrison@morrisonsplc.co.uk</a> (<a href="tel:07812512288">07812 512 288</a>)</li>
-           <li>Patricia Greenwood: <a href="mailto:patricia.1.greenwood@morrisonsplc.co.uk">patricia.1.greenwood@morrisonsplc.co.uk</a> (<a href="tel:07970923100">07970 923 100</a>)</li>
-           <li>Katy Hardaker: <a href="mailto:katy.hardaker@morrisonsplc.co.uk">katy.hardaker@morrisonsplc.co.uk</a> (<a href="tel:07929840191">07929 840 191</a>)</li>
-       </ul>
-
-        <h3 id="charity-heading">Charity Collections & Foundation</h3>
+      <!-- Operational Support -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-tools"></i> Ops Support</h3>
         <ul>
-            <li class="email">Holli Kellett (Charity Partnerships): <a href="mailto:holli.1.kellett@morrisonsplc.co.uk">holli.1.kellett@morrisonsplc.co.uk</a></li>
-            <li class="email">Foundation Enquiries (Large Sponsorship): <a href="mailto:foundation.enquiries@morrisonsplc.co.uk">foundation.enquiries@morrisonsplc.co.uk</a></li>
-       </ul>
+          <li><strong>Accounts Payable:</strong> 0845 611 5700</li>
+          <li><strong>Front of House:</strong> 0845 611 5001</li>
+          <li><strong>Insurance:</strong> 0845 611 4851</li>
+          <li><strong>News & Mags:</strong> <a href="mailto:newsandmags@morrisonsplc.co.uk">Email</a></li>
+          <li><strong>Trolleys (Wanzl):</strong> <a href="mailto:morrisons@wanzl.com">Email</a></li>
+          <li><strong>TrolleyWise:</strong> <a href="mailto:trolleywise@wanzl.co.uk">Email</a></li>
+        </ul>
+      </div>
 
-    </section>
+      <!-- People Support -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-users"></i> People & Wellbeing</h3>
+        <ul>
+          <li><strong>Retail Trust:</strong> <a href="tel:08088010808">0808 801 0808</a></li>
+          <li><strong>Whistleblowing:</strong> <a href="tel:08000843474">0800 084 3474</a></li>
+          <li><strong>Payroll/HR:</strong> See Central Option 8</li>
+        </ul>
+      </div>
+
+      <!-- Loss Prevention -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-shield-alt"></i> Loss Prevention</h3>
+        <ul>
+          <li class="emergency"><strong>Control Room:</strong> <a href="tel:03456116711">0345 611 6711</a></li>
+          <li><strong>Audit Manager:</strong> <a href="mailto:Terri.Waters@morrisonsplc.co.uk">Terri Waters</a></li>
+          <li><strong>Senior LP:</strong> <a href="mailto:Hannah.Cleary@morrisonsplc.co.uk">Hannah Cleary</a></li>
+          <li><strong>Senior LP:</strong> <a href="mailto:David.Grey@morrisonsplc.co.uk">David Grey</a></li>
+        </ul>
+      </div>
+
+      <!-- External Support -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-headset"></i> Customer & Partner</h3>
+        <ul>
+          <li><strong>Customer Complaints:</strong> <a href="tel:03456116111">0345 611 6111</a></li>
+          <li><strong>Just Eat Live:</strong> <a href="tel:02475427000">02475 427 000</a></li>
+          <li><strong>Uber Eats Live:</strong> <a href="tel:08081892471">0808 189 2471</a></li>
+        </ul>
+      </div>
+
+      <!-- Pharmacy -->
+      <div class="dashboard-card">
+        <h3><i class="fas fa-prescription-bottle-alt"></i> Pharmacy Team</h3>
+        <ul>
+          <li><strong>Robert Brewis:</strong> <a href="tel:07854230161">0785 423 0161</a></li>
+          <li><strong>Sarah Jane Morrison:</strong> <a href="tel:07812512288">0781 251 2288</a></li>
+          <li><strong>Patricia Greenwood:</strong> <a href="tel:07970923100">0797 092 3100</a></li>
+        </ul>
+      </div>
+
+    </div>
   </main>
 
   <!----- footer ----->
-  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
+  <footer>
+    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+  </footer>
 
   <!----- scripts ----->
-  <script src="script.js"></script>
+  <script src="script.js" type="module"></script>
 </body>
+
 </html>

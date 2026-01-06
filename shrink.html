@@ -1,194 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <!-- PWA & meta -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <!-- Theme color set to red -->
-  <meta name="theme-color" content="#B22222" />
-  <title>Shrink Management - Cleveleys Morrisons Dashboard</title>
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-  <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Shrink management, stocktake, audit, waste, and product protection information for Cleveleys Morrisons." /> <!-- Updated Description -->
+    <!-- PWA & meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <!-- Theme color set to red -->
+    <meta name="theme-color" content="#B22222" />
+    <title>Shrink Management - Cleveleys Morrisons Dashboard</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description"
+        content="Shrink management, stocktake, audit, waste, and product protection information for Cleveleys Morrisons." />
+    <!-- Updated Description -->
 
-  <!-- Fonts & icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Styles – mobile-first (Adapted for Red theme) -->
-  <link rel="stylesheet" href="style.css" />
+    <!-- Styles – mobile-first (Adapted for Red theme) -->
+    <script src="components/header.js" defer></script>
+    <script src="components/nav.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="red-theme"> <!-- Apply theme class -->
 
-  <!----- header & theme toggle ----->
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png" alt="Morrisons logo" />
-    <h1>Cleveleys Morrisons Dashboard</h1>
-    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">🌓</button>
-  </header>
+    <!----- header & theme toggle ----->
+    <site-header></site-header>
 
-  <!----- nav (bottom bar on phones) ----->
-  <nav>
-    <div class="nav-wrap">
-      <ul class="nav-links">
-         <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
-         <li><a href="online.html"><i class="fas fa-globe"></i><span>Online</span></a></li>
-         <li><a href="street.html"><i class="fas fa-store"></i><span>Market</span></a></li>
-         <li><a href="services.html"><i class="fas fa-concierge-bell"></i><span>Front End</span></a></li>
-         <li><a href="operations.html"><i class="fas fa-cogs"></i><span>Operations</span></a></li>
-         <li><a href="contacts.html"><i class="fas fa-address-book"></i><span>Contacts</span></a></li>
-         <li><a href="shrink.html" class="active"><i class="fas fa-compress-arrows-alt"></i><span>Shrink</span></a></li>
-         <li><a href="safe-and-legal.html"><i class="fas fa-shield-alt"></i><span>Safe & Legal</span></a></li>
-      </ul>
-    </div>
-  </nav>
+    <!----- nav (bottom bar on phones) ----->
+    <site-nav></site-nav>
 
-  <!----- main content ----->
-  <main class="container">
+    <!----- main content ----->
+    <main class="container">
 
-    <section id="shrink-overview">
-      <h2><i class="fas fa-search-minus"></i> Shrink Management Overview</h2>
-      <p>Effective shrink management involves accurate stocktakes, robust auditing, correct product protection, diligent waste validation, and loss prevention awareness. This section provides access to key resources and guides.</p>
-       <div class="dashboard-grid">
-           <a href="https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Think Shrink Toolkit (opens new tab)">
-               <i class="fas fa-lightbulb"></i>
-               <span>Think Shrink Toolkit</span>
-           </a>
-           <a href="https://www.dymension.co.uk/#/account/login" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Dymension Staff Checks (opens new tab)">
-               <i class="fas fa-user-check"></i>
-               <span>Monitor Staff Checks</span>
-           </a>
-           <a href="https://docs.google.com/presentation/d/1BNZsODAET-KLZPMi1SywdtvyLxySSoz8zorOzXchE-k/edit" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Waste & Markdown Guide (opens new tab)">
-               <i class="fas fa-recycle"></i>
-               <span>Waste & Markdown Guide</span>
-           </a>
-           <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Waste Validation Dashboard (Looker Studio - opens new tab)">
-               <i class="fas fa-chart-pie"></i>
-               <span>Waste Validation Dash</span>
-           </a>
-           <a href="https://docs.google.com/forms/d/e/1FAIpQLSdipkAbU8vo4hcYYHFDC8qfVypVMRknKMl1swauu8MRWYUZjw/viewform" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Self Audit Form (Google Forms - opens new tab)">
-               <i class="fas fa-clipboard-check"></i>
-               <span>Self Audit Form</span>
-           </a>
-           <a href="https://lookerstudio.google.com/reporting/43ed0955-fc21-4dde-8aad-534a37da8e8d/page/p_jg72aczz5c" target="_blank" rel="noopener noreferrer" class="dashboard-item" title="Self Audit Dashboard (Looker Studio - opens new tab)">
-               <i class="fas fa-tasks"></i>
-               <span>Self Audit Dashboard</span>
-           </a>
-       </div>
-    </section>
+        <section id="shrink-overview">
+            <h2><i class="fas fa-search-minus"></i> Shrink Management Overview</h2>
+            <p>Effective shrink management involves accurate stocktakes, robust auditing, correct product protection,
+                diligent waste validation, and loss prevention awareness. This section provides access to key resources
+                and guides.</p>
+            <div class="dashboard-grid">
+                <a href="https://sites.google.com/morrisonsplc.co.uk/my-store-toolkit/home/shrink" target="_blank"
+                    rel="noopener noreferrer" class="tile" title="Think Shrink Toolkit (opens new tab)">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Think Shrink Toolkit</span>
+                </a>
+                <a href="https://www.dymension.co.uk/#/account/login" target="_blank" rel="noopener noreferrer"
+                    class="tile" title="Dymension Staff Checks (opens new tab)">
+                    <i class="fas fa-user-check"></i>
+                    <span>Monitor Staff Checks</span>
+                </a>
+                <a href="https://docs.google.com/presentation/d/1BNZsODAET-KLZPMi1SywdtvyLxySSoz8zorOzXchE-k/edit"
+                    target="_blank" rel="noopener noreferrer" class="tile"
+                    title="Waste & Markdown Guide (opens new tab)">
+                    <i class="fas fa-recycle"></i>
+                    <span>Waste & Markdown Guide</span>
+                </a>
+                <a href="https://lookerstudio.google.com/u/0/reporting/3d73c438-5fbe-4b9c-b2aa-982cc35455aa/page/p_i4c5qqe23c"
+                    target="_blank" rel="noopener noreferrer" class="tile"
+                    title="Waste Validation Dashboard (Looker Studio - opens new tab)">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Waste Validation Dash</span>
+                </a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdipkAbU8vo4hcYYHFDC8qfVypVMRknKMl1swauu8MRWYUZjw/viewform"
+                    target="_blank" rel="noopener noreferrer" class="tile"
+                    title="Self Audit Form (Google Forms - opens new tab)">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Self Audit Form</span>
+                </a>
+                <a href="https://lookerstudio.google.com/reporting/43ed0955-fc21-4dde-8aad-534a37da8e8d/page/p_jg72aczz5c"
+                    target="_blank" rel="noopener noreferrer" class="tile"
+                    title="Self Audit Dashboard (Looker Studio - opens new tab)">
+                    <i class="fas fa-tasks"></i>
+                    <span>Self Audit Dashboard</span>
+                </a>
+            </div>
+        </section>
 
-    <section id="stocktake-audit">
-        <h2><i class="fas fa-boxes"></i> Stocktake & Audits</h2>
+        <section id="stocktake-audit">
+            <h2><i class="fas fa-boxes"></i> Stocktake & Audits</h2>
 
-         <button class="accordion" id="stocktake-accordion"><i class="fas fa-calendar-check"></i> Stocktake Guidance</button>
-         <div class="panel"><div>
-             <p>Stocktakes are crucial for determining stock position, shrink, and updating stock records. The Store Manager is accountable for ensuring the stocktake is well-planned and executed accurately.</p>
-             <p>Support prompted counts and variance investigations with the <a href="https://app.218.team" target="_blank" rel="noopener noreferrer">Stock Info (SMU) app</a> hosted on <strong>218.team</strong>.</p>
-             <p><a href="https://docs.google.com/document/d/1f_iA2R0plNCBkgn5Djja43aq_Cz3AxhGGAUXDeBU8NE/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Stocktake Guide (Google Doc) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
-             <h4>Key Process Summary:</h4>
-             <ul>
-                 <li><strong>Prep (-4 to -1 Weeks):</strong> Store Specific Comms, Pre-count document review, LP Stocktake Call, Weekly Google Form submissions (photos required). Warehouse prep, capping shelf sorting, waste/markdown clearance are critical.</li>
-                 <li><strong>Count Week:</strong> Final Google Form submission. Execute Wall-to-Wall count according to schedule provided by Count Supervisor.</li>
-                 <li><strong>Post-Count (+1 to +7 Days):</strong> Complete daily Prompted Counts (up to 50 checks on >£200 variances) via HHT by 9:45am. Await results communication (+3 Days). Complete Action Plan based on results (+7 Days).</li>
-                 <li><strong>Key Resources:</strong> Utilise Cutover document, Google Form, What Good Looks Like standards (linked in full guide).</li>
-             </ul>
-             <p><small>Ref: Operational Guidance Stocktake 2025</small></p>
-         </div></div>
+            <button class="accordion" id="stocktake-accordion"><i class="fas fa-calendar-check"></i> Stocktake
+                Guidance</button>
+            <div class="panel">
+                <div>
+                    <p>Stocktakes are crucial for determining stock position, shrink, and updating stock records. The
+                        Store Manager is accountable for ensuring the stocktake is well-planned and executed accurately.
+                    </p>
+                    <p>Support prompted counts and variance investigations with the <a href="https://app.218.team"
+                            target="_blank" rel="noopener noreferrer">Stock Info (SMU) app</a> hosted on
+                        <strong>218.team</strong>.
+                    </p>
+                    <p><a href="https://docs.google.com/document/d/1f_iA2R0plNCBkgn5Djja43aq_Cz3AxhGGAUXDeBU8NE/edit"
+                            target="_blank" rel="noopener noreferrer" class="button-link">View Full Stocktake Guide
+                            (Google Doc) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+                    <h4>Key Process Summary:</h4>
+                    <ul>
+                        <li><strong>Prep (-4 to -1 Weeks):</strong> Store Specific Comms, Pre-count document review, LP
+                            Stocktake Call, Weekly Google Form submissions (photos required). Warehouse prep, capping
+                            shelf sorting, waste/markdown clearance are critical.</li>
+                        <li><strong>Count Week:</strong> Final Google Form submission. Execute Wall-to-Wall count
+                            according to schedule provided by Count Supervisor.</li>
+                        <li><strong>Post-Count (+1 to +7 Days):</strong> Complete daily Prompted Counts (up to 50 checks
+                            on >£200 variances) via HHT by 9:45am. Await results communication (+3 Days). Complete
+                            Action Plan based on results (+7 Days).</li>
+                        <li><strong>Key Resources:</strong> Utilise Cutover document, Google Form, What Good Looks Like
+                            standards (linked in full guide).</li>
+                    </ul>
+                    <p><small>Ref: Operational Guidance Stocktake 2025</small></p>
+                </div>
+            </div>
 
-         <button class="accordion" id="audit-accordion"><i class="fas fa-clipboard-list"></i> Shrink & Cash Loss Audit (Q3 FY24/25 Focus) </button>
-         <div class="panel"><div>
-            <p>This audit assesses compliance with Loss Prevention standards. It's typically a 90-minute assessment aiming for an 85%+ pass mark.</p>
-             <p><a href="https://docs.google.com/presentation/d/1lTRWNOs-wfBwzgTozXZVGRwWUuq-Dbyu7zXImbL3wUU/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Q3 Audit Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
-             <h4>Key Q3 Focus Areas/Changes Summary:</h4>
-             <ul>
-                 <li><strong>New - Shrink 8:</strong> Yard bin security (padlock/key control), correct waste bag usage, no food waste in skips, visible waste recorded.</li>
-                 <li><strong>New - Online 2 (Unmarked):</strong> Amazon Driver ID check process (Amazon stores), Immediacy bag sealing/content visibility check (Immediacy stores).</li>
-                 <li><strong>Updated - Protection 4 (Meat):</strong> Aligned wording with latest product protection guidance.</li>
-                  <li><strong>Updated - Unknown Loss 6:</strong> Clearly identifiable waste areas (Fresh/Frozen/Ambient), pre-validation area checks, separate/tidy validated waste.</li>
-                 <li><strong>Fail Points Added (Unknown Loss 6):</strong> No overspill waste in other areas; TGTG bags checked & waste recorded correctly.</li>
-                 <li><strong>Removed:</strong> Protection 9 (Shelf edge POS); Security 6 (Smart gates).</li>
-             </ul>
-             <p>Use the Self Assessment Platform to prepare. Action plans due within one week post-audit.</p>
-             <p><small>Ref: Q3 Shrink & Cash Loss Audit Slides</small></p>
-         </div></div>
-    </section>
+            <button class="accordion" id="audit-accordion"><i class="fas fa-clipboard-list"></i> Shrink & Cash Loss
+                Audit (Q3 FY24/25 Focus) </button>
+            <div class="panel">
+                <div>
+                    <p>This audit assesses compliance with Loss Prevention standards. It's typically a 90-minute
+                        assessment aiming for an 85%+ pass mark.</p>
+                    <p><a href="https://docs.google.com/presentation/d/1lTRWNOs-wfBwzgTozXZVGRwWUuq-Dbyu7zXImbL3wUU/edit"
+                            target="_blank" rel="noopener noreferrer" class="button-link">View Full Q3 Audit Guide
+                            (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+                    <h4>Key Q3 Focus Areas/Changes Summary:</h4>
+                    <ul>
+                        <li><strong>New - Shrink 8:</strong> Yard bin security (padlock/key control), correct waste bag
+                            usage, no food waste in skips, visible waste recorded.</li>
+                        <li><strong>New - Online 2 (Unmarked):</strong> Amazon Driver ID check process (Amazon stores),
+                            Immediacy bag sealing/content visibility check (Immediacy stores).</li>
+                        <li><strong>Updated - Protection 4 (Meat):</strong> Aligned wording with latest product
+                            protection guidance.</li>
+                        <li><strong>Updated - Unknown Loss 6:</strong> Clearly identifiable waste areas
+                            (Fresh/Frozen/Ambient), pre-validation area checks, separate/tidy validated waste.</li>
+                        <li><strong>Fail Points Added (Unknown Loss 6):</strong> No overspill waste in other areas; TGTG
+                            bags checked & waste recorded correctly.</li>
+                        <li><strong>Removed:</strong> Protection 9 (Shelf edge POS); Security 6 (Smart gates).</li>
+                    </ul>
+                    <p>Use the Self Assessment Platform to prepare. Action plans due within one week post-audit.</p>
+                    <p><small>Ref: Q3 Shrink & Cash Loss Audit Slides</small></p>
+                </div>
+            </div>
+        </section>
 
-    <section id="protection-waste">
-        <h2><i class="fas fa-shield-alt"></i> Product Protection & Waste Management</h2>
+        <section id="protection-waste">
+            <h2><i class="fas fa-shield-alt"></i> Product Protection & Waste Management</h2>
 
-         <button class="accordion" id="tagging-accordion"><i class="fas fa-tag"></i> Product Protection (Tagging) Guide</button>
-         <div class="panel"><div>
-            <p>Correct product protection is essential. Always refer to the latest guidance for specific items.</p>
-            <p><a href="https://docs.google.com/presentation/d/1LUynIZc3606WoSBHnNzFIUmflDfKyc6gTFZEueGPk_U/present" target="_blank" rel="noopener noreferrer" class="button-link">View Full Tagging Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
-            <h4>General Principles Summary:</h4>
-             <ul>
-                 <li>Use appropriate tags (Soft Tag, Pin Tag, Spider Wrap, Safer Case, Bottlelox/Net/UFO) based on product type and value thresholds (check guide).</li>
-                 <li>Commonly tagged areas: H&B (£10+), GM (£10+/£15+/£30+ thresholds), BWS (£12+ wine, all Spirits/Champagne), High-Value Meat (£5+ joints/steaks - Yellow Soft Tag), Vapes.</li>
-                 <li>Source Tagged items generally don't need additional tags unless specified.</li>
-                 <li>Ensure tags don't obscure essential product info. Apply securely but without damaging product.</li>
-                 <li>Use Restricted Fill Extenders for high-theft lines where applicable.</li>
-                 <li>No high-value/protected stock on Capping Shelves.</li>
-                 <li>Manage Tag Recycling containers at checkouts/trolley stations.</li>
-             </ul>
-              <p><small>Ref: Pocket Tagging Guide - April 2025</small></p>
-         </div></div>
+            <button class="accordion" id="tagging-accordion"><i class="fas fa-tag"></i> Product Protection (Tagging)
+                Guide</button>
+            <div class="panel">
+                <div>
+                    <p>Correct product protection is essential. Always refer to the latest guidance for specific items.
+                    </p>
+                    <p><a href="https://docs.google.com/presentation/d/1LUynIZc3606WoSBHnNzFIUmflDfKyc6gTFZEueGPk_U/present"
+                            target="_blank" rel="noopener noreferrer" class="button-link">View Full Tagging Guide
+                            (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+                    <h4>General Principles Summary:</h4>
+                    <ul>
+                        <li>Use appropriate tags (Soft Tag, Pin Tag, Spider Wrap, Safer Case, Bottlelox/Net/UFO) based
+                            on product type and value thresholds (check guide).</li>
+                        <li>Commonly tagged areas: H&B (£10+), GM (£10+/£15+/£30+ thresholds), BWS (£12+ wine, all
+                            Spirits/Champagne), High-Value Meat (£5+ joints/steaks - Yellow Soft Tag), Vapes.</li>
+                        <li>Source Tagged items generally don't need additional tags unless specified.</li>
+                        <li>Ensure tags don't obscure essential product info. Apply securely but without damaging
+                            product.</li>
+                        <li>Use Restricted Fill Extenders for high-theft lines where applicable.</li>
+                        <li>No high-value/protected stock on Capping Shelves.</li>
+                        <li>Manage Tag Recycling containers at checkouts/trolley stations.</li>
+                    </ul>
+                    <p><small>Ref: Pocket Tagging Guide - April 2025</small></p>
+                </div>
+            </div>
 
-          <button class="accordion" id="waste-accordion"><i class="fas fa-dumpster"></i> Waste & Markdown Management</button>
-         <div class="panel"><div>
-             <p>Accurate waste recording and timely markdowns are crucial for shrink control.</p>
-             <p><a href="https://docs.google.com/presentation/d/1BNZsODAET-KLZPMi1SywdtvyLxySSoz8zorOzXchE-k/edit" target="_blank" rel="noopener noreferrer" class="button-link">View Full Waste & Markdown Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
-             <h4>Key Principles Summary:</h4>
-             <ul>
-                 <li>Use Mobile Device for all waste/markdown actions.</li>
-                 <li>Follow correct markdown timings (generally 7pm day before expiry / 5pm day of expiry - see guide for exceptions).</li>
-                 <li>Use correct Waste Reason Codes.</li>
-                 <li>Process waste accurately (scan product/QR code).</li>
-                 <li>Utilise Too Good To Go and Colleague Collection where applicable (follow specific guidance).</li>
-                 <li>Handle Charity Waste correctly (approved items, logging, storage).</li>
-                 <li>Segregate waste types correctly (Food Waste pallet, General Waste, Recycling).</li>
-                 <li>Manage Damaged Stock / Split Packs according to process (Repair Station, correct wasting).</li>
-                 <li>Clearance Bays: Keep tidy, correctly labelled, action promptly.</li>
-             </ul>
-             <p><small>Ref: Waste & Markdown Operating Guidance - June 2024</small></p>
-         </div></div>
-    </section>
+            <button class="accordion" id="waste-accordion"><i class="fas fa-dumpster"></i> Waste & Markdown
+                Management</button>
+            <div class="panel">
+                <div>
+                    <p>Accurate waste recording and timely markdowns are crucial for shrink control.</p>
+                    <p><a href="https://docs.google.com/presentation/d/1BNZsODAET-KLZPMi1SywdtvyLxySSoz8zorOzXchE-k/edit"
+                            target="_blank" rel="noopener noreferrer" class="button-link">View Full Waste & Markdown
+                            Guide (Google Slides) <i class="fas fa-external-link-alt fa-xs"></i></a></p>
+                    <h4>Key Principles Summary:</h4>
+                    <ul>
+                        <li>Use Mobile Device for all waste/markdown actions.</li>
+                        <li>Follow correct markdown timings (generally 7pm day before expiry / 5pm day of expiry - see
+                            guide for exceptions).</li>
+                        <li>Use correct Waste Reason Codes.</li>
+                        <li>Process waste accurately (scan product/QR code).</li>
+                        <li>Utilise Too Good To Go and Colleague Collection where applicable (follow specific guidance).
+                        </li>
+                        <li>Handle Charity Waste correctly (approved items, logging, storage).</li>
+                        <li>Segregate waste types correctly (Food Waste pallet, General Waste, Recycling).</li>
+                        <li>Manage Damaged Stock / Split Packs according to process (Repair Station, correct wasting).
+                        </li>
+                        <li>Clearance Bays: Keep tidy, correctly labelled, action promptly.</li>
+                    </ul>
+                    <p><small>Ref: Waste & Markdown Operating Guidance - June 2024</small></p>
+                </div>
+            </div>
+        </section>
 
-    <section id="loss-prevention">
-        <h2><i class="fas fa-user-secret"></i> Loss Prevention Focus</h2>
-         <button class="accordion" id="lp-contacts-accordion"><i class="fas fa-phone"></i> Key Contacts & Reporting</button>
-         <div class="panel"><div>
-             <ul>
-                 <li>**Emergency/Immediate Threat:** Dial 999 first, then LP Control Room.</li>
-                 <li>**LP Control Room (0345 611 6711):** Report major incidents - Robbery, Burglary, Aggravated Theft, Serious Assaults, Major Disorder, Data Breaches, significant cash loss (>£1k), large scale theft (>10 trolleys).</li>
-                 <li>**MySecurity App (Tablet):** Report standard incidents - Shoplifting, ASB, Drive Offs, Trolley Theft (<9), Policy Breaches, safety concerns.</li>
-                 <li>**Retail Support Centre (Option 2 for LP):** General LP queries, advice.</li>
-                 <li>**Your Regional LP Manager:** For ongoing issues, trends, advice, support. (See <a href="contacts.html">Contacts Page</a>)</li>
-             </ul>
-         </div></div>
+        <section id="loss-prevention">
+            <h2><i class="fas fa-user-secret"></i> Loss Prevention Focus</h2>
+            <button class="accordion" id="lp-contacts-accordion"><i class="fas fa-phone"></i> Key Contacts &
+                Reporting</button>
+            <div class="panel">
+                <div>
+                    <ul>
+                        <li>**Emergency/Immediate Threat:** Dial 999 first, then LP Control Room.</li>
+                        <li>**LP Control Room (0345 611 6711):** Report major incidents - Robbery, Burglary, Aggravated
+                            Theft, Serious Assaults, Major Disorder, Data Breaches, significant cash loss (>£1k), large
+                            scale theft (>10 trolleys).</li>
+                        <li>**MySecurity App (Tablet):** Report standard incidents - Shoplifting, ASB, Drive Offs,
+                            Trolley Theft (<9), Policy Breaches, safety concerns.</li>
+                        <li>**Retail Support Centre (Option 2 for LP):** General LP queries, advice.</li>
+                        <li>**Your Regional LP Manager:** For ongoing issues, trends, advice, support. (See <a
+                                href="contacts.html">Contacts Page</a>)</li>
+                    </ul>
+                </div>
+            </div>
 
-          <button class="accordion" id="lp-procedures-accordion"><i class="fas fa-book"></i> Key LP Procedures</button>
-         <div class="panel"><div>
-            <ul>
-                <li>**Staff Checks (Dymension):** Ensure regular checks are completed and recorded accurately. Follow up failures.</li>
-                <li>**Cash Handling:** Adhere to all cash office procedures, till handling limits, safe procedures. Investigate discrepancies promptly.</li>
-                <li>**Product Protection:** Apply tags correctly as per guide. Ensure EAS gates are operational.</li>
-                <li>**Receiving Goods:** Check deliveries accurately, report shortages/damages via correct process. Secure back door areas.</li>
-                <li>**Refunds/Voids:** Follow correct procedures, require authorisation where necessary. Monitor via dashboards.</li>
-                <li>**Awareness:** Be vigilant for suspicious activity, scams, internal theft indicators. Report concerns.</li>
-            </ul>
-             <p>Refer to specific guides (Cash Office, Front End, Stocktake etc.) and the Think Shrink toolkit for detailed procedures.</p>
-         </div></div>
-    </section>
+            <button class="accordion" id="lp-procedures-accordion"><i class="fas fa-book"></i> Key LP
+                Procedures</button>
+            <div class="panel">
+                <div>
+                    <ul>
+                        <li>**Staff Checks (Dymension):** Ensure regular checks are completed and recorded accurately.
+                            Follow up failures.</li>
+                        <li>**Cash Handling:** Adhere to all cash office procedures, till handling limits, safe
+                            procedures. Investigate discrepancies promptly.</li>
+                        <li>**Product Protection:** Apply tags correctly as per guide. Ensure EAS gates are operational.
+                        </li>
+                        <li>**Receiving Goods:** Check deliveries accurately, report shortages/damages via correct
+                            process. Secure back door areas.</li>
+                        <li>**Refunds/Voids:** Follow correct procedures, require authorisation where necessary. Monitor
+                            via dashboards.</li>
+                        <li>**Awareness:** Be vigilant for suspicious activity, scams, internal theft indicators. Report
+                            concerns.</li>
+                    </ul>
+                    <p>Refer to specific guides (Cash Office, Front End, Stocktake etc.) and the Think Shrink toolkit
+                        for detailed procedures.</p>
+                </div>
+            </div>
+        </section>
 
-  </main>
+    </main>
 
-  <!----- footer ----->
-  <footer><p>© 2025 Cleveleys Morrisons. All rights reserved.</p></footer>
+    <!----- footer ----->
+    <footer>
+        <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+    </footer>
 
-  <!----- scripts ----->
-  <script src="script.js"></script>
+    <!----- scripts ----->
+    <script src="script.js" type="module"></script>
 </body>
+
 </html>
