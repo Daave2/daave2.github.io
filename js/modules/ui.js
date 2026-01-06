@@ -223,6 +223,38 @@ export function initUI() {
         }
     });
 
+    /* -------- Hero Section Logic (Clock & Greeting) -------- */
+    const heroTime = $("#clock-time");
+    const heroDate = $("#hero-date");
+    const heroGreeting = $("#hero-greeting");
+
+    if (heroTime && heroDate && heroGreeting) {
+        const updateHero = () => {
+            const now = new Date();
+
+            // Time
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            heroTime.textContent = `${hours}:${minutes}`;
+
+            // Date
+            const options = { weekday: 'long', day: 'numeric', month: 'long' };
+            heroDate.textContent = now.toLocaleDateString('en-GB', options);
+
+            // Greeting
+            let greet = "Welcome";
+            const h = now.getHours();
+            if (h < 12) greet = "Good Morning";
+            else if (h < 18) greet = "Good Afternoon";
+            else greet = "Good Evening";
+
+            heroGreeting.textContent = greet;
+        };
+
+        updateHero(); // Initial call
+        setInterval(updateHero, 1000); // 60s update is enough for minutes, but 1s keeps sync better
+    }
+
     /* -------- Return helpers if needed -------- */
     return { notify };
 }

@@ -34,6 +34,11 @@ class SiteNav extends HTMLElement {
             <div class="nav-wrap">
               <ul class="nav-links">
                 ${primaryLinks}
+                <li>
+                  <button class="nav-btn-search" onclick="window.openCommandPalette && window.openCommandPalette()" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </li>
                 <li class="more-menu">
                   <button class="more-toggle ${isMoreActive ? 'active' : ''}" aria-expanded="false" aria-haspopup="true" aria-label="More navigation options">
                     <i class="fas fa-ellipsis-h"></i><span>More</span>

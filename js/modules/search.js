@@ -1,102 +1,173 @@
 
 export function initSearch() {
-    const searchInput = document.getElementById('site-search');
-    const searchResultsContainer = document.getElementById('search-results');
+    // 1. Inject the HTML for the Command Palette if not present
+    if (!document.querySelector('.cmd-palette-overlay')) {
+        const modalHTML = `
+            <div class="cmd-palette-overlay" id="cmd-overlay">
+                <div class="cmd-palette-modal">
+                    <div class="cmd-header">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="cmd-input" id="cmd-input" placeholder="Type a command or search..." autocomplete="off">
+                    </div>
+                    <div class="cmd-results" id="cmd-results">
+                        <!-- Results injected here -->
+                    </div>
+                    <div class="cmd-footer">
+                        <div class="cmd-shortcut"><span>↑↓</span> to navigate</div>
+                        <div class="cmd-shortcut"><span>↵</span> to select</div>
+                        <div class="cmd-shortcut"><span>esc</span> to close</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
 
-    // Helper debounce
-    const debounce = (fn, ms) => {
-        let t;
-        const debounced = (...a) => {
-            clearTimeout(t);
-            t = setTimeout(() => fn(...a), ms);
-        };
-        debounced.flush = () => {
-            clearTimeout(t);
-            // Logic to force execution if needed, but simple debounce usually sufficient.
-        }
-        return debounced;
-    };
+    const overlay = document.getElementById('cmd-overlay');
+    const input = document.getElementById('cmd-input');
+    const resultsContainer = document.getElementById('cmd-results');
+    let isOpen = false;
+    let selectedIndex = 0;
 
-    if (!searchInput || !searchResultsContainer) return;
-
-    // Define the searchable content (manual index)
-    const searchablePages = [
-        { title: 'Home / Dashboard', url: 'index.html', keywords: 'dashboard welcome quick links rota whiteboard notes' },
-        { title: 'Online Operations', url: 'online.html', keywords: 'cnc click collect amazon deliveroo justeat uber eats osp partner handset troubleshoot' },
-        { title: 'Market Street / Cafe', url: 'street.html', keywords: 'bakery butchery fish deli cake shop pizza food to go cafe production plan checklist wgll markdown' },
-        { title: 'Front End Services', url: 'services.html', keywords: 'csd kiosk checkouts sco self scan tills more card trolleys baskets pharmacy logbook mpro5' },
-        { title: 'Operations', url: 'operations.html', keywords: 'replenishment scanning mic routines tech support it helpdesk emergency' },
-        { title: 'Contacts', url: 'contacts.html', keywords: 'phone email helpdesk support central loss prevention lp retail trust pharmacy' },
-        { title: 'Shrink Management', url: 'shrink.html', keywords: 'stocktake audit tagging waste loss prevention dymension think shrink' },
-        { title: 'Safe & Legal', url: 'safe-and-legal.html', keywords: 'haccp food safety health hs licensing compliance audits data protection gdpr' },
-        { title: 'Stock Info (SMU) App', url: 'https://app.218.team', keywords: 'stock info smu investigation 218 team inventory counts' }
+    // 2. Define Actions & Pages
+    const pages = [
+        { title: 'Home / Dashboard', url: 'index.html', icon: 'fa-home', type: 'Go to' },
+        { title: 'Online Operations', url: 'online.html', icon: 'fa-globe', type: 'Go to' },
+        { title: 'Market Street', url: 'street.html', icon: 'fa-store', type: 'Go to' },
+        { title: 'Front End Services', url: 'services.html', icon: 'fa-concierge-bell', type: 'Go to' },
+        { title: 'Operations', url: 'operations.html', icon: 'fa-cogs', type: 'Go to' },
+        { title: 'Safe & Legal', url: 'safe-and-legal.html', icon: 'fa-shield-alt', type: 'Go to' },
+        { title: 'Stock Info (SMU)', url: 'https://app.218.team', icon: 'fa-box', type: 'External' },
+        { title: 'Whiteboard', action: 'whiteboard', icon: 'fa-pen-to-square', type: 'Action' },
+        { title: 'Toggle Dark Mode', action: 'darkmode', icon: 'fa-adjust', type: 'Action' }
     ];
 
-    const handleSearch = debounce(() => {
-        const query = searchInput.value.trim().toLowerCase();
-        searchResultsContainer.innerHTML = ''; // Clear previous results
+    // 3. Open/Close Logic
+    function openPalette() {
+        isOpen = true;
+        overlay.classList.add('open');
+        input.value = '';
+        renderResults(pages); // Show all top items initially
 
-        if (query.length < 2) { // Only search if query is at least 2 chars
-            searchResultsContainer.style.display = 'none';
+        // Timeout ensures CSS transition has started/completed so focus sticks
+        setTimeout(() => {
+            input.focus();
+        }, 50);
+
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closePalette() {
+        isOpen = false;
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        input.blur();
+    }
+
+    // 4. Render Logic
+    function renderResults(items) {
+        resultsContainer.innerHTML = '';
+        if (items.length === 0) {
+            resultsContainer.innerHTML = '<div class="cmd-empty">No results found</div>';
             return;
         }
 
-        const results = searchablePages.filter(page =>
-            page.title.toLowerCase().includes(query) ||
-            page.keywords.toLowerCase().includes(query) ||
-            page.url.toLowerCase().includes(query)
-        );
-
-        if (results.length > 0) {
-            // Limit results displayed
-            const maxResults = 7;
-            results.slice(0, maxResults).forEach((result, index) => {
-                const link = document.createElement('a');
-                link.href = result.url;
-                link.textContent = result.title;
-                link.style.animationDelay = `${index * 50}ms`;
-                link.classList.add('search-result-item');
-                if (/^https?:\/\//.test(result.url)) {
-                    link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
-                }
-                searchResultsContainer.appendChild(link);
+        items.forEach((item, index) => {
+            const el = document.createElement('div');
+            el.className = `cmd-item ${index === selectedIndex ? 'selected' : ''}`;
+            el.innerHTML = `
+                <i class="fas ${item.icon}"></i>
+                <div class="cmd-item-content">
+                    <span class="cmd-item-title">${item.title}</span>
+                    <span class="cmd-item-desc">${item.type}</span>
+                </div>
+            `;
+            el.addEventListener('click', () => executeItem(item));
+            el.addEventListener('mouseenter', () => {
+                selectedIndex = index;
+                updateSelection();
             });
-            searchResultsContainer.style.display = 'block';
-        } else {
-            const noResult = document.createElement('div');
-            noResult.textContent = 'No results found.';
-            noResult.style.padding = '0.75rem 1rem'; // Style similar to links
-            searchResultsContainer.appendChild(noResult);
-            searchResultsContainer.style.display = 'block';
+            resultsContainer.appendChild(el);
+        });
+    }
+
+    function updateSelection() {
+        const items = resultsContainer.querySelectorAll('.cmd-item');
+        items.forEach((el, idx) => {
+            if (idx === selectedIndex) el.classList.add('selected');
+            else el.classList.remove('selected');
+        });
+
+        // Scroll into view if needed
+        const selected = items[selectedIndex];
+        if (selected) {
+            selected.scrollIntoView({ block: 'nearest' });
         }
-    }, 300);
+    }
 
-    searchInput.addEventListener('input', handleSearch);
-
-    // Hide results when clicking outside
-    document.addEventListener('click', (event) => {
-        // Check if the click target is the search input or the results container itself
-        if (!searchInput.contains(event.target) && !searchResultsContainer.contains(event.target)) {
-            searchResultsContainer.style.display = 'none';
+    function executeItem(item) {
+        closePalette();
+        if (item.url) {
+            window.location.href = item.url;
+        } else if (item.action === 'darkmode') {
+            document.querySelector('.theme-toggle')?.click();
+        } else if (item.action === 'whiteboard') {
+            // Check if on dash; if not, go to dash then scroll? 
+            // For now, assume dash or generic
+            if (document.getElementById('whiteboard-container')) {
+                document.getElementById('whiteboard-container').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.location.href = 'index.html#whiteboard-container';
+            }
         }
-    });
+    }
 
-    // Hide results on Escape key
-    searchInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            searchResultsContainer.style.display = 'none';
-            searchInput.blur(); // Optionally remove focus from input
+    // 5. Event Listeners
+
+    // Toggle via Cmd+K
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            isOpen ? closePalette() : openPalette();
         }
-    });
+        if (e.key === 'Escape' && isOpen) {
+            closePalette();
+        }
 
-    // Ensure results are shown if input gains focus and has value > 1 char
-    searchInput.addEventListener('focus', () => {
-        if (searchInput.value.trim().length >= 2) {
-            handleSearch(); // Ensure search if needed
-            if (searchResultsContainer.innerHTML.trim() !== '') { // Check if results exist
-                searchResultsContainer.style.display = 'block';
+        // Navigation (Global when open)
+        if (isOpen) {
+            const items = resultsContainer.querySelectorAll('.cmd-item');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = (selectedIndex + 1) % items.length;
+                updateSelection();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+                updateSelection();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                const query = input.value.toLowerCase();
+                const filtered = pages.filter(p => p.title.toLowerCase().includes(query));
+                if (filtered[selectedIndex]) executeItem(filtered[selectedIndex]);
             }
         }
     });
+
+    // Input filtering (only need this on input)
+    input.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        selectedIndex = 0;
+        const filtered = pages.filter(p => p.title.toLowerCase().includes(query));
+        renderResults(filtered);
+    });
+
+    // Click outside to close
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closePalette();
+    });
+
+    // Expose open function globally so Nav button can call it
+    window.openCommandPalette = openPalette;
 }
+

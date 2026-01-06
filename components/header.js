@@ -44,33 +44,25 @@ class SiteHeader extends HTMLElement {
             themeBtn.setAttribute("aria-pressed", isDark);
         }
 
-        // Search toggle (will be connected by search module)
+        // Search toggle - Updated for Command Palette
         const searchToggle = this.querySelector(".search-toggle");
         if (searchToggle) {
             searchToggle.addEventListener("click", () => {
-                const searchSection = document.getElementById('site-search-section');
-                const searchInput = document.getElementById('site-search');
-                if (searchSection) {
-                    searchSection.classList.toggle('search-expanded');
-                    if (searchSection.classList.contains('search-expanded') && searchInput) {
-                        searchInput.focus();
-                    }
-                }
-            });
-
-            // Keyboard shortcut: "/" to open search
-            document.addEventListener('keydown', (e) => {
-                if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
-                    e.preventDefault();
-                    const searchSection = document.getElementById('site-search-section');
-                    const searchInput = document.getElementById('site-search');
-                    if (searchSection && searchInput) {
-                        searchSection.classList.add('search-expanded');
-                        searchInput.focus();
-                    }
+                if (window.openCommandPalette) {
+                    window.openCommandPalette();
                 }
             });
         }
+
+        // Keyboard shortcut: "/" to open search (Command Palette)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+                e.preventDefault();
+                if (window.openCommandPalette) {
+                    window.openCommandPalette();
+                }
+            }
+        });
     }
 }
 customElements.define('site-header', SiteHeader);
