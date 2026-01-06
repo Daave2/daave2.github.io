@@ -701,7 +701,6 @@ body.dark-mode .hero-content h1 {
 .hero-content p {
   font-size: 1.1rem;
   color: var(--text-muted);
-  font-weight: 500;
 }
 
 .hero-clock {
@@ -710,9 +709,215 @@ body.dark-mode .hero-content h1 {
   font-size: 3.5rem;
   font-weight: 700;
   color: var(--primary-color);
-  /* Soft, premium glow */
-  text-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   letter-spacing: -2px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Weather Widget */
+.hero-weather {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1rem;
+  letter-spacing: normal;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.hero-weather.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.weather-icon i {
+  font-size: 1.8rem;
+  color: var(--secondary-color);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.weather-temp {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.weather-desc {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+/* Responsive adjust for Hero */
+@media (max-width: 768px) {
+  #hero-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .hero-clock {
+    width: 100%;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 1rem;
+  }
+
+  .weather-desc {
+    display: none;
+    /* Hide text on small screens if needed */
+  }
+}
+
+/* --- Weather Modal --- */
+.weather-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.weather-modal-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.weather-modal-card {
+  background: var(--surface-color);
+  width: 90%;
+  max-width: 400px;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.weather-modal-overlay.visible .weather-modal-card {
+  transform: scale(1);
+}
+
+body.dark-mode .weather-modal-card {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.weather-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.weather-modal-close:hover {
+  color: var(--primary-color);
+}
+
+.wm-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.wm-main-icon {
+  font-size: 4rem;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.wm-title h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  color: var(--primary-color);
+}
+
+.wm-title p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.wm-hl {
+  font-weight: 500;
+  margin-top: 0.5rem;
+  font-size: 0.95rem !important;
+}
+
+.wm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .wm-grid {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.wm-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wm-item i {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.wm-item span {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-active);
+}
+
+body.dark-mode .wm-item span {
+  color: #fff;
+}
+
+.wm-item label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 @media (max-width: 600px) {

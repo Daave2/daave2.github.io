@@ -1,7 +1,7 @@
-
 import { initUI } from './js/modules/ui.js';
 import { initWhiteboard } from './js/modules/whiteboard.js';
 import { initSearch } from './js/modules/search.js';
+import { initWeather } from './js/modules/weather.js';
 
 // Initialize Modules
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Search
   initSearch();
+
+  // 4. Weather
+  initWeather();
 });
 
 // Service Worker Registration

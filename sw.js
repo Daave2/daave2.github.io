@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = 'cleveleys-dash-cache-v2'; // <<< Cache name incremented
+const CACHE_NAME = 'cleveleys-dash-cache-v3'; // <<< Cache name incremented
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [
