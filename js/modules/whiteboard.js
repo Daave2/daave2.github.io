@@ -53,6 +53,9 @@ export function initWhiteboard() {
 
   const getOpacity = () => (opacitySlider ? parseInt(opacitySlider.value) / 100 : 1);
 
+  // Zoom level (shared with zoom controls below)
+  let zoomLevel = 1;
+
   const getPos = (e) => {
     const r = canvas.getBoundingClientRect();
     let cx, cy;
@@ -63,7 +66,12 @@ export function initWhiteboard() {
       cx = e.clientX;
       cy = e.clientY;
     }
-    return { x: (cx - r.left), y: (cy - r.top) };
+    // Adjust for zoom - getBoundingClientRect returns scaled dimensions
+    // so we need to divide by zoom to get actual canvas coordinates
+    return {
+      x: (cx - r.left) / zoomLevel,
+      y: (cy - r.top) / zoomLevel
+    };
   };
 
   // --- Rendering ---
@@ -370,14 +378,284 @@ export function initWhiteboard() {
   canvas.addEventListener('touchmove', move, { passive: false });
   canvas.addEventListener('touchend', end);
 
+  // --- Pinch to Zoom (Touch) ---
+  let lastTouchDistance = 0;
+  let isPinching = false;
+
+  const getTouchDistance = (touches) => {
+    if (touches.length < 2) return 0;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.hypot(dx, dy);
+  };
+
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      isPinching = true;
+      lastTouchDistance = getTouchDistance(e.touches);
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (isPinching && e.touches.length === 2) {
+      e.preventDefault();
+      const newDistance = getTouchDistance(e.touches);
+      const delta = newDistance - lastTouchDistance;
+
+      // Adjust zoom based on pinch
+      if (Math.abs(delta) > 5) {
+        const zoomChange = delta > 0 ? 0.05 : -0.05;
+        const wrap = canvas.parentElement;
+        const currentScale = parseFloat(wrap?.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || 1);
+        const newScale = Math.max(0.5, Math.min(3, currentScale + zoomChange));
+
+        if (wrap) {
+          wrap.style.transform = `scale(${newScale})`;
+          wrap.style.transformOrigin = 'center center';
+        }
+        lastTouchDistance = newDistance;
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+      isPinching = false;
+      lastTouchDistance = 0;
+    }
+  });
+
+  // --- Tool Selection Helper ---
+  const selectTool = (toolName) => {
+    const btn = document.querySelector(`[data-tool="${toolName}"]`);
+    if (!btn) return;
+
+    tools.forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = toolName;
+    updateCursor();
+  };
+
+  // --- Dynamic Cursor ---
+  const updateCursor = () => {
+    const canvasWrap = canvas.parentElement;
+    if (!canvasWrap) return;
+
+    // Remove all cursor classes
+    canvasWrap.classList.remove('cursor-pen', 'cursor-eraser', 'cursor-text', 'cursor-shape', 'cursor-crosshair');
+
+    // Set cursor based on tool
+    switch (currentTool) {
+      case 'pen':
+        canvasWrap.classList.add('cursor-pen');
+        break;
+      case 'eraser':
+        canvasWrap.classList.add('cursor-eraser');
+        break;
+      case 'text':
+        canvasWrap.classList.add('cursor-text');
+        break;
+      case 'line':
+      case 'rectangle':
+      case 'circle':
+      case 'arrow':
+        canvasWrap.classList.add('cursor-crosshair');
+        break;
+      default:
+        canvasWrap.classList.add('cursor-pen');
+    }
+  };
+
   // Tool Buttons
   tools.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      tools.forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      currentTool = btn.dataset.tool;
+    btn.addEventListener('click', () => {
+      selectTool(btn.dataset.tool);
     });
   });
+
+  // --- Keyboard Shortcuts ---
+  const shortcuts = {
+    'p': 'pen',
+    'e': 'eraser',
+    'l': 'line',
+    'r': 'rectangle',
+    'c': 'circle',
+    'a': 'arrow',
+    't': 'text'
+  };
+
+  document.addEventListener('keydown', (e) => {
+    // Don't trigger shortcuts when typing in input
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+
+    const key = e.key.toLowerCase();
+
+    // Tool shortcuts
+    if (shortcuts[key]) {
+      e.preventDefault();
+      selectTool(shortcuts[key]);
+      notify(`${shortcuts[key].charAt(0).toUpperCase() + shortcuts[key].slice(1)} tool`);
+      return;
+    }
+
+    // Undo: Ctrl/Cmd + Z
+    if ((e.ctrlKey || e.metaKey) && key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      $(".undo-button")?.click();
+      return;
+    }
+
+    // Redo: Ctrl/Cmd + Y or Ctrl/Cmd + Shift + Z
+    if ((e.ctrlKey || e.metaKey) && (key === 'y' || (key === 'z' && e.shiftKey))) {
+      e.preventDefault();
+      $(".redo-button")?.click();
+      return;
+    }
+
+    // Delete/Backspace to clear (with confirmation)
+    if (key === 'delete' || (key === 'backspace' && (e.ctrlKey || e.metaKey))) {
+      e.preventDefault();
+      $(".clear-button")?.click();
+      return;
+    }
+
+    // Save: Ctrl/Cmd + S
+    if ((e.ctrlKey || e.metaKey) && key === 's') {
+      e.preventDefault();
+      $(".save-button")?.click();
+      return;
+    }
+
+    // Grid toggle: G
+    if (key === 'g') {
+      e.preventDefault();
+      $(".grid-button")?.click();
+      return;
+    }
+
+    // Fullscreen: F
+    if (key === 'f' && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      $(".fullscreen-button")?.click();
+      return;
+    }
+
+    // Zoom shortcuts
+    if (key === '=' || key === '+') {
+      e.preventDefault();
+      $(".zoom-in-button")?.click();
+      return;
+    }
+    if (key === '-') {
+      e.preventDefault();
+      $(".zoom-out-button")?.click();
+      return;
+    }
+    if (key === '0') {
+      e.preventDefault();
+      $(".zoom-reset-button")?.click();
+      return;
+    }
+  });
+
+  // Initialize cursor on load
+  updateCursor();
+
+  // --- Color Swatches ---
+  document.querySelectorAll('.color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', () => {
+      const color = swatch.dataset.color;
+      if (color && colorPicker) {
+        colorPicker.value = color;
+        colorPicker.dispatchEvent(new Event('input', { bubbles: true }));
+        // Update active state
+        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+      }
+    });
+  });
+
+  // --- Grid Overlay ---
+  let showGrid = false;
+  const gridSize = 20;
+
+  const drawGrid = () => {
+    if (!showGrid) return;
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.lineWidth = 0.5;
+
+    // Vertical lines
+    for (let x = gridSize; x < w; x += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+
+    // Horizontal lines
+    for (let y = gridSize; y < h; y += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  };
+
+  // Wrap original render to include grid
+  const originalRender = render;
+  const renderWithGrid = (previewShape = null) => {
+    originalRender(previewShape);
+    drawGrid();
+  };
+
+  if ($(".grid-button")) $(".grid-button").onclick = () => {
+    showGrid = !showGrid;
+    $(".grid-button").classList.toggle('active', showGrid);
+    renderWithGrid();
+    notify(showGrid ? "Grid On" : "Grid Off");
+  };
+
+  // --- Zoom Controls ---
+  // zoomLevel is declared at top of function for getPos access
+  const minZoom = 0.5;
+  const maxZoom = 3;
+  const zoomStep = 0.25;
+
+  const applyZoom = () => {
+    const wrap = canvas.parentElement;
+    if (wrap) {
+      wrap.style.transform = `scale(${zoomLevel})`;
+      wrap.style.transformOrigin = 'top left';
+    }
+  };
+
+  if ($(".zoom-in-button")) $(".zoom-in-button").onclick = () => {
+    if (zoomLevel < maxZoom) {
+      zoomLevel = Math.min(maxZoom, zoomLevel + zoomStep);
+      applyZoom();
+      notify(`Zoom: ${Math.round(zoomLevel * 100)}%`);
+    }
+  };
+
+  if ($(".zoom-out-button")) $(".zoom-out-button").onclick = () => {
+    if (zoomLevel > minZoom) {
+      zoomLevel = Math.max(minZoom, zoomLevel - zoomStep);
+      applyZoom();
+      notify(`Zoom: ${Math.round(zoomLevel * 100)}%`);
+    }
+  };
+
+  if ($(".zoom-reset-button")) $(".zoom-reset-button").onclick = () => {
+    zoomLevel = 1;
+    applyZoom();
+    notify("Zoom: 100%");
+  };
 
   // Action Buttons
   if ($(".fill-button")) $(".fill-button").onclick = () => {

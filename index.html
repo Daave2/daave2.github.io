@@ -172,29 +172,39 @@
         <div class="whiteboard-toolbar" role="toolbar" aria-label="Whiteboard tools">
           <!-- Drawing Tools -->
           <div class="toolbar-group">
-            <button class="tool-button active" data-tool="pen" aria-label="Pen (P)" title="Pen"><i
+            <button class="tool-button active" data-tool="pen" aria-label="Pen (P)" title="Pen (P)"><i
                 class="fas fa-pencil-alt"></i></button>
-            <button class="tool-button" data-tool="text" aria-label="Text (T)" title="Text"><i
+            <button class="tool-button" data-tool="text" aria-label="Text (T)" title="Text (T)"><i
                 class="fas fa-font"></i></button>
-            <button class="tool-button" data-tool="eraser" aria-label="Eraser (E)" title="Eraser"><i
+            <button class="tool-button" data-tool="eraser" aria-label="Eraser (E)" title="Eraser (E)"><i
                 class="fas fa-eraser"></i></button>
           </div>
 
           <!-- Shape Tools -->
           <div class="toolbar-group">
-            <button class="tool-button" data-tool="line" aria-label="Line" title="Line"><i
+            <button class="tool-button" data-tool="line" aria-label="Line (L)" title="Line (L)"><i
                 class="fas fa-minus"></i></button>
-            <button class="tool-button" data-tool="rectangle" aria-label="Rectangle" title="Rectangle"><i
+            <button class="tool-button" data-tool="rectangle" aria-label="Rectangle (R)" title="Rectangle (R)"><i
                 class="far fa-square"></i></button>
-            <button class="tool-button" data-tool="circle" aria-label="Circle" title="Circle"><i
+            <button class="tool-button" data-tool="circle" aria-label="Circle (C)" title="Circle (C)"><i
                 class="far fa-circle"></i></button>
-            <button class="tool-button" data-tool="arrow" aria-label="Arrow" title="Arrow"><i
+            <button class="tool-button" data-tool="arrow" aria-label="Arrow (A)" title="Arrow (A)"><i
                 class="fas fa-long-arrow-alt-right"></i></button>
+          </div>
+
+          <!-- Color Palette -->
+          <div class="toolbar-group color-palette">
+            <input id="colorPicker" class="color-picker" type="color" value="#000000" title="Custom Color">
+            <button class="color-swatch" data-color="#000000" style="background:#000000" title="Black"></button>
+            <button class="color-swatch" data-color="#ffffff" style="background:#ffffff" title="White"></button>
+            <button class="color-swatch" data-color="#ff0000" style="background:#ff0000" title="Red"></button>
+            <button class="color-swatch" data-color="#00853E" style="background:#00853E" title="Green"></button>
+            <button class="color-swatch" data-color="#0066cc" style="background:#0066cc" title="Blue"></button>
+            <button class="color-swatch" data-color="#FFD700" style="background:#FFD700" title="Yellow"></button>
           </div>
 
           <!-- Settings -->
           <div class="toolbar-group">
-            <input id="colorPicker" class="color-picker" type="color" value="#000000" title="Color">
             <select id="brushSize" class="brush-size" title="Brush Size">
               <option>2</option>
               <option selected>4</option>
@@ -211,22 +221,38 @@
             <input id="opacity" class="opacity-slider" type="range" min="10" max="100" value="100" title="Opacity">
           </div>
 
+          <!-- Canvas Controls -->
+          <div class="toolbar-group">
+            <button class="grid-button" aria-label="Toggle Grid (G)" title="Toggle Grid (G)"><i
+                class="fas fa-th"></i></button>
+            <button class="zoom-in-button" aria-label="Zoom In (+)" title="Zoom In (+)"><i
+                class="fas fa-search-plus"></i></button>
+            <button class="zoom-out-button" aria-label="Zoom Out (-)" title="Zoom Out (-)"><i
+                class="fas fa-search-minus"></i></button>
+            <button class="zoom-reset-button" aria-label="Reset Zoom (0)" title="Reset Zoom (0)"><i
+                class="fas fa-compress-arrows-alt"></i></button>
+          </div>
+
           <!-- Actions -->
           <div class="toolbar-group">
-            <button class="undo-button" aria-label="Undo (⌘/Ctrl-Z)" title="Undo"><i class="fas fa-undo"></i></button>
-            <button class="redo-button" aria-label="Redo (⌘/Ctrl-Y)" title="Redo"><i class="fas fa-redo"></i></button>
-            <button class="clear-button" aria-label="Clear" title="Clear"><i class="fas fa-trash"></i></button>
+            <button class="undo-button" aria-label="Undo (⌘/Ctrl+Z)" title="Undo (⌘/Ctrl+Z)"><i
+                class="fas fa-undo"></i></button>
+            <button class="redo-button" aria-label="Redo (⌘/Ctrl+Y)" title="Redo (⌘/Ctrl+Y)"><i
+                class="fas fa-redo"></i></button>
+            <button class="clear-button" aria-label="Clear (Del)" title="Clear (Del)"><i
+                class="fas fa-trash"></i></button>
           </div>
 
           <!-- File Actions -->
           <div class="toolbar-group">
-            <button class="save-button" aria-label="Save (⌘/Ctrl-S)" title="Save"><i class="fas fa-save"></i></button>
+            <button class="save-button" aria-label="Save (⌘/Ctrl+S)" title="Save (⌘/Ctrl+S)"><i
+                class="fas fa-save"></i></button>
             <button class="load-button" aria-label="Load" title="Load"><i class="fas fa-upload"></i></button>
-            <button class="fill-button" aria-label="Fill background" title="Fill Background"><i
+            <button class="fill-button" aria-label="Fill Background" title="Fill Background"><i
                 class="fas fa-fill-drip"></i></button>
             <button class="export-png-button" aria-label="Download PNG" title="Download PNG"><i
                 class="fas fa-download"></i></button>
-            <button class="fullscreen-button" aria-label="Full screen (⌘/Ctrl-F)" title="Fullscreen"><i
+            <button class="fullscreen-button" aria-label="Fullscreen (F)" title="Fullscreen (F)"><i
                 class="fas fa-expand"></i></button>
           </div>
         </div>

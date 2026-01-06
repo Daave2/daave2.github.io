@@ -440,6 +440,60 @@ body.dark-mode .toolbar-group {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Mobile-responsive toolbar */
+@media (max-width: 768px) {
+  .whiteboard-toolbar {
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .toolbar-group {
+    gap: 0.25rem;
+    padding-right: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .tool-button,
+  .grid-button,
+  .zoom-in-button,
+  .zoom-out-button,
+  .zoom-reset-button,
+  .undo-button,
+  .redo-button,
+  .clear-button,
+  .save-button,
+  .load-button,
+  .fill-button,
+  .export-png-button,
+  .fullscreen-button {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .color-swatch {
+    width: 20px;
+    height: 20px;
+  }
+
+  .color-picker {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brush-size,
+  .font-size {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+
+  .opacity-slider {
+    width: 50px;
+  }
+}
+
 /* Canvas Wrapper with Fixed Height */
 .whiteboard-canvas-wrap {
   position: relative;
@@ -451,6 +505,23 @@ body.dark-mode .toolbar-group {
 
 body.dark-mode .whiteboard-canvas-wrap {
   background: #1e293b;
+}
+
+/* Dynamic Tool Cursors */
+.whiteboard-canvas-wrap.cursor-pen {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="%23333" stroke="%23fff" stroke-width="1"/></svg>') 12 12, crosshair;
+}
+
+.whiteboard-canvas-wrap.cursor-eraser {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="%23666" stroke-width="2"/></svg>') 12 12, cell;
+}
+
+.whiteboard-canvas-wrap.cursor-text {
+  cursor: text;
+}
+
+.whiteboard-canvas-wrap.cursor-crosshair {
+  cursor: crosshair;
 }
 
 .tool-button,
@@ -516,6 +587,42 @@ body.dark-mode .tool-button {
   border: 2px solid white;
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Color Swatches */
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), var(--shadow-sm);
+  cursor: pointer;
+  transition: transform var(--trans-fast), box-shadow var(--trans-fast);
+  padding: 0;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px var(--primary-color), var(--shadow-md);
+}
+
+.color-swatch.active {
+  box-shadow: 0 0 0 2px var(--primary-color), 0 0 8px var(--primary-color);
+}
+
+/* Grid Button Active State */
+.grid-button.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Zoom Display */
+.zoom-display {
+  font-size: 0.75rem;
+  min-width: 40px;
+  text-align: center;
+  color: var(--text-muted);
 }
 
 /* Opacity Slider */
