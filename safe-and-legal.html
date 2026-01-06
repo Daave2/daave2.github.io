@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- PWA & meta -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -17,12 +19,14 @@
 
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Styles – mobile-first (Copied from index.html) -->
   <script src="components/header.js" defer></script>
   <script src="components/nav.js" defer></script>
+  <script src="components/back-to-top.js" defer></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -35,7 +39,17 @@
   <site-nav></site-nav>
 
   <!----- main content ----->
-  <main class="container">
+  <main class="container" id="main-content">
+
+    <!-- Search Section -->
+    <section id="site-search-section" aria-labelledby="search-heading">
+      <h2 id="search-heading" class="visually-hidden">Site Search</h2>
+      <div class="search-container">
+        <label for="site-search" class="visually-hidden">Search this site:</label>
+        <input type="search" id="site-search" placeholder="Search pages &amp; sections...">
+        <div id="search-results" class="search-results-dropdown" aria-live="polite"></div>
+      </div>
+    </section>
     <section id="overview">
       <h2><i class="fas fa-shield-alt"></i> Safe and Legal Compliance</h2>
       <p>Maintain a safe, compliant environment by adhering to procedures. "Safety First" ensures we protect our
@@ -112,10 +126,12 @@
 
   <!----- footer ----->
   <footer>
-    <p>© 2025 Cleveleys Morrisons. All rights reserved.</p>
+    <p>© <span id="footer-year"></span> Cleveleys Morrisons. All rights reserved.</p>
   </footer>
 
   <!----- scripts ----->
+  <back-to-top></back-to-top>
+
   <script src="script.js" type="module"></script>
 </body>
 

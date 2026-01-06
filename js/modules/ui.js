@@ -9,10 +9,11 @@ export function initUI() {
         if (!n) return;
         n.textContent = msg;
         n.style.display = "block";
-        n.style.opacity = 1;
-        n.style.transition = 'opacity .3s';
+        // Trigger reflow for animation
+        void n.offsetWidth;
+        n.classList.add("show");
         setTimeout(() => {
-            n.style.opacity = 0;
+            n.classList.remove("show");
             setTimeout(() => n.style.display = "none", 300);
         }, ms);
     };
@@ -38,6 +39,12 @@ export function initUI() {
     // Initial Load
     const saved = localStorage.theme;
     setMode(saved ? saved === "dark" : matchMedia("(prefers-color-scheme:dark)").matches);
+
+    // Set footer year dynamically
+    const footerYear = document.getElementById('footer-year');
+    if (footerYear) {
+        footerYear.textContent = new Date().getFullYear();
+    }
 
 
     /* -------- Dashboard Tile Click / Iframe Logic -------- */
@@ -97,7 +104,7 @@ export function initUI() {
                 fallbackMessage.style.display = 'block';
                 notify("Content took a while to load.", 4000);
             }
-        }, 8000);
+        }, 5000);
 
         contentFrame.onload = function () {
             clearTimeout(frameLoadTimeout);
@@ -191,6 +198,30 @@ export function initUI() {
         }
     });
 
+
+    /* -------- Ripple Effect -------- */
+    document.addEventListener('click', function (e) {
+        const target = e.target.closest('.tile, .btn, button, .accordion');
+        if (target) {
+            const circle = document.createElement('span');
+            const diameter = Math.max(target.clientWidth, target.clientHeight);
+            const radius = diameter / 2;
+
+            const rect = target.getBoundingClientRect();
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${e.clientX - rect.left - radius}px`;
+            circle.style.top = `${e.clientY - rect.top - radius}px`;
+            circle.classList.add('ripple-effect');
+
+            const existingRipple = target.querySelector('.ripple-effect');
+            if (existingRipple) {
+                existingRipple.remove();
+            }
+
+            target.appendChild(circle);
+        }
+    });
 
     /* -------- Return helpers if needed -------- */
     return { notify };

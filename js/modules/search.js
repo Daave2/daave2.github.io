@@ -50,10 +50,12 @@ export function initSearch() {
         if (results.length > 0) {
             // Limit results displayed
             const maxResults = 7;
-            results.slice(0, maxResults).forEach(result => {
+            results.slice(0, maxResults).forEach((result, index) => {
                 const link = document.createElement('a');
                 link.href = result.url;
                 link.textContent = result.title;
+                link.style.animationDelay = `${index * 50}ms`;
+                link.classList.add('search-result-item');
                 if (/^https?:\/\//.test(result.url)) {
                     link.target = '_blank';
                     link.rel = 'noopener noreferrer';
