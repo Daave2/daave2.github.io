@@ -1865,23 +1865,38 @@ body.dark-mode .gantt-header {
 .gantt-chart {
   position: relative;
   overflow-x: auto;
-  min-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gantt-chart-inner {
+  min-width: 700px;
 }
 
 .gantt-time-labels {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  height: 20px;
   margin-left: 80px;
   margin-bottom: 0.5rem;
-  padding-right: 0.5rem;
-  min-width: 600px;
 }
 
 .gantt-hour {
+  position: absolute;
   font-size: 0.65rem;
   color: var(--text-muted);
-  flex: 1;
-  text-align: left;
+  transform: translateX(-50%);
+}
+
+/* Responsive time labels */
+@media (max-width: 900px) {
+  .gantt-hour.hide-tablet {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .gantt-hour.hide-mobile {
+    display: none;
+  }
 }
 
 .gantt-now-line {
@@ -1892,6 +1907,7 @@ body.dark-mode .gantt-header {
   background: #ef4444;
   z-index: 10;
   display: none;
+  margin-left: 80px;
 }
 
 .gantt-now-line::before {
@@ -1972,11 +1988,6 @@ body.dark-mode .gantt-bar-container {
   display: flex;
   align-items: center;
   opacity: 0.95;
-}
-
-.gantt-time-spacer {
-  width: 80px;
-  flex-shrink: 0;
 }
 
 .gantt-departments {
@@ -2115,6 +2126,11 @@ body.dark-mode .person-name {
 #who-is-in .iframe-wrap,
 #management-rota .iframe-wrap {
   height: 100%;
+}
+
+#management-rota .iframe-loading-container {
+  height: 1200px;
+  min-height: 1200px;
 }
 
 /* The actual content box (simulated by the children wrapper if existed, but we customize the children layout) */

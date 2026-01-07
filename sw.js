@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = 'cleveleys-dash-cache-v3'; // <<< Cache name incremented
+const CACHE_NAME = 'cleveleys-dash-cache-v5'; // Force refresh for Gantt fixes
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [

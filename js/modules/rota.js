@@ -115,18 +115,28 @@ function renderGanttChart(container, staff, weekLabel, today) {
     for (let h = CHART_START; h <= CHART_END; h++) hours.push(h);
     const totalHours = CHART_END - CHART_START;
 
+    // Generate positioned time labels
+    const timeLabelsHtml = hours.map((h, i) => {
+        const leftPercent = ((h - CHART_START) / totalHours) * 100;
+        // Hide odd hours on tablet, show only every 3rd on mobile
+        let hideClass = '';
+        if (i % 2 === 1) hideClass = 'hide-tablet';
+        if (i % 3 !== 0) hideClass += ' hide-mobile';
+        return `<span class="gantt-hour ${hideClass}" style="left: ${leftPercent}%">${h}:00</span>`;
+    }).join('');
+
     let html = `
         <div class="gantt-header">
             <span class="gantt-count"><i class="fas fa-users"></i> ${staff.length} in today</span>
             <span class="gantt-week">${weekLabel}</span>
         </div>
         <div class="gantt-chart">
-            <div class="gantt-time-labels">
-                <span class="gantt-time-spacer"></span>
-                ${hours.map(h => `<span class="gantt-hour">${h}:00</span>`).join('')}
-            </div>
-            <div class="gantt-now-line" id="gantt-now-line"></div>
-            <div class="gantt-departments">
+            <div class="gantt-chart-inner">
+                <div class="gantt-time-labels">
+                    ${timeLabelsHtml}
+                </div>
+                <div class="gantt-now-line" id="gantt-now-line"></div>
+                <div class="gantt-departments">
     `;
 
     for (const [dept, people] of Object.entries(byDept).sort((a, b) => a[0].localeCompare(b[0]))) {
@@ -166,7 +176,7 @@ function renderGanttChart(container, staff, weekLabel, today) {
         html += '</div></div>';
     }
 
-    html += '</div></div>';
+    html += '</div></div></div>';
     container.innerHTML = html;
 
     updateNowLine(container);
@@ -182,7 +192,7 @@ function updateNowLine(container) {
 
     if (currentHour >= CHART_START && currentHour <= CHART_END) {
         const leftPercent = ((currentHour - CHART_START) / totalHours) * 100;
-        nowLine.style.left = `calc(80px + ${leftPercent}% * 0.85)`; // Account for name column
+        nowLine.style.left = `${leftPercent}%`;
         nowLine.style.display = 'block';
     } else {
         nowLine.style.display = 'none';
