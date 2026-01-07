@@ -3,6 +3,8 @@ export async function initWeather() {
     const weatherContainer = document.getElementById('hero-weather');
     if (!weatherContainer) return;
 
+    weatherContainer.innerHTML = '<span style="font-size:0.8rem; opacity:0.7;">Loading weather…</span>';
+
     // Cleveleys Coordinates
     const lat = 53.8167;
     const lon = -3.05;
@@ -10,13 +12,21 @@ export async function initWeather() {
     // API URL - Now includes daily weather_code and time for forecast
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,precipitation&daily=time,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
     try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Weather fetch failed');
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!response.ok) throw new Error(`Weather fetch failed (${response.status})`);
         const data = await response.json();
 
         const current = data.current;
         const daily = data.daily;
+
+        if (!current || !daily) {
+            throw new Error('Weather data missing');
+        }
 
         const temp = Math.round(current.temperature_2m);
         const code = current.weather_code;
@@ -69,7 +79,11 @@ export async function initWeather() {
 
     } catch (error) {
         console.error('Weather Error:', error);
-        weatherContainer.innerHTML = '<span style="font-size:0.8rem; opacity:0.7;">Weather unavailable</span>';
+        let message = 'Weather unavailable';
+        if (error.name === 'AbortError') {
+            message = 'Weather timed out';
+        }
+        weatherContainer.innerHTML = `<span style="font-size:0.8rem; opacity:0.7;" title="${message}">${message}</span>`;
     }
 }
 
@@ -168,4 +182,3 @@ function getWeatherCondition(code) {
     };
     return conditions[code] || 'Unknown';
 }
-
