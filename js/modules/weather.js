@@ -7,8 +7,8 @@ export async function initWeather() {
     const lat = 53.8167;
     const lon = -3.05;
 
-    // API URL (Open-Meteo) - Expanded for detailed view
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+    // API URL - Now includes daily weather_code and time for forecast
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,precipitation&daily=time,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
 
     try {
         const response = await fetch(url);
@@ -22,7 +22,6 @@ export async function initWeather() {
         const code = current.weather_code;
         const isDay = current.is_day;
 
-        // Map WMO codes
         const iconClass = getWeatherIcon(code, isDay);
         const conditionText = getWeatherCondition(code);
 
@@ -40,10 +39,19 @@ export async function initWeather() {
         weatherContainer.classList.add('loaded');
         weatherContainer.style.cursor = 'pointer';
 
-        // Helper to format time
-        const formatTime = (iso) => new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        // Build forecast data (next 5 days)
+        const forecast = [];
+        for (let i = 0; i < 5 && i < daily.time.length; i++) {
+            forecast.push({
+                date: new Date(daily.time[i]),
+                high: Math.round(daily.temperature_2m_max[i]),
+                low: Math.round(daily.temperature_2m_min[i]),
+                code: daily.weather_code[i],
+                rainChance: daily.precipitation_probability_max[i]
+            });
+        }
 
-        // Create Modal logic
+        // Click to open modal
         weatherContainer.addEventListener('click', () => {
             showWeatherModal({
                 temp,
@@ -54,7 +62,8 @@ export async function initWeather() {
                 rain: current.precipitation,
                 high: Math.round(daily.temperature_2m_max[0]),
                 low: Math.round(daily.temperature_2m_min[0]),
-                rainChance: daily.precipitation_probability_max[0]
+                rainChance: daily.precipitation_probability_max[0],
+                forecast
             });
         });
 
@@ -65,17 +74,26 @@ export async function initWeather() {
 }
 
 function showWeatherModal(data) {
-    // Remove existing if any
     const existing = document.getElementById('weather-modal');
     if (existing) existing.remove();
 
     const modal = document.createElement('div');
     modal.id = 'weather-modal';
-    modal.className = 'cmd-palette-overlay open'; // Reuse overlay style? Or custom. Let's use custom for simpler styling check.
-
-    // Using inline styles for parts that might not be in CSS yet, but ideally we add to CSS.
-    // I will add specific class 'weather-modal-overlay' and style it in CSS next tool call.
     modal.className = 'weather-modal-overlay';
+
+    // Build forecast HTML
+    const forecastHTML = data.forecast.map((day, i) => {
+        const dayName = i === 0 ? 'Today' : day.date.toLocaleDateString('en-GB', { weekday: 'short' });
+        const icon = getWeatherIcon(day.code, true);
+        return `
+            <div class="wm-forecast-day">
+                <span class="wm-day-name">${dayName}</span>
+                <i class="${icon}"></i>
+                <span class="wm-day-temps">${day.high}° / ${day.low}°</span>
+                <span class="wm-day-rain"><i class="fas fa-umbrella"></i> ${day.rainChance}%</span>
+            </div>
+        `;
+    }).join('');
 
     modal.innerHTML = `
         <div class="weather-modal-card">
@@ -105,15 +123,18 @@ function showWeatherModal(data) {
                     <label>Rain</label>
                 </div>
             </div>
+            <div class="wm-forecast">
+                <h3>5-Day Forecast</h3>
+                <div class="wm-forecast-grid">
+                    ${forecastHTML}
+                </div>
+            </div>
         </div>
     `;
 
     document.body.appendChild(modal);
-
-    // Fade in
     requestAnimationFrame(() => modal.classList.add('visible'));
 
-    // Events
     const close = () => {
         modal.classList.remove('visible');
         setTimeout(() => modal.remove(), 300);
@@ -126,7 +147,6 @@ function showWeatherModal(data) {
 }
 
 function getWeatherIcon(code, isDay) {
-    // WMO Weather interpretation codes
     if (code === 0) return isDay ? 'fas fa-sun' : 'fas fa-moon';
     if (code === 1 || code === 2) return isDay ? 'fas fa-cloud-sun' : 'fas fa-cloud-moon';
     if (code === 3) return 'fas fa-cloud';
@@ -148,3 +168,4 @@ function getWeatherCondition(code) {
     };
     return conditions[code] || 'Unknown';
 }
+

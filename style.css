@@ -920,6 +920,79 @@ body.dark-mode .wm-item span {
   color: var(--text-muted);
 }
 
+/* 5-Day Forecast */
+.wm-forecast {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .wm-forecast {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.wm-forecast h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wm-forecast-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.wm-forecast-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.8rem 0.5rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+body.dark-mode .wm-forecast-day {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.wm-day-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.wm-forecast-day i {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+}
+
+.wm-day-temps {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-active);
+}
+
+body.dark-mode .wm-day-temps {
+  color: #fff;
+}
+
+.wm-day-rain {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.wm-day-rain i {
+  font-size: 0.6rem;
+  margin-right: 2px;
+}
+
 @media (max-width: 600px) {
   #hero-section {
     flex-direction: column;
