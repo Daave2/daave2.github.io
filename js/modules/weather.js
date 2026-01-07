@@ -9,8 +9,8 @@ export async function initWeather() {
     const lat = 53.8167;
     const lon = -3.05;
 
-    // API URL - Now includes daily weather_code and time for forecast
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,precipitation&daily=time,weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+    // API URL - Daily forecast with weather codes
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day,relative_humidity_2m,wind_speed_10m,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
