@@ -2,6 +2,7 @@ import { initUI } from './js/modules/ui.js';
 import { initWhiteboard } from './js/modules/whiteboard.js';
 import { initSearch } from './js/modules/search.js';
 import { initWeather } from './js/modules/weather.js';
+import { initRota } from './js/modules/rota.js';
 
 // Initialize Modules
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Weather
   initWeather();
+
+  // 5. Rota / Who's In Today
+  initRota();
 });
 
 // Service Worker Registration
