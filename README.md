@@ -129,7 +129,7 @@ This is an internal management tool. The site is configured to:
 
 ## 📜 License
 
-© 2025 Cleveleys Morrisons. All rights reserved.
+© 2026 Cleveleys Morrisons. All rights reserved.
 
 *This dashboard is for internal store use only.*
 
