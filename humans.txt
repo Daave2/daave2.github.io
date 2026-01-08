@@ -1,0 +1,36 @@
+/* TEAM */
+    Title: Cleveleys Morrisons Dashboard
+    Site: https://218.team
+    Location: Cleveleys, Lancashire, UK
+
+/* MISSION */
+    Making store management easier, one click at a time.
+
+/* THANKS */
+    Morrisons Cleveleys Team - For the feedback and real-world testing
+    Font Awesome - Icons that bring the UI to life
+    Google Fonts - Beautiful typography with Inter & Outfit
+    Open-Meteo - Free weather data API
+
+/* SITE */
+    Last update: 2026-01-08
+    Language: English
+    Doctype: HTML5
+    Standards: CSS3, ES6+, PWA
+    Components: Web Components, Service Workers
+    IDE: Various
+    
+/* BUILD INFO */
+    Type: Progressive Web App (PWA)
+    Framework: Vanilla HTML/CSS/JS
+    Hosting: GitHub Pages
+    
+/* FEATURES */
+    - Mobile-first responsive design
+    - Dark mode with system detection
+    - Offline capability via Service Worker
+    - Interactive whiteboard with drawing tools
+    - Real-time weather widget
+    - Staff schedule Gantt chart
+    - Site-wide search
+    - Installable as native app

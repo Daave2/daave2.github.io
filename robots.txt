@@ -1,0 +1,36 @@
+# Cleveleys Morrisons Dashboard
+# Making store management easier, one click at a time.
+# https://218.team
+#
+# This is an internal management tool - please do not index.
+
+User-agent: *
+Disallow: /
+
+# Block all major search engines explicitly
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: Slurp
+Disallow: /
+
+User-agent: DuckDuckBot
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: YandexBot
+Disallow: /
+
+User-agent: facebookexternalhit
+Disallow: /
+
+User-agent: Twitterbot
+Disallow: /
+
+# No sitemap - we don't want indexing
+# Sitemap: https://218.team/sitemap.xml
