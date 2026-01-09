@@ -245,8 +245,14 @@ export function initUI() {
             let greet = "Welcome";
             const h = now.getHours();
             if (h < 12) greet = "Good Morning";
-            else if (h < 18) greet = "Good Afternoon";
+            else if (h < 17) greet = "Good Afternoon";
             else greet = "Good Evening";
+
+            // Add username if exists
+            const name = localStorage.getItem('checklist_username');
+            if (name && name !== 'Team') {
+                greet += `, ${name}`;
+            }
 
             heroGreeting.textContent = greet;
         };
