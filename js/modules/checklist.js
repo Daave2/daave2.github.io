@@ -173,7 +173,12 @@ async function fetchChecklist(gistId, token) {
 /**
  * Update checklist data in Gist
  */
+/**
+ * Update checklist data in Gist
+ */
 async function updateChecklist(gistId, token, data) {
+    console.log('Pushing update to Gist...', { gistId: gistId?.slice(0, 4), token: token ? 'present' : 'missing', timestamp: data.meta?.lastUpdated });
+
     const response = await fetch(`https://api.github.com/gists/${gistId}`, {
         method: 'PATCH',
         headers: {
@@ -190,7 +195,10 @@ async function updateChecklist(gistId, token, data) {
     });
 
     if (!response.ok) {
+        console.error('Update failed:', response.status, response.statusText);
         throw new Error(`Failed to update Gist: ${response.status}`);
+    } else {
+        console.log('Gist update successful');
     }
 
     return response.json();
@@ -423,121 +431,109 @@ class ChecklistManager {
     /**
      * Add a new task
      */
-    async addTask(categoryId, task) {
+    /**
+     * Helper to perform optimistic update with retry on 409/conflict
+     */
+    async saveWithRetry(updateFn) {
         const gistId = getGistId();
         const token = getToken();
-
         if (!token) throw new Error('Token required');
 
-        const newTask = {
-            id: `task-${Date.now()}`,
-            label: task.label,
-            time: task.time,
-            schedule: task.schedule || { type: 'daily' }
-        };
-
-        if (!this.data.definitions[categoryId]) {
-            // Should not happen, but safe to init
-            this.data.definitions[categoryId] = [];
-        }
-
-        this.data.definitions[categoryId].push(newTask);
+        // 1. Optimistic local update
+        updateFn(this.data);
         this.touchUpdate();
         this.notifyListeners();
 
         try {
             await updateChecklist(gistId, token, this.data);
         } catch (error) {
-            await this.sync();
-            throw error;
+            console.warn('Save failed, attempting sync-and-retry...', error);
+
+            // 2. Fetch fresh data
+            const freshData = await fetchChecklist(gistId, token);
+
+            // 3. Re-apply update to fresh data (Resolution)
+            updateFn(freshData);
+
+            // 4. Update local
+            this.data = freshData;
+            this.touchUpdate();
+            this.notifyListeners();
+
+            // 5. Retry save
+            await updateChecklist(gistId, token, this.data);
         }
+    }
+
+    /**
+     * Add a definition (admin/manager)
+     */
+    async addTask(categoryId, task) {
+        await this.saveWithRetry((data) => {
+            const newTask = {
+                id: `task-${Date.now()}`,
+                label: task.label,
+                time: task.time,
+                schedule: task.schedule || { type: 'daily' }
+            };
+            if (!data.definitions[categoryId]) {
+                data.definitions[categoryId] = [];
+            }
+            data.definitions[categoryId].push(newTask);
+        });
     }
 
     /**
      * Remove a task
      */
     async removeTask(categoryId, taskId) {
-        const gistId = getGistId();
-        const token = getToken();
-        if (!token) throw new Error('Token required');
-
-        this.data.definitions[categoryId] = this.data.definitions[categoryId].filter(t => t.id !== taskId);
-
-        // Cleanup today's state
-        if (this.data.today.items[taskId]) {
-            delete this.data.today.items[taskId];
-        }
-
-        this.touchUpdate();
-        this.notifyListeners();
-
-        try {
-            await updateChecklist(gistId, token, this.data);
-        } catch (error) {
-            await this.sync();
-            throw error;
-        }
+        await this.saveWithRetry((data) => {
+            // Remove from definitions
+            if (data.definitions[categoryId]) {
+                data.definitions[categoryId] = data.definitions[categoryId].filter(t => t.id !== taskId);
+            }
+            // Cleanup today's state
+            if (data.today.items[taskId]) {
+                delete data.today.items[taskId];
+            }
+        });
     }
 
     /**
      * Edit a task
      */
     async editTask(categoryId, taskId, updates) {
-        // Not used yet, but good for future
+        // Not implemented yet
     }
 
     /**
      * Toggle item
      */
     async toggleItem(itemId) {
-        const gistId = getGistId();
-        const token = getToken();
-        if (!token) throw new Error('Token required');
+        await this.saveWithRetry((data) => {
+            const currentState = data.today.items[itemId] || {};
+            const isNowChecked = !currentState.checked; // Toggle based on CURRENT state of the data object passed
 
-        const currentState = this.data.today.items[itemId] || {};
-        const isNowChecked = !currentState.checked;
-
-        this.data.today.items[itemId] = {
-            ...currentState,
-            checked: isNowChecked,
-            checkedBy: isNowChecked ? getUsername() : null,
-            checkedAt: isNowChecked ? getCurrentTime() : null
-        };
-
-        this.touchUpdate();
-        this.notifyListeners();
-
-        try {
-            await updateChecklist(gistId, token, this.data);
-        } catch (error) {
-            await this.sync();
-            throw error;
-        }
+            data.today.items[itemId] = {
+                ...currentState,
+                checked: isNowChecked,
+                checkedBy: isNowChecked ? getUsername() : null,
+                checkedAt: isNowChecked ? getCurrentTime() : null
+            };
+        });
     }
 
     /**
      * Assign item
      */
     async assignItem(itemId, assignee) {
-        const gistId = getGistId();
-        const token = getToken();
-        if (!token) throw new Error('Token required');
-
-        const currentState = this.data.today.items[itemId] || {};
-        this.data.today.items[itemId] = {
-            ...currentState,
-            assignedTo: assignee || null
-        };
-
-        this.touchUpdate();
-        this.notifyListeners();
-
-        try {
-            await updateChecklist(gistId, token, this.data);
-        } catch (error) {
-            await this.sync();
-            throw error;
-        }
+        await this.saveWithRetry((data) => {
+            const currentState = data.today.items[itemId] || {};
+            data.today.items[itemId] = {
+                ...currentState,
+                assignedTo: assignee || null
+            };
+        });
     }
 
     touchUpdate() {
