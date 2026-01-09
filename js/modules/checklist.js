@@ -318,10 +318,12 @@ class ChecklistManager {
         this.isSyncing = true;
 
         try {
-            // 1. Fetch remote data
+            // 1. Fetch remote data (with cache busting)
             let remoteData;
             try {
-                remoteData = await fetchChecklist(gistId, token);
+                // Add timestamp to URL to strictly bypass browser cache
+                const cacheBuster = `?t=${Date.now()}`;
+                remoteData = await fetchChecklist(gistId + cacheBuster, token);
             } catch (err) {
                 // Self-healing: 
                 // 1. File missing ("not found")
@@ -336,9 +338,25 @@ class ChecklistManager {
 
             const localTime = new Date(this.data.meta.lastUpdated || 0).getTime();
             const remoteTime = new Date(remoteData.meta?.lastUpdated || 0).getTime();
+            const localUser = this.data.meta.lastUpdatedBy;
+            const remoteUser = remoteData.meta?.lastUpdatedBy;
 
-            // Refined Logic based on conflict persistence work:
-            if (localTime > remoteTime + 2000) {
+            // Conflict Resolution Logic:
+            let pushLocal = false;
+
+            if (localTime > remoteTime) {
+                // Local is newer. But is it just a System reset vs Remote User edits?
+                if (localUser === 'System' && remoteUser !== 'System' && this.data.meta.currentDate === remoteData.meta?.currentDate) {
+                    // Local is a system reset, but remote has user data for SAME DAY.
+                    // Trust remote to prevent wiping work on page load.
+                    console.log('Use Remote (Protect user data from local system reset)');
+                    pushLocal = false;
+                } else {
+                    pushLocal = true;
+                }
+            }
+
+            if (pushLocal) {
                 console.log('Local is newer, pushing...');
                 await updateChecklist(gistId, token, this.data);
             } else {
