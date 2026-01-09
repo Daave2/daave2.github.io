@@ -158,10 +158,7 @@ async function fetchChecklist(gistId, token) {
     }
 
     console.log('[FETCH] Fetching Gist...', gistId.slice(0, 4));
-    const response = await fetch(`https://api.github.com/gists/${gistId}`, {
-        headers,
-        cache: 'no-store' // Bypass browser cache without triggering CORS
-    });
+    const response = await fetch(`https://api.github.com/gists/${gistId}`, { headers });
 
     if (!response.ok) {
         throw new Error(`Failed to fetch Gist: ${response.status}`);
