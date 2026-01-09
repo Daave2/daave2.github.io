@@ -759,13 +759,13 @@
 
       if (!checklistManager.isConfigured()) {
         widgetLoading.style.display = 'none';
-        // Show setup prompt with name and token
+        // Show setup prompt
         widgetError.innerHTML = `
           <div style="text-align: left;">
-            <strong>One-time setup</strong><br>
-            <input type="text" id="name-input" placeholder="Your name" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin: 0.5rem 0;">
-            <input type="password" id="token-input" placeholder="GitHub token (ghp_...)" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 0.5rem;">
-            <button id="token-submit" style="background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Save</button>
+            <strong>One-time setup required</strong><br>
+            <small style="display: block; margin: 0.5rem 0;">Enter a GitHub token with "gist" permission:</small>
+            <input type="password" id="token-input" placeholder="ghp_..." style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 0.5rem;">
+            <button id="token-submit" style="background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Save Token</button>
             <a href="https://github.com/settings/tokens/new?scopes=gist&description=Morrisons%20Checklist" target="_blank" style="margin-left: 0.5rem; font-size: 0.8rem;">Get token</a>
           </div>
         `;
@@ -775,14 +775,11 @@
         widgetError.style.border = '1px solid #ffc107';
 
         document.getElementById('token-submit').addEventListener('click', async () => {
-          const name = document.getElementById('name-input').value.trim();
           const token = document.getElementById('token-input').value.trim();
-          if (name) setUsername(name);
           if (token) {
             setToken(token);
             widgetError.style.display = 'none';
             widgetLoading.style.display = 'flex';
-            updateHeroGreeting();
             await initWidget();
           }
         });
@@ -797,11 +794,89 @@
 
         checklistManager.subscribe(() => renderWidget());
         checklistManager.startAutoSync(30000);
-      } catch (err) {
-        console.error('Widget init failed:', err);
+
+        // Start notification checker
+        setInterval(checkDueTasks, 60000); // Check every minute
+        setTimeout(checkDueTasks, 2000);   // Initial check
+      } catch (error) {
+        console.error('Widget init failed:', error);
         widgetLoading.style.display = 'none';
+        widgetError.textContent = 'Failed to load checklist: ' + error.message;
         widgetError.style.display = 'block';
       }
+    }
+
+    // --- Notification Logic ---
+    const notifiedTasks = new Set(); // Track tasks we've already alerted for
+
+    function parseTime(timeStr) {
+      if (!timeStr) return null;
+      // Handle "9:00", "09:00", "5:00pm", "17:00"
+      try {
+        const d = new Date();
+        let [time, modifier] = timeStr.split(/(am|pm)/i);
+        let [hours, minutes] = time.split(':');
+
+        if (!hours || !minutes) return null; // "Daily", "Weekly" etc
+
+        hours = parseInt(hours);
+        minutes = parseInt(minutes);
+
+        if (modifier) {
+          modifier = modifier.toLowerCase();
+          if (modifier === 'pm' && hours < 12) hours += 12;
+          if (modifier === 'am' && hours === 12) hours = 0;
+        }
+
+        d.setHours(hours, minutes, 0, 0);
+        return d;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function checkDueTasks() {
+      const username = getUsername();
+      if (!username || username === 'Team' || !window.notify) return;
+
+      const now = new Date();
+      const items = checklistManager.getItems();
+
+      Object.values(items).forEach(category => {
+        category.items.forEach(task => {
+          const state = checklistManager.getItemState(task.id);
+
+          // Only check assignments for current user that are incomplete
+          if (state.assignedTo === username && !state.checked) {
+            const dueTime = parseTime(task.time);
+            if (!dueTime) return;
+
+            const diffMs = dueTime - now;
+            const diffMins = Math.floor(diffMs / 60000);
+
+            // Logic: 
+            // 1. Due soon (0-10 mins)
+            // 2. Overdue (< 0 mins)
+
+            if (diffMins <= 10 && diffMins > 0) {
+              const key = `${task.id}-soon-${diffMins}`;
+              // Alert once per range logic approx? 
+              // Let's just alert once for "soon"
+              if (!notifiedTasks.has(`${task.id}-soon`)) {
+                window.notify(`⚠️ Task "${task.label}" is due in ${diffMins} mins!`, 5000);
+                notifiedTasks.add(`${task.id}-soon`);
+              }
+            } else if (diffMins <= 0) {
+              // Overdue
+              // Alert every time? No, annoyance. Alert once on overdue.
+              if (!notifiedTasks.has(`${task.id}-overdue`)) {
+                window.notify(`🚨 Task "${task.label}" is OVERDUE!`, 6000);
+                notifiedTasks.add(`${task.id}-overdue`);
+              }
+            }
+          }
+        });
+      });
     }
 
     widgetSync.addEventListener('click', async () => {

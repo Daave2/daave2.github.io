@@ -261,6 +261,9 @@ export function initUI() {
         setInterval(updateHero, 1000); // 60s update is enough for minutes, but 1s keeps sync better
     }
 
+    // Expose notify globally
+    window.notify = notify;
+
     /* -------- Return helpers if needed -------- */
     return { notify };
 }
