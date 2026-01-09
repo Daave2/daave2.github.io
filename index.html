@@ -20,7 +20,8 @@
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <!-- Using updated Font Awesome version -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -821,7 +822,23 @@
       } catch (error) {
         console.error('Widget init failed:', error);
         widgetLoading.style.display = 'none';
-        widgetError.textContent = 'Failed to load checklist: ' + error.message;
+
+        let msg = 'Failed to load checklist: ' + error.message;
+        if (error.message.includes('403') || error.message.includes('401')) {
+          msg = 'Authentication Failed (403/401). Token might be expired or invalid.';
+          // Auto-clear invalid token? Or just offer button?
+          const resetBtn = document.createElement('button');
+          resetBtn.textContent = 'Reset Access Token';
+          resetBtn.style.cssText = 'display:block; margin-top:1rem; padding:0.5rem; background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer;';
+          resetBtn.onclick = () => {
+            localStorage.removeItem('gh_checklist_token');
+            location.reload();
+          };
+          widgetError.innerHTML = `<strong>${msg}</strong>`;
+          widgetError.appendChild(resetBtn);
+        } else {
+          widgetError.textContent = msg;
+        }
         widgetError.style.display = 'block';
       }
     }
