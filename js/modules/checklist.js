@@ -164,7 +164,8 @@ async function fetchChecklist(gistId, token) {
     const content = gist.files[GIST_FILENAME]?.content;
 
     if (!content) {
-        throw new Error('Checklist file not found in Gist');
+        const available = Object.keys(gist.files || {}).join(', ');
+        throw new Error(`Checklist file '${GIST_FILENAME}' not found in Gist. Available files: [${available}]`);
     }
 
     return JSON.parse(content);
@@ -290,45 +291,41 @@ class ChecklistManager {
         this.isSyncing = true;
 
         try {
-            const freshData = await fetchChecklist(gistId, token);
-
-            // Conflict Check:
-            // If local data is newer than remote, DO NOT overwrite by default.
-            if (this.data && this.data.meta && this.data.meta.lastUpdated && freshData.meta && freshData.meta.lastUpdated) {
-                const localTime = new Date(this.data.meta.lastUpdated).getTime();
-                const remoteTime = new Date(freshData.meta.lastUpdated).getTime();
-
-                // Allow a small drift window (e.g. 2s) or strict?
-                // Strict: if local > remote, we skip applying.
-                if (localTime > remoteTime) {
-                    console.log('Local data is newer, skipping sync overwrite.');
-                    return this.data;
+            // 1. Fetch remote data
+            let remoteData;
+            try {
+                remoteData = await fetchChecklist(gistId, token);
+            } catch (err) {
+                // Self-healing: If file missing, initialize it!
+                if (err.message.includes('not found') || err.message.includes('Available files')) {
+                    console.warn('Remote file missing. Auto-initializing Gist...');
+                    await updateChecklist(gistId, token, this.data);
+                    return;
                 }
+                throw err;
             }
+            const localTime = new Date(this.data.meta.lastUpdated || 0).getTime();
+            const remoteTime = new Date(remoteData.meta?.lastUpdated || 0).getTime();
 
-            // If we are actively editing, maybe don't overwrite?
-            // Let's just update for now. 
+            // Refined Logic based on conflict persistence work:
+            if (localTime > remoteTime + 2000) {
+                console.log('Local is newer, pushing...');
+                await updateChecklist(gistId, token, this.data);
+            } else {
+                console.log('Remote is newer/same, pulling...');
+                this.data = remoteData;
 
-            this.data = freshData;
-
-            // Migration 1: Tasks -> Definitions
-            if (!this.data.version) {
-                this.data = this.migrateToV2(this.data);
-                if (token) {
+                // Migration 1: Tasks -> Definitions
+                if (!this.data.version) {
+                    this.data = this.migrateToV2(this.data);
                     await updateChecklist(gistId, token, this.data);
                 }
+
+                this.performDailyReset();
+                this.saveLocal();
+                this.notifyListeners();
             }
 
-            // Check if we need to reset for a new day
-            if (this.needsReset(this.data)) {
-                this.data = this.performDailyReset(this.data);
-                if (token) {
-                    await updateChecklist(gistId, token, this.data);
-                }
-            }
-
-            this.notifyListeners();
-            return this.data;
         } catch (error) {
             console.error('Sync failed:', error);
             throw error;
