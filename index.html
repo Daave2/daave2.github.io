@@ -677,7 +677,8 @@
         document.getElementById('new-task-label').value = '';
         document.getElementById('new-task-time').value = '';
         freqSelect.value = 'daily';
-        freqOptions.innerHTML = '';
+        freqDateContainer.style.display = 'none';
+        freqHint.textContent = '';
         btn.textContent = originalText;
 
         renderManageList();
