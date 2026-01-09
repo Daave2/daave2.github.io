@@ -7,12 +7,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-comp
 // Firebase config - these values are safe to expose in client-side code
 // They just identify your project, the security comes from FCM tokens
 firebase.initializeApp({
-    apiKey: "PLACEHOLDER", // Will be replaced when user configures
-    authDomain: "PLACEHOLDER.firebaseapp.com",
-    projectId: "PLACEHOLDER",
-    storageBucket: "PLACEHOLDER.appspot.com",
-    messagingSenderId: "PLACEHOLDER",
-    appId: "PLACEHOLDER"
+    apiKey: "AIzaSyCPiQ91EOGaK6woOPYefg4TMylGP1esGec",
+    authDomain: "morrisons-checklist.firebaseapp.com",
+    projectId: "morrisons-checklist",
+    storageBucket: "morrisons-checklist.firebasestorage.app",
+    messagingSenderId: "394294868202",
+    appId: "1:394294868202:web:31e9554768582b781bff93"
 });
 
 const messaging = firebase.messaging();
