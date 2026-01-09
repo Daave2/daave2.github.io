@@ -372,8 +372,9 @@ class ChecklistManager {
                 console.log('Remote is newer/same, pulling...');
                 this.data = remoteData;
 
-                // Migration 1: Tasks -> Definitions
-                if (!this.data.version) {
+                // Migration 1: Tasks -> Definitions (only for V1 data)
+                if (!this.data.meta?.version) {
+                    console.log('[SYNC] Migrating V1 data to V2...');
                     this.data = this.migrateToV2(this.data);
                     await updateChecklist(gistId, token, this.data);
                 }
