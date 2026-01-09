@@ -238,9 +238,16 @@ exports.sendTestNotification = functions.https.onRequest(async (req, res) => {
                 title: '🔔 Test Notification',
                 body: 'If you see this, FCM is working!'
             },
+            data: {
+                taskId: 'test-task',
+                click_action: 'https://218.team/'
+            },
             webpush: {
                 notification: {
-                    icon: 'https://218.team/icons/icon-192x192.png'
+                    icon: 'https://218.team/icons/icon-192x192.png',
+                    badge: 'https://218.team/icons/favicon-32x32.png',
+                    requireInteraction: true,
+                    vibrate: [200, 100, 200]
                 }
             }
         });
