@@ -93,30 +93,7 @@
         </div>
       </div>
 
-      <!-- Management Modal -->
-      <div id="manage-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Manage Tasks</h3>
-            <button class="close-modal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div id="manage-list"></div>
-            <div class="add-task-form">
-              <h4>Add New Task</h4>
-              <select id="new-task-category">
-                <option value="morning">Morning</option>
-                <option value="midday">Midday</option>
-                <option value="afternoon">Fit for 5</option>
-                <option value="weekly">Weekly</option>
-              </select>
-              <input type="text" id="new-task-label" placeholder="Task name">
-              <input type="text" id="new-task-time" placeholder="Time (opt)">
-              <button id="add-task-btn">Add Task</button>
-            </div>
-          </div>
-        </div>
-      </div>
+
       <div id="widget-loading" class="widget-loading">
         <i class="fas fa-spinner fa-spin"></i> Loading...
       </div>
@@ -342,6 +319,31 @@
 
   <!----- notification placeholder ----->
   <div class="notification" id="notification" role="alert" aria-live="assertive"></div>
+
+  <!-- Management Modal -->
+  <div id="manage-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Manage Tasks</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="manage-list"></div>
+        <div class="add-task-form">
+          <h4>Add New Task</h4>
+          <select id="new-task-category">
+            <option value="morning">Morning</option>
+            <option value="midday">Midday</option>
+            <option value="afternoon">Fit for 5</option>
+            <option value="weekly">Weekly</option>
+          </select>
+          <input type="text" id="new-task-label" placeholder="Task name">
+          <input type="text" id="new-task-time" placeholder="Time (opt)">
+          <button id="add-task-btn">Add Task</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!----- scripts ----->
   <script src="script.js" type="module"></script>
