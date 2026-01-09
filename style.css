@@ -2616,13 +2616,14 @@ button {
   position: relative;
   overflow: hidden;
 }
+
 /* ===== DAILY CHECKLIST WIDGET ===== */
 .checklist-widget {
   background: var(--card-bg, #fff);
   border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .dark-mode .checklist-widget {
@@ -2669,7 +2670,7 @@ button {
 }
 
 .widget-sync-btn:hover {
-  background: rgba(0,100,0,0.1);
+  background: rgba(0, 100, 0, 0.1);
 }
 
 .widget-loading,
@@ -2729,7 +2730,25 @@ button {
 }
 
 .widget-item.checked {
-  background: rgba(0,133,62,0.08);
+  background: rgba(0, 133, 62, 0.08);
+}
+
+/* Highlight animation for notification clicks */
+.widget-item.highlight-task {
+  animation: pulse-highlight 0.5s ease-out 3;
+  box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+@keyframes pulse-highlight {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px var(--primary-color);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(0, 100, 0, 0.3);
+  }
 }
 
 .widget-checkbox {
@@ -2805,7 +2824,7 @@ button {
     max-width: 70px;
     font-size: 0.7rem;
   }
-  
+
   .widget-item-label {
     font-size: 0.85rem;
   }
@@ -2818,7 +2837,7 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2834,7 +2853,7 @@ button {
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .dark-mode .modal-content {
@@ -2886,7 +2905,7 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
-  background: rgba(0,0,0,0.03);
+  background: rgba(0, 0, 0, 0.03);
   margin-bottom: 0.5rem;
   border-radius: 6px;
 }
@@ -2906,13 +2925,13 @@ button {
 
 .manage-delete-btn:hover {
   opacity: 1;
-  background: rgba(198,40,40,0.1);
+  background: rgba(198, 40, 40, 0.1);
   border-radius: 4px;
 }
 
 /* Add Task Form */
 .add-task-form {
-  background: rgba(0,0,0,0.02);
+  background: rgba(0, 0, 0, 0.02);
   padding: 1rem;
   border-radius: 8px;
   border-top: 1px solid var(--border-color, #eee);

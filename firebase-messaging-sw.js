@@ -22,17 +22,21 @@ messaging.onBackgroundMessage((payload) => {
     console.log('[FCM SW] Received background message:', payload);
 
     const notificationTitle = payload.notification?.title || payload.data?.title || 'Task Reminder';
+    const taskId = payload.data?.taskId || '';
     const notificationOptions = {
         body: payload.notification?.body || payload.data?.body || 'You have a task due!',
         icon: '/icons/icon-192x192.png',
         badge: '/icons/favicon-32x32.png',
-        tag: payload.data?.taskId || 'task-notification',
+        tag: taskId || 'task-notification',
         requireInteraction: true,
         vibrate: [200, 100, 200],
-        data: payload.data,
+        data: {
+            taskId: taskId,
+            url: payload.data?.click_action || 'https://218.team/'
+        },
         actions: [
-            { action: 'view', title: 'View Tasks' },
-            { action: 'dismiss', title: 'Dismiss' }
+            { action: 'view', title: '👁️ View Task' },
+            { action: 'complete', title: '✅ Confirm Done' }
         ]
     };
 
@@ -41,25 +45,32 @@ messaging.onBackgroundMessage((payload) => {
 
 // Handle notification click
 self.addEventListener('notificationclick', (event) => {
-    console.log('[FCM SW] Notification clicked:', event.action);
+    console.log('[FCM SW] Notification clicked:', event.action, event.notification.data);
     event.notification.close();
 
-    if (event.action === 'dismiss') {
-        return;
+    const taskId = event.notification.data?.taskId || '';
+    let targetUrl = 'https://218.team/';
+
+    if (event.action === 'complete') {
+        // Open page with action to mark task complete
+        targetUrl = `https://218.team/?action=complete&taskId=${taskId}`;
+    } else if (event.action === 'view' || !event.action) {
+        // Open page and highlight the task
+        targetUrl = `https://218.team/?highlight=${taskId}`;
     }
 
-    // Open or focus the app
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-            // If a window is already open, focus it
+            // If a window is already open, navigate it and focus
             for (const client of clientList) {
                 if (client.url.includes('218.team') && 'focus' in client) {
+                    client.navigate(targetUrl);
                     return client.focus();
                 }
             }
             // Otherwise open a new window
             if (clients.openWindow) {
-                return clients.openWindow('/');
+                return clients.openWindow(targetUrl);
             }
         })
     );

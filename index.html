@@ -468,6 +468,7 @@
 
           const itemEl = document.createElement('div');
           itemEl.className = `widget-item${state.checked ? ' checked' : ''}`;
+          itemEl.setAttribute('data-task-id', item.id);
 
           itemEl.innerHTML = `
             <div class="widget-checkbox" data-id="${item.id}">
@@ -784,6 +785,17 @@
       // Update greeting regardless of config
       updateHeroGreeting();
 
+      // Handle notification actions from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const actionParam = urlParams.get('action');
+      const taskIdParam = urlParams.get('taskId');
+      const highlightParam = urlParams.get('highlight');
+
+      // Clean up URL (remove params without reloading)
+      if (actionParam || highlightParam) {
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+
       if (!checklistManager.isConfigured()) {
         widgetLoading.style.display = 'none';
         // Show setup prompt
@@ -821,6 +833,31 @@
 
         checklistManager.subscribe(() => renderWidget());
         checklistManager.startAutoSync(30000);
+
+        // Handle notification actions (from URL params captured earlier)
+        if (actionParam === 'complete' && taskIdParam) {
+          // Mark the task as complete
+          const username = getUsername();
+          if (username && username !== 'Team') {
+            await checklistManager.toggleItem(taskIdParam, true, username);
+            await checklistManager.sync();
+            renderWidget();
+            if (window.notify) {
+              window.notify('✅ Task marked as complete!', 3000);
+            }
+            console.log('[NOTIFY] Task completed via notification:', taskIdParam);
+          }
+        } else if (highlightParam) {
+          // Scroll to and highlight the task
+          setTimeout(() => {
+            const taskElement = document.querySelector(`[data-task-id="${highlightParam}"]`);
+            if (taskElement) {
+              taskElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              taskElement.classList.add('highlight-task');
+              setTimeout(() => taskElement.classList.remove('highlight-task'), 3000);
+            }
+          }, 500);
+        }
 
         // Start notification checker
         setInterval(checkDueTasks, 60000); // Check every minute
