@@ -909,18 +909,20 @@
       widgetSync.innerHTML = '<i class="fas fa-sync-alt"></i>';
     });
 
-    // Reset Token Handler
+    initWidget();
+  </script>
+
+  <!-- Failsafe: Standalone Reset Handler (Works even if app crashes) -->
+  <script>
     document.getElementById('widget-reset-token').addEventListener('click', () => {
       if (confirm('Reset authentication token? You will need to re-enter it.')) {
-        setToken(''); // Clear token
-        // Optional: clear username too if they want full reset? Keep username for convenience.
-        // Actually, if 403, might be wrong user entirely.
-        // setUsername(''); 
+        localStorage.removeItem('checklist_github_token');
         location.reload();
       }
     });
+  </script>
 
-    initWidget();
+  initWidget();
   </script>
 </body>
 
