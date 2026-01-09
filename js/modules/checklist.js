@@ -152,9 +152,20 @@ async function createGist(token) {
  * Fetch checklist data from Gist
  */
 async function fetchChecklist(gistId, token) {
-    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+    // Force bypass browser cache with headers
+    const headers = {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
+    };
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
 
-    const response = await fetch(`https://api.github.com/gists/${gistId}`, { headers });
+    console.log('[FETCH] Fetching Gist...', gistId.slice(0, 4));
+    const response = await fetch(`https://api.github.com/gists/${gistId}`, {
+        headers,
+        cache: 'no-store' // Additional cache bypass for fetch API
+    });
 
     if (!response.ok) {
         throw new Error(`Failed to fetch Gist: ${response.status}`);
@@ -168,7 +179,14 @@ async function fetchChecklist(gistId, token) {
         throw new Error(`Checklist file '${GIST_FILENAME}' not found in Gist. Available files: [${available}]`);
     }
 
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+    console.log('[FETCH] Got remote data:', {
+        date: parsed.meta?.currentDate,
+        lastUpdated: parsed.meta?.lastUpdated,
+        lastUpdatedBy: parsed.meta?.lastUpdatedBy,
+        todayItemsCount: Object.keys(parsed.today?.items || {}).length
+    });
+    return parsed;
 }
 
 /**
@@ -318,12 +336,10 @@ class ChecklistManager {
         this.isSyncing = true;
 
         try {
-            // 1. Fetch remote data (with cache busting)
+            // 1. Fetch remote data
             let remoteData;
             try {
-                // Add timestamp to URL to strictly bypass browser cache
-                const cacheBuster = `?t=${Date.now()}`;
-                remoteData = await fetchChecklist(gistId + cacheBuster, token);
+                remoteData = await fetchChecklist(gistId, token);
             } catch (err) {
                 // Self-healing: 
                 // 1. File missing ("not found")
@@ -486,27 +502,36 @@ class ChecklistManager {
         const token = getToken();
         if (!token) throw new Error('Token required');
 
+        console.log('[SAVE] Starting saveWithRetry...');
+        console.log('[SAVE] Before update - today.items:', JSON.stringify(this.data.today?.items || {}));
+
         // 1. Optimistic local update
         updateFn(this.data);
         this.touchUpdate();
+
+        console.log('[SAVE] After update - today.items:', JSON.stringify(this.data.today?.items || {}));
+
         this.saveLocal(); // Persist locally immediately
         this.notifyListeners();
 
         try {
+            console.log('[SAVE] Pushing to Gist...');
             await updateChecklist(gistId, token, this.data);
+            console.log('[SAVE] Successfully pushed to Gist');
         } catch (error) {
-            console.warn('Save failed, attempting sync-and-retry...', error);
+            console.warn('[SAVE] Save failed, attempting sync-and-retry...', error);
 
             // 2. Fetch fresh data
             let freshData;
             try {
                 freshData = await fetchChecklist(gistId, token);
             } catch (e) {
-                console.error("Retry fetch failed, keeping local state un-synced");
+                console.error("[SAVE] Retry fetch failed, keeping local state un-synced");
                 return;
             }
 
             // 3. Re-apply update to fresh data (Resolution)
+            console.log('[SAVE] Re-applying update to fresh data...');
             updateFn(freshData);
 
             // 4. Update local
@@ -516,7 +541,9 @@ class ChecklistManager {
             this.notifyListeners();
 
             // 5. Retry save
+            console.log('[SAVE] Retrying push to Gist...');
             await updateChecklist(gistId, token, this.data);
+            console.log('[SAVE] Retry successful');
         }
     }
 
