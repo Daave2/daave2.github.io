@@ -876,23 +876,31 @@
 
     // Send a native device notification
     function sendDeviceNotification(title, body, icon = '/icons/icon-192x192.png') {
+      console.log('[NOTIFY] Attempting to send notification:', title, body);
       if (Notification.permission === 'granted') {
-        const notification = new Notification(title, {
-          body: body,
-          icon: icon,
-          badge: icon,
-          tag: body, // Prevents duplicate notifications
-          requireInteraction: true // Keeps notification until user dismisses
-        });
+        try {
+          const notification = new Notification(title, {
+            body: body,
+            icon: icon,
+            badge: icon,
+            tag: body, // Prevents duplicate notifications
+            requireInteraction: true // Keeps notification until user dismisses
+          });
 
-        // Focus the tab when notification is clicked
-        notification.onclick = () => {
-          window.focus();
-          notification.close();
-        };
+          // Focus the tab when notification is clicked
+          notification.onclick = () => {
+            window.focus();
+            notification.close();
+          };
 
-        return true;
+          console.log('[NOTIFY] Notification created successfully!');
+          return true;
+        } catch (err) {
+          console.error('[NOTIFY] Failed to create notification:', err);
+          return false;
+        }
       }
+      console.log('[NOTIFY] Permission not granted:', Notification.permission);
       return false;
     }
 
