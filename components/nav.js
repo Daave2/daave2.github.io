@@ -14,6 +14,7 @@ class SiteNav extends HTMLElement {
 
     // Secondary items (in More dropdown)
     const moreItems = [
+      { href: 'checklist.html', icon: 'fa-clipboard-check', label: 'Checklist' },
       { href: 'contacts.html', icon: 'fa-address-book', label: 'Contacts' },
       { href: 'shrink.html', icon: 'fa-compress-arrows-alt', label: 'Shrink' },
       { href: 'safe-and-legal.html', icon: 'fa-shield-alt', label: 'Safe & Legal' }
