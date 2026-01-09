@@ -206,9 +206,6 @@ function needsReset(data) {
 /**
  * Reset checklist for new day
  */
-/**
- * Reset checklist for new day
- */
 function resetChecklist(data) {
     return {
         date: getTodayDate(),
@@ -227,6 +224,7 @@ class ChecklistManager {
         this.data = null;
         this.listeners = [];
         this.syncInterval = null;
+        this.isSyncing = false; // Lock
     }
 
     /**
@@ -237,9 +235,37 @@ class ChecklistManager {
     }
 
     /**
+     * Subscribe to data changes
+     */
+    subscribe(listener) {
+        this.listeners.push(listener);
+        return () => this.listeners = this.listeners.filter(l => l !== listener);
+    }
+
+    /**
+     * Notify all listeners
+     */
+    notifyListeners() {
+        this.listeners.forEach(listener => listener(this.data));
+    }
+
+    /**
+     * Start auto-sync
+     */
+    startAutoSync(intervalMs = 30000) {
+        if (this.syncInterval) clearInterval(this.syncInterval);
+        this.syncInterval = setInterval(() => {
+            if (!this.isSyncing) {
+                this.sync().catch(e => console.warn('Auto-sync failed:', e));
+            }
+        }, intervalMs);
+    }
+
+    /**
      * Sync with Gist
      */
     async sync() {
+        if (this.isSyncing) return; // Skip if busy
         const gistId = getGistId();
         const token = getToken();
 
@@ -247,8 +273,21 @@ class ChecklistManager {
             throw new Error('Gist not configured');
         }
 
+        this.isSyncing = true;
+
         try {
-            this.data = await fetchChecklist(gistId, token);
+            const freshData = await fetchChecklist(gistId, token);
+
+            // Simple conflict resolution:
+            // If local data is "newer" (based on optimisic update), we might want to be careful.
+            // But for now, we assume Gist is truth. 
+            // PROBLEM: If we just saved, Gist might be stale for a few seconds (eventual consistency).
+            // Fix: Check timestamps? Or just rely on the fact that we push updates immediately.
+
+            // If we are actively editing, maybe don't overwrite?
+            // Let's just update for now. 
+
+            this.data = freshData;
 
             // Migration 1: Tasks -> Definitions
             if (!this.data.version) {
@@ -271,6 +310,8 @@ class ChecklistManager {
         } catch (error) {
             console.error('Sync failed:', error);
             throw error;
+        } finally {
+            this.isSyncing = false;
         }
     }
 
