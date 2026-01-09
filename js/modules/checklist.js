@@ -337,14 +337,14 @@ startAutoSync(intervalMs = 30000) {
     this.isSyncing = true;
 
     try {
-        // 1. Fetch remote data
-        let remoteData;
         try {
             remoteData = await fetchChecklist(gistId, token);
         } catch (err) {
-            // Self-healing: If file missing, initialize it!
-            if (err.message.includes('not found') || err.message.includes('Available files')) {
-                console.warn('Remote file missing. Auto-initializing Gist...');
+            // Self-healing: 
+            // 1. File missing ("not found")
+            // 2. File corrupt (SyntaxError during JSON.parse)
+            if (err.message.includes('not found') || err.message.includes('Available files') || err instanceof SyntaxError) {
+                console.warn('Remote file missing or corrupt. Auto-initializing Gist...');
                 await updateChecklist(gistId, token, this.data);
                 return;
             }
