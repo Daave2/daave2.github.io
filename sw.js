@@ -1,6 +1,6 @@
 // sw.js
 
-const CACHE_NAME = 'cleveleys-dash-cache-v5'; // Force refresh for Gantt fixes
+const CACHE_NAME = 'cleveleys-dash-cache-v6'; // Force refresh for FCM debugging
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [
@@ -80,6 +80,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     // Only handle GET requests
     if (event.request.method !== 'GET') {
+        return;
+    }
+
+    // Ignore Cloud Functions calls (let them fail or succeed normally, don't cache or show offline page)
+    if (event.request.url.includes('cloudfunctions.net')) {
         return;
     }
 

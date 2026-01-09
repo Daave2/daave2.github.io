@@ -224,6 +224,17 @@ function parseTime(timeStr, referenceDate) {
  * Usage: https://your-project.cloudfunctions.net/sendTestNotification?token=FCM_TOKEN
  */
 exports.sendTestNotification = functions.https.onRequest(async (req, res) => {
+    // Enable CORS
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Handle preflight request
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
     const token = req.query.token;
 
     if (!token) {
