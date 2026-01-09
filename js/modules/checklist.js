@@ -7,6 +7,7 @@
 const GIST_ID = '95a61f781f9655c1abb90d6daff4a7c2';
 const GIST_FILENAME = 'daily_checklist.json';
 const TOKEN_STORAGE_KEY = 'checklist_github_token';
+const USERNAME_STORAGE_KEY = 'checklist_username';
 
 // Team members for task assignment
 const TEAM_MEMBERS = [
@@ -98,10 +99,17 @@ function getGistId() {
 }
 
 /**
- * Get username (simplified - just returns 'Team' for now)
+ * Get username from localStorage
  */
 function getUsername() {
-    return 'Team';
+    return localStorage.getItem(USERNAME_STORAGE_KEY) || 'Team';
+}
+
+/**
+ * Set username in localStorage
+ */
+function setUsername(name) {
+    localStorage.setItem(USERNAME_STORAGE_KEY, name);
 }
 
 /**
@@ -410,4 +418,4 @@ class ChecklistManager {
 
 // Export singleton instance
 export const checklistManager = new ChecklistManager();
-export { DEFAULT_ITEMS, TEAM_MEMBERS, getGistId, getToken, setToken };
+export { DEFAULT_ITEMS, TEAM_MEMBERS, getGistId, getToken, setToken, getUsername, setUsername };

@@ -67,6 +67,10 @@
         <h1 id="hero-greeting">Welcome</h1>
         <p>Quick access to essential tools, reports and operational guides for Cleveleys Morrisons Management.</p>
         <p id="hero-date" class="hero-date"></p>
+        <p id="hero-change-name" style="display: none; font-size: 0.85rem; margin-top: 0.5rem;">
+          <a href="#" id="change-name-link" style="color: var(--text-muted); text-decoration: underline;">Not you?
+            Change name</a>
+        </p>
       </div>
       <div class="hero-clock">
         <div id="hero-weather" class="hero-weather"></div>
@@ -316,13 +320,44 @@
 
   <!-- Checklist Widget Script -->
   <script type="module">
-    import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS, setToken } from './js/modules/checklist.js';
+    import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS, setToken, getUsername, setUsername } from './js/modules/checklist.js';
 
     const widgetLoading = document.getElementById('widget-loading');
     const widgetError = document.getElementById('widget-error');
     const widgetContent = document.getElementById('widget-content');
     const widgetProgress = document.getElementById('widget-progress');
     const widgetSync = document.getElementById('widget-sync');
+    const heroGreeting = document.getElementById('hero-greeting');
+    const heroChangeName = document.getElementById('hero-change-name');
+    const changeNameLink = document.getElementById('change-name-link');
+
+    // Update hero greeting based on time and name
+    function updateHeroGreeting() {
+      const name = getUsername();
+      const hour = new Date().getHours();
+      let greeting = 'Good evening';
+      if (hour < 12) greeting = 'Good morning';
+      else if (hour < 17) greeting = 'Good afternoon';
+
+      if (name && name !== 'Team') {
+        heroGreeting.textContent = `${greeting}, ${name}`;
+        heroChangeName.style.display = 'block';
+        changeNameLink.textContent = `Not ${name}?`;
+      } else {
+        heroGreeting.textContent = 'Welcome';
+        heroChangeName.style.display = 'none';
+      }
+    }
+
+    // Handle name change
+    changeNameLink?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const newName = prompt('Enter your name:');
+      if (newName?.trim()) {
+        setUsername(newName.trim());
+        updateHeroGreeting();
+      }
+    });
 
     function buildAssignOptions(currentAssignee) {
       const isCustom = currentAssignee && !TEAM_MEMBERS.includes(currentAssignee);
@@ -417,15 +452,18 @@
     }
 
     async function initWidget() {
+      // Update greeting regardless of config
+      updateHeroGreeting();
+
       if (!checklistManager.isConfigured()) {
         widgetLoading.style.display = 'none';
-        // Show setup prompt
+        // Show setup prompt with name and token
         widgetError.innerHTML = `
           <div style="text-align: left;">
-            <strong>One-time setup required</strong><br>
-            <small style="display: block; margin: 0.5rem 0;">Enter a GitHub token with "gist" permission:</small>
-            <input type="password" id="token-input" placeholder="ghp_..." style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 0.5rem;">
-            <button id="token-submit" style="background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Save Token</button>
+            <strong>One-time setup</strong><br>
+            <input type="text" id="name-input" placeholder="Your name" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin: 0.5rem 0;">
+            <input type="password" id="token-input" placeholder="GitHub token (ghp_...)" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 0.5rem;">
+            <button id="token-submit" style="background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Save</button>
             <a href="https://github.com/settings/tokens/new?scopes=gist&description=Morrisons%20Checklist" target="_blank" style="margin-left: 0.5rem; font-size: 0.8rem;">Get token</a>
           </div>
         `;
@@ -435,11 +473,14 @@
         widgetError.style.border = '1px solid #ffc107';
 
         document.getElementById('token-submit').addEventListener('click', async () => {
+          const name = document.getElementById('name-input').value.trim();
           const token = document.getElementById('token-input').value.trim();
+          if (name) setUsername(name);
           if (token) {
             setToken(token);
             widgetError.style.display = 'none';
             widgetLoading.style.display = 'flex';
+            updateHeroGreeting();
             await initWidget();
           }
         });
