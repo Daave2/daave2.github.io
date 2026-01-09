@@ -337,6 +337,8 @@ startAutoSync(intervalMs = 30000) {
     this.isSyncing = true;
 
     try {
+        // 1. Fetch remote data
+        let remoteData;
         try {
             remoteData = await fetchChecklist(gistId, token);
         } catch (err) {
