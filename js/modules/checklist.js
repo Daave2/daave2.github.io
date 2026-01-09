@@ -206,12 +206,16 @@ function needsReset(data) {
 /**
  * Reset checklist for new day
  */
+/**
+ * Reset checklist for new day
+ */
 function resetChecklist(data) {
     return {
         date: getTodayDate(),
         lastUpdated: new Date().toISOString(),
         lastUpdatedBy: 'System',
-        items: {}
+        items: {},
+        tasks: data.tasks || JSON.parse(JSON.stringify(DEFAULT_ITEMS))
     };
 }
 
@@ -246,6 +250,15 @@ class ChecklistManager {
         try {
             this.data = await fetchChecklist(gistId, token);
 
+            // Migration: If tasks key is missing, initialize with DEFAULT_ITEMS
+            if (!this.data.tasks) {
+                this.data.tasks = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+                this.data.lastUpdated = new Date().toISOString();
+                if (token) {
+                    await updateChecklist(gistId, token, this.data);
+                }
+            }
+
             // Check if we need to reset for a new day
             if (needsReset(this.data)) {
                 this.data = resetChecklist(this.data);
@@ -258,6 +271,105 @@ class ChecklistManager {
             return this.data;
         } catch (error) {
             console.error('Sync failed:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Add a new task
+     */
+    async addTask(categoryId, task) {
+        const gistId = getGistId();
+        const token = getToken();
+
+        if (!token) throw new Error('Token required to manage tasks');
+
+        if (!this.data.tasks[categoryId]) {
+            throw new Error('Invalid category');
+        }
+
+        const newTask = {
+            id: `task-${Date.now()}`, // Simple ID generation
+            ...task
+        };
+
+        this.data.tasks[categoryId].items.push(newTask);
+        this.data.lastUpdated = new Date().toISOString();
+        this.data.lastUpdatedBy = getUsername();
+
+        this.notifyListeners();
+
+        try {
+            await updateChecklist(gistId, token, this.data);
+            return newTask;
+        } catch (error) {
+            console.error('Failed to add task:', error);
+            await this.sync(); // Revert
+            throw error;
+        }
+    }
+
+    /**
+     * Remove a task
+     */
+    async removeTask(categoryId, taskId) {
+        const gistId = getGistId();
+        const token = getToken();
+
+        if (!token) throw new Error('Token required to manage tasks');
+
+        if (!this.data.tasks[categoryId]) {
+            throw new Error('Invalid category');
+        }
+
+        this.data.tasks[categoryId].items = this.data.tasks[categoryId].items.filter(item => item.id !== taskId);
+
+        // Also cleanup state
+        if (this.data.items[taskId]) {
+            delete this.data.items[taskId];
+        }
+
+        this.data.lastUpdated = new Date().toISOString();
+        this.data.lastUpdatedBy = getUsername();
+
+        this.notifyListeners();
+
+        try {
+            await updateChecklist(gistId, token, this.data);
+        } catch (error) {
+            console.error('Failed to remove task:', error);
+            await this.sync(); // Revert
+            throw error;
+        }
+    }
+
+    /**
+     * Edit a task
+     */
+    async editTask(categoryId, taskId, updates) {
+        const gistId = getGistId();
+        const token = getToken();
+
+        if (!token) throw new Error('Token required to manage tasks');
+
+        const category = this.data.tasks[categoryId];
+        if (!category) throw new Error('Invalid category');
+
+        const itemIndex = category.items.findIndex(item => item.id === taskId);
+        if (itemIndex === -1) throw new Error('Task not found');
+
+        category.items[itemIndex] = { ...category.items[itemIndex], ...updates };
+
+        this.data.lastUpdated = new Date().toISOString();
+        this.data.lastUpdatedBy = getUsername();
+
+        this.notifyListeners();
+
+        try {
+            await updateChecklist(gistId, token, this.data);
+        } catch (error) {
+            console.error('Failed to edit task:', error);
+            await this.sync(); // Revert
             throw error;
         }
     }
@@ -338,7 +450,7 @@ class ChecklistManager {
      * Get all items with their current state
      */
     getItems() {
-        return DEFAULT_ITEMS;
+        return this.data?.tasks || DEFAULT_ITEMS;
     }
 
     /**
@@ -354,8 +466,9 @@ class ChecklistManager {
     getProgress() {
         let total = 0;
         let completed = 0;
+        const tasks = this.getItems();
 
-        Object.values(DEFAULT_ITEMS).forEach(category => {
+        Object.values(tasks).forEach(category => {
             category.items.forEach(item => {
                 total++;
                 if (this.data?.items[item.id]?.checked) {

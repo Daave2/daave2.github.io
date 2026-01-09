@@ -2810,3 +2810,141 @@ button {
     font-size: 0.85rem;
   }
 }
+
+/* ===== MANAGEMENT MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.dark-mode .modal-content {
+  background: var(--card-bg-dark, #1e1e1e);
+}
+
+.modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color, #eee);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-muted, #888);
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Manage List */
+#manage-list {
+  margin-bottom: 2rem;
+}
+
+.manage-category-header {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin: 1rem 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.manage-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.03);
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+}
+
+.manage-item-info {
+  font-size: 0.9rem;
+}
+
+.manage-delete-btn {
+  background: none;
+  border: none;
+  color: #c62828;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  opacity: 0.7;
+}
+
+.manage-delete-btn:hover {
+  opacity: 1;
+  background: rgba(198,40,40,0.1);
+  border-radius: 4px;
+}
+
+/* Add Task Form */
+.add-task-form {
+  background: rgba(0,0,0,0.02);
+  padding: 1rem;
+  border-radius: 8px;
+  border-top: 1px solid var(--border-color, #eee);
+}
+
+.add-task-form h4 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
+
+.add-task-form input,
+.add-task-form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 6px;
+  background: var(--bg-color, #fff);
+  color: var(--text-color, #333);
+}
+
+#add-task-btn {
+  width: 100%;
+  padding: 0.6rem;
+  background: var(--primary-color, #006400);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#add-task-btn:hover {
+  filter: brightness(1.1);
+}
