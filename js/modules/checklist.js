@@ -152,11 +152,7 @@ async function createGist(token) {
  * Fetch checklist data from Gist
  */
 async function fetchChecklist(gistId, token) {
-    // Force bypass browser cache with headers
-    const headers = {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache'
-    };
+    const headers = {};
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
     }
@@ -164,7 +160,7 @@ async function fetchChecklist(gistId, token) {
     console.log('[FETCH] Fetching Gist...', gistId.slice(0, 4));
     const response = await fetch(`https://api.github.com/gists/${gistId}`, {
         headers,
-        cache: 'no-store' // Additional cache bypass for fetch API
+        cache: 'no-store' // Bypass browser cache without triggering CORS
     });
 
     if (!response.ok) {
