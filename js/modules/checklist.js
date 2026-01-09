@@ -370,9 +370,14 @@ class ChecklistManager {
                 await updateChecklist(gistId, token, this.data);
             } else {
                 console.log('Remote is newer/same, pulling...');
+                console.log('[SYNC] Remote data before assignment:', JSON.stringify({
+                    meta: remoteData.meta,
+                    todayItems: Object.keys(remoteData.today?.items || {}).length
+                }));
                 this.data = remoteData;
 
                 // Migration 1: Tasks -> Definitions (only for V1 data)
+                console.log('[SYNC] Checking migration - meta.version:', this.data.meta?.version);
                 if (!this.data.meta?.version) {
                     console.log('[SYNC] Migrating V1 data to V2...');
                     this.data = this.migrateToV2(this.data);
@@ -382,6 +387,7 @@ class ChecklistManager {
                 // Repair check again on incoming data
                 Object.keys(this.data.definitions).forEach(catId => {
                     if (Array.isArray(this.data.definitions[catId])) {
+                        console.log('[SYNC] Repairing category:', catId);
                         const title = DEFAULT_ITEMS[catId]?.title || catId;
                         this.data.definitions[catId] = {
                             title: title,
@@ -390,10 +396,16 @@ class ChecklistManager {
                     }
                 });
 
-                const needsReset = this.data.meta.currentDate !== getTodayDate();
+                const todayStr = getTodayDate();
+                const remoteDate = this.data.meta?.currentDate;
+                console.log('[SYNC] needsReset check - remoteDate:', remoteDate, 'today:', todayStr);
+                const needsReset = remoteDate !== todayStr;
                 if (needsReset) {
+                    console.log('[SYNC] Running daily reset!');
                     this.data = this.performDailyReset(this.data);
                     await updateChecklist(gistId, token, this.data);
+                } else {
+                    console.log('[SYNC] No reset needed, keeping remote data');
                 }
 
                 this.saveLocal();
