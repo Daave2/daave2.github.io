@@ -98,6 +98,13 @@ function getGistId() {
 }
 
 /**
+ * Get username (simplified - just returns 'Team' for now)
+ */
+function getUsername() {
+    return 'Team';
+}
+
+/**
  * Create a new Gist for the checklist
  */
 async function createGist(token) {
