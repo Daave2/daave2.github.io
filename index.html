@@ -1163,6 +1163,19 @@
 
         // Use the existing Main Service Worker (sw.js) which now handles FCM + Caching
         const registration = await navigator.serviceWorker.ready;
+
+        // Wait for the service worker to be fully active
+        if (!registration.active) {
+          console.log('[FCM] Waiting for SW to activate...');
+          await new Promise(resolve => {
+            const checkActive = () => {
+              if (registration.active) resolve();
+              else setTimeout(checkActive, 100);
+            };
+            checkActive();
+          });
+        }
+
         messaging.useServiceWorker(registration);
         console.log('[FCM] Using Main Service Worker for Messaging');
 
