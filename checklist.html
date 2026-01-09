@@ -234,6 +234,45 @@
             margin-top: 0.25rem;
         }
 
+        /* Assignment dropdown */
+        .checklist-assign {
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checklist-assign select {
+            padding: 0.35rem 0.5rem;
+            border: 1px solid var(--border, #ddd);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: var(--card-bg, #fff);
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .checklist-assign select:focus {
+            outline: none;
+            border-color: var(--primary, #006400);
+        }
+
+        .assigned-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background: var(--primary, #006400);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .dark-mode .checklist-assign select {
+            background: var(--card-bg-dark, #2d2d2d);
+            border-color: #444;
+            color: #eee;
+        }
+
         /* Username display */
         .username-bar {
             display: flex;
@@ -420,7 +459,7 @@
 
     <!----- scripts ----->
     <script type="module">
-        import { checklistManager, DEFAULT_ITEMS, getUsername, setUsername, getGistId } from './js/modules/checklist.js';
+        import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS, getUsername, setUsername, getGistId } from './js/modules/checklist.js';
 
         // DOM Elements
         const setupScreen = document.getElementById('setup-screen');
@@ -453,6 +492,20 @@
         }
 
         /**
+         * Build assignment options HTML
+         */
+        function buildAssignOptions(currentAssignee) {
+            const isCustom = currentAssignee && !TEAM_MEMBERS.includes(currentAssignee);
+            let options = '<option value="">Assign to...</option>';
+            TEAM_MEMBERS.forEach(member => {
+                const selected = member === currentAssignee ? 'selected' : '';
+                options += `<option value="${member}" ${selected}>${member}</option>`;
+            });
+            options += `<option value="__other__" ${isCustom ? 'selected' : ''}>Other...</option>`;
+            return options;
+        }
+
+        /**
          * Render the checklist
          */
         function renderChecklist() {
@@ -472,6 +525,9 @@
 
                 category.items.forEach(item => {
                     const state = checklistManager.getItemState(item.id);
+                    const assignee = state.assignedTo;
+                    const isCustomAssignee = assignee && !TEAM_MEMBERS.includes(assignee);
+
                     const itemEl = document.createElement('div');
                     itemEl.className = `checklist-item${state.checked ? ' checked' : ''}`;
                     itemEl.dataset.id = item.id;
@@ -481,12 +537,24 @@
               ${state.checked ? '<i class="fas fa-check"></i>' : ''}
             </div>
             <div class="checklist-content">
-              <div class="checklist-label">${item.time ? `<span style="color: var(--primary); font-weight: 600;">${item.time}</span> – ` : ''}${item.label}</div>
+              <div class="checklist-label">
+                ${item.time ? `<span style="color: var(--primary); font-weight: 600;">${item.time}</span> – ` : ''}${item.label}
+                ${assignee ? `<span class="assigned-badge"><i class="fas fa-user-tag"></i> ${assignee}</span>` : ''}
+              </div>
               ${state.checked ? `<div class="checklist-meta">✓ ${state.checkedBy} at ${state.checkedAt}</div>` : ''}
+              <div class="checklist-assign">
+                <select class="assign-select" data-item-id="${item.id}">
+                  ${buildAssignOptions(assignee)}
+                </select>
+                ${isCustomAssignee ? `<input type="text" class="assign-other" value="${assignee}" placeholder="Name..." style="padding: 0.35rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; width: 100px;">` : ''}
+              </div>
             </div>
           `;
 
-                    itemEl.addEventListener('click', async () => {
+                    // Checkbox click handler (only on the checkbox itself)
+                    const checkbox = itemEl.querySelector('.checklist-checkbox');
+                    checkbox.addEventListener('click', async (e) => {
+                        e.stopPropagation();
                         itemEl.style.opacity = '0.5';
                         try {
                             await checklistManager.toggleItem(item.id);
@@ -496,6 +564,36 @@
                         }
                         itemEl.style.opacity = '1';
                     });
+
+                    // Assignment select handler
+                    const assignSelect = itemEl.querySelector('.assign-select');
+                    assignSelect.addEventListener('change', async (e) => {
+                        e.stopPropagation();
+                        const value = e.target.value;
+
+                        if (value === '__other__') {
+                            const customName = prompt('Enter name:');
+                            if (customName && customName.trim()) {
+                                try {
+                                    await checklistManager.assignItem(item.id, customName.trim());
+                                } catch (error) {
+                                    alert('Failed to assign. Please try again.');
+                                }
+                            } else {
+                                renderChecklist(); // Reset if cancelled
+                            }
+                        } else {
+                            try {
+                                await checklistManager.assignItem(item.id, value || null);
+                            } catch (error) {
+                                alert('Failed to assign. Please try again.');
+                            }
+                        }
+                    });
+
+                    // Prevent clicks on assign area from toggling checkbox
+                    const assignArea = itemEl.querySelector('.checklist-assign');
+                    assignArea.addEventListener('click', (e) => e.stopPropagation());
 
                     itemsEl.appendChild(itemEl);
                 });

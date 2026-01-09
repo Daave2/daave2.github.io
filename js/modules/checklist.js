@@ -8,6 +8,21 @@ const STORAGE_KEY_GIST_ID = 'checklist_gist_id';
 const STORAGE_KEY_USERNAME = 'checklist_username';
 const GIST_FILENAME = 'daily_checklist.json';
 
+// Team members for task assignment
+const TEAM_MEMBERS = [
+    'Tanny',
+    'Julie',
+    'Niki',
+    'Scott',
+    'Kev',
+    'Carl',
+    'Chris B',
+    'Sharon',
+    'Dan',
+    'Lisa',
+    'Bev'
+];
+
 // Default checklist items based on store procedures
 const DEFAULT_ITEMS = {
     morning: {
@@ -300,17 +315,16 @@ class ChecklistManager {
             throw new Error('Token required to update checklist');
         }
 
-        const currentState = this.data.items[itemId];
-        const isNowChecked = !currentState?.checked;
+        const currentState = this.data.items[itemId] || {};
+        const isNowChecked = !currentState.checked;
 
-        // Optimistic update
-        this.data.items[itemId] = isNowChecked
-            ? {
-                checked: true,
-                checkedBy: getUsername(),
-                checkedAt: getCurrentTime()
-            }
-            : { checked: false };
+        // Optimistic update - preserve assignment
+        this.data.items[itemId] = {
+            ...currentState,
+            checked: isNowChecked,
+            checkedBy: isNowChecked ? getUsername() : null,
+            checkedAt: isNowChecked ? getCurrentTime() : null
+        };
 
         this.data.lastUpdated = new Date().toISOString();
         this.data.lastUpdatedBy = getUsername();
@@ -323,6 +337,40 @@ class ChecklistManager {
         } catch (error) {
             // Revert on failure
             console.error('Failed to save:', error);
+            await this.sync();
+            throw error;
+        }
+    }
+
+    /**
+     * Assign a task to a team member
+     */
+    async assignItem(itemId, assignee) {
+        const gistId = getGistId();
+        const token = getToken();
+
+        if (!token) {
+            throw new Error('Token required to update checklist');
+        }
+
+        const currentState = this.data.items[itemId] || {};
+
+        // Update assignment
+        this.data.items[itemId] = {
+            ...currentState,
+            assignedTo: assignee || null
+        };
+
+        this.data.lastUpdated = new Date().toISOString();
+        this.data.lastUpdatedBy = getUsername();
+
+        this.notifyListeners();
+
+        // Persist to Gist
+        try {
+            await updateChecklist(gistId, token, this.data);
+        } catch (error) {
+            console.error('Failed to save assignment:', error);
             await this.sync();
             throw error;
         }
@@ -412,4 +460,4 @@ class ChecklistManager {
 
 // Export singleton instance
 export const checklistManager = new ChecklistManager();
-export { DEFAULT_ITEMS, getUsername, setUsername, getGistId };
+export { DEFAULT_ITEMS, TEAM_MEMBERS, getUsername, setUsername, getGistId };
