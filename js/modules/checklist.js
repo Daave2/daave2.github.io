@@ -228,6 +228,19 @@ class ChecklistManager {
             this.data.definitions = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
         }
 
+        // Repair Check: Ensure definitions are Objects {title, items}, not just Arrays
+        // This fixes the crash if bad data was saved previously.
+        Object.keys(this.data.definitions).forEach(catId => {
+            if (Array.isArray(this.data.definitions[catId])) {
+                console.warn(`Reparing definition category ${catId}: Converting Array to Object`);
+                const title = DEFAULT_ITEMS[catId]?.title || catId;
+                this.data.definitions[catId] = {
+                    title: title,
+                    items: this.data.definitions[catId]
+                };
+            }
+        });
+
         this.data = this.performDailyReset(this.data);
     }
 
@@ -338,12 +351,20 @@ class ChecklistManager {
                     await updateChecklist(gistId, token, this.data);
                 }
 
-                // If date changed in remote, we might need reset?
-                // Or if local logic sees date change.
+                // Repair check again on incoming data
+                Object.keys(this.data.definitions).forEach(catId => {
+                    if (Array.isArray(this.data.definitions[catId])) {
+                        const title = DEFAULT_ITEMS[catId]?.title || catId;
+                        this.data.definitions[catId] = {
+                            title: title,
+                            items: this.data.definitions[catId]
+                        };
+                    }
+                });
+
                 const needsReset = this.data.meta.currentDate !== getTodayDate();
                 if (needsReset) {
                     this.data = this.performDailyReset(this.data);
-                    // Push reset state?
                     await updateChecklist(gistId, token, this.data);
                 }
 
@@ -365,12 +386,16 @@ class ChecklistManager {
 
         // Convert simple lists to defined tasks with schedules
         Object.entries(defaultTasks).forEach(([catId, cat]) => {
-            definitions[catId] = cat.items.map(item => ({
-                id: item.id || `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                label: item.label,
-                time: item.time,
-                schedule: { type: 'daily' }
-            }));
+            // Fix: Ensure we write an Object {title, items}, not just an Array
+            definitions[catId] = {
+                title: cat.title || DEFAULT_ITEMS[catId]?.title || catId,
+                items: cat.items.map(item => ({
+                    id: item.id || `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                    label: item.label,
+                    time: item.time,
+                    schedule: { type: 'daily' }
+                }))
+            };
         });
 
         return {
@@ -426,11 +451,14 @@ class ChecklistManager {
     calculateStats(definitions, itemStates) {
         let total = 0;
         let completed = 0;
-        Object.values(definitions).forEach(items => {
-            items.forEach(task => {
-                total++;
-                if (itemStates[task.id]?.checked) completed++;
-            });
+        Object.values(definitions).forEach(category => {
+            // Fix: access .items array. Category is the Object {title, items}
+            if (category && Array.isArray(category.items)) {
+                category.items.forEach(task => {
+                    total++;
+                    if (itemStates[task.id]?.checked) completed++;
+                });
+            }
         });
         return { total, completed };
     }
@@ -456,16 +484,11 @@ class ChecklistManager {
             try {
                 freshData = await fetchChecklist(gistId, token);
             } catch (e) {
-                // If fetch fails here, we can't merge. Just keep local optimistic state?
-                // Or revert? Optimistic UI usually means we assume success.
-                // Retaining local state is safer.
                 console.error("Retry fetch failed, keeping local state un-synced");
                 return;
             }
 
             // 3. Re-apply update to fresh data (Resolution)
-            // Note: updateFn modifies IN PLACE. We should generally pass deepClone to avoid side effects?
-            // But here we want to modify freshData.
             updateFn(freshData);
 
             // 4. Update local
@@ -488,16 +511,19 @@ class ChecklistManager {
                 schedule: task.schedule || { type: 'daily' }
             };
             if (!data.definitions[categoryId]) {
-                data.definitions[categoryId] = [];
+                const title = DEFAULT_ITEMS[categoryId]?.title || categoryId;
+                data.definitions[categoryId] = { title: title, items: [] };
             }
-            data.definitions[categoryId].push(newTask);
+            // Fix: access .items
+            data.definitions[categoryId].items.push(newTask);
         });
     }
 
     async removeTask(categoryId, taskId) {
         await this.saveWithRetry((data) => {
-            if (data.definitions[categoryId]) {
-                data.definitions[categoryId] = data.definitions[categoryId].filter(t => t.id !== taskId);
+            if (data.definitions[categoryId] && data.definitions[categoryId].items) {
+                // Fix: access .items
+                data.definitions[categoryId].items = data.definitions[categoryId].items.filter(t => t.id !== taskId);
             }
             if (data.today.items[taskId]) {
                 delete data.today.items[taskId];
@@ -546,12 +572,16 @@ class ChecklistManager {
         // Reset result items to empty arrays to fill from definitions
         Object.keys(result).forEach(k => result[k].items = []);
 
-        Object.entries(this.data.definitions).forEach(([catId, tasks]) => {
+        Object.entries(this.data.definitions).forEach(([catId, category]) => {
+            // Fix: Handle malformed definitions if repair missed them
+            const tasks = Array.isArray(category) ? category : category.items;
+            const title = Array.isArray(category) ? catId : category.title;
+
             if (!result[catId]) {
-                // If definition category not in defaults, maybe create it?
-                // For now, simplify to defaults.
-                result[catId] = { title: catId, items: [] };
+                result[catId] = { title: title, items: [] };
             }
+
+            if (!tasks) return;
 
             result[catId].items = tasks.filter(task => {
                 const s = task.schedule;
@@ -583,6 +613,7 @@ class ChecklistManager {
     }
 
     getAllDefinitions() {
+        // Fix: Return properly structured objects
         return this.data?.definitions || {};
     }
 
@@ -600,12 +631,14 @@ class ChecklistManager {
         const tasks = this.getTodaysTasks();
 
         Object.values(tasks).forEach(category => {
-            category.items.forEach(item => {
-                total++;
-                if (this.data?.today?.items[item.id]?.checked) {
-                    completed++;
-                }
-            });
+            if (category.items) {
+                category.items.forEach(item => {
+                    total++;
+                    if (this.data?.today?.items[item.id]?.checked) {
+                        completed++;
+                    }
+                });
+            }
         });
 
         return { total, completed, percentage: total === 0 ? 0 : Math.round((completed / total) * 100) };
