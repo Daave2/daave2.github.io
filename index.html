@@ -1176,30 +1176,41 @@
         messaging.onMessage(async (payload) => {
           console.log('[FCM] Foreground message received:', payload);
 
+          // DEBUG: Header Toast
+          const msgTitle = payload.notification?.title || payload.data?.title || 'Notification';
+          if (window.notify) window.notify(`📩 Received: ${msgTitle}`, 4000);
+
           // Show notification via Service Worker to support actions
           if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
-            const title = payload.notification?.title || payload.data?.title || 'Task Reminder';
-            const body = payload.notification?.body || payload.data?.body || 'You have a task due!';
-            const taskId = payload.data?.taskId || '';
+            try {
+              const title = payload.notification?.title || payload.data?.title || 'Task Reminder';
+              const body = payload.notification?.body || payload.data?.body || 'You have a task due!';
+              const taskId = payload.data?.taskId || '';
 
-            const registration = await navigator.serviceWorker.ready;
+              const registration = await navigator.serviceWorker.ready;
 
-            // Use showNotification to enable actions
-            registration.showNotification(title, {
-              body: body,
-              icon: '/icons/icon-192x192.png',
-              badge: '/icons/favicon-32x32.png',
-              tag: taskId || 'task-notification',
-              data: {
-                taskId: taskId,
-                url: payload.data?.click_action || 'https://218.team/'
-              },
-              actions: [
-                { action: 'view', title: '👁️ View Task' },
-                { action: 'complete', title: '✅ Confirm Done' }
-              ],
-              vibrate: [200, 100, 200]
-            });
+              // Use showNotification to enable actions
+              await registration.showNotification(title, {
+                body: body,
+                icon: '/icons/icon-192x192.png',
+                badge: '/icons/favicon-32x32.png',
+                tag: taskId || 'task-notification-' + Date.now(), // Force unique
+                data: {
+                  taskId: taskId,
+                  url: payload.data?.click_action || 'https://218.team/'
+                },
+                actions: [
+                  { action: 'view', title: '👁️ View Task' },
+                  { action: 'complete', title: '✅ Confirm Done' }
+                ],
+                requireInteraction: true,
+                vibrate: [200, 100, 200]
+              });
+              console.log('[FCM] Notification request sent to SW');
+            } catch (err) {
+              console.error('[FCM] Notification Error:', err);
+              if (window.notify) window.notify('❌ Notify Error: ' + err.message, 5000);
+            }
           }
         });
 
