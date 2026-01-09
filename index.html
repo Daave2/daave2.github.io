@@ -858,9 +858,47 @@
       }
     }
 
+    // Request notification permission on page load
+    async function requestNotificationPermission() {
+      if (!('Notification' in window)) {
+        console.log('This browser does not support notifications');
+        return false;
+      }
+      if (Notification.permission === 'granted') {
+        return true;
+      }
+      if (Notification.permission !== 'denied') {
+        const permission = await Notification.requestPermission();
+        return permission === 'granted';
+      }
+      return false;
+    }
+
+    // Send a native device notification
+    function sendDeviceNotification(title, body, icon = '/favicon.ico') {
+      if (Notification.permission === 'granted') {
+        const notification = new Notification(title, {
+          body: body,
+          icon: icon,
+          badge: icon,
+          tag: body, // Prevents duplicate notifications
+          requireInteraction: true // Keeps notification until user dismisses
+        });
+
+        // Focus the tab when notification is clicked
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+
+        return true;
+      }
+      return false;
+    }
+
     function checkDueTasks() {
       const username = getUsername();
-      if (!username || username === 'Team' || !window.notify) return;
+      if (!username || username === 'Team') return;
 
       const now = new Date();
       const items = checklistManager.getItems();
@@ -882,18 +920,25 @@
             // 2. Overdue (< 0 mins)
 
             if (diffMins <= 10 && diffMins > 0) {
-              const key = `${task.id}-soon-${diffMins}`;
-              // Alert once per range logic approx? 
-              // Let's just alert once for "soon"
               if (!notifiedTasks.has(`${task.id}-soon`)) {
-                window.notify(`⚠️ Task "${task.label}" is due in ${diffMins} mins!`, 5000);
+                const sent = sendDeviceNotification(
+                  '⚠️ Task Due Soon',
+                  `"${task.label}" is due in ${diffMins} mins!`
+                );
+                if (!sent && window.notify) {
+                  window.notify(`⚠️ Task "${task.label}" is due in ${diffMins} mins!`, 5000);
+                }
                 notifiedTasks.add(`${task.id}-soon`);
               }
             } else if (diffMins <= 0) {
-              // Overdue
-              // Alert every time? No, annoyance. Alert once on overdue.
               if (!notifiedTasks.has(`${task.id}-overdue`)) {
-                window.notify(`🚨 Task "${task.label}" is OVERDUE!`, 6000);
+                const sent = sendDeviceNotification(
+                  '🚨 Task OVERDUE',
+                  `"${task.label}" is overdue!`
+                );
+                if (!sent && window.notify) {
+                  window.notify(`🚨 Task "${task.label}" is OVERDUE!`, 6000);
+                }
                 notifiedTasks.add(`${task.id}-overdue`);
               }
             }
@@ -901,6 +946,9 @@
         });
       });
     }
+
+    // Request permission when page loads
+    requestNotificationPermission();
 
     widgetSync.addEventListener('click', async () => {
       widgetSync.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
