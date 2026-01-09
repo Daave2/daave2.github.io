@@ -20,7 +20,8 @@
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <!-- Using updated Font Awesome version -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -89,6 +90,9 @@
           </button>
           <button id="widget-manage" class="widget-sync-btn" title="Manage Tasks">
             <i class="fas fa-cog"></i>
+          </button>
+          <button id="widget-reset-token" class="widget-sync-btn" title="Reset Token/Login">
+            <i class="fas fa-key"></i>
           </button>
           <button id="widget-sync" class="widget-sync-btn" title="Sync">
             <i class="fas fa-sync-alt"></i>
@@ -903,6 +907,17 @@
         console.error(err);
       }
       widgetSync.innerHTML = '<i class="fas fa-sync-alt"></i>';
+    });
+
+    // Reset Token Handler
+    document.getElementById('widget-reset-token').addEventListener('click', () => {
+      if (confirm('Reset authentication token? You will need to re-enter it.')) {
+        setToken(''); // Clear token
+        // Optional: clear username too if they want full reset? Keep username for convenience.
+        // Actually, if 403, might be wrong user entirely.
+        // setUsername(''); 
+        location.reload();
+      }
     });
 
     initWidget();

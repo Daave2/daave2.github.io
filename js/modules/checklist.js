@@ -196,6 +196,12 @@ async function updateChecklist(gistId, token, data) {
 
     if (!response.ok) {
         console.error('Update failed:', response.status, response.statusText);
+        if (response.status === 403) {
+            throw new Error(`Permission Denied (403). Your token might be invalid or missing scopes. Try the "Reset Token" (key icon) button.`);
+        }
+        if (response.status === 404) {
+            throw new Error('Gist not found. Check ID or Token.');
+        }
         throw new Error(`Failed to update Gist: ${response.status}`);
     } else {
         console.log('Gist update successful');
