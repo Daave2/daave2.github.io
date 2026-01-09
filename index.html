@@ -581,8 +581,10 @@
       manageList.innerHTML = '';
       const definitions = checklistManager.getAllDefinitions();
 
-      Object.entries(definitions).forEach(([categoryId, tasks]) => {
-        const catTitle = DEFAULT_ITEMS[categoryId]?.title || categoryId;
+      Object.entries(definitions).forEach(([categoryId, category]) => {
+        // Handle both Object {title, items} and Array formats
+        const tasks = Array.isArray(category) ? category : (category.items || []);
+        const catTitle = category.title || DEFAULT_ITEMS[categoryId]?.title || categoryId;
         const catHeader = document.createElement('div');
         catHeader.className = 'manage-category-header';
         catHeader.textContent = catTitle;
