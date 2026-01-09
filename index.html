@@ -898,6 +898,7 @@
 
     function checkDueTasks() {
       const username = getUsername();
+      console.log('[NOTIFY] Checking due tasks for user:', username, 'Permission:', Notification.permission);
       if (!username || username === 'Team') return;
 
       const now = new Date();
@@ -907,6 +908,11 @@
         category.items.forEach(task => {
           const state = checklistManager.getItemState(task.id);
 
+          // Debug: Log each task's assignment status
+          if (task.time && task.time.includes(':')) {
+            console.log('[NOTIFY] Task:', task.label, 'Time:', task.time, 'AssignedTo:', state.assignedTo, 'Checked:', state.checked);
+          }
+
           // Only check assignments for current user that are incomplete
           if (state.assignedTo === username && !state.checked) {
             const dueTime = parseTime(task.time);
@@ -914,6 +920,7 @@
 
             const diffMs = dueTime - now;
             const diffMins = Math.floor(diffMs / 60000);
+            console.log('[NOTIFY] Due task found:', task.label, 'diffMins:', diffMins, 'alreadyNotified:', notifiedTasks.has(`${task.id}-overdue`));
 
             // Logic: 
             // 1. Due soon (0-10 mins)
