@@ -74,6 +74,26 @@
       </div>
     </section>
 
+    <!-- Daily Checklist Widget -->
+    <section id="checklist-widget" class="checklist-widget">
+      <div class="checklist-widget-header">
+        <h2><i class="fas fa-clipboard-check"></i> Daily Checklist</h2>
+        <div class="checklist-widget-controls">
+          <span id="widget-progress" class="widget-progress">0/0</span>
+          <button id="widget-sync" class="widget-sync-btn" title="Sync">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div>
+      </div>
+      <div id="widget-loading" class="widget-loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading...
+      </div>
+      <div id="widget-error" class="widget-error" style="display: none;">
+        Checklist unavailable
+      </div>
+      <div id="widget-content" class="widget-content" style="display: none;"></div>
+    </section>
+
     <!-- dashboard -->
     <section id="dashboard">
       <h2>Quick Links</h2>
@@ -293,6 +313,143 @@
 
   <!----- scripts ----->
   <script src="script.js" type="module"></script>
+
+  <!-- Checklist Widget Script -->
+  <script type="module">
+    import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS } from './js/modules/checklist.js';
+
+    const widgetLoading = document.getElementById('widget-loading');
+    const widgetError = document.getElementById('widget-error');
+    const widgetContent = document.getElementById('widget-content');
+    const widgetProgress = document.getElementById('widget-progress');
+    const widgetSync = document.getElementById('widget-sync');
+
+    function buildAssignOptions(currentAssignee) {
+      const isCustom = currentAssignee && !TEAM_MEMBERS.includes(currentAssignee);
+      let options = '<option value="">Assign...</option>';
+      TEAM_MEMBERS.forEach(member => {
+        const selected = member === currentAssignee ? 'selected' : '';
+        options += `<option value="${member}" ${selected}>${member}</option>`;
+      });
+      options += `<option value="__other__" ${isCustom ? 'selected' : ''}>Other...</option>`;
+      return options;
+    }
+
+    function renderWidget() {
+      widgetContent.innerHTML = '';
+      let total = 0, completed = 0;
+
+      Object.entries(DEFAULT_ITEMS).forEach(([categoryId, category]) => {
+        const categoryEl = document.createElement('div');
+        categoryEl.className = 'widget-category';
+
+        const headerEl = document.createElement('div');
+        headerEl.className = 'widget-category-header';
+        headerEl.innerHTML = `<i class="fas fa-chevron-down"></i> ${category.title}`;
+        headerEl.addEventListener('click', () => {
+          categoryEl.classList.toggle('collapsed');
+          headerEl.querySelector('i').className = categoryEl.classList.contains('collapsed')
+            ? 'fas fa-chevron-right' : 'fas fa-chevron-down';
+        });
+        categoryEl.appendChild(headerEl);
+
+        const itemsEl = document.createElement('div');
+        itemsEl.className = 'widget-items';
+
+        category.items.forEach(item => {
+          total++;
+          const state = checklistManager.getItemState(item.id);
+          if (state.checked) completed++;
+
+          const itemEl = document.createElement('div');
+          itemEl.className = `widget-item${state.checked ? ' checked' : ''}`;
+
+          itemEl.innerHTML = `
+            <div class="widget-checkbox" data-id="${item.id}">
+              ${state.checked ? '<i class="fas fa-check"></i>' : ''}
+            </div>
+            <div class="widget-item-content">
+              <span class="widget-item-label">
+                ${item.time ? `<strong>${item.time}</strong> ` : ''}${item.label}
+                ${state.assignedTo ? `<span class="widget-badge">${state.assignedTo}</span>` : ''}
+              </span>
+              ${state.checked ? `<span class="widget-meta">✓ ${state.checkedBy} ${state.checkedAt}</span>` : ''}
+            </div>
+            <select class="widget-assign" data-id="${item.id}">
+              ${buildAssignOptions(state.assignedTo)}
+            </select>
+          `;
+
+          // Checkbox click
+          itemEl.querySelector('.widget-checkbox').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            try {
+              await checklistManager.toggleItem(item.id);
+            } catch (err) {
+              console.error(err);
+            }
+          });
+
+          // Assignment change
+          itemEl.querySelector('.widget-assign').addEventListener('change', async (e) => {
+            e.stopPropagation();
+            const val = e.target.value;
+            if (val === '__other__') {
+              const name = prompt('Enter name:');
+              if (name?.trim()) {
+                await checklistManager.assignItem(item.id, name.trim());
+              } else {
+                renderWidget();
+              }
+            } else {
+              await checklistManager.assignItem(item.id, val || null);
+            }
+          });
+
+          itemsEl.appendChild(itemEl);
+        });
+
+        categoryEl.appendChild(itemsEl);
+        widgetContent.appendChild(categoryEl);
+      });
+
+      widgetProgress.textContent = `${completed}/${total}`;
+    }
+
+    async function initWidget() {
+      if (!checklistManager.isConfigured()) {
+        widgetLoading.style.display = 'none';
+        widgetError.style.display = 'block';
+        return;
+      }
+
+      try {
+        await checklistManager.sync();
+        widgetLoading.style.display = 'none';
+        widgetContent.style.display = 'block';
+        renderWidget();
+
+        checklistManager.subscribe(() => renderWidget());
+        checklistManager.startAutoSync(30000);
+      } catch (err) {
+        console.error('Widget init failed:', err);
+        widgetLoading.style.display = 'none';
+        widgetError.style.display = 'block';
+      }
+    }
+
+    widgetSync.addEventListener('click', async () => {
+      widgetSync.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      try {
+        await checklistManager.sync();
+      } catch (err) {
+        console.error(err);
+      }
+      widgetSync.innerHTML = '<i class="fas fa-sync-alt"></i>';
+    });
+
+    initWidget();
+  </script>
 </body>
 
 </html>

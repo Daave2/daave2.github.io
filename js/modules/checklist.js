@@ -3,9 +3,11 @@
  * Syncs checklist state to a GitHub Gist for shared team access
  */
 
-const STORAGE_KEY_TOKEN = 'checklist_github_token';
-const STORAGE_KEY_GIST_ID = 'checklist_gist_id';
-const STORAGE_KEY_USERNAME = 'checklist_username';
+// Import credentials from config (gitignored)
+import { CHECKLIST_CONFIG } from './checklist-config.js';
+
+const HARDCODED_TOKEN = CHECKLIST_CONFIG.token;
+const HARDCODED_GIST_ID = CHECKLIST_CONFIG.gistId;
 const GIST_FILENAME = 'daily_checklist.json';
 
 // Team members for task assignment
@@ -77,45 +79,17 @@ function getCurrentTime() {
 }
 
 /**
- * Get stored GitHub token
+ * Get GitHub token (hardcoded)
  */
 function getToken() {
-    return localStorage.getItem(STORAGE_KEY_TOKEN);
+    return HARDCODED_TOKEN;
 }
 
 /**
- * Set GitHub token
- */
-function setToken(token) {
-    localStorage.setItem(STORAGE_KEY_TOKEN, token);
-}
-
-/**
- * Get stored Gist ID
+ * Get Gist ID (hardcoded)
  */
 function getGistId() {
-    return localStorage.getItem(STORAGE_KEY_GIST_ID);
-}
-
-/**
- * Set Gist ID
- */
-function setGistId(id) {
-    localStorage.setItem(STORAGE_KEY_GIST_ID, id);
-}
-
-/**
- * Get stored username
- */
-function getUsername() {
-    return localStorage.getItem(STORAGE_KEY_USERNAME) || 'Anonymous';
-}
-
-/**
- * Set username
- */
-function setUsername(name) {
-    localStorage.setItem(STORAGE_KEY_USERNAME, name);
+    return HARDCODED_GIST_ID;
 }
 
 /**
@@ -232,46 +206,10 @@ class ChecklistManager {
     }
 
     /**
-     * Check if properly configured
+     * Check if properly configured (hardcoded values are set)
      */
     isConfigured() {
-        return !!(getToken() && getGistId());
-    }
-
-    /**
-     * Configure the checklist with token and optional Gist ID
-     */
-    async configure(token, gistId = null, username = 'Anonymous') {
-        setToken(token);
-        setUsername(username);
-
-        if (gistId) {
-            setGistId(gistId);
-        } else {
-            // Create new Gist
-            const newGistId = await createGist(token);
-            setGistId(newGistId);
-        }
-
-        await this.sync();
-    }
-
-    /**
-     * Get configuration status
-     */
-    getConfig() {
-        return {
-            hasToken: !!getToken(),
-            gistId: getGistId(),
-            username: getUsername()
-        };
-    }
-
-    /**
-     * Update username
-     */
-    updateUsername(name) {
-        setUsername(name);
+        return HARDCODED_TOKEN !== 'PASTE_TOKEN_HERE' && HARDCODED_GIST_ID !== 'PASTE_GIST_ID_HERE';
     }
 
     /**
@@ -460,4 +398,4 @@ class ChecklistManager {
 
 // Export singleton instance
 export const checklistManager = new ChecklistManager();
-export { DEFAULT_ITEMS, TEAM_MEMBERS, getUsername, setUsername, getGistId };
+export { DEFAULT_ITEMS, TEAM_MEMBERS, getGistId };

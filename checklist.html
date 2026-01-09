@@ -372,48 +372,18 @@
         <h1><i class="fas fa-clipboard-check"></i> Daily Checklist</h1>
         <p>Shared checklist for the team. Changes sync automatically.</p>
 
-        <!-- Setup screen (shown when not configured) -->
-        <div id="setup-screen" class="checklist-setup" style="display: none;">
-            <h2><i class="fas fa-cog"></i> Setup Required</h2>
-            <p>To share checklists with your team, we need to connect to GitHub.</p>
-
-            <label for="setup-username">Your Name</label>
-            <input type="text" id="setup-username" placeholder="e.g., Niki" required>
-
-            <label for="setup-token">GitHub Token</label>
-            <input type="password" id="setup-token" placeholder="ghp_xxxxxxxxxxxx" required>
-            <p class="help-text">
-                <a href="https://github.com/settings/tokens/new?scopes=gist&description=Morrisons%20Checklist"
-                    target="_blank" rel="noopener">
-                    Create a token here <i class="fas fa-external-link-alt fa-xs"></i>
-                </a> – Only needs "gist" permission.
-            </p>
-
-            <label for="setup-gist">Gist ID (optional)</label>
-            <input type="text" id="setup-gist" placeholder="Leave blank to create new">
-            <p class="help-text">Leave blank for first-time setup. Share the Gist ID with colleagues after setup.</p>
-
-            <button id="setup-submit">
-                <i class="fas fa-rocket"></i> Get Started
-            </button>
-
-            <div id="setup-error" class="error-message" style="display: none;"></div>
+        <!-- Error message (shown if not configured) -->
+        <div id="error-screen" class="error-message" style="display: none;">
+            <strong>Setup Required:</strong> The checklist is not yet configured. Please contact the administrator.
         </div>
 
         <!-- Loading state -->
-        <div id="loading-screen" class="loading-spinner" style="display: none;">
+        <div id="loading-screen" class="loading-spinner">
             <i class="fas fa-spinner"></i>
         </div>
 
-        <!-- Checklist screen (shown when configured) -->
+        <!-- Checklist screen -->
         <div id="checklist-screen" style="display: none;">
-
-            <!-- Username bar -->
-            <div class="username-bar">
-                <label for="current-username"><i class="fas fa-user"></i></label>
-                <input type="text" id="current-username" placeholder="Your name">
-                <span class="help-text">Checks will show your name</span>
-            </div>
 
             <!-- Progress -->
             <div class="progress-container">
@@ -427,19 +397,9 @@
                 <div class="sync-info">
                     <span id="last-sync">Last sync: --</span>
                     <button id="sync-button">
-                        <i class="fas fa-sync-alt"></i> Sync Now
+                        <i class="fas fa-sync-alt"></i> Sync
                     </button>
                 </div>
-            </div>
-
-            <!-- Gist ID display -->
-            <div class="username-bar" style="margin-bottom: 1.5rem;">
-                <label><i class="fas fa-share-alt"></i></label>
-                <input type="text" id="gist-id-display" readonly style="font-family: monospace; font-size: 0.85rem;">
-                <button id="copy-gist-id"
-                    style="padding: 0.5rem 1rem; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">
-                    <i class="fas fa-copy"></i>
-                </button>
             </div>
 
             <!-- Checklist categories container -->
@@ -459,10 +419,10 @@
 
     <!----- scripts ----->
     <script type="module">
-        import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS, getUsername, setUsername, getGistId } from './js/modules/checklist.js';
+        import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS, getGistId } from './js/modules/checklist.js';
 
         // DOM Elements
-        const setupScreen = document.getElementById('setup-screen');
+        const errorScreen = document.getElementById('error-screen');
         const loadingScreen = document.getElementById('loading-screen');
         const checklistScreen = document.getElementById('checklist-screen');
         const checklistContainer = document.getElementById('checklist-container');
@@ -470,22 +430,12 @@
         const progressFill = document.getElementById('progress-fill');
         const lastSyncEl = document.getElementById('last-sync');
         const syncButton = document.getElementById('sync-button');
-        const usernameInput = document.getElementById('current-username');
-        const gistIdDisplay = document.getElementById('gist-id-display');
-        const copyGistIdBtn = document.getElementById('copy-gist-id');
-
-        // Setup form elements
-        const setupUsername = document.getElementById('setup-username');
-        const setupToken = document.getElementById('setup-token');
-        const setupGist = document.getElementById('setup-gist');
-        const setupSubmit = document.getElementById('setup-submit');
-        const setupError = document.getElementById('setup-error');
 
         /**
          * Show a specific screen
          */
         function showScreen(screen) {
-            setupScreen.style.display = 'none';
+            errorScreen.style.display = 'none';
             loadingScreen.style.display = 'none';
             checklistScreen.style.display = 'none';
             screen.style.display = screen === loadingScreen ? 'flex' : 'block';
@@ -634,94 +584,36 @@
             document.getElementById('footer-year').textContent = new Date().getFullYear();
 
             if (!checklistManager.isConfigured()) {
-                showScreen(setupScreen);
+                showScreen(errorScreen);
                 return;
             }
 
-            showScreen(loadingScreen);
-
             try {
                 await checklistManager.sync();
-                usernameInput.value = getUsername();
-                gistIdDisplay.value = getGistId();
                 showScreen(checklistScreen);
                 renderChecklist();
 
                 // Subscribe to updates
                 checklistManager.subscribe(() => renderChecklist());
 
-                // Start auto-sync
+                // Start auto-sync every 30 seconds
                 checklistManager.startAutoSync(30000);
             } catch (error) {
                 console.error('Init failed:', error);
-                showScreen(setupScreen);
-                setupError.textContent = `Failed to load: ${error.message}. Try reconfiguring.`;
-                setupError.style.display = 'block';
+                errorScreen.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                showScreen(errorScreen);
             }
         }
 
-        // Setup form handler
-        setupSubmit.addEventListener('click', async () => {
-            const username = setupUsername.value.trim();
-            const token = setupToken.value.trim();
-            const gistId = setupGist.value.trim();
-
-            if (!username || !token) {
-                setupError.textContent = 'Please enter your name and token.';
-                setupError.style.display = 'block';
-                return;
-            }
-
-            setupSubmit.disabled = true;
-            setupSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting up...';
-            setupError.style.display = 'none';
-
-            try {
-                await checklistManager.configure(token, gistId || null, username);
-                gistIdDisplay.value = getGistId();
-                usernameInput.value = username;
-                showScreen(checklistScreen);
-                renderChecklist();
-
-                // Show success message with Gist ID
-                alert(`Setup complete! Share this Gist ID with your team:\n\n${getGistId()}`);
-
-                // Subscribe and start sync
-                checklistManager.subscribe(() => renderChecklist());
-                checklistManager.startAutoSync(30000);
-            } catch (error) {
-                console.error('Setup failed:', error);
-                setupError.textContent = `Setup failed: ${error.message}`;
-                setupError.style.display = 'block';
-                setupSubmit.disabled = false;
-                setupSubmit.innerHTML = '<i class="fas fa-rocket"></i> Get Started';
-            }
-        });
-
         // Sync button
         syncButton.addEventListener('click', async () => {
-            syncButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+            syncButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             try {
                 await checklistManager.sync();
             } catch (error) {
                 alert('Sync failed: ' + error.message);
             }
-            syncButton.innerHTML = '<i class="fas fa-sync-alt"></i> Sync Now';
-        });
-
-        // Username input
-        usernameInput.addEventListener('change', () => {
-            setUsername(usernameInput.value.trim() || 'Anonymous');
-        });
-
-        // Copy Gist ID
-        copyGistIdBtn.addEventListener('click', () => {
-            gistIdDisplay.select();
-            navigator.clipboard.writeText(gistIdDisplay.value);
-            copyGistIdBtn.innerHTML = '<i class="fas fa-check"></i>';
-            setTimeout(() => {
-                copyGistIdBtn.innerHTML = '<i class="fas fa-copy"></i>';
-            }, 2000);
+            syncButton.innerHTML = '<i class="fas fa-sync-alt"></i> Sync';
         });
 
         // Start the app
