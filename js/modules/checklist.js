@@ -278,11 +278,19 @@ class ChecklistManager {
         try {
             const freshData = await fetchChecklist(gistId, token);
 
-            // Simple conflict resolution:
-            // If local data is "newer" (based on optimisic update), we might want to be careful.
-            // But for now, we assume Gist is truth. 
-            // PROBLEM: If we just saved, Gist might be stale for a few seconds (eventual consistency).
-            // Fix: Check timestamps? Or just rely on the fact that we push updates immediately.
+            // Conflict Check:
+            // If local data is newer than remote, DO NOT overwrite by default.
+            if (this.data && this.data.meta && this.data.meta.lastUpdated && freshData.meta && freshData.meta.lastUpdated) {
+                const localTime = new Date(this.data.meta.lastUpdated).getTime();
+                const remoteTime = new Date(freshData.meta.lastUpdated).getTime();
+
+                // Allow a small drift window (e.g. 2s) or strict?
+                // Strict: if local > remote, we skip applying.
+                if (localTime > remoteTime) {
+                    console.log('Local data is newer, skipping sync overwrite.');
+                    return this.data;
+                }
+            }
 
             // If we are actively editing, maybe don't overwrite?
             // Let's just update for now. 

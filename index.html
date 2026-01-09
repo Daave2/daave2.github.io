@@ -400,12 +400,12 @@
 
       if (name && name !== 'Team') {
         heroGreeting.textContent = `${greeting}, ${name}`;
-        heroChangeName.style.display = 'block';
         changeNameLink.textContent = `Not ${name}?`;
       } else {
         heroGreeting.textContent = 'Welcome';
-        heroChangeName.style.display = 'none';
+        changeNameLink.textContent = 'Set Name';
       }
+      heroChangeName.style.display = 'block';
     }
 
     // Handle name change
