@@ -1,10 +1,85 @@
 // sw.js
+// Combined Service Worker: Caching + Firebase Cloud Messaging
 
-const CACHE_NAME = 'cleveleys-dash-cache-v6'; // Force refresh for FCM debugging
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
+
+// --- Firebase Messaging Setup ---
+
+// Firebase config
+firebase.initializeApp({
+    apiKey: "AIzaSyCPiQ91EOGaK6woOPYefg4TMylGP1esGec",
+    authDomain: "morrisons-checklist.firebaseapp.com",
+    projectId: "morrisons-checklist",
+    storageBucket: "morrisons-checklist.firebasestorage.app",
+    messagingSenderId: "394294868202",
+    appId: "1:394294868202:web:31e9554768582b781bff93"
+});
+
+const messaging = firebase.messaging();
+
+// Handle background messages
+messaging.onBackgroundMessage((payload) => {
+    console.log('[FCM SW] Received background message:', payload);
+
+    const notificationTitle = payload.notification?.title || payload.data?.title || 'Task Reminder';
+    const taskId = payload.data?.taskId || '';
+    const notificationOptions = {
+        body: payload.notification?.body || payload.data?.body || 'You have a task due!',
+        icon: '/icons/icon-192x192.png',
+        badge: '/icons/favicon-32x32.png',
+        tag: taskId || 'task-notification',
+        requireInteraction: true,
+        vibrate: [200, 100, 200],
+        data: {
+            taskId: taskId,
+            url: payload.data?.click_action || 'https://218.team/'
+        },
+        actions: [
+            { action: 'view', title: '👁️ View Task' },
+            { action: 'complete', title: '✅ Confirm Done' }
+        ]
+    };
+
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// Handle notification click
+self.addEventListener('notificationclick', (event) => {
+    console.log('[FCM SW] Notification clicked:', event.action, event.notification.data);
+    event.notification.close();
+
+    const taskId = event.notification.data?.taskId || '';
+    let targetUrl = 'https://218.team/';
+
+    if (event.action === 'complete') {
+        targetUrl = `https://218.team/?action=complete&taskId=${taskId}`;
+    } else if (event.action === 'view' || !event.action) {
+        targetUrl = `https://218.team/?highlight=${taskId}`;
+    }
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+            for (const client of clientList) {
+                if (client.url.includes('218.team') && 'focus' in client) {
+                    client.navigate(targetUrl);
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(targetUrl);
+            }
+        })
+    );
+});
+
+// --- PWA Caching Setup ---
+
+const CACHE_NAME = 'cleveleys-dash-cache-v7'; // Merged SW version
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [
-    '/', // Cache the root path if it serves index.html
+    '/',
     '/index.html',
     '/online.html',
     '/street.html',
@@ -13,49 +88,37 @@ const APP_SHELL_URLS = [
     '/contacts.html',
     '/shrink.html',
     '/safe-and-legal.html',
-    '/dash.html', // Include dash.html if still used
+    '/dash.html',
     '/offline.html',
-    // '/css/style.css', // If you had separate CSS files
-    // '/js/main.js',   // If you had separate JS files
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
-    // Add external resources you want to cache for offline use (be careful with versioning)
     'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css',
     'https://upload.wikimedia.org/wikipedia/en/thumb/8/82/MorrisonsLogo.svg/220px-MorrisonsLogo.svg.png'
-    // REMOVED: 'https://cdn.jsdelivr.net/npm/otplib-browser@12.0.1/dist/otplib-browser.umd.min.js' // Cache OTP library
-    // REMOVED or COMMENTED OUT: '/js/vendor/otplib-browser.umd.min.js' // Also remove if you added the local version
-    // Add any other critical JS/CSS CDNs or Fonts used across pages
 ];
 
-// Install Event: Cache the app shell
+// Install Event
 self.addEventListener('install', (event) => {
     console.log('[Service Worker] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
                 console.log('[Service Worker] Caching App Shell...');
-                // Use addAll for atomic caching. If one fails, none are cached.
-                // Using cache.add() individually might be safer if some URLs might fail
-                // but you still want others cached.
                 const promises = APP_SHELL_URLS.map(url => {
                     return cache.add(url).catch(err => {
                         console.warn(`[Service Worker] Failed to cache: ${url}`, err);
-                        // We are now ignoring failures here, as OTP was the main issue
                     });
                 });
-                // Wait for all adds, even if some failed (like font awesome etc if offline)
                 return Promise.all(promises);
             })
             .then(() => {
-                console.log('[Service Worker] App Shell Caching initiated (some files might have failed).');
-                // Force the waiting service worker to become the active service worker
+                console.log('[Service Worker] App Shell Caching initiated.');
                 return self.skipWaiting();
             })
     );
 });
 
-// Activate Event: Clean up old caches
+// Activate Event
 self.addEventListener('activate', (event) => {
     console.log('[Service Worker] Activating...');
     event.waitUntil(
@@ -63,32 +126,29 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[Service Worker] Removing old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         }).then(() => {
             console.log('[Service Worker] Activated, claiming clients.');
-            // Tell the active service worker to take control of the page immediately.
             return self.clients.claim();
         })
     );
 });
 
-// Fetch Event: Serve cached content when offline (Cache-First strategy for app shell)
+// Fetch Event
 self.addEventListener('fetch', (event) => {
-    // Only handle GET requests
     if (event.request.method !== 'GET') {
         return;
     }
 
-    // Ignore Cloud Functions calls (let them fail or succeed normally, don't cache or show offline page)
+    // Ignore Cloud Functions calls
     if (event.request.url.includes('cloudfunctions.net')) {
         return;
     }
 
-    // For navigation requests (HTML pages), try network first, then cache, then offline page
+    // Navigate requests
     if (event.request.mode === 'navigate') {
         event.respondWith(
             fetch(event.request)
@@ -102,29 +162,14 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // For other requests (CSS, JS, images, fonts), use Cache-First strategy
+    // Other requests (Cache First)
     event.respondWith(
         caches.match(event.request)
             .then((cachedResponse) => {
-                // If resource is in cache, return it
                 if (cachedResponse) {
-                    // console.log('[Service Worker] Serving from cache:', event.request.url);
                     return cachedResponse;
                 }
-
-                // If resource is not in cache, fetch from network
-                // console.log('[Service Worker] Fetching from network:', event.request.url);
                 return fetch(event.request).then(networkResponse => {
-                    // Optional: Cache the newly fetched resource dynamically (useful for assets not in the initial shell)
-                    // Be careful with this, might cache unnecessary things or large files.
-                    /*
-                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') { // Only cache basic, same-origin responses
-                        const responseToCache = networkResponse.clone();
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    }
-                    */
                     return networkResponse;
                 }).catch(() => {
                     return caches.match('/offline.html');
