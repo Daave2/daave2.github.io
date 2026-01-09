@@ -519,30 +519,38 @@
 
     // Frequency UI Logic
     const freqSelect = document.getElementById('new-task-freq');
-    const freqOptions = document.getElementById('freq-options');
+    const freqDateContainer = document.getElementById('freq-date-container');
+    const freqDate = document.getElementById('freq-date');
+    const freqHint = document.getElementById('freq-hint');
 
-    freqSelect.addEventListener('change', () => {
+    // Set min date to today
+    const todayStr = new Date().toISOString().split('T')[0];
+    freqDate.min = todayStr;
+    freqDate.value = todayStr;
+
+    function updateFreqUI() {
       const val = freqSelect.value;
-      freqOptions.innerHTML = '';
+      const dateVal = freqDate.value;
+
+      freqHint.textContent = '';
+      freqDateContainer.style.display = 'none';
 
       if (val === 'weekly') {
-        freqOptions.innerHTML = `
-                <div style="font-size: 0.8rem;">Select Days:</div>
-                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-                    ${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => `
-                        <label style="cursor: pointer; display: inline-flex; flex-direction: column; align-items: center;">
-                            <input type="checkbox" name="freq-day" value="${i}"> ${d}
-                        </label>
-                    `).join('')}
-                </div>
-            `;
+        freqDateContainer.style.display = 'block';
+        if (dateVal) {
+          const dayName = new Date(dateVal).toLocaleDateString('en-US', { weekday: 'long' });
+          freqHint.textContent = `Will repeat every ${dayName}`;
+        } else {
+          freqHint.textContent = 'Pick a date to set the day of week';
+        }
       } else if (val === 'once') {
-        const today = new Date().toISOString().split('T')[0];
-        freqOptions.innerHTML = `
-                <input type="date" id="freq-date" min="${today}" style="width: 100%; padding: 0.25rem;">
-            `;
+        freqDateContainer.style.display = 'block';
+        freqHint.textContent = dateVal ? `Will appear on ${dateVal} only` : 'Pick a due date';
       }
-    });
+    }
+
+    freqSelect.addEventListener('change', updateFreqUI);
+    freqDate.addEventListener('input', updateFreqUI);
 
     // Open management modal
     manageBtn.addEventListener('click', () => {
@@ -550,7 +558,8 @@
       manageModal.style.display = 'flex';
       // Reset freq options
       freqSelect.value = 'daily';
-      freqOptions.innerHTML = '';
+      freqDate.value = todayStr;
+      updateFreqUI();
     });
 
     // Close modal
@@ -624,14 +633,20 @@
       let schedule = { type: freq };
 
       if (freq === 'weekly') {
-        const checkboxes = document.querySelectorAll('input[name="freq-day"]:checked');
-        if (checkboxes.length === 0) {
-          alert('Please select at least one day for weekly task');
+        const date = freqDate.value;
+        if (!date) {
+          alert('Please pick a date to set the repeating day');
           return;
         }
-        schedule.days = Array.from(checkboxes).map(cb => parseInt(cb.value));
+        // Derive day of week (0-6)
+        // Note: new Date(dateStr) parses as UTC if YYYY-MM-DD
+        // causing off-by-one errors if not careful.
+        // Better: use new Date(Y, M, D)
+        const parts = date.split('-');
+        const d = new Date(parts[0], parts[1] - 1, parts[2]);
+        schedule.days = [d.getDay()];
       } else if (freq === 'once') {
-        const date = document.getElementById('freq-date').value;
+        const date = freqDate.value;
         if (!date) {
           alert('Please select a date');
           return;
