@@ -349,10 +349,11 @@
               <option value="weekly">Weekly</option>
               <option value="once">One-time</option>
             </select>
-            <div id="freq-options" style="flex: 1;">
-              <!-- Dynamic options -->
+            <div id="freq-date-container" style="display: none; flex: 1;">
+              <input type="date" id="freq-date" style="width: 100%; padding: 0.25rem;">
             </div>
           </div>
+          <small id="freq-hint" style="display: block; color: #666; margin-bottom: 0.5rem; font-size: 0.8rem;"></small>
 
           <button id="add-task-btn">Add Task</button>
         </div>
