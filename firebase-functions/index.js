@@ -114,22 +114,22 @@ exports.checkDueTasks = functions.pubsub
 
             for (const notif of notifications) {
                 try {
+                    // Send data-only message so Service Worker can display 
+                    // notification with custom action buttons
                     await admin.messaging().send({
                         token: notif.token,
-                        notification: {
-                            title: notif.title,
-                            body: notif.body
-                        },
+                        // NO notification payload - let SW handle display
                         data: {
+                            title: notif.title,
+                            body: notif.body,
                             taskId: notif.taskId,
                             click_action: 'https://218.team/'
                         },
                         webpush: {
-                            notification: {
-                                icon: 'https://218.team/icons/icon-192x192.png',
-                                badge: 'https://218.team/icons/favicon-32x32.png',
-                                requireInteraction: true,
-                                vibrate: [200, 100, 200]
+                            // Headers to ensure delivery even when page is closed
+                            headers: {
+                                'TTL': '86400',
+                                'Urgency': 'high'
                             }
                         }
                     });
@@ -232,22 +232,20 @@ exports.sendTestNotification = functions.https.onRequest(async (req, res) => {
     }
 
     try {
+        // Send data-only message so Service Worker can display with action buttons
         await admin.messaging().send({
             token: token,
-            notification: {
-                title: '🔔 Test Notification',
-                body: 'If you see this, FCM is working!'
-            },
+            // NO notification payload - let SW handle display
             data: {
+                title: '🔔 Test Notification',
+                body: 'If you see this, FCM is working!',
                 taskId: 'test-task',
                 click_action: 'https://218.team/'
             },
             webpush: {
-                notification: {
-                    icon: 'https://218.team/icons/icon-192x192.png',
-                    badge: 'https://218.team/icons/favicon-32x32.png',
-                    requireInteraction: true,
-                    vibrate: [200, 100, 200]
+                headers: {
+                    'TTL': '86400',
+                    'Urgency': 'high'
                 }
             }
         });
