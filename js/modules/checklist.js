@@ -126,7 +126,7 @@ async function createGist(token) {
     const response = await fetch('https://api.github.com/gists', {
         method: 'POST',
         headers: {
-            'Authorization': `token ${token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -174,9 +174,6 @@ async function fetchChecklist(gistId, token) {
 /**
  * Update checklist data in Gist
  */
-/**
- * Update checklist data in Gist
- */
 async function updateChecklist(gistId, token, data) {
     console.log('Pushing update to Gist...', { gistId: gistId?.slice(0, 4), token: token ? 'present' : 'missing', timestamp: data.meta?.lastUpdated });
 
@@ -212,524 +209,407 @@ async function updateChecklist(gistId, token, data) {
 }
 
 /**
- * Check if data needs reset (new day)
- */
-function needsReset(data) {
-    return data.date !== getTodayDate();
-}
-
-/**
- * Reset checklist for new day
- */
-function resetChecklist(data) {
-    return {
-        date: getTodayDate(),
-        lastUpdated: new Date().toISOString(),
-        lastUpdatedBy: 'System',
-        items: {},
-        tasks: data.tasks || JSON.parse(JSON.stringify(DEFAULT_ITEMS))
-    };
-}
-
-/**
  * Main Checklist class
  */
-constructor() {
-    this.data = this.loadLocal() || this.createDefaultData();
-    this.listeners = [];
-    this.syncInterval = null;
-    this.isSyncing = false;
-
-    // Ensure meta exists (migration safety)
-    if (!this.data.meta) {
-        this.data.meta = { version: 2, lastUpdated: new Date().toISOString(), lastUpdatedBy: 'System' };
-    }
-
-    // Ensure definitions exist (migration safety)
-    if (!this.data.definitions) {
-        // If migrating from old, we'd need to convert tasks. 
-        // For simple init, use defaults.
-        this.data.definitions = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
-    }
-
-    this.performDailyReset();
-}
-
-createDefaultData() {
-    return {
-        meta: {
-            version: 2,
-            currentDate: getTodayDate(),
-            lastUpdated: new Date().toISOString(),
-            lastUpdatedBy: 'System'
-        },
-        definitions: JSON.parse(JSON.stringify(DEFAULT_ITEMS)),
-        history: [],
-        today: {
-            items: {}
-        }
-    };
-}
-
-loadLocal() {
-    const json = localStorage.getItem('checklist_v2_data');
-    if (!json) return null;
-    try {
-        return JSON.parse(json);
-    } catch (e) {
-        console.error('Failed to load local data', e);
-        return null;
-    }
-}
-
-saveLocal() {
-    if (this.data) {
-        localStorage.setItem('checklist_v2_data', JSON.stringify(this.data));
-    }
-}
-
-/**
- * Check if properly configured (token in localStorage)
- */
-isConfigured() {
-    return !!getToken();
-}
-
-/**
- * Subscribe to data changes
- */
-subscribe(listener) {
-    this.listeners.push(listener);
-    return () => this.listeners = this.listeners.filter(l => l !== listener);
-}
-
-/**
- * Notify all listeners
- */
-notifyListeners() {
-    this.listeners.forEach(listener => listener(this.data));
-}
-
-/**
- * Start auto-sync
- */
-startAutoSync(intervalMs = 30000) {
-    if (this.syncInterval) clearInterval(this.syncInterval);
-    this.syncInterval = setInterval(() => {
-        if (!this.isSyncing) {
-            this.sync().catch(e => console.warn('Auto-sync failed:', e));
-        }
-    }, intervalMs);
-}
-
-    /**
-     * Sync with Gist
-     */
-    async sync() {
-    if (this.isSyncing) return; // Skip if busy
-    const gistId = getGistId();
-    const token = getToken();
-
-    if (!gistId) {
-        throw new Error('Gist not configured');
-    }
-
-    this.isSyncing = true;
-
-    try {
-        // 1. Fetch remote data
-        let remoteData;
-        try {
-            remoteData = await fetchChecklist(gistId, token);
-        } catch (err) {
-            // Self-healing: 
-            // 1. File missing ("not found")
-            // 2. File corrupt (SyntaxError during JSON.parse)
-            if (err.message.includes('not found') || err.message.includes('Available files') || err instanceof SyntaxError) {
-                console.warn('Remote file missing or corrupt. Auto-initializing Gist...');
-                await updateChecklist(gistId, token, this.data);
-                return;
-            }
-            throw err;
-        }
-        const localTime = new Date(this.data.meta.lastUpdated || 0).getTime();
-        const remoteTime = new Date(remoteData.meta?.lastUpdated || 0).getTime();
-
-        // Refined Logic based on conflict persistence work:
-        if (localTime > remoteTime + 2000) {
-            console.log('Local is newer, pushing...');
-            await updateChecklist(gistId, token, this.data);
-        } else {
-            console.log('Remote is newer/same, pulling...');
-            this.data = remoteData;
-
-            // Migration 1: Tasks -> Definitions
-            if (!this.data.version) {
-                this.data = this.migrateToV2(this.data);
-                await updateChecklist(gistId, token, this.data);
-            }
-
-            this.performDailyReset();
-            this.saveLocal();
-            this.notifyListeners();
-        }
-
-    } catch (error) {
-        console.error('Sync failed:', error);
-        throw error;
-    } finally {
+class ChecklistManager {
+    constructor() {
+        this.data = this.loadLocal() || this.createDefaultData();
+        this.listeners = [];
+        this.syncInterval = null;
         this.isSyncing = false;
+
+        // Ensure meta exists (migration safety)
+        if (!this.data.meta) {
+            this.data.meta = { version: 2, lastUpdated: new Date().toISOString(), lastUpdatedBy: 'System' };
+        }
+
+        // Ensure definitions exist (migration safety)
+        if (!this.data.definitions) {
+            this.data.definitions = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+        }
+
+        this.data = this.performDailyReset(this.data);
     }
-}
 
-/**
- * Migrate old data structure to V2
- */
-migrateToV2(oldData) {
-    const defaultTasks = oldData.tasks || JSON.parse(JSON.stringify(DEFAULT_ITEMS));
-    const definitions = {};
+    createDefaultData() {
+        return {
+            meta: {
+                version: 2,
+                currentDate: getTodayDate(),
+                lastUpdated: new Date().toISOString(),
+                lastUpdatedBy: 'System'
+            },
+            definitions: JSON.parse(JSON.stringify(DEFAULT_ITEMS)),
+            history: [],
+            today: {
+                items: {}
+            }
+        };
+    }
 
-    // Convert simple lists to defined tasks with schedules
-    Object.entries(defaultTasks).forEach(([catId, cat]) => {
-        definitions[catId] = cat.items.map(item => ({
-            id: item.id || `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-            label: item.label,
-            time: item.time,
-            schedule: { type: 'daily' }
-        }));
-    });
-
-    return {
-        meta: {
-            version: 2,
-            currentDate: oldData.date || getTodayDate(),
-            lastUpdated: oldData.lastUpdated,
-            lastUpdatedBy: oldData.lastUpdatedBy
-        },
-        definitions: definitions,
-        history: [],
-        today: {
-            items: oldData.items || {}
+    loadLocal() {
+        const json = localStorage.getItem('checklist_v2_data');
+        if (!json) return null;
+        try {
+            return JSON.parse(json);
+        } catch (e) {
+            console.error('Failed to load local data', e);
+            return null;
         }
-    };
-}
+    }
 
-/**
- * Check if new day processing is needed
- */
-needsReset(data) {
-    // Handle V1 data gracefully if sync happened before migration
-    const currentDate = data.meta?.currentDate || data.date;
-    return currentDate !== getTodayDate();
-}
-
-/**
- * Archive yesterday and generate today
- */
-performDailyReset(data) {
-    const todayStr = getTodayDate();
-    const yesterdayDate = data.meta.currentDate;
-
-    // 1. Archive previous day
-    const historyEntry = {
-        date: yesterdayDate,
-        stats: this.calculateStats(data.definitions, data.today.items), // Calculate stats for archived day
-        items: data.today.items
-    };
-
-    // Keep 30 days history
-    const newHistory = [historyEntry, ...(data.history || [])].slice(0, 30);
-
-    // 2. Generate Today's Items (filter definitions by schedule)
-    // Note: We don't need to generate 'items' state, just let UI render valid definitions
-    // But we DO need to update the currentDate.
-
-    return {
-        ...data,
-        meta: {
-            ...data.meta,
-            currentDate: todayStr,
-            lastUpdated: new Date().toISOString(),
-            lastUpdatedBy: 'System'
-        },
-        history: newHistory,
-        today: {
-            items: {} // Fresh state
+    saveLocal() {
+        if (this.data) {
+            localStorage.setItem('checklist_v2_data', JSON.stringify(this.data));
         }
-    };
-}
+    }
 
-/**
- * Calculate stats for a set of items (helper)
- */
-calculateStats(definitions, itemStates) {
-    let total = 0;
-    let completed = 0;
+    isConfigured() {
+        return !!getToken();
+    }
 
-    // This is an approximation since definitions might have changed, 
-    // but decent enough for history stats.
-    // Ideally we'd snapshot definitions too, but that bloats storage.
-    Object.values(definitions).forEach(items => {
-        items.forEach(task => {
-            total++;
-            if (itemStates[task.id]?.checked) completed++;
+    subscribe(listener) {
+        this.listeners.push(listener);
+        return () => this.listeners = this.listeners.filter(l => l !== listener);
+    }
+
+    notifyListeners() {
+        this.listeners.forEach(listener => listener(this.data));
+    }
+
+    startAutoSync(intervalMs = 30000) {
+        if (this.syncInterval) clearInterval(this.syncInterval);
+        this.syncInterval = setInterval(() => {
+            if (!this.isSyncing) {
+                this.sync().catch(e => console.warn('Auto-sync failed:', e));
+            }
+        }, intervalMs);
+    }
+
+    stopAutoSync() {
+        if (this.syncInterval) {
+            clearInterval(this.syncInterval);
+            this.syncInterval = null;
+        }
+    }
+
+    async sync() {
+        if (this.isSyncing) return; // Skip if busy
+        const gistId = getGistId();
+        const token = getToken();
+
+        if (!gistId) {
+            throw new Error('Gist not configured');
+        }
+
+        this.isSyncing = true;
+
+        try {
+            // 1. Fetch remote data
+            let remoteData;
+            try {
+                remoteData = await fetchChecklist(gistId, token);
+            } catch (err) {
+                // Self-healing: 
+                // 1. File missing ("not found")
+                // 2. File corrupt (SyntaxError during JSON.parse)
+                if (err.message.includes('not found') || err.message.includes('Available files') || err instanceof SyntaxError) {
+                    console.warn('Remote file missing or corrupt. Auto-initializing Gist...');
+                    await updateChecklist(gistId, token, this.data);
+                    return;
+                }
+                throw err;
+            }
+
+            const localTime = new Date(this.data.meta.lastUpdated || 0).getTime();
+            const remoteTime = new Date(remoteData.meta?.lastUpdated || 0).getTime();
+
+            // Refined Logic based on conflict persistence work:
+            if (localTime > remoteTime + 2000) {
+                console.log('Local is newer, pushing...');
+                await updateChecklist(gistId, token, this.data);
+            } else {
+                console.log('Remote is newer/same, pulling...');
+                this.data = remoteData;
+
+                // Migration 1: Tasks -> Definitions
+                if (!this.data.version) {
+                    this.data = this.migrateToV2(this.data);
+                    await updateChecklist(gistId, token, this.data);
+                }
+
+                // If date changed in remote, we might need reset?
+                // Or if local logic sees date change.
+                const needsReset = this.data.meta.currentDate !== getTodayDate();
+                if (needsReset) {
+                    this.data = this.performDailyReset(this.data);
+                    // Push reset state?
+                    await updateChecklist(gistId, token, this.data);
+                }
+
+                this.saveLocal();
+                this.notifyListeners();
+            }
+
+        } catch (error) {
+            console.error('Sync failed:', error);
+            throw error;
+        } finally {
+            this.isSyncing = false;
+        }
+    }
+
+    migrateToV2(oldData) {
+        const defaultTasks = oldData.tasks || JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+        const definitions = {};
+
+        // Convert simple lists to defined tasks with schedules
+        Object.entries(defaultTasks).forEach(([catId, cat]) => {
+            definitions[catId] = cat.items.map(item => ({
+                id: item.id || `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                label: item.label,
+                time: item.time,
+                schedule: { type: 'daily' }
+            }));
         });
-    });
 
-    return { total, completed };
-}
+        return {
+            meta: {
+                version: 2,
+                currentDate: oldData.date || getTodayDate(),
+                lastUpdated: oldData.lastUpdated,
+                lastUpdatedBy: oldData.lastUpdatedBy
+            },
+            definitions: definitions,
+            history: [],
+            today: {
+                items: oldData.items || {}
+            }
+        };
+    }
 
-    /**
-     * Add a new task
-     */
-    /**
-     * Helper to perform optimistic update with retry on 409/conflict
-     */
+    performDailyReset(data) {
+        const todayStr = getTodayDate();
+        const currentDate = data.meta.currentDate;
+
+        if (currentDate === todayStr) {
+            return data;
+        }
+
+        const yesterdayDate = currentDate;
+
+        // 1. Archive previous day
+        const historyEntry = {
+            date: yesterdayDate,
+            stats: this.calculateStats(data.definitions, data.today.items),
+            items: data.today.items
+        };
+
+        // Keep 30 days history
+        const newHistory = [historyEntry, ...(data.history || [])].slice(0, 30);
+
+        return {
+            ...data,
+            meta: {
+                ...data.meta,
+                currentDate: todayStr,
+                lastUpdated: new Date().toISOString(),
+                lastUpdatedBy: 'System'
+            },
+            history: newHistory,
+            today: {
+                items: {} // Fresh state
+            }
+        };
+    }
+
+    calculateStats(definitions, itemStates) {
+        let total = 0;
+        let completed = 0;
+        Object.values(definitions).forEach(items => {
+            items.forEach(task => {
+                total++;
+                if (itemStates[task.id]?.checked) completed++;
+            });
+        });
+        return { total, completed };
+    }
+
     async saveWithRetry(updateFn) {
-    const gistId = getGistId();
-    const token = getToken();
-    if (!token) throw new Error('Token required');
+        const gistId = getGistId();
+        const token = getToken();
+        if (!token) throw new Error('Token required');
 
-    // 1. Optimistic local update
-    updateFn(this.data);
-    this.touchUpdate();
-    this.notifyListeners();
-
-    try {
-        await updateChecklist(gistId, token, this.data);
-    } catch (error) {
-        console.warn('Save failed, attempting sync-and-retry...', error);
-
-        // 2. Fetch fresh data
-        const freshData = await fetchChecklist(gistId, token);
-
-        // 3. Re-apply update to fresh data (Resolution)
-        updateFn(freshData);
-
-        // 4. Update local
-        this.data = freshData;
+        // 1. Optimistic local update
+        updateFn(this.data);
         this.touchUpdate();
+        this.saveLocal(); // Persist locally immediately
         this.notifyListeners();
 
-        // 5. Retry save
-        await updateChecklist(gistId, token, this.data);
-    }
-}
+        try {
+            await updateChecklist(gistId, token, this.data);
+        } catch (error) {
+            console.warn('Save failed, attempting sync-and-retry...', error);
 
-    /**
-     * Add a definition (admin/manager)
-     */
+            // 2. Fetch fresh data
+            let freshData;
+            try {
+                freshData = await fetchChecklist(gistId, token);
+            } catch (e) {
+                // If fetch fails here, we can't merge. Just keep local optimistic state?
+                // Or revert? Optimistic UI usually means we assume success.
+                // Retaining local state is safer.
+                console.error("Retry fetch failed, keeping local state un-synced");
+                return;
+            }
+
+            // 3. Re-apply update to fresh data (Resolution)
+            // Note: updateFn modifies IN PLACE. We should generally pass deepClone to avoid side effects?
+            // But here we want to modify freshData.
+            updateFn(freshData);
+
+            // 4. Update local
+            this.data = freshData;
+            this.touchUpdate();
+            this.saveLocal();
+            this.notifyListeners();
+
+            // 5. Retry save
+            await updateChecklist(gistId, token, this.data);
+        }
+    }
+
     async addTask(categoryId, task) {
-    await this.saveWithRetry((data) => {
-        const newTask = {
-            id: `task-${Date.now()}`,
-            label: task.label,
-            time: task.time,
-            schedule: task.schedule || { type: 'daily' }
-        };
-        if (!data.definitions[categoryId]) {
-            data.definitions[categoryId] = [];
-        }
-        data.definitions[categoryId].push(newTask);
-    });
-}
+        await this.saveWithRetry((data) => {
+            const newTask = {
+                id: `task-${Date.now()}`,
+                label: task.label,
+                time: task.time,
+                schedule: task.schedule || { type: 'daily' }
+            };
+            if (!data.definitions[categoryId]) {
+                data.definitions[categoryId] = [];
+            }
+            data.definitions[categoryId].push(newTask);
+        });
+    }
 
-    /**
-     * Remove a task
-     */
     async removeTask(categoryId, taskId) {
-    await this.saveWithRetry((data) => {
-        // Remove from definitions
-        if (data.definitions[categoryId]) {
-            data.definitions[categoryId] = data.definitions[categoryId].filter(t => t.id !== taskId);
-        }
-        // Cleanup today's state
-        if (data.today.items[taskId]) {
-            delete data.today.items[taskId];
-        }
-    });
-}
+        await this.saveWithRetry((data) => {
+            if (data.definitions[categoryId]) {
+                data.definitions[categoryId] = data.definitions[categoryId].filter(t => t.id !== taskId);
+            }
+            if (data.today.items[taskId]) {
+                delete data.today.items[taskId];
+            }
+        });
+    }
 
-    /**
-     * Edit a task
-     */
-    async editTask(categoryId, taskId, updates) {
-    // Not implemented yet
-}
-
-    /**
-     * Toggle item
-     */
     async toggleItem(itemId) {
-    await this.saveWithRetry((data) => {
-        const currentState = data.today.items[itemId] || {};
-        const isNowChecked = !currentState.checked; // Toggle based on CURRENT state of the data object passed
+        await this.saveWithRetry((data) => {
+            const currentState = data.today.items[itemId] || {};
+            const isNowChecked = !currentState.checked;
+            data.today.items[itemId] = {
+                ...currentState,
+                checked: isNowChecked,
+                checkedBy: isNowChecked ? getUsername() : null,
+                checkedAt: isNowChecked ? getCurrentTime() : null
+            };
+        });
+    }
 
-        data.today.items[itemId] = {
-            ...currentState,
-            checked: isNowChecked,
-            checkedBy: isNowChecked ? getUsername() : null,
-            checkedAt: isNowChecked ? getCurrentTime() : null
-        };
-    });
-}
-
-    /**
-     * Assign item
-     */
     async assignItem(itemId, assignee) {
-    await this.saveWithRetry((data) => {
-        const currentState = data.today.items[itemId] || {};
-        data.today.items[itemId] = {
-            ...currentState,
-            assignedTo: assignee || null
-        };
-    });
-}
-
-touchUpdate() {
-    if (this.data.meta) {
-        this.data.meta.lastUpdated = new Date().toISOString();
-        this.data.meta.lastUpdatedBy = getUsername();
+        await this.saveWithRetry((data) => {
+            const currentState = data.today.items[itemId] || {};
+            data.today.items[itemId] = {
+                ...currentState,
+                assignedTo: assignee || null
+            };
+        });
     }
-}
 
-/**
- * Get tasks valid for TODAY
- */
-getTodaysTasks() {
-    if (!this.data || !this.data.definitions) return DEFAULT_ITEMS;
-
-    const result = JSON.parse(JSON.stringify(DEFAULT_ITEMS)); // Start with structure
-    const today = new Date();
-    const dateStr = getTodayDate();
-    const dayOfWeek = today.getDay(); // 0 = Sun
-
-    // Reset result items
-    Object.keys(result).forEach(k => result[k].items = []);
-
-    Object.entries(this.data.definitions).forEach(([catId, tasks]) => {
-        if (!result[catId]) {
-            // Create category if missing from DEFAULT_ITEMS structure (custom cats?)
-            // For now, map to existing structure or skip
-            return;
+    touchUpdate() {
+        if (this.data.meta) {
+            this.data.meta.lastUpdated = new Date().toISOString();
+            this.data.meta.lastUpdatedBy = getUsername();
         }
-
-        result[catId].items = tasks.filter(task => {
-            const s = task.schedule;
-            if (s.type === 'daily') return true;
-            if (s.type === 'weekly') {
-                // s.days is array of 0-6
-                return s.days && s.days.includes(dayOfWeek);
-            }
-            if (s.type === 'biweekly') {
-                // Check week parity
-                // Placeholder logic: uses ISO week number
-                const weekNum = this.getWeekNumber(today);
-                // s.startWeek needed? Simplification: 
-                // Assume even/odd parity preference.
-                // For MVP: Weekly is easier. Let's stick to Daily/Weekly/Once.
-                // If user selects 'Bi-weekly', we need reference.
-                // Let's implement 'Once' first.
-            }
-            if (s.type === 'once') {
-                return s.date === dateStr;
-            }
-            return true;
-        });
-    });
-
-    return result;
-}
-
-getWeekNumber(d) {
-    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-    return weekNo;
-}
-
-getItems() {
-    return this.getTodaysTasks();
-}
-
-// For management UI, we need ALL definitions
-getAllDefinitions() {
-    return this.data?.definitions || {};
-}
-
-getItemState(itemId) {
-    return this.data?.today?.items[itemId] || { checked: false };
-}
-
-getHistory() {
-    return this.data?.history || [];
-}
-
-getProgress() {
-    let total = 0;
-    let completed = 0;
-    const tasks = this.getTodaysTasks(); // Only count today's tasks
-
-    Object.values(tasks).forEach(category => {
-        category.items.forEach(item => {
-            total++;
-            if (this.data?.today?.items[item.id]?.checked) {
-                completed++;
-            }
-        });
-    });
-
-    return { total, completed, percentage: total === 0 ? 0 : Math.round((completed / total) * 100) };
-}
-
-getLastUpdate() {
-    if (!this.data?.meta) return null;
-    return {
-        time: this.data.meta.lastUpdated,
-        by: this.data.meta.lastUpdatedBy
-    };
-}
-
-// ... subscribe/notify remains same ...
-
-/**
- * Subscribe to data changes
- */
-subscribe(callback) {
-    this.listeners.push(callback);
-    return () => {
-        this.listeners = this.listeners.filter(l => l !== callback);
-    };
-}
-
-/**
- * Notify all listeners
- */
-notifyListeners() {
-    this.listeners.forEach(callback => callback(this.data));
-}
-
-/**
- * Start auto-sync (every 30 seconds)
- */
-startAutoSync(intervalMs = 30000) {
-    if (this.syncInterval) {
-        clearInterval(this.syncInterval);
     }
-    this.syncInterval = setInterval(() => this.sync(), intervalMs);
-}
 
-/**
- * Stop auto-sync
- */
-stopAutoSync() {
-    if (this.syncInterval) {
-        clearInterval(this.syncInterval);
-        this.syncInterval = null;
+    getTodaysTasks() {
+        if (!this.data || !this.data.definitions) return DEFAULT_ITEMS;
+
+        const result = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+        const today = new Date();
+        const dateStr = getTodayDate();
+        const dayOfWeek = today.getDay(); // 0 = Sun
+
+        // Reset result items to empty arrays to fill from definitions
+        Object.keys(result).forEach(k => result[k].items = []);
+
+        Object.entries(this.data.definitions).forEach(([catId, tasks]) => {
+            if (!result[catId]) {
+                // If definition category not in defaults, maybe create it?
+                // For now, simplify to defaults.
+                result[catId] = { title: catId, items: [] };
+            }
+
+            result[catId].items = tasks.filter(task => {
+                const s = task.schedule;
+                if (!s) return true; // Default daily
+                if (s.type === 'daily') return true;
+                if (s.type === 'weekly') {
+                    return s.days && s.days.includes(dayOfWeek);
+                }
+                if (s.type === 'once') {
+                    return s.date === dateStr;
+                }
+                return true;
+            });
+        });
+
+        return result;
     }
-}
+
+    getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
+    }
+
+    getItems() {
+        return this.getTodaysTasks();
+    }
+
+    getAllDefinitions() {
+        return this.data?.definitions || {};
+    }
+
+    getItemState(itemId) {
+        return this.data?.today?.items[itemId] || { checked: false };
+    }
+
+    getHistory() {
+        return this.data?.history || [];
+    }
+
+    getProgress() {
+        let total = 0;
+        let completed = 0;
+        const tasks = this.getTodaysTasks();
+
+        Object.values(tasks).forEach(category => {
+            category.items.forEach(item => {
+                total++;
+                if (this.data?.today?.items[item.id]?.checked) {
+                    completed++;
+                }
+            });
+        });
+
+        return { total, completed, percentage: total === 0 ? 0 : Math.round((completed / total) * 100) };
+    }
 }
 
 // Export singleton instance
