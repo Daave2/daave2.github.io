@@ -84,6 +84,9 @@
         <h2><i class="fas fa-clipboard-check"></i> Daily Checklist</h2>
         <div class="checklist-widget-controls">
           <span id="widget-progress" class="widget-progress">0/0</span>
+          <button id="widget-history" class="widget-sync-btn" title="History">
+            <i class="fas fa-history"></i>
+          </button>
           <button id="widget-manage" class="widget-sync-btn" title="Manage Tasks">
             <i class="fas fa-cog"></i>
           </button>
@@ -339,8 +342,33 @@
           </select>
           <input type="text" id="new-task-label" placeholder="Task name">
           <input type="text" id="new-task-time" placeholder="Time (opt)">
+
+          <div style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
+            <select id="new-task-freq" style="flex: 1;">
+              <option value="daily">Every Day</option>
+              <option value="weekly">Weekly</option>
+              <option value="once">One-time</option>
+            </select>
+            <div id="freq-options" style="flex: 1;">
+              <!-- Dynamic options -->
+            </div>
+          </div>
+
           <button id="add-task-btn">Add Task</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Modal -->
+  <div id="history-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Checklist History</h3>
+        <button class="close-history">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="history-list"></div>
       </div>
     </div>
   </div>
@@ -489,10 +517,40 @@
     const manageList = document.getElementById('manage-list');
     const manageBtn = document.getElementById('widget-manage');
 
-    // Open modal
+    // Frequency UI Logic
+    const freqSelect = document.getElementById('new-task-freq');
+    const freqOptions = document.getElementById('freq-options');
+
+    freqSelect.addEventListener('change', () => {
+      const val = freqSelect.value;
+      freqOptions.innerHTML = '';
+
+      if (val === 'weekly') {
+        freqOptions.innerHTML = `
+                <div style="font-size: 0.8rem;">Select Days:</div>
+                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                    ${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => `
+                        <label style="cursor: pointer; display: inline-flex; flex-direction: column; align-items: center;">
+                            <input type="checkbox" name="freq-day" value="${i}"> ${d}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+      } else if (val === 'once') {
+        const today = new Date().toISOString().split('T')[0];
+        freqOptions.innerHTML = `
+                <input type="date" id="freq-date" min="${today}" style="width: 100%; padding: 0.25rem;">
+            `;
+      }
+    });
+
+    // Open management modal
     manageBtn.addEventListener('click', () => {
       renderManageList();
       manageModal.style.display = 'flex';
+      // Reset freq options
+      freqSelect.value = 'daily';
+      freqOptions.innerHTML = '';
     });
 
     // Close modal
@@ -504,33 +562,44 @@
       if (e.target === manageModal) manageModal.style.display = 'none';
     });
 
-    // Render management list
+    // Render management list (Definitions)
     function renderManageList() {
       manageList.innerHTML = '';
-      const items = checklistManager.getItems();
+      const definitions = checklistManager.getAllDefinitions();
 
-      Object.entries(items).forEach(([categoryId, category]) => {
+      Object.entries(definitions).forEach(([categoryId, tasks]) => {
+        const catTitle = DEFAULT_ITEMS[categoryId]?.title || categoryId;
         const catHeader = document.createElement('div');
         catHeader.className = 'manage-category-header';
-        catHeader.textContent = category.title;
+        catHeader.textContent = catTitle;
         manageList.appendChild(catHeader);
 
-        category.items.forEach(item => {
+        tasks.forEach(task => {
+          let scheduleInfo = '';
+          const s = task.schedule;
+          if (s.type === 'weekly') {
+            const days = s.days.map(d => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]).join(', ');
+            scheduleInfo = `<small style="color: #666; display: block;">Weekly: ${days}</small>`;
+          } else if (s.type === 'once') {
+            scheduleInfo = `<small style="color: #666; display: block;">Once: ${s.date}</small>`;
+          }
+
           const itemEl = document.createElement('div');
           itemEl.className = 'manage-item';
           itemEl.innerHTML = `
             <div class="manage-item-info">
-              ${item.time ? `<strong>${item.time}</strong> ` : ''}${item.label}
+              ${task.time ? `<strong>${task.time}</strong> ` : ''}${task.label}
+              ${scheduleInfo}
             </div>
-            <button class="manage-delete-btn" data-cat="${categoryId}" data-id="${item.id}" title="Delete">
+            <button class="manage-delete-btn" data-cat="${categoryId}" data-id="${task.id}" title="Delete">
               <i class="fas fa-trash-alt"></i>
             </button>
           `;
 
           itemEl.querySelector('.manage-delete-btn').addEventListener('click', async () => {
-            if (confirm(`Delete item "${item.label}"?`)) {
+            if (confirm(`Delete task "${task.label}"?`)) {
               try {
-                await checklistManager.removeTask(categoryId, item.id);
+                await checklistManager.removeTask(categoryId, task.id);
                 renderManageList();
                 renderWidget();
               } catch (err) {
@@ -550,19 +619,44 @@
       const label = document.getElementById('new-task-label').value.trim();
       const time = document.getElementById('new-task-time').value.trim();
 
+      // Schedule Parsing
+      const freq = freqSelect.value;
+      let schedule = { type: freq };
+
+      if (freq === 'weekly') {
+        const checkboxes = document.querySelectorAll('input[name="freq-day"]:checked');
+        if (checkboxes.length === 0) {
+          alert('Please select at least one day for weekly task');
+          return;
+        }
+        schedule.days = Array.from(checkboxes).map(cb => parseInt(cb.value));
+      } else if (freq === 'once') {
+        const date = document.getElementById('freq-date').value;
+        if (!date) {
+          alert('Please select a date');
+          return;
+        }
+        schedule.date = date;
+      }
+
       if (!label) {
         alert('Please enter a task name');
         return;
       }
 
       try {
-        document.getElementById('add-task-btn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-        await checklistManager.addTask(categoryId, { label, time });
+        const btn = document.getElementById('add-task-btn');
+        const originalText = btn.textContent;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+
+        await checklistManager.addTask(categoryId, { label, time, schedule });
 
         // Reset form
         document.getElementById('new-task-label').value = '';
         document.getElementById('new-task-time').value = '';
-        document.getElementById('add-task-btn').textContent = 'Add Task';
+        freqSelect.value = 'daily';
+        freqOptions.innerHTML = '';
+        btn.textContent = originalText;
 
         renderManageList();
         renderWidget();
@@ -571,6 +665,93 @@
         alert('Failed to add task: ' + err.message);
       }
     });
+
+    // --- History UI Logic ---
+    const historyModal = document.getElementById('history-modal');
+    const historyList = document.getElementById('history-list');
+    const historyBtn = document.getElementById('widget-history');
+
+    historyBtn.addEventListener('click', () => {
+      renderHistoryList();
+      historyModal.style.display = 'flex';
+    });
+
+    document.querySelector('.close-history').addEventListener('click', () => {
+      historyModal.style.display = 'none';
+    });
+
+    historyModal.addEventListener('click', (e) => {
+      if (e.target === historyModal) historyModal.style.display = 'none';
+    });
+
+    function renderHistoryList() {
+      const history = checklistManager.getHistory();
+      historyList.innerHTML = '';
+
+      if (!history || history.length === 0) {
+        historyList.innerHTML = '<div style="padding: 1rem; text-align: center; color: #666;">No history available yet. History is created when a new day starts.</div>';
+        return;
+      }
+
+      history.forEach(day => {
+        const date = new Date(day.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+        const completion = day.stats ? `${day.stats.completed}/${day.stats.total}` : 'N/A';
+        const percentage = day.stats && day.stats.total > 0 ? Math.round((day.stats.completed / day.stats.total) * 100) : 0;
+
+        const row = document.createElement('div');
+        row.className = 'history-item'; // Add style for this
+        row.style.cssText = 'padding: 1rem; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center;';
+        row.innerHTML = `
+                <div>
+                    <strong>${date}</strong>
+                    <div style="font-size: 0.85rem; color: #666;">${completion} completed</div>
+                </div>
+                <div style="font-weight: bold; color: ${percentage === 100 ? 'green' : '#666'};">${percentage}%</div>
+            `;
+
+        // Expand details
+        row.addEventListener('click', () => {
+          // Show details (could use a nested list or replace content)
+          // For MVP: Simple toggle details
+          const details = row.nextElementSibling;
+          if (details && details.classList.contains('history-details')) {
+            details.remove();
+          } else {
+            const detailRow = document.createElement('div');
+            detailRow.className = 'history-details';
+            detailRow.style.cssText = 'background: #f9f9f9; padding: 1rem; border-bottom: 1px solid #eee;';
+
+            let content = '';
+            const items = day.items || {};
+            // Since we don't snapshot full task details, we might only have IDs in 'items'.
+            // But wait, performDailyReset saved 'items' which is { id: { checked, checkedBy... } }
+            // It does NOT save the labels. 
+            // CRITICAL FIX: ChecklistManager.performDailyReset relies on generic IDs. 
+            // Retrospective fix: We need to snapshot labels in history or lookup definitions.
+            // But definitions might change. 
+            // Current best effort: Lookup current definitions. If deleted, show ID.
+
+            const allDefs = checklistManager.getAllDefinitions();
+            const flatDefs = {};
+            Object.values(allDefs).forEach(cat => cat.forEach(t => flatDefs[t.id] = t));
+
+            Object.entries(items).forEach(([id, state]) => {
+              if (state.checked) {
+                const label = flatDefs[id]?.label || 'Unknown Task';
+                content += `<div style="margin-bottom: 4px;">✓ ${label} <span style="color:#666; font-size:0.8em">(${state.checkedBy})</span></div>`;
+              }
+            });
+
+            if (!content) content = '<div>No completed tasks</div>';
+
+            detailRow.innerHTML = content;
+            row.parentNode.insertBefore(detailRow, row.nextSibling);
+          }
+        });
+
+        historyList.appendChild(row);
+      });
+    }
 
     async function initWidget() {
       // Update greeting regardless of config

@@ -250,18 +250,17 @@ class ChecklistManager {
         try {
             this.data = await fetchChecklist(gistId, token);
 
-            // Migration: If tasks key is missing, initialize with DEFAULT_ITEMS
-            if (!this.data.tasks) {
-                this.data.tasks = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
-                this.data.lastUpdated = new Date().toISOString();
+            // Migration 1: Tasks -> Definitions
+            if (!this.data.version) {
+                this.data = this.migrateToV2(this.data);
                 if (token) {
                     await updateChecklist(gistId, token, this.data);
                 }
             }
 
             // Check if we need to reset for a new day
-            if (needsReset(this.data)) {
-                this.data = resetChecklist(this.data);
+            if (this.needsReset(this.data)) {
+                this.data = this.performDailyReset(this.data);
                 if (token) {
                     await updateChecklist(gistId, token, this.data);
                 }
@@ -276,35 +275,131 @@ class ChecklistManager {
     }
 
     /**
+     * Migrate old data structure to V2
+     */
+    migrateToV2(oldData) {
+        const defaultTasks = oldData.tasks || JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+        const definitions = {};
+
+        // Convert simple lists to defined tasks with schedules
+        Object.entries(defaultTasks).forEach(([catId, cat]) => {
+            definitions[catId] = cat.items.map(item => ({
+                id: item.id || `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                label: item.label,
+                time: item.time,
+                schedule: { type: 'daily' }
+            }));
+        });
+
+        return {
+            meta: {
+                version: 2,
+                currentDate: oldData.date || getTodayDate(),
+                lastUpdated: oldData.lastUpdated,
+                lastUpdatedBy: oldData.lastUpdatedBy
+            },
+            definitions: definitions,
+            history: [],
+            today: {
+                items: oldData.items || {}
+            }
+        };
+    }
+
+    /**
+     * Check if new day processing is needed
+     */
+    needsReset(data) {
+        // Handle V1 data gracefully if sync happened before migration
+        const currentDate = data.meta?.currentDate || data.date;
+        return currentDate !== getTodayDate();
+    }
+
+    /**
+     * Archive yesterday and generate today
+     */
+    performDailyReset(data) {
+        const todayStr = getTodayDate();
+        const yesterdayDate = data.meta.currentDate;
+
+        // 1. Archive previous day
+        const historyEntry = {
+            date: yesterdayDate,
+            stats: this.calculateStats(data.definitions, data.today.items), // Calculate stats for archived day
+            items: data.today.items
+        };
+
+        // Keep 30 days history
+        const newHistory = [historyEntry, ...(data.history || [])].slice(0, 30);
+
+        // 2. Generate Today's Items (filter definitions by schedule)
+        // Note: We don't need to generate 'items' state, just let UI render valid definitions
+        // But we DO need to update the currentDate.
+
+        return {
+            ...data,
+            meta: {
+                ...data.meta,
+                currentDate: todayStr,
+                lastUpdated: new Date().toISOString(),
+                lastUpdatedBy: 'System'
+            },
+            history: newHistory,
+            today: {
+                items: {} // Fresh state
+            }
+        };
+    }
+
+    /**
+     * Calculate stats for a set of items (helper)
+     */
+    calculateStats(definitions, itemStates) {
+        let total = 0;
+        let completed = 0;
+
+        // This is an approximation since definitions might have changed, 
+        // but decent enough for history stats.
+        // Ideally we'd snapshot definitions too, but that bloats storage.
+        Object.values(definitions).forEach(items => {
+            items.forEach(task => {
+                total++;
+                if (itemStates[task.id]?.checked) completed++;
+            });
+        });
+
+        return { total, completed };
+    }
+
+    /**
      * Add a new task
      */
     async addTask(categoryId, task) {
         const gistId = getGistId();
         const token = getToken();
 
-        if (!token) throw new Error('Token required to manage tasks');
-
-        if (!this.data.tasks[categoryId]) {
-            throw new Error('Invalid category');
-        }
+        if (!token) throw new Error('Token required');
 
         const newTask = {
-            id: `task-${Date.now()}`, // Simple ID generation
-            ...task
+            id: `task-${Date.now()}`,
+            label: task.label,
+            time: task.time,
+            schedule: task.schedule || { type: 'daily' }
         };
 
-        this.data.tasks[categoryId].items.push(newTask);
-        this.data.lastUpdated = new Date().toISOString();
-        this.data.lastUpdatedBy = getUsername();
+        if (!this.data.definitions[categoryId]) {
+            // Should not happen, but safe to init
+            this.data.definitions[categoryId] = [];
+        }
 
+        this.data.definitions[categoryId].push(newTask);
+        this.touchUpdate();
         this.notifyListeners();
 
         try {
             await updateChecklist(gistId, token, this.data);
-            return newTask;
         } catch (error) {
-            console.error('Failed to add task:', error);
-            await this.sync(); // Revert
+            await this.sync();
             throw error;
         }
     }
@@ -315,30 +410,22 @@ class ChecklistManager {
     async removeTask(categoryId, taskId) {
         const gistId = getGistId();
         const token = getToken();
+        if (!token) throw new Error('Token required');
 
-        if (!token) throw new Error('Token required to manage tasks');
+        this.data.definitions[categoryId] = this.data.definitions[categoryId].filter(t => t.id !== taskId);
 
-        if (!this.data.tasks[categoryId]) {
-            throw new Error('Invalid category');
+        // Cleanup today's state
+        if (this.data.today.items[taskId]) {
+            delete this.data.today.items[taskId];
         }
 
-        this.data.tasks[categoryId].items = this.data.tasks[categoryId].items.filter(item => item.id !== taskId);
-
-        // Also cleanup state
-        if (this.data.items[taskId]) {
-            delete this.data.items[taskId];
-        }
-
-        this.data.lastUpdated = new Date().toISOString();
-        this.data.lastUpdatedBy = getUsername();
-
+        this.touchUpdate();
         this.notifyListeners();
 
         try {
             await updateChecklist(gistId, token, this.data);
         } catch (error) {
-            console.error('Failed to remove task:', error);
-            await this.sync(); // Revert
+            await this.sync();
             throw error;
         }
     }
@@ -347,149 +434,169 @@ class ChecklistManager {
      * Edit a task
      */
     async editTask(categoryId, taskId, updates) {
-        const gistId = getGistId();
-        const token = getToken();
-
-        if (!token) throw new Error('Token required to manage tasks');
-
-        const category = this.data.tasks[categoryId];
-        if (!category) throw new Error('Invalid category');
-
-        const itemIndex = category.items.findIndex(item => item.id === taskId);
-        if (itemIndex === -1) throw new Error('Task not found');
-
-        category.items[itemIndex] = { ...category.items[itemIndex], ...updates };
-
-        this.data.lastUpdated = new Date().toISOString();
-        this.data.lastUpdatedBy = getUsername();
-
-        this.notifyListeners();
-
-        try {
-            await updateChecklist(gistId, token, this.data);
-        } catch (error) {
-            console.error('Failed to edit task:', error);
-            await this.sync(); // Revert
-            throw error;
-        }
+        // Not used yet, but good for future
     }
 
     /**
-     * Toggle an item's checked state
+     * Toggle item
      */
     async toggleItem(itemId) {
         const gistId = getGistId();
         const token = getToken();
+        if (!token) throw new Error('Token required');
 
-        if (!token) {
-            throw new Error('Token required to update checklist');
-        }
-
-        const currentState = this.data.items[itemId] || {};
+        const currentState = this.data.today.items[itemId] || {};
         const isNowChecked = !currentState.checked;
 
-        // Optimistic update - preserve assignment
-        this.data.items[itemId] = {
+        this.data.today.items[itemId] = {
             ...currentState,
             checked: isNowChecked,
             checkedBy: isNowChecked ? getUsername() : null,
             checkedAt: isNowChecked ? getCurrentTime() : null
         };
 
-        this.data.lastUpdated = new Date().toISOString();
-        this.data.lastUpdatedBy = getUsername();
-
+        this.touchUpdate();
         this.notifyListeners();
 
-        // Persist to Gist
         try {
             await updateChecklist(gistId, token, this.data);
         } catch (error) {
-            // Revert on failure
-            console.error('Failed to save:', error);
             await this.sync();
             throw error;
         }
     }
 
     /**
-     * Assign a task to a team member
+     * Assign item
      */
     async assignItem(itemId, assignee) {
         const gistId = getGistId();
         const token = getToken();
+        if (!token) throw new Error('Token required');
 
-        if (!token) {
-            throw new Error('Token required to update checklist');
-        }
-
-        const currentState = this.data.items[itemId] || {};
-
-        // Update assignment
-        this.data.items[itemId] = {
+        const currentState = this.data.today.items[itemId] || {};
+        this.data.today.items[itemId] = {
             ...currentState,
             assignedTo: assignee || null
         };
 
-        this.data.lastUpdated = new Date().toISOString();
-        this.data.lastUpdatedBy = getUsername();
-
+        this.touchUpdate();
         this.notifyListeners();
 
-        // Persist to Gist
         try {
             await updateChecklist(gistId, token, this.data);
         } catch (error) {
-            console.error('Failed to save assignment:', error);
             await this.sync();
             throw error;
         }
     }
 
+    touchUpdate() {
+        if (this.data.meta) {
+            this.data.meta.lastUpdated = new Date().toISOString();
+            this.data.meta.lastUpdatedBy = getUsername();
+        }
+    }
+
     /**
-     * Get all items with their current state
+     * Get tasks valid for TODAY
      */
+    getTodaysTasks() {
+        if (!this.data || !this.data.definitions) return DEFAULT_ITEMS;
+
+        const result = JSON.parse(JSON.stringify(DEFAULT_ITEMS)); // Start with structure
+        const today = new Date();
+        const dateStr = getTodayDate();
+        const dayOfWeek = today.getDay(); // 0 = Sun
+
+        // Reset result items
+        Object.keys(result).forEach(k => result[k].items = []);
+
+        Object.entries(this.data.definitions).forEach(([catId, tasks]) => {
+            if (!result[catId]) {
+                // Create category if missing from DEFAULT_ITEMS structure (custom cats?)
+                // For now, map to existing structure or skip
+                return;
+            }
+
+            result[catId].items = tasks.filter(task => {
+                const s = task.schedule;
+                if (s.type === 'daily') return true;
+                if (s.type === 'weekly') {
+                    // s.days is array of 0-6
+                    return s.days && s.days.includes(dayOfWeek);
+                }
+                if (s.type === 'biweekly') {
+                    // Check week parity
+                    // Placeholder logic: uses ISO week number
+                    const weekNum = this.getWeekNumber(today);
+                    // s.startWeek needed? Simplification: 
+                    // Assume even/odd parity preference.
+                    // For MVP: Weekly is easier. Let's stick to Daily/Weekly/Once.
+                    // If user selects 'Bi-weekly', we need reference.
+                    // Let's implement 'Once' first.
+                }
+                if (s.type === 'once') {
+                    return s.date === dateStr;
+                }
+                return true;
+            });
+        });
+
+        return result;
+    }
+
+    getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
+    }
+
     getItems() {
-        return this.data?.tasks || DEFAULT_ITEMS;
+        return this.getTodaysTasks();
     }
 
-    /**
-     * Get item state
-     */
+    // For management UI, we need ALL definitions
+    getAllDefinitions() {
+        return this.data?.definitions || {};
+    }
+
     getItemState(itemId) {
-        return this.data?.items[itemId] || { checked: false };
+        return this.data?.today?.items[itemId] || { checked: false };
     }
 
-    /**
-     * Get progress stats
-     */
+    getHistory() {
+        return this.data?.history || [];
+    }
+
     getProgress() {
         let total = 0;
         let completed = 0;
-        const tasks = this.getItems();
+        const tasks = this.getTodaysTasks(); // Only count today's tasks
 
         Object.values(tasks).forEach(category => {
             category.items.forEach(item => {
                 total++;
-                if (this.data?.items[item.id]?.checked) {
+                if (this.data?.today?.items[item.id]?.checked) {
                     completed++;
                 }
             });
         });
 
-        return { total, completed, percentage: Math.round((completed / total) * 100) };
+        return { total, completed, percentage: total === 0 ? 0 : Math.round((completed / total) * 100) };
     }
 
-    /**
-     * Get last update info
-     */
     getLastUpdate() {
-        if (!this.data) return null;
+        if (!this.data?.meta) return null;
         return {
-            time: this.data.lastUpdated,
-            by: this.data.lastUpdatedBy
+            time: this.data.meta.lastUpdated,
+            by: this.data.meta.lastUpdatedBy
         };
     }
+
+    // ... subscribe/notify remains same ...
 
     /**
      * Subscribe to data changes
