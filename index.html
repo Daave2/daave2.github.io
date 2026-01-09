@@ -875,7 +875,7 @@
     }
 
     // Send a native device notification
-    function sendDeviceNotification(title, body, icon = '/favicon.ico') {
+    function sendDeviceNotification(title, body, icon = '/icons/icon-192x192.png') {
       if (Notification.permission === 'granted') {
         const notification = new Notification(title, {
           body: body,
