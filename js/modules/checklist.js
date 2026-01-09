@@ -152,7 +152,7 @@ async function createGist(token) {
  * Fetch checklist data from Gist
  */
 async function fetchChecklist(gistId, token) {
-    const headers = token ? { 'Authorization': `token ${token}` } : {};
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
     const response = await fetch(`https://api.github.com/gists/${gistId}`, { headers });
 
@@ -182,7 +182,7 @@ async function updateChecklist(gistId, token, data) {
     const response = await fetch(`https://api.github.com/gists/${gistId}`, {
         method: 'PATCH',
         headers: {
-            'Authorization': `token ${token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
