@@ -3,12 +3,10 @@
  * Syncs checklist state to a GitHub Gist for shared team access
  */
 
-// Import credentials from config (gitignored)
-import { CHECKLIST_CONFIG } from './checklist-config.js';
-
-const HARDCODED_TOKEN = CHECKLIST_CONFIG.token;
-const HARDCODED_GIST_ID = CHECKLIST_CONFIG.gistId;
+// Hardcoded Gist ID (shared across all users)
+const GIST_ID = '95a61f781f9655c1abb90d6daff4a7c2';
 const GIST_FILENAME = 'daily_checklist.json';
+const TOKEN_STORAGE_KEY = 'checklist_github_token';
 
 // Team members for task assignment
 const TEAM_MEMBERS = [
@@ -79,17 +77,24 @@ function getCurrentTime() {
 }
 
 /**
- * Get GitHub token (hardcoded)
+ * Get GitHub token from localStorage
  */
 function getToken() {
-    return HARDCODED_TOKEN;
+    return localStorage.getItem(TOKEN_STORAGE_KEY);
 }
 
 /**
- * Get Gist ID (hardcoded)
+ * Set GitHub token in localStorage
+ */
+function setToken(token) {
+    localStorage.setItem(TOKEN_STORAGE_KEY, token);
+}
+
+/**
+ * Get Gist ID (hardcoded - same for everyone)
  */
 function getGistId() {
-    return HARDCODED_GIST_ID;
+    return GIST_ID;
 }
 
 /**
@@ -206,10 +211,10 @@ class ChecklistManager {
     }
 
     /**
-     * Check if properly configured (hardcoded values are set)
+     * Check if properly configured (token in localStorage)
      */
     isConfigured() {
-        return HARDCODED_TOKEN !== 'PASTE_TOKEN_HERE' && HARDCODED_GIST_ID !== 'PASTE_GIST_ID_HERE';
+        return !!getToken();
     }
 
     /**
@@ -398,4 +403,4 @@ class ChecklistManager {
 
 // Export singleton instance
 export const checklistManager = new ChecklistManager();
-export { DEFAULT_ITEMS, TEAM_MEMBERS, getGistId };
+export { DEFAULT_ITEMS, TEAM_MEMBERS, getGistId, getToken, setToken };

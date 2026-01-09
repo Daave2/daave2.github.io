@@ -316,7 +316,7 @@
 
   <!-- Checklist Widget Script -->
   <script type="module">
-    import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS } from './js/modules/checklist.js';
+    import { checklistManager, DEFAULT_ITEMS, TEAM_MEMBERS, setToken } from './js/modules/checklist.js';
 
     const widgetLoading = document.getElementById('widget-loading');
     const widgetError = document.getElementById('widget-error');
@@ -419,7 +419,30 @@
     async function initWidget() {
       if (!checklistManager.isConfigured()) {
         widgetLoading.style.display = 'none';
+        // Show setup prompt
+        widgetError.innerHTML = `
+          <div style="text-align: left;">
+            <strong>One-time setup required</strong><br>
+            <small style="display: block; margin: 0.5rem 0;">Enter a GitHub token with "gist" permission:</small>
+            <input type="password" id="token-input" placeholder="ghp_..." style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 0.5rem;">
+            <button id="token-submit" style="background: var(--primary-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Save Token</button>
+            <a href="https://github.com/settings/tokens/new?scopes=gist&description=Morrisons%20Checklist" target="_blank" style="margin-left: 0.5rem; font-size: 0.8rem;">Get token</a>
+          </div>
+        `;
         widgetError.style.display = 'block';
+        widgetError.style.background = '#fff3cd';
+        widgetError.style.color = '#856404';
+        widgetError.style.border = '1px solid #ffc107';
+
+        document.getElementById('token-submit').addEventListener('click', async () => {
+          const token = document.getElementById('token-input').value.trim();
+          if (token) {
+            setToken(token);
+            widgetError.style.display = 'none';
+            widgetLoading.style.display = 'flex';
+            await initWidget();
+          }
+        });
         return;
       }
 
