@@ -874,34 +874,50 @@
       return false;
     }
 
-    // Send a native device notification
-    function sendDeviceNotification(title, body, icon = '/icons/icon-192x192.png') {
+    // Send a native device notification (with Service Worker support for mobile)
+    async function sendDeviceNotification(title, body, icon = '/icons/icon-192x192.png') {
       console.log('[NOTIFY] Attempting to send notification:', title, body);
-      if (Notification.permission === 'granted') {
-        try {
-          const notification = new Notification(title, {
+
+      if (Notification.permission !== 'granted') {
+        console.log('[NOTIFY] Permission not granted:', Notification.permission);
+        return false;
+      }
+
+      try {
+        // Try Service Worker notification first (better mobile support)
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+          const registration = await navigator.serviceWorker.ready;
+          await registration.showNotification(title, {
             body: body,
             icon: icon,
-            badge: icon,
-            tag: body, // Prevents duplicate notifications
-            requireInteraction: true // Keeps notification until user dismisses
+            badge: '/icons/favicon-32x32.png',
+            tag: title + body, // Prevents duplicates
+            requireInteraction: true,
+            vibrate: [200, 100, 200] // Vibration pattern for mobile
           });
-
-          // Focus the tab when notification is clicked
-          notification.onclick = () => {
-            window.focus();
-            notification.close();
-          };
-
-          console.log('[NOTIFY] Notification created successfully!');
+          console.log('[NOTIFY] Service Worker notification sent!');
           return true;
-        } catch (err) {
-          console.error('[NOTIFY] Failed to create notification:', err);
-          return false;
         }
+
+        // Fallback to regular Notification API
+        const notification = new Notification(title, {
+          body: body,
+          icon: icon,
+          tag: body,
+          requireInteraction: true
+        });
+
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+
+        console.log('[NOTIFY] Regular notification created!');
+        return true;
+      } catch (err) {
+        console.error('[NOTIFY] Failed to create notification:', err);
+        return false;
       }
-      console.log('[NOTIFY] Permission not granted:', Notification.permission);
-      return false;
     }
 
     function checkDueTasks() {
@@ -936,25 +952,27 @@
 
             if (diffMins <= 10 && diffMins > 0) {
               if (!notifiedTasks.has(`${task.id}-soon`)) {
-                const sent = sendDeviceNotification(
+                notifiedTasks.add(`${task.id}-soon`);
+                sendDeviceNotification(
                   '⚠️ Task Due Soon',
                   `"${task.label}" is due in ${diffMins} mins!`
-                );
-                if (!sent && window.notify) {
-                  window.notify(`⚠️ Task "${task.label}" is due in ${diffMins} mins!`, 5000);
-                }
-                notifiedTasks.add(`${task.id}-soon`);
+                ).then(sent => {
+                  if (!sent && window.notify) {
+                    window.notify(`⚠️ Task "${task.label}" is due in ${diffMins} mins!`, 5000);
+                  }
+                });
               }
             } else if (diffMins <= 0) {
               if (!notifiedTasks.has(`${task.id}-overdue`)) {
-                const sent = sendDeviceNotification(
+                notifiedTasks.add(`${task.id}-overdue`);
+                sendDeviceNotification(
                   '🚨 Task OVERDUE',
                   `"${task.label}" is overdue!`
-                );
-                if (!sent && window.notify) {
-                  window.notify(`🚨 Task "${task.label}" is OVERDUE!`, 6000);
-                }
-                notifiedTasks.add(`${task.id}-overdue`);
+                ).then(sent => {
+                  if (!sent && window.notify) {
+                    window.notify(`🚨 Task "${task.label}" is OVERDUE!`, 6000);
+                  }
+                });
               }
             }
           }
