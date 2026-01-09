@@ -998,20 +998,19 @@
     });
 
     // ===== Firebase Cloud Messaging Setup =====
-    // Note: You need to create js/firebase-config.js with your Firebase credentials
-    // See js/firebase-config.template.js for the format
+    // Firebase config is inlined here (safe for client-side)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPiQ91EOGaK6woOPYefg4TMylGP1esGec",
+      authDomain: "morrisons-checklist.firebaseapp.com",
+      projectId: "morrisons-checklist",
+      storageBucket: "morrisons-checklist.firebasestorage.app",
+      messagingSenderId: "394294868202",
+      appId: "1:394294868202:web:31e9554768582b781bff93"
+    };
+    const vapidKey = "BHgmmHaLu8mY_qghs4mE4AvNQMRjIoUM2V8r-fWdseoaxDdW86smilcnD2ZHx_RmmKirS1awN-AeRYcukXcBTfA";
 
     async function initializeFirebaseMessaging() {
-      // Check if Firebase config exists
       try {
-        const configModule = await import('./js/firebase-config.js');
-        const { firebaseConfig, vapidKey } = configModule;
-
-        if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'YOUR_API_KEY') {
-          console.log('[FCM] Firebase not configured yet. Skipping FCM setup.');
-          return;
-        }
-
         // Initialize Firebase
         if (!firebase.apps.length) {
           firebase.initializeApp(firebaseConfig);
