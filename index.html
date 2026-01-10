@@ -754,11 +754,26 @@
         const originalText = forceSyncBtn.textContent;
         forceSyncBtn.textContent = '⏳ Syncing...';
         try {
-          const messaging = firebase.messaging();
-          // Note: we assume messaging is initialized by startup code
+          // Wait for Service Worker to be ready and active
+          const registration = await navigator.serviceWorker.ready;
+          if (!registration.active) {
+            await new Promise(resolve => {
+              const checkActive = () => {
+                if (registration.active) resolve();
+                else setTimeout(checkActive, 100);
+              };
+              checkActive();
+            });
+          }
 
-          // Get fresh token
-          const token = await messaging.getToken();
+          const messaging = firebase.messaging();
+          messaging.useServiceWorker(registration);
+
+          // Get fresh token with the active SW
+          const token = await messaging.getToken({
+            vapidKey: "BHgmmHaLu8mY_qghs4mE4AvNQMRjIoUM2V8r-fWdseoaxDdW86smilcnD2ZHx_RmmKirS1awN-AeRYcukXcBTfA",
+            serviceWorkerRegistration: registration
+          });
           const username = getUsername();
 
           if (!username || username === 'Team') {
