@@ -1023,9 +1023,6 @@
           }, 500);
         }
 
-        // Start notification checker
-        setInterval(checkDueTasks, 60000); // Check every minute
-        setTimeout(checkDueTasks, 2000);   // Initial check
       } catch (error) {
         console.error('Widget init failed:', error);
         widgetLoading.style.display = 'none';
@@ -1034,44 +1031,10 @@
       }
     }
 
-    // --- Notification Logic ---
-    const notifiedTasks = new Set(); // Track tasks we've already alerted for
-
-    function parseTime(timeStr) {
-      if (!timeStr) return null;
-      // Handle "9:00", "09:00", "5:00pm", "17:00"
-      try {
-        const d = new Date();
-        let [time, modifier] = timeStr.split(/(am|pm)/i);
-        let [hours, minutes] = time.split(':');
-
-        if (!hours || !minutes) return null; // "Daily", "Weekly" etc
-
-        hours = parseInt(hours);
-        minutes = parseInt(minutes);
-
-        if (modifier) {
-          modifier = modifier.toLowerCase();
-          if (modifier === 'pm' && hours < 12) hours += 12;
-          if (modifier === 'am' && hours === 12) hours = 0;
-        }
-
-        d.setHours(hours, minutes, 0, 0);
-        return d;
-      } catch (e) {
-        return null;
-      }
-    }
-
-    // Request notification permission on page load
+    // Request notification permission (needed for FCM)
     async function requestNotificationPermission() {
-      if (!('Notification' in window)) {
-        console.log('This browser does not support notifications');
-        return false;
-      }
-      if (Notification.permission === 'granted') {
-        return true;
-      }
+      if (!('Notification' in window)) return false;
+      if (Notification.permission === 'granted') return true;
       if (Notification.permission !== 'denied') {
         const permission = await Notification.requestPermission();
         return permission === 'granted';
@@ -1079,113 +1042,6 @@
       return false;
     }
 
-    // Send a native device notification (with Service Worker support for mobile)
-    async function sendDeviceNotification(title, body, icon = '/icons/icon-192x192.png') {
-      console.log('[NOTIFY] Attempting to send notification:', title, body);
-
-      if (Notification.permission !== 'granted') {
-        console.log('[NOTIFY] Permission not granted:', Notification.permission);
-        return false;
-      }
-
-      try {
-        // Try Service Worker notification first (better mobile support)
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-          const registration = await navigator.serviceWorker.ready;
-          await registration.showNotification(title, {
-            body: body,
-            icon: icon,
-            badge: '/icons/favicon-32x32.png',
-            tag: title + body, // Prevents duplicates
-            requireInteraction: true,
-            vibrate: [200, 100, 200] // Vibration pattern for mobile
-          });
-          console.log('[NOTIFY] Service Worker notification sent!');
-          return true;
-        }
-
-        // Fallback to regular Notification API
-        const notification = new Notification(title, {
-          body: body,
-          icon: icon,
-          tag: body,
-          requireInteraction: true
-        });
-
-        notification.onclick = () => {
-          window.focus();
-          notification.close();
-        };
-
-        console.log('[NOTIFY] Regular notification created!');
-        return true;
-      } catch (err) {
-        console.error('[NOTIFY] Failed to create notification:', err);
-        return false;
-      }
-    }
-
-    function checkDueTasks() {
-      const username = getUsername();
-      console.log('[NOTIFY] Checking due tasks for user:', username, 'Permission:', Notification.permission);
-      if (!username || username === 'Team') return;
-
-      const now = new Date();
-      const items = checklistManager.getItems();
-
-      Object.values(items).forEach(category => {
-        category.items.forEach(task => {
-          const state = checklistManager.getItemState(task.id);
-
-          // Debug: Log each task's assignment status
-          if (task.time && task.time.includes(':')) {
-            console.log('[NOTIFY] Task:', task.label, 'Time:', task.time, 'AssignedTo:', state.assignedTo, 'Checked:', state.checked);
-          }
-
-          // Only check assignments for current user that are incomplete
-          if (state.assignedTo === username && !state.checked) {
-            const dueTime = parseTime(task.time);
-            if (!dueTime) return;
-
-            const diffMs = dueTime - now;
-            const diffMins = Math.floor(diffMs / 60000);
-            console.log('[NOTIFY] Due task found:', task.label, 'diffMins:', diffMins, 'alreadyNotified:', notifiedTasks.has(`${task.id}-overdue`));
-
-            // Logic: 
-            // 1. Due soon (0-10 mins)
-            // 2. Overdue (< 0 mins)
-
-            if (diffMins <= 10 && diffMins > 0) {
-              if (!notifiedTasks.has(`${task.id}-soon`)) {
-                notifiedTasks.add(`${task.id}-soon`);
-                sendDeviceNotification(
-                  '⚠️ Task Due Soon',
-                  `"${task.label}" is due in ${diffMins} mins!`
-                ).then(sent => {
-                  if (!sent && window.notify) {
-                    window.notify(`⚠️ Task "${task.label}" is due in ${diffMins} mins!`, 5000);
-                  }
-                });
-              }
-            } else if (diffMins <= 0) {
-              if (!notifiedTasks.has(`${task.id}-overdue`)) {
-                notifiedTasks.add(`${task.id}-overdue`);
-                sendDeviceNotification(
-                  '🚨 Task OVERDUE',
-                  `"${task.label}" is overdue!`
-                ).then(sent => {
-                  if (!sent && window.notify) {
-                    window.notify(`🚨 Task "${task.label}" is OVERDUE!`, 6000);
-                  }
-                });
-              }
-            }
-          }
-        });
-      });
-    }
-
-    // Request permission when page loads
     requestNotificationPermission();
 
     widgetSync.addEventListener('click', async () => {
