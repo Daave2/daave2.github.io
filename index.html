@@ -378,6 +378,11 @@
           </div>
           <small id="freq-hint" style="display: block; color: #666; margin-bottom: 0.5rem; font-size: 0.8rem;"></small>
 
+          <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="new-task-chaser" style="width: 18px; height: 18px;">
+            <span style="font-size: 0.9rem;">Send Chat chaser if overdue</span>
+          </label>
+
           <div style="display: flex; gap: 0.5rem;">
             <button id="add-task-btn" style="flex: 1;">Add Task</button>
             <button id="cancel-edit-btn" style="display: none; background: #95a5a6; flex: 1;">Cancel</button>
@@ -811,6 +816,9 @@
               freqHint.textContent = '';
             }
 
+            // Populate sendChaser checkbox
+            document.getElementById('new-task-chaser').checked = task.sendChaser || false;
+
             // Set editing state
             editingTaskId = task.id;
             editingCategoryId = categoryId;
@@ -905,17 +913,21 @@
             // History relies on ID + Date. If ID changes, past history persists, future history is new.
             // Let's reuse ID? addTask doesn't support custom ID.
             // Let's just Add New with same properties.
+            const sendChaser = document.getElementById('new-task-chaser').checked;
             await checklistManager.addTask(categoryId, {
               label,
               time,
-              schedule: schedule || { type: freq } // Use current form freq if schedule undefined
+              schedule: schedule || { type: freq },
+              sendChaser
             });
           } else {
             // Same Category - Update in place
+            const sendChaser = document.getElementById('new-task-chaser').checked;
             await checklistManager.updateTask(editingCategoryId, editingTaskId, {
               label,
               time,
-              schedule: schedule // undefined will keep existing
+              schedule: schedule,
+              sendChaser
             });
           }
 
@@ -930,7 +942,8 @@
             btn.textContent = originalText;
             return;
           }
-          await checklistManager.addTask(categoryId, { label, time, schedule });
+          const sendChaser = document.getElementById('new-task-chaser').checked;
+          await checklistManager.addTask(categoryId, { label, time, schedule, sendChaser });
         }
 
         // Reset form
@@ -959,6 +972,7 @@
       document.getElementById('new-task-label').value = '';
       document.getElementById('new-task-time').value = '';
       document.getElementById('new-task-category').value = 'morning';
+      document.getElementById('new-task-chaser').checked = false;
 
       // Reset Frequency UI
       freqSelect.value = 'daily';

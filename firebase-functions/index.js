@@ -296,11 +296,13 @@ exports.checkDueTasks = functions.pubsub
                                 });
                             }
 
-                            // Send to Google Chat (once per task per day)
-                            const chatKey = `${task.id}-${todayStr}-chat-overdue`;
-                            if (!sentNotifications.has(chatKey)) {
-                                await sendChatWebhookAlert(task.label, state.assignedTo, overdueText);
-                                sentNotifications.add(chatKey);
+                            // Send to Google Chat (once per task per day, if sendChaser enabled)
+                            if (task.sendChaser) {
+                                const chatKey = `${task.id}-${todayStr}-chat-overdue`;
+                                if (!sentNotifications.has(chatKey)) {
+                                    await sendChatWebhookAlert(task.label, state.assignedTo, overdueText);
+                                    sentNotifications.add(chatKey);
+                                }
                             }
                         }
                     }

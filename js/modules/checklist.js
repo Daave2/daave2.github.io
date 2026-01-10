@@ -607,7 +607,8 @@ class ChecklistManager {
                 id: `task-${Date.now()}`,
                 label: task.label,
                 time: task.time,
-                schedule: task.schedule || { type: 'daily' }
+                schedule: task.schedule || { type: 'daily' },
+                sendChaser: task.sendChaser || false
             };
             if (!data.definitions[categoryId]) {
                 const title = DEFAULT_ITEMS[categoryId]?.title || categoryId;
@@ -647,7 +648,8 @@ class ChecklistManager {
                         label: updates.label || currentTask.label,
                         time: updates.time !== undefined ? updates.time : currentTask.time,
                         // Only update schedule if provided and different
-                        schedule: updates.schedule || currentTask.schedule
+                        schedule: updates.schedule || currentTask.schedule,
+                        sendChaser: updates.sendChaser !== undefined ? updates.sendChaser : currentTask.sendChaser
                     };
 
                     // Handle structure update if it was an object format
