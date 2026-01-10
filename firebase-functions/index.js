@@ -21,8 +21,9 @@ const GITHUB_TOKEN = functions.config().gist?.token || process.env.GITHUB_TOKEN;
 const GIST_FILENAME = 'daily_checklist.json';
 
 // Track which notifications we've sent to avoid duplicates
-// In production, you might want to use Firestore for persistent tracking
+// Note: This persists only within a Cloud Function instance lifetime
 const sentNotifications = new Set();
+let lastNotificationDate = '';
 
 /**
  * Scheduled function that runs every 5 minutes to check for due tasks
@@ -44,6 +45,13 @@ exports.checkDueTasks = functions.pubsub
             // 2. Get current time
             const now = new Date();
             const todayStr = now.toISOString().split('T')[0];
+
+            // Clear sent notifications when date changes
+            if (lastNotificationDate !== todayStr) {
+                console.log('New day detected, clearing sent notifications cache');
+                sentNotifications.clear();
+                lastNotificationDate = todayStr;
+            }
 
             // Check if data is for today
             if (checklistData.meta?.currentDate !== todayStr) {
@@ -70,6 +78,14 @@ exports.checkDueTasks = functions.pubsub
                 for (const task of tasks) {
                     const state = todayItems[task.id] || {};
 
+                    // Debug logging for each task
+                    if (task.time) {
+                        const dueTime = parseTime(task.time, now);
+                        const diffMs = dueTime ? dueTime - now : null;
+                        const diffMins = diffMs ? Math.floor(diffMs / 60000) : 'N/A';
+                        console.log(`[DEBUG] Task "${task.label}" (${task.time}): assigned=${state.assignedTo || 'none'}, checked=${state.checked || false}, diffMins=${diffMins}`);
+                    }
+
                     // Skip if already checked or not assigned
                     if (state.checked || !state.assignedTo) continue;
 
@@ -82,7 +98,10 @@ exports.checkDueTasks = functions.pubsub
 
                     // Get FCM tokens for assigned user (supports array for multi-device)
                     let userTokens = tokens[state.assignedTo];
-                    if (!userTokens) continue;
+                    if (!userTokens) {
+                        console.log(`[DEBUG] No token found for user: ${state.assignedTo}`);
+                        continue;
+                    }
 
                     // Handle both old single-token format and new array format
                     if (!Array.isArray(userTokens)) {
