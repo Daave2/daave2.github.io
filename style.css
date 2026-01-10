@@ -2967,3 +2967,32 @@ button {
 #add-task-btn:hover {
   filter: brightness(1.1);
 }
+
+/* Blink Effect for Name Setting */
+@keyframes softPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+    color: var(--accent-red, #ef4444);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.highlight-name-set {
+  animation: softPulse 2s infinite ease-in-out;
+  font-weight: bold;
+  color: var(--accent-blue, #3b82f6) !important;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+}

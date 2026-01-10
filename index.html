@@ -450,9 +450,11 @@
       if (name && name !== 'Team') {
         heroGreeting.textContent = `${greeting}, ${name}`;
         changeNameLink.textContent = `Not ${name}?`;
+        changeNameLink.classList.remove('highlight-name-set');
       } else {
         heroGreeting.textContent = 'Welcome';
         changeNameLink.textContent = 'Set Name';
+        changeNameLink.classList.add('highlight-name-set');
       }
       heroChangeName.style.display = 'block';
     }
