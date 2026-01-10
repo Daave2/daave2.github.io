@@ -375,7 +375,10 @@
           </div>
           <small id="freq-hint" style="display: block; color: #666; margin-bottom: 0.5rem; font-size: 0.8rem;"></small>
 
-          <button id="add-task-btn">Add Task</button>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="add-task-btn" style="flex: 1;">Add Task</button>
+            <button id="cancel-edit-btn" style="display: none; background: #95a5a6; flex: 1;">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
@@ -598,61 +601,114 @@
       manageList.innerHTML = '';
       const definitions = checklistManager.getAllDefinitions();
 
-      Object.entries(definitions).forEach(([categoryId, category]) => {
-        // Handle both Object {title, items} and Array formats
-        const tasks = Array.isArray(category) ? category : (category.items || []);
-        const catTitle = category.title || DEFAULT_ITEMS[categoryId]?.title || categoryId;
-        const catHeader = document.createElement('div');
-        catHeader.className = 'manage-category-header';
-        catHeader.textContent = catTitle;
-        manageList.appendChild(catHeader);
+      // Track editing state
+      let editingTaskId = null;
+      let editingCategoryId = null;
 
-        tasks.forEach(task => {
-          let scheduleInfo = '';
-          const s = task.schedule;
-          if (s.type === 'weekly') {
-            const days = s.days.map(d => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]).join(', ');
-            scheduleInfo = `<small style="color: #666; display: block;">Weekly: ${days}</small>`;
-          } else if (s.type === 'once') {
-            scheduleInfo = `<small style="color: #666; display: block;">Once: ${s.date}</small>`;
-          }
+      // Render Management List
+      function renderManageList() {
+        const manageList = document.getElementById('manage-list');
+        manageList.innerHTML = '';
 
-          const itemEl = document.createElement('div');
-          itemEl.className = 'manage-item';
-          itemEl.innerHTML = `
+        const definitions = checklistManager.data?.definitions || {};
+
+        Object.entries(definitions).forEach(([categoryId, category]) => {
+          // Handle both Object {title, items} and Array formats
+          const tasks = Array.isArray(category) ? category : (category.items || []);
+          const catTitle = category.title || DEFAULT_ITEMS[categoryId]?.title || categoryId;
+          const catHeader = document.createElement('div');
+          catHeader.className = 'manage-category-header';
+          catHeader.textContent = catTitle;
+          manageList.appendChild(catHeader);
+
+          tasks.forEach(task => {
+            let scheduleInfo = '';
+            const s = task.schedule || { type: 'daily' };
+            if (s.type === 'weekly') {
+              const days = (s.days || []).map(d => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]).join(', ');
+              scheduleInfo = `<small style="color: #666; display: block;">Weekly: ${days}</small>`;
+            } else if (s.type === 'once') {
+              scheduleInfo = `<small style="color: #666; display: block;">Once: ${s.date}</small>`;
+            }
+
+            const itemEl = document.createElement('div');
+            itemEl.className = 'manage-item';
+            itemEl.innerHTML = `
             <div class="manage-item-info">
               ${task.time ? `<strong>${task.time}</strong> ` : ''}${task.label}
               ${scheduleInfo}
             </div>
-            <button class="manage-delete-btn" data-cat="${categoryId}" data-id="${task.id}" title="Delete">
-              <i class="fas fa-trash-alt"></i>
-            </button>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="manage-edit-btn" title="Edit">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="manage-delete-btn" data-cat="${categoryId}" data-id="${task.id}" title="Delete">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
           `;
 
-          itemEl.querySelector('.manage-delete-btn').addEventListener('click', async () => {
-            if (confirm(`Delete task "${task.label}"?`)) {
-              try {
-                await checklistManager.removeTask(categoryId, task.id);
-                renderManageList();
-                renderWidget();
-              } catch (err) {
-                alert('Failed to delete: ' + err.message);
-              }
-            }
-          });
+            // Edit Handler
+            itemEl.querySelector('.manage-edit-btn').addEventListener('click', () => {
+              // Populate form
+              document.getElementById('new-task-category').value = categoryId;
+              document.getElementById('new-task-label').value = task.label;
+              document.getElementById('new-task-time').value = task.time || '';
 
-          manageList.appendChild(itemEl);
+              // Handle Schedule
+              const s = task.schedule || { type: 'daily' };
+              freqSelect.value = s.type;
+
+              if (s.type === 'weekly' && s.days && s.days.length > 0) {
+                // Calculate a date that matches the day of week for the picker
+                // This is a bit tricky as date picker needs YYYY-MM-DD
+                // Ideally we'd just have day checkboxes, but maximizing reuse of existing UI
+                // For now, we'll just leave the date empty and let them pick one if they want to change it
+                freqDateContainer.style.display = 'block';
+                freqHint.textContent = `Current: ${(s.days || []).map(d => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]).join(', ')}`;
+              } else if (s.type === 'once') {
+                freqDate.value = s.date || '';
+                freqDateContainer.style.display = 'block';
+              } else {
+                freqDateContainer.style.display = 'none';
+                freqHint.textContent = '';
+              }
+
+              // Set editing state
+              editingTaskId = task.id;
+              editingCategoryId = categoryId;
+
+              // Update Button State
+              const btn = document.getElementById('add-task-btn');
+              btn.textContent = 'Update Task';
+              btn.style.backgroundColor = '#2ecc71'; // Green for update
+
+              // Scroll to top
+              document.querySelector('.modal-content').scrollTop = 0;
+            });
+
+            itemEl.querySelector('.manage-delete-btn').addEventListener('click', async () => {
+              if (confirm(`Delete task "${task.label}"?`)) {
+                try {
+                  await checklistManager.removeTask(categoryId, task.id);
+                  renderManageList();
+                  renderWidget();
+                } catch (err) {
+                  alert('Failed to delete: ' + err.message);
+                }
+              }
+            });
+
+            manageList.appendChild(itemEl);
+          });
         });
       });
     }
 
-    // Add new task
+    // Add new task / Update task
     document.getElementById('add-task-btn').addEventListener('click', async () => {
       const categoryId = document.getElementById('new-task-category').value;
       const label = document.getElementById('new-task-label').value.trim();
-
-
-
       const time = document.getElementById('new-task-time').value.trim();
 
       // Schedule Parsing
@@ -661,17 +717,27 @@
 
       if (freq === 'weekly') {
         const date = freqDate.value;
-        if (!date) {
+        if (!date && !editingTaskId) { // Require date for new tasks
           alert('Please pick a date to set the repeating day');
           return;
         }
-        // Derive day of week (0-6)
-        // Note: new Date(dateStr) parses as UTC if YYYY-MM-DD
-        // causing off-by-one errors if not careful.
-        // Better: use new Date(Y, M, D)
-        const parts = date.split('-');
-        const d = new Date(parts[0], parts[1] - 1, parts[2]);
-        schedule.days = [d.getDay()];
+
+        if (date) {
+          const parts = date.split('-');
+          const d = new Date(parts[0], parts[1] - 1, parts[2]);
+          schedule.days = [d.getDay()];
+        } else if (editingTaskId) {
+          // Keep existing schedule if editing and no new date picked
+          // Pass null to signal "keep existing" logic in manager if needed, 
+          // but here we are constructing the object to send. 
+          // Actually, best to fetch existing if we want to preserve complex data not in form
+          // But for simplicity, we rely on the user picking a date if they change type to weekly
+          // If they leave it as weekly and don't pick a date, we might lose the day?
+          // Let's handle this in the updateTask logic or require re-entry.
+          // Simplified: If editing and no date picked, we assume they didn't change the day
+          // We need to pass 'undefined' for schedule to updateTask to keep it
+          schedule = undefined;
+        }
       } else if (freq === 'once') {
         const date = freqDate.value;
         if (!date) {
@@ -689,24 +755,67 @@
       try {
         const btn = document.getElementById('add-task-btn');
         const originalText = btn.textContent;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-        await checklistManager.addTask(categoryId, { label, time, schedule });
+        if (editingTaskId) {
+          // UPDATE EXISTING
+          await checklistManager.updateTask(editingCategoryId, editingTaskId, {
+            label,
+            time,
+            schedule: schedule // undefined will keep existing
+          });
+
+          // Reset Edit Mode
+          editingTaskId = null;
+          editingCategoryId = null;
+          btn.style.backgroundColor = '';
+        } else {
+          // CREATE NEW
+          if (schedule === undefined && freq === 'weekly') {
+            alert('Please pick a date for the weekly task');
+            btn.textContent = originalText;
+            return;
+          }
+          await checklistManager.addTask(categoryId, { label, time, schedule });
+        }
 
         // Reset form
         document.getElementById('new-task-label').value = '';
         document.getElementById('new-task-time').value = '';
         freqSelect.value = 'daily';
         freqDateContainer.style.display = 'none';
+        freqDate.value = '';
         freqHint.textContent = '';
-        btn.textContent = originalText;
+        btn.textContent = 'Add Task';
 
         renderManageList();
         renderWidget();
       } catch (err) {
-        document.getElementById('add-task-btn').textContent = 'Add Task';
-        alert('Failed to add task: ' + err.message);
+        document.getElementById('add-task-btn').textContent = editingTaskId ? 'Update Task' : 'Add Task';
+        alert('Failed to save task: ' + err.message);
       }
+    });
+
+    // Cancel Button Handler
+    document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+      editingTaskId = null;
+      editingCategoryId = null;
+
+      // Reset form
+      document.getElementById('new-task-label').value = '';
+      document.getElementById('new-task-time').value = '';
+      document.getElementById('freq-select').value = 'daily';
+      document.getElementById('freq-date-container').style.display = 'none';
+      document.getElementById('freq-date').value = '';
+      document.getElementById('freq-hint').textContent = '';
+
+      const btn = document.getElementById('add-task-btn');
+      btn.textContent = 'Add Task';
+      btn.style.backgroundColor = '';
+      document.getElementById('cancel-edit-btn').style.display = 'none';
+
+      const modal = document.querySelector('.modal-content');
+      if (modal) modal.scrollTop = 0;
     });
 
     // Global Debug Notification Button Handler

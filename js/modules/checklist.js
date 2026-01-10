@@ -601,6 +601,35 @@ class ChecklistManager {
         });
     }
 
+    async updateTask(categoryId, taskId, updates) {
+        await this.saveWithRetry((data) => {
+            if (data.definitions[categoryId]) {
+                // Ensure items array exists
+                const items = Array.isArray(data.definitions[categoryId])
+                    ? data.definitions[categoryId]
+                    : (data.definitions[categoryId].items || []);
+
+                const index = items.findIndex(t => t.id === taskId);
+                if (index !== -1) {
+                    const currentTask = items[index];
+                    // Apply updates
+                    items[index] = {
+                        ...currentTask,
+                        label: updates.label || currentTask.label,
+                        time: updates.time !== undefined ? updates.time : currentTask.time,
+                        // Only update schedule if provided and different
+                        schedule: updates.schedule || currentTask.schedule
+                    };
+
+                    // Handle structure update if it was an object format
+                    if (!Array.isArray(data.definitions[categoryId])) {
+                        data.definitions[categoryId].items = items;
+                    }
+                }
+            }
+        });
+    }
+
     async toggleItem(itemId) {
         await this.saveWithRetry((data) => {
             const currentState = data.today.items[itemId] || {};
