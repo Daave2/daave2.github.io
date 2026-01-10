@@ -20,10 +20,92 @@ const GIST_ID = functions.config().gist?.id || process.env.GIST_ID;
 const GITHUB_TOKEN = functions.config().gist?.token || process.env.GITHUB_TOKEN;
 const GIST_FILENAME = 'daily_checklist.json';
 
+// Google Chat Webhook for overdue alerts
+const CHAT_WEBHOOK_URL = functions.config().chat?.webhook || process.env.CHAT_WEBHOOK_URL;
+
 // Track which notifications we've sent to avoid duplicates
 // Note: This persists only within a Cloud Function instance lifetime
 const sentNotifications = new Set();
 let lastNotificationDate = '';
+
+/**
+ * Send an overdue alert to Google Chat via webhook
+ */
+async function sendChatWebhookAlert(taskLabel, assignedTo, overdueText) {
+    if (!CHAT_WEBHOOK_URL) {
+        console.log('[CHAT] Webhook URL not configured, skipping chat alert');
+        return;
+    }
+
+    const cardMessage = {
+        cardsV2: [{
+            cardId: `overdue-${Date.now()}`,
+            card: {
+                header: {
+                    title: '⚠️ Overdue Task Alert',
+                    subtitle: 'Action Required',
+                    imageUrl: 'https://218.team/icons/icon-192x192.png',
+                    imageType: 'CIRCLE'
+                },
+                sections: [{
+                    widgets: [
+                        {
+                            decoratedText: {
+                                topLabel: 'Task',
+                                text: `<b>${taskLabel}</b>`,
+                                wrapText: true
+                            }
+                        },
+                        {
+                            decoratedText: {
+                                topLabel: 'Assigned To',
+                                text: assignedTo || 'Unassigned',
+                                wrapText: true
+                            }
+                        },
+                        {
+                            decoratedText: {
+                                topLabel: 'Status',
+                                text: `<font color="#d32f2f">${overdueText}</font>`,
+                                wrapText: true
+                            }
+                        }
+                    ]
+                },
+                {
+                    widgets: [{
+                        buttonList: {
+                            buttons: [{
+                                text: 'Mark as Actioned',
+                                onClick: {
+                                    openLink: {
+                                        url: 'https://218.team/'
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }]
+            }
+        }]
+    };
+
+    try {
+        const response = await fetch(CHAT_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cardMessage)
+        });
+
+        if (!response.ok) {
+            console.error('[CHAT] Webhook failed:', response.status, await response.text());
+        } else {
+            console.log('[CHAT] Alert sent for:', taskLabel);
+        }
+    } catch (err) {
+        console.error('[CHAT] Webhook error:', err.message);
+    }
+}
 
 /**
  * Scheduled function that runs every 5 minutes to check for due tasks
@@ -212,6 +294,13 @@ exports.checkDueTasks = functions.pubsub
                                     taskId: task.id,
                                     key: notifKey
                                 });
+                            }
+
+                            // Send to Google Chat (once per task per day)
+                            const chatKey = `${task.id}-${todayStr}-chat-overdue`;
+                            if (!sentNotifications.has(chatKey)) {
+                                await sendChatWebhookAlert(task.label, state.assignedTo, overdueText);
+                                sentNotifications.add(chatKey);
                             }
                         }
                     }
