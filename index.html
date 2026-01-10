@@ -976,6 +976,14 @@
       const taskIdParam = urlParams.get('taskId');
       const highlightParam = urlParams.get('highlight');
 
+      // Debug logging
+      console.log('[NOTIFY-ACTION] URL params:', {
+        action: actionParam,
+        taskId: taskIdParam,
+        highlight: highlightParam,
+        fullURL: window.location.href
+      });
+
       // Clean up URL (remove params without reloading)
       if (actionParam || highlightParam) {
         window.history.replaceState({}, '', window.location.pathname);
