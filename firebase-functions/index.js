@@ -98,8 +98,8 @@ exports.checkDueTasks = functions.pubsub
                         for (const token of userTokens) {
                             notifications.push({
                                 token: token,
-                                title: '⚠️ Task Due Soon',
-                                body: `"${task.label}" is due in ${diffMins} minutes!`,
+                                title: 'Task Due Soon',
+                                body: `${task.label} — due in ${diffMins} min`,
                                 taskId: task.id,
                                 key: notifKey
                             });
@@ -109,8 +109,8 @@ exports.checkDueTasks = functions.pubsub
                         for (const token of userTokens) {
                             notifications.push({
                                 token: token,
-                                title: '🚨 Task OVERDUE',
-                                body: `"${task.label}" is overdue!`,
+                                title: 'Overdue Task',
+                                body: `${task.label} — needs attention`,
                                 taskId: task.id,
                                 key: notifKey
                             });
@@ -258,8 +258,8 @@ exports.sendTestNotification = functions.https.onRequest(async (req, res) => {
             token: token,
             // NO notification payload - let SW handle display
             data: {
-                title: '🔔 Test Notification',
-                body: 'If you see this, FCM is working!',
+                title: 'Notifications Active',
+                body: 'Task reminders are configured for this device.',
                 taskId: 'test-task',
                 click_action: 'https://218.team/'
             },

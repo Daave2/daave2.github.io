@@ -36,8 +36,8 @@ messaging.onBackgroundMessage((payload) => {
             url: payload.data?.click_action || 'https://218.team/'
         },
         actions: [
-            { action: 'view', title: '👁️ View Task' },
-            { action: 'complete', title: '✅ Confirm Done' }
+            { action: 'view', title: 'View' },
+            { action: 'complete', title: 'Mark Complete' }
         ]
     };
 
@@ -75,7 +75,7 @@ self.addEventListener('notificationclick', (event) => {
 
 // --- PWA Caching Setup ---
 
-const CACHE_NAME = 'cleveleys-dash-cache-v7'; // Merged SW version
+const CACHE_NAME = 'cleveleys-dash-cache-v8';
 
 // List of files that make up the core app shell
 const APP_SHELL_URLS = [
