@@ -782,14 +782,28 @@
 
           console.log('[DEBUG] Forcing token update for:', username);
 
+          // Use array storage for multi-device support
           if (!checklistManager.data.tokens) checklistManager.data.tokens = {};
-          checklistManager.data.tokens[username] = token;
+          let userTokens = checklistManager.data.tokens[username];
+
+          // Migrate from old single-token format
+          if (userTokens && !Array.isArray(userTokens)) {
+            userTokens = [userTokens];
+          }
+          if (!userTokens) userTokens = [];
+
+          // Add token if not already present
+          if (!userTokens.includes(token)) {
+            userTokens.push(token);
+            if (userTokens.length > 5) userTokens = userTokens.slice(-5);
+          }
+          checklistManager.data.tokens[username] = userTokens;
 
           checklistManager.touchUpdate();
-          checklistManager.saveLocal(); // Save locally first
-          await checklistManager.sync(); // Push to Gist
+          checklistManager.saveLocal();
+          await checklistManager.sync();
 
-          alert('Success! Token synced to Gist.');
+          alert('Success! Token synced. Devices: ' + userTokens.length);
           forceSyncBtn.textContent = '✅ Done';
         } catch (err) {
           console.error('[DEBUG] Sync Failed:', err);
@@ -1304,27 +1318,41 @@
       }
     }
 
-    // Store FCM token in Gist (add to data.tokens)
+    // Store FCM token in Gist (add to data.tokens as array for multi-device support)
     async function storeFCMToken(username, token) {
-      // This will be called when we have a token to store
-      // The token gets saved with the next sync
       if (!checklistManager.data.tokens) {
         checklistManager.data.tokens = {};
       }
 
-      // Only update if token changed
-      if (checklistManager.data.tokens[username] !== token) {
-        checklistManager.data.tokens[username] = token;
+      let userTokens = checklistManager.data.tokens[username];
+
+      // Migrate from old single-token format to array
+      if (userTokens && !Array.isArray(userTokens)) {
+        userTokens = [userTokens];
+      }
+      if (!userTokens) {
+        userTokens = [];
+      }
+
+      // Only add if this token isn't already registered
+      if (!userTokens.includes(token)) {
+        userTokens.push(token);
+        // Keep only the last 5 tokens per user to prevent bloat
+        if (userTokens.length > 5) {
+          userTokens = userTokens.slice(-5);
+        }
+        checklistManager.data.tokens[username] = userTokens;
         checklistManager.touchUpdate();
         checklistManager.saveLocal();
 
-        // Sync to save token to Gist
         try {
           await checklistManager.sync();
-          console.log('[FCM] Token saved to Gist for user:', username);
+          console.log('[FCM] Token added for user:', username, '(Devices:', userTokens.length + ')');
         } catch (err) {
           console.error('[FCM] Failed to save token:', err);
         }
+      } else {
+        console.log('[FCM] Token already registered for:', username);
       }
     }
 

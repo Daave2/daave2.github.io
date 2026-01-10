@@ -80,31 +80,41 @@ exports.checkDueTasks = functions.pubsub
                     const diffMs = dueTime - now;
                     const diffMins = Math.floor(diffMs / 60000);
 
-                    // Get FCM token for assigned user
-                    const userToken = tokens[state.assignedTo];
-                    if (!userToken) continue;
+                    // Get FCM tokens for assigned user (supports array for multi-device)
+                    let userTokens = tokens[state.assignedTo];
+                    if (!userTokens) continue;
+
+                    // Handle both old single-token format and new array format
+                    if (!Array.isArray(userTokens)) {
+                        userTokens = [userTokens];
+                    }
 
                     // Create notification key to prevent duplicates
                     const notifKey = `${task.id}-${todayStr}-${diffMins < 0 ? 'overdue' : 'soon'}`;
 
                     // Check if within notification window and not already sent
                     if (diffMins <= 10 && diffMins > 0 && !sentNotifications.has(notifKey)) {
-                        notifications.push({
-                            token: userToken,
-                            title: '⚠️ Task Due Soon',
-                            body: `"${task.label}" is due in ${diffMins} minutes!`,
-                            taskId: task.id,
-                            key: notifKey
-                        });
-                    } else if (diffMins <= 0 && diffMins > -60 && !sentNotifications.has(notifKey)) {
-                        // Only notify for up to 1 hour overdue
-                        notifications.push({
-                            token: userToken,
-                            title: '🚨 Task OVERDUE',
-                            body: `"${task.label}" is overdue!`,
-                            taskId: task.id,
-                            key: notifKey
-                        });
+                        // Push one notification per device token
+                        for (const token of userTokens) {
+                            notifications.push({
+                                token: token,
+                                title: '⚠️ Task Due Soon',
+                                body: `"${task.label}" is due in ${diffMins} minutes!`,
+                                taskId: task.id,
+                                key: notifKey
+                            });
+                        }
+                    } else if (diffMins <= 0 && diffMins > -1440 && !sentNotifications.has(notifKey)) {
+                        // Notify for any overdue task from today (up to 24h)
+                        for (const token of userTokens) {
+                            notifications.push({
+                                token: token,
+                                title: '🚨 Task OVERDUE',
+                                body: `"${task.label}" is overdue!`,
+                                taskId: task.id,
+                                key: notifKey
+                            });
+                        }
                     }
                 }
             }
