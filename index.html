@@ -845,11 +845,23 @@
 
       history.forEach(day => {
         const date = new Date(day.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-        const completion = day.stats ? `${day.stats.completed}/${day.stats.total}` : 'N/A';
-        const percentage = day.stats && day.stats.total > 0 ? Math.round((day.stats.completed / day.stats.total) * 100) : 0;
+
+        // Calculate actual counts from items data for accuracy
+        const items = day.items || {};
+        let totalTasks = Object.keys(items).length;
+        let completedTasks = Object.values(items).filter(s => s.checked).length;
+
+        // Fall back to stored stats if no items
+        if (totalTasks === 0 && day.stats) {
+          totalTasks = day.stats.total || 0;
+          completedTasks = day.stats.completed || 0;
+        }
+
+        const completion = `${completedTasks}/${totalTasks}`;
+        const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
         const row = document.createElement('div');
-        row.className = 'history-item'; // Add style for this
+        row.className = 'history-item';
         row.style.cssText = 'padding: 1rem; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center;';
         row.innerHTML = `
                 <div>
