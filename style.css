@@ -2996,3 +2996,18 @@ button {
   border-radius: 12px;
   display: inline-block;
 }
+
+/* Overdue Task Highlight */
+.overdue-task {
+  color: #d32f2f !important;
+  /* Material Red 700 */
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.overdue-task strong {
+  color: #b71c1c !important;
+  /* Darker red for time */
+  margin-right: 4px;
+}

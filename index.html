@@ -575,10 +575,50 @@
         const itemsEl = document.createElement('div');
         itemsEl.className = 'widget-items';
 
+
+        // Helper: Parse time string to Date object
+        function parseTime(timeStr, referenceDate) {
+          if (!timeStr || typeof timeStr !== 'string') return null;
+          try {
+            const match24 = timeStr.match(/^(\d{1,2}):(\d{2})$/);
+            if (match24) {
+              const d = new Date(referenceDate);
+              d.setHours(parseInt(match24[1], 10), parseInt(match24[2], 10), 0, 0);
+              return d;
+            }
+            const match12 = timeStr.match(/^(\d{1,2}):?(\d{2})?\s*(am|pm)$/i);
+            if (match12) {
+              let hours = parseInt(match12[1], 10);
+              const mins = parseInt(match12[2] || '0', 10);
+              const isPM = match12[3].toLowerCase() === 'pm';
+              if (isPM && hours !== 12) hours += 12;
+              if (!isPM && hours === 12) hours = 0;
+              const d = new Date(referenceDate);
+              d.setHours(hours, mins, 0, 0);
+              return d;
+            }
+            return null;
+          } catch (e) { return null; }
+        }
+
+        // Helper: Check if overdue
+        function isOverdue(timeStr) {
+          if (!timeStr) return false;
+          if (timeStr.toLowerCase() === 'weekly') return false;
+          // For weekly, logic is complex (Fri/Sat/Sun), omitting visual overdue for simplicity unless requested
+
+          const now = new Date();
+          const dueData = parseTime(timeStr, now);
+          return dueData && now > dueData;
+        }
+
         category.items.forEach(item => {
           total++;
           const state = checklistManager.getItemState(item.id);
           if (state.checked) completed++;
+
+          // Check overdue status (only if not checked)
+          const overdue = !state.checked && isOverdue(item.time);
 
           const itemEl = document.createElement('div');
           itemEl.className = `widget-item${state.checked ? ' checked' : ''}`;
@@ -589,9 +629,10 @@
               ${state.checked ? '<i class="fas fa-check"></i>' : ''}
             </div>
             <div class="widget-item-content">
-              <span class="widget-item-label">
+              <span class="widget-item-label ${overdue ? 'overdue-task' : ''}">
                 ${item.time ? `<strong>${item.time}</strong> ` : ''}${item.label}
                 ${state.assignedTo ? `<span class="widget-badge">${state.assignedTo}</span>` : ''}
+                ${overdue ? '<i class="fas fa-exclamation-circle" style="margin-left:5px; font-size: 0.9em;"></i>' : ''}
               </span>
               ${state.checked ? `<span class="widget-meta">✓ ${state.checkedBy} ${state.checkedAt}</span>` : ''}
             </div>
