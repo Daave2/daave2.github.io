@@ -861,8 +861,6 @@
 
         // Expand details
         row.addEventListener('click', () => {
-          // Show details (could use a nested list or replace content)
-          // For MVP: Simple toggle details
           const details = row.nextElementSibling;
           if (details && details.classList.contains('history-details')) {
             details.remove();
@@ -871,28 +869,57 @@
             detailRow.className = 'history-details';
             detailRow.style.cssText = 'background: #f9f9f9; padding: 1rem; border-bottom: 1px solid #eee;';
 
-            let content = '';
             const items = day.items || {};
-            // Since we don't snapshot full task details, we might only have IDs in 'items'.
-            // But wait, performDailyReset saved 'items' which is { id: { checked, checkedBy... } }
-            // It does NOT save the labels. 
-            // CRITICAL FIX: ChecklistManager.performDailyReset relies on generic IDs. 
-            // Retrospective fix: We need to snapshot labels in history or lookup definitions.
-            // But definitions might change. 
-            // Current best effort: Lookup current definitions. If deleted, show ID.
 
+            // Get current definitions to look up task labels
             const allDefs = checklistManager.getAllDefinitions();
             const flatDefs = {};
-            Object.values(allDefs).forEach(cat => cat.forEach(t => flatDefs[t.id] = t));
+            Object.values(allDefs).forEach(cat => {
+              const tasks = Array.isArray(cat) ? cat : (cat.items || []);
+              tasks.forEach(t => flatDefs[t.id] = t);
+            });
+
+            // Build task list - show completed and uncompleted
+            let completedHTML = '';
+            let uncompletedHTML = '';
+            let completedCount = 0;
+            let totalCount = 0;
 
             Object.entries(items).forEach(([id, state]) => {
+              const label = flatDefs[id]?.label || id;
+              totalCount++;
+
               if (state.checked) {
-                const label = flatDefs[id]?.label || 'Unknown Task';
-                content += `<div style="margin-bottom: 4px;">✓ ${label} <span style="color:#666; font-size:0.8em">(${state.checkedBy})</span></div>`;
+                completedCount++;
+                const checkedBy = state.checkedBy || 'Unknown';
+                const checkedAt = state.checkedAt ? new Date(state.checkedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+                completedHTML += `
+                  <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee;">
+                    <span style="color: #28a745;">✓ ${label}</span>
+                    <span style="color: #888; font-size: 0.85em;">${checkedBy}${checkedAt ? ' · ' + checkedAt : ''}</span>
+                  </div>`;
+              } else {
+                uncompletedHTML += `
+                  <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee;">
+                    <span style="color: #dc3545;">✗ ${label}</span>
+                    <span style="color: #888; font-size: 0.85em;">Not completed</span>
+                  </div>`;
               }
             });
 
-            if (!content) content = '<div>No completed tasks</div>';
+            // Build final content
+            let content = '';
+            if (completedHTML) {
+              content += `<div style="margin-bottom: 8px; font-weight: 600; color: #28a745;">Completed (${completedCount})</div>`;
+              content += completedHTML;
+            }
+            if (uncompletedHTML) {
+              content += `<div style="margin-top: 12px; margin-bottom: 8px; font-weight: 600; color: #dc3545;">Not Completed (${totalCount - completedCount})</div>`;
+              content += uncompletedHTML;
+            }
+            if (!content) {
+              content = '<div style="color: #888;">No task data for this day</div>';
+            }
 
             detailRow.innerHTML = content;
             row.parentNode.insertBefore(detailRow, row.nextSibling);
