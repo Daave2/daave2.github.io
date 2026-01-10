@@ -1348,6 +1348,28 @@
         widgetContent.style.display = 'block';
         renderWidget();
 
+        // Handle markdone action from Chat/Notification URL
+        if (actionParam === 'markdone' && taskIdParam) {
+          console.log('[NOTIFY-ACTION] Processing markdone for taskId:', taskIdParam);
+          const state = checklistManager.getItemState(taskIdParam);
+          if (!state.checked) {
+            await checklistManager.toggleItem(taskIdParam);
+            renderWidget();
+            // Visual feedback
+            const taskEl = document.querySelector(`[data-task-id="${taskIdParam}"]`);
+            if (taskEl) {
+              taskEl.style.transition = 'background-color 0.5s';
+              taskEl.style.backgroundColor = '#c8e6c9';
+              setTimeout(() => {
+                taskEl.style.backgroundColor = '';
+              }, 2000);
+            }
+            console.log('[NOTIFY-ACTION] Task marked as done:', taskIdParam);
+          } else {
+            console.log('[NOTIFY-ACTION] Task already checked:', taskIdParam);
+          }
+        }
+
         checklistManager.subscribe(() => renderWidget());
         checklistManager.startAutoSync(30000);
 

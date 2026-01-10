@@ -31,7 +31,7 @@ let lastNotificationDate = '';
 /**
  * Send an overdue alert to Google Chat via webhook
  */
-async function sendChatWebhookAlert(taskLabel, assignedTo, overdueText) {
+async function sendChatWebhookAlert(taskLabel, assignedTo, overdueText, taskId) {
     if (!CHAT_WEBHOOK_URL) {
         console.log('[CHAT] Webhook URL not configured, skipping chat alert');
         return;
@@ -79,7 +79,7 @@ async function sendChatWebhookAlert(taskLabel, assignedTo, overdueText) {
                                 text: 'Mark as Actioned',
                                 onClick: {
                                     openLink: {
-                                        url: 'https://218.team/'
+                                        url: `https://218.team/?action=markdone&taskId=${taskId}`
                                     }
                                 }
                             }]
@@ -300,7 +300,7 @@ exports.checkDueTasks = functions.pubsub
                             if (task.sendChaser) {
                                 const chatKey = `${task.id}-${todayStr}-chat-overdue`;
                                 if (!sentNotifications.has(chatKey)) {
-                                    await sendChatWebhookAlert(task.label, state.assignedTo, overdueText);
+                                    await sendChatWebhookAlert(task.label, state.assignedTo, overdueText, task.id);
                                     sentNotifications.add(chatKey);
                                 }
                             }
