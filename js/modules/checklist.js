@@ -463,11 +463,30 @@ class ChecklistManager {
 
         const yesterdayDate = currentDate;
 
-        // 1. Archive previous day
+        // Create complete snapshot of ALL tasks (not just touched ones)
+        const completeItems = {};
+        const definitions = data.definitions || {};
+        const todayItems = data.today?.items || {};
+
+        Object.values(definitions).forEach(category => {
+            const tasks = Array.isArray(category) ? category : (category.items || []);
+            tasks.forEach(task => {
+                // Use existing state if available, otherwise mark as untouched
+                const existingState = todayItems[task.id];
+                completeItems[task.id] = existingState || {
+                    checked: false,
+                    assignedTo: null,
+                    checkedBy: null,
+                    checkedAt: null
+                };
+            });
+        });
+
+        // Archive previous day with complete snapshot
         const historyEntry = {
             date: yesterdayDate,
-            stats: this.calculateStats(data.definitions, data.today.items),
-            items: data.today.items
+            stats: this.calculateStats(definitions, completeItems),
+            items: completeItems
         };
 
         // Keep 30 days history
