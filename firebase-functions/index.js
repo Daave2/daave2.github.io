@@ -108,31 +108,56 @@ exports.checkDueTasks = functions.pubsub
                         userTokens = [userTokens];
                     }
 
-                    // Create notification key to prevent duplicates
-                    const notifKey = `${task.id}-${todayStr}-${diffMins < 0 ? 'overdue' : 'soon'}`;
-
-                    // Check if within notification window and not already sent
-                    if (diffMins <= 10 && diffMins > 0 && !sentNotifications.has(notifKey)) {
-                        // Push one notification per device token
-                        for (const token of userTokens) {
-                            notifications.push({
-                                token: token,
-                                title: 'Task Due Soon',
-                                body: `${task.label} — due in ${diffMins} min`,
-                                taskId: task.id,
-                                key: notifKey
-                            });
+                    // Calculate reminder interval based on how overdue the task is
+                    // - First 30 min overdue: remind every 15 min
+                    // - 30 min to 2 hours: remind every 30 min
+                    // - 2+ hours: remind every hour
+                    const getTimeBucket = (overdueMinutes) => {
+                        if (overdueMinutes <= 30) {
+                            return Math.floor(overdueMinutes / 15); // Every 15 min
+                        } else if (overdueMinutes <= 120) {
+                            return 2 + Math.floor((overdueMinutes - 30) / 30); // Every 30 min
+                        } else {
+                            return 5 + Math.floor((overdueMinutes - 120) / 60); // Every hour
                         }
-                    } else if (diffMins <= 0 && diffMins > -1440 && !sentNotifications.has(notifKey)) {
-                        // Notify for any overdue task from today (up to 24h)
-                        for (const token of userTokens) {
-                            notifications.push({
-                                token: token,
-                                title: 'Overdue Task',
-                                body: `${task.label} — needs attention`,
-                                taskId: task.id,
-                                key: notifKey
-                            });
+                    };
+
+                    // Check if within notification window
+                    if (diffMins <= 10 && diffMins > 0) {
+                        // DUE SOON: notify once
+                        const notifKey = `${task.id}-${todayStr}-soon`;
+                        if (!sentNotifications.has(notifKey)) {
+                            for (const token of userTokens) {
+                                notifications.push({
+                                    token: token,
+                                    title: 'Task Due Soon',
+                                    body: `${task.label} — due in ${diffMins} min`,
+                                    taskId: task.id,
+                                    key: notifKey
+                                });
+                            }
+                        }
+                    } else if (diffMins <= 0 && diffMins > -1440) {
+                        // OVERDUE: escalating reminders
+                        const overdueMinutes = Math.abs(diffMins);
+                        const bucket = getTimeBucket(overdueMinutes);
+                        const notifKey = `${task.id}-${todayStr}-overdue-${bucket}`;
+
+                        if (!sentNotifications.has(notifKey)) {
+                            // Format how long overdue
+                            const overdueText = overdueMinutes < 60
+                                ? `${overdueMinutes} min overdue`
+                                : `${Math.floor(overdueMinutes / 60)}h ${overdueMinutes % 60}m overdue`;
+
+                            for (const token of userTokens) {
+                                notifications.push({
+                                    token: token,
+                                    title: 'Overdue Task',
+                                    body: `${task.label} — ${overdueText}`,
+                                    taskId: task.id,
+                                    key: notifKey
+                                });
+                            }
                         }
                     }
                 }
