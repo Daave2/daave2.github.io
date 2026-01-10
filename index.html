@@ -886,23 +886,47 @@
             let totalCount = 0;
 
             Object.entries(items).forEach(([id, state]) => {
-              const label = flatDefs[id]?.label || id;
+              const taskDef = flatDefs[id];
+              const label = taskDef?.label || id;
+              const scheduledTime = taskDef?.time || '';
+              const assignedTo = state.assignedTo || '';
               totalCount++;
 
               if (state.checked) {
                 completedCount++;
                 const checkedBy = state.checkedBy || 'Unknown';
-                const checkedAt = state.checkedAt ? new Date(state.checkedAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+
+                // Safely format completion time
+                let completedTime = '';
+                if (state.checkedAt) {
+                  const d = new Date(state.checkedAt);
+                  if (!isNaN(d.getTime())) {
+                    completedTime = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                  }
+                }
+
                 completedHTML += `
-                  <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee;">
-                    <span style="color: #28a745;">✓ ${label}</span>
-                    <span style="color: #888; font-size: 0.85em;">${checkedBy}${checkedAt ? ' · ' + checkedAt : ''}</span>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                    <div>
+                      <span style="color: #28a745; font-weight: 500;">✓ ${label}</span>
+                      ${scheduledTime ? `<span style="color: #888; font-size: 0.8em; margin-left: 8px;">(${scheduledTime})</span>` : ''}
+                    </div>
+                    <div style="text-align: right; font-size: 0.85em; color: #666;">
+                      ${checkedBy}${completedTime ? ' at ' + completedTime : ''}
+                    </div>
                   </div>`;
               } else {
+                // Uncompleted - show who was assigned
+                let assignInfo = assignedTo ? `Assigned: ${assignedTo}` : 'Unassigned';
                 uncompletedHTML += `
-                  <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee;">
-                    <span style="color: #dc3545;">✗ ${label}</span>
-                    <span style="color: #888; font-size: 0.85em;">Not completed</span>
+                  <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                    <div>
+                      <span style="color: #dc3545;">✗ ${label}</span>
+                      ${scheduledTime ? `<span style="color: #888; font-size: 0.8em; margin-left: 8px;">(${scheduledTime})</span>` : ''}
+                    </div>
+                    <div style="text-align: right; font-size: 0.85em; color: #888;">
+                      ${assignInfo}
+                    </div>
                   </div>`;
               }
             });
