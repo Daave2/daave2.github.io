@@ -767,7 +767,6 @@
           }
 
           const messaging = firebase.messaging();
-          messaging.useServiceWorker(registration);
 
           // Get fresh token with the active SW
           const token = await messaging.getToken({
@@ -1106,8 +1105,7 @@
           });
         }
 
-        messaging.useServiceWorker(registration);
-        console.log('[FCM] Using Main Service Worker for Messaging');
+        console.log('[FCM] Service Worker ready');
 
         // Get FCM token
         const token = await messaging.getToken({
