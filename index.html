@@ -818,6 +818,7 @@
             const btn = document.getElementById('add-task-btn');
             btn.textContent = 'Update Task';
             btn.style.backgroundColor = '#2ecc71'; // Green for update
+            document.getElementById('cancel-edit-btn').style.display = 'inline-block';
 
             // Scroll to top
             document.querySelector('.modal-content').scrollTop = 0;
@@ -894,11 +895,28 @@
 
         if (editingTaskId) {
           // UPDATE EXISTING
-          await checklistManager.updateTask(editingCategoryId, editingTaskId, {
-            label,
-            time,
-            schedule: schedule // undefined will keep existing
-          });
+          // Check if category changed (Move Task)
+          if (editingCategoryId !== categoryId) {
+            // 1. Remove from old category
+            await checklistManager.removeTask(editingCategoryId, editingTaskId);
+            // 2. Add to new category (as new task, but preserving ID if possible or just new)
+            // Ideally we'd preserve ID for history tracking, but simple Add is safer for now
+            // History relies on ID + Date. If ID changes, past history persists, future history is new.
+            // Let's reuse ID? addTask doesn't support custom ID.
+            // Let's just Add New with same properties.
+            await checklistManager.addTask(categoryId, {
+              label,
+              time,
+              schedule: schedule || { type: freq } // Use current form freq if schedule undefined
+            });
+          } else {
+            // Same Category - Update in place
+            await checklistManager.updateTask(editingCategoryId, editingTaskId, {
+              label,
+              time,
+              schedule: schedule // undefined will keep existing
+            });
+          }
 
           // Reset Edit Mode
           editingTaskId = null;
@@ -931,7 +949,7 @@
       }
     });
 
-    // Cancel Button Handler
+    // Cancel Edit Listener
     document.getElementById('cancel-edit-btn').addEventListener('click', () => {
       editingTaskId = null;
       editingCategoryId = null;
@@ -939,16 +957,22 @@
       // Reset form
       document.getElementById('new-task-label').value = '';
       document.getElementById('new-task-time').value = '';
-      document.getElementById('freq-select').value = 'daily';
-      document.getElementById('freq-date-container').style.display = 'none';
-      document.getElementById('freq-date').value = '';
-      document.getElementById('freq-hint').textContent = '';
+      document.getElementById('new-task-category').value = 'morning';
 
+      // Reset Frequency UI
+      freqSelect.value = 'daily';
+      freqDate.value = '';
+      freqDateContainer.style.display = 'none';
+      freqHint.textContent = '';
+      updateFreqUI();
+
+      // Reset Button
       const btn = document.getElementById('add-task-btn');
       btn.textContent = 'Add Task';
       btn.style.backgroundColor = '';
       document.getElementById('cancel-edit-btn').style.display = 'none';
 
+      // Scroll to top
       const modal = document.querySelector('.modal-content');
       if (modal) modal.scrollTop = 0;
     });
