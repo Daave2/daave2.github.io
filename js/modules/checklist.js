@@ -27,7 +27,7 @@ const TEAM_MEMBERS = [
 // Default checklist items based on store procedures
 const DEFAULT_ITEMS = {
     morning: {
-        title: 'Morning (by 9:30am)',
+        title: 'Open Up',
         items: [
             { id: 'mpro-fire-check', label: 'MPRO5 Fire Check', time: '8:00' },
             { id: 'pharmacy-alarm', label: 'Pharmacy Alarm', time: '9:00' },
@@ -43,13 +43,25 @@ const DEFAULT_ITEMS = {
             { id: 'staff-checks', label: 'Staff Checks (Dymension)', time: 'Daily' },
         ]
     },
-    afternoon: {
+    afternoon_shift: { // New Afternoon category
+        title: 'Afternoon',
+        items: []
+    },
+    afternoon: { // Existing Fit for 5
         title: 'Fit for 5 (5pm)',
         items: [
             { id: 'fit-for-5-street', label: 'Fit for 5 - Street', time: '5:00pm' },
             { id: 'fit-for-5-produce', label: 'Fit for 5 - Produce', time: '5:00pm' },
             { id: 'fit-for-5-trading', label: 'Fit for 5 - Trading', time: '5:00pm' },
         ]
+    },
+    closedown: {
+        title: 'Closedown',
+        items: []
+    },
+    anytime: {
+        title: 'Anytime',
+        items: []
     },
     weekly: {
         title: 'Weekly Tasks',
@@ -60,6 +72,10 @@ const DEFAULT_ITEMS = {
             { id: 'weekly-fire-test', label: 'Fire Test', time: 'Weekly' },
             { id: 'weekly-range-checks', label: 'Range Checks', time: 'Weekly' },
         ]
+    },
+    once: {
+        title: 'One-off Tasks',
+        items: []
     }
 };
 
@@ -249,6 +265,19 @@ class ChecklistManager {
                     title: title,
                     items: this.data.definitions[catId]
                 };
+            }
+        });
+
+        // Migration: Merge new categories and update titles from DEFAULT_ITEMS
+        Object.keys(DEFAULT_ITEMS).forEach(key => {
+            if (!this.data.definitions[key]) {
+                console.log(`Adding new category: ${key}`);
+                this.data.definitions[key] = JSON.parse(JSON.stringify(DEFAULT_ITEMS[key]));
+            } else {
+                // Update title if changed (e.g. Morning -> Open Up)
+                if (DEFAULT_ITEMS[key].title && this.data.definitions[key].title !== DEFAULT_ITEMS[key].title) {
+                    this.data.definitions[key].title = DEFAULT_ITEMS[key].title;
+                }
             }
         });
 
