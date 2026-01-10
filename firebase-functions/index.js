@@ -128,6 +128,35 @@ exports.checkDueTasks = functions.pubsub
                         continue; // Skip time-based checks for weekly tasks
                     }
 
+                    // Check if this is a DAILY task (time is 'Daily')
+                    const isDailyTask = task.time && task.time.toLowerCase() === 'daily';
+
+                    if (isDailyTask) {
+                        const currentHour = now.getHours();
+                        const currentMinute = now.getMinutes();
+
+                        // Triggers at 18:00 (6 PM) and 21:00 (9 PM)
+                        // Window is 0-4 minutes because function runs every 5 minutes
+                        const isRemindTime = (currentHour === 18 || currentHour === 21) && currentMinute < 5;
+
+                        if (isRemindTime) {
+                            const notifKey = `${task.id}-${todayStr}-daily-check-${currentHour}`;
+
+                            if (!sentNotifications.has(notifKey)) {
+                                for (const token of userTokens) {
+                                    notifications.push({
+                                        token: token,
+                                        title: 'Daily Task Reminder',
+                                        body: `${task.label} — is this done yet?`,
+                                        taskId: task.id,
+                                        key: notifKey
+                                    });
+                                }
+                            }
+                        }
+                        continue; // Skip standard time checks
+                    }
+
                     // Parse task time for timed tasks
                     const dueTime = parseTime(task.time, now);
                     if (!dueTime) continue;
