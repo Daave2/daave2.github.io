@@ -89,13 +89,6 @@ exports.checkDueTasks = functions.pubsub
                     // Skip if already checked or not assigned
                     if (state.checked || !state.assignedTo) continue;
 
-                    // Parse task time
-                    const dueTime = parseTime(task.time, now);
-                    if (!dueTime) continue;
-
-                    const diffMs = dueTime - now;
-                    const diffMins = Math.floor(diffMs / 60000);
-
                     // Get FCM tokens for assigned user (supports array for multi-device)
                     let userTokens = tokens[state.assignedTo];
                     if (!userTokens) {
@@ -107,6 +100,40 @@ exports.checkDueTasks = functions.pubsub
                     if (!Array.isArray(userTokens)) {
                         userTokens = [userTokens];
                     }
+
+                    // Check if this is a weekly task (time is 'Weekly' instead of HH:MM)
+                    const isWeeklyTask = task.time && task.time.toLowerCase() === 'weekly';
+
+                    if (isWeeklyTask) {
+                        // WEEKLY TASKS: Remind on Friday, Saturday, Sunday at noon (12:00-12:59)
+                        const dayOfWeek = now.getDay(); // 0=Sun, 5=Fri, 6=Sat
+                        const currentHour = now.getHours();
+                        const isWeekend = dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6;
+                        const isNoon = currentHour >= 12 && currentHour < 13;
+
+                        if (isWeekend && isNoon) {
+                            const notifKey = `${task.id}-${todayStr}-weekly-reminder`;
+                            if (!sentNotifications.has(notifKey)) {
+                                for (const token of userTokens) {
+                                    notifications.push({
+                                        token: token,
+                                        title: 'Weekly Task Reminder',
+                                        body: `${task.label} — not yet completed this week`,
+                                        taskId: task.id,
+                                        key: notifKey
+                                    });
+                                }
+                            }
+                        }
+                        continue; // Skip time-based checks for weekly tasks
+                    }
+
+                    // Parse task time for timed tasks
+                    const dueTime = parseTime(task.time, now);
+                    if (!dueTime) continue;
+
+                    const diffMs = dueTime - now;
+                    const diffMins = Math.floor(diffMs / 60000);
 
                     // Calculate reminder interval based on how overdue the task is
                     // - First 30 min overdue: remind every 15 min
@@ -122,15 +149,14 @@ exports.checkDueTasks = functions.pubsub
                         }
                     };
 
-                    // Check if within notification window
-                    if (diffMins <= 10 && diffMins > 0) {
-                        // DUE SOON: notify once
-                        const notifKey = `${task.id}-${todayStr}-soon`;
+                    if (diffMins <= 30 && diffMins > 0) {
+                        // UPCOMING: notify 30 min before (only once)
+                        const notifKey = `${task.id}-${todayStr}-upcoming`;
                         if (!sentNotifications.has(notifKey)) {
                             for (const token of userTokens) {
                                 notifications.push({
                                     token: token,
-                                    title: 'Task Due Soon',
+                                    title: 'Upcoming Task',
                                     body: `${task.label} — due in ${diffMins} min`,
                                     taskId: task.id,
                                     key: notifKey
