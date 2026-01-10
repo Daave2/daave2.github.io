@@ -119,6 +119,10 @@
           style="background: transparent; border: 1px solid #ccc; color: #666; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
           🔔 Test Notification
         </button>
+        <button id="force-sync-token-btn"
+          style="background: transparent; border: 1px solid #2196F3; color: #2196F3; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 10px;">
+          🔄 Sync Token
+        </button>
       </div>
     </section>
 
@@ -740,6 +744,47 @@
           debugBtn.disabled = false;
           debugBtn.textContent = '❌ Failed';
         }
+      });
+    }
+
+    // Force Sync Token Button Handler
+    const forceSyncBtn = document.getElementById('force-sync-token-btn');
+    if (forceSyncBtn) {
+      forceSyncBtn.addEventListener('click', async () => {
+        const originalText = forceSyncBtn.textContent;
+        forceSyncBtn.textContent = '⏳ Syncing...';
+        try {
+          const messaging = firebase.messaging();
+          // Note: we assume messaging is initialized by startup code
+
+          // Get fresh token
+          const token = await messaging.getToken();
+          const username = getUsername();
+
+          if (!username || username === 'Team') {
+            throw new Error('Please select a user first!');
+          }
+
+          console.log('[DEBUG] Forcing token update for:', username);
+
+          if (!checklistManager.data.tokens) checklistManager.data.tokens = {};
+          checklistManager.data.tokens[username] = token;
+
+          checklistManager.touchUpdate();
+          checklistManager.saveLocal(); // Save locally first
+          await checklistManager.sync(); // Push to Gist
+
+          alert('Success! Token synced to Gist.');
+          forceSyncBtn.textContent = '✅ Done';
+        } catch (err) {
+          console.error('[DEBUG] Sync Failed:', err);
+          alert('Sync Failed: ' + err.message);
+          forceSyncBtn.textContent = '❌ Error';
+        }
+
+        setTimeout(() => {
+          forceSyncBtn.textContent = originalText;
+        }, 3000);
       });
     }
 
